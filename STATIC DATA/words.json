@@ -1112,15 +1112,6 @@
           }
         ]
       }
-  
-      /* You can continue in this same pattern for:
-         - feelings
-         - questions_help
-         - shopping_money
-         - directions_transport
-         - work_study
-         - small_talk_social
-         using ~30 words each with the same fields. */
     ]
   }
   
