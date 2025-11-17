@@ -1,0 +1,1002 @@
+{
+  "food_001": {
+    "type": "sentence",
+    "sourceId": "food_001",
+    "textPt": "Estou com fome, o que você quer comer?",
+    "textEn": "I'm hungry, what do you want to eat?",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_001.wav",
+      "female": "audio/ptbr/female/food_001.wav"
+    }
+  },
+  "food_002": {
+    "type": "sentence",
+    "sourceId": "food_002",
+    "textPt": "Tem alguma coisa vegana no cardápio?",
+    "textEn": "Is there anything vegan on the menu?",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_002.wav",
+      "female": "audio/ptbr/female/food_002.wav"
+    }
+  },
+  "food_003": {
+    "type": "sentence",
+    "sourceId": "food_003",
+    "textPt": "Eu não como carne, só peixe e legumes.",
+    "textEn": "I don't eat meat, only fish and vegetables.",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_003.wav",
+      "female": "audio/ptbr/female/food_003.wav"
+    }
+  },
+  "food_004": {
+    "type": "sentence",
+    "sourceId": "food_004",
+    "textPt": "Posso ver o cardápio, por favor?",
+    "textEn": "Can I see the menu, please?",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_004.wav",
+      "female": "audio/ptbr/female/food_004.wav"
+    }
+  },
+  "food_005": {
+    "type": "sentence",
+    "sourceId": "food_005",
+    "textPt": "A comida está deliciosa, obrigado.",
+    "textEn": "The food is delicious, thank you.",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_005.wav",
+      "female": "audio/ptbr/female/food_005.wav"
+    }
+  },
+  "food_006": {
+    "type": "sentence",
+    "sourceId": "food_006",
+    "textPt": "Eu gostaria de um copo de água sem gelo.",
+    "textEn": "I'd like a glass of water without ice.",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_006.wav",
+      "female": "audio/ptbr/female/food_006.wav"
+    }
+  },
+  "food_007": {
+    "type": "sentence",
+    "sourceId": "food_007",
+    "textPt": "Você pode trazer a conta, por favor?",
+    "textEn": "Can you bring the bill, please?",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_007.wav",
+      "female": "audio/ptbr/female/food_007.wav"
+    }
+  },
+  "food_008": {
+    "type": "sentence",
+    "sourceId": "food_008",
+    "textPt": "Você tem algum lanche ou alguma coisa pequena para comer?",
+    "textEn": "Do you have any snacks or something small to eat?",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_008.wav",
+      "female": "audio/ptbr/female/food_008.wav"
+    }
+  },
+  "food_009": {
+    "type": "sentence",
+    "sourceId": "food_009",
+    "textPt": "Eu geralmente pulo o café da manhã.",
+    "textEn": "I usually skip breakfast.",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_009.wav",
+      "female": "audio/ptbr/female/food_009.wav"
+    }
+  },
+  "food_010": {
+    "type": "sentence",
+    "sourceId": "food_010",
+    "textPt": "Isso é muito apimentado para mim.",
+    "textEn": "This is too spicy for me.",
+    "ptbr": {
+      "male": "audio/ptbr/male/food_010.wav",
+      "female": "audio/ptbr/female/food_010.wav"
+    }
+  },
+  "travel_001": {
+    "type": "sentence",
+    "sourceId": "travel_001",
+    "textPt": "Onde fica a rodoviária?",
+    "textEn": "Where is the bus station?",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_001.wav",
+      "female": "audio/ptbr/female/travel_001.wav"
+    }
+  },
+  "travel_002": {
+    "type": "sentence",
+    "sourceId": "travel_002",
+    "textPt": "Que horas o trem sai?",
+    "textEn": "What time does the train leave?",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_002.wav",
+      "female": "audio/ptbr/female/travel_002.wav"
+    }
+  },
+  "travel_003": {
+    "type": "sentence",
+    "sourceId": "travel_003",
+    "textPt": "Eu preciso ir para o aeroporto.",
+    "textEn": "I need to go to the airport.",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_003.wav",
+      "female": "audio/ptbr/female/travel_003.wav"
+    }
+  },
+  "travel_004": {
+    "type": "sentence",
+    "sourceId": "travel_004",
+    "textPt": "É seguro andar por aqui à noite?",
+    "textEn": "Is it safe to walk around here at night?",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_004.wav",
+      "female": "audio/ptbr/female/travel_004.wav"
+    }
+  },
+  "travel_005": {
+    "type": "sentence",
+    "sourceId": "travel_005",
+    "textPt": "Quanto tempo demora a viagem?",
+    "textEn": "How long does the trip take?",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_005.wav",
+      "female": "audio/ptbr/female/travel_005.wav"
+    }
+  },
+  "travel_006": {
+    "type": "sentence",
+    "sourceId": "travel_006",
+    "textPt": "Eu tenho uma reserva neste hotel.",
+    "textEn": "I have a reservation at this hotel.",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_006.wav",
+      "female": "audio/ptbr/female/travel_006.wav"
+    }
+  },
+  "travel_007": {
+    "type": "sentence",
+    "sourceId": "travel_007",
+    "textPt": "Você pode recomendar um lugar legal para visitar?",
+    "textEn": "Can you recommend a cool place to visit?",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_007.wav",
+      "female": "audio/ptbr/female/travel_007.wav"
+    }
+  },
+  "travel_008": {
+    "type": "sentence",
+    "sourceId": "travel_008",
+    "textPt": "Acho que estou no ônibus errado.",
+    "textEn": "I think I'm on the wrong bus.",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_008.wav",
+      "female": "audio/ptbr/female/travel_008.wav"
+    }
+  },
+  "travel_009": {
+    "type": "sentence",
+    "sourceId": "travel_009",
+    "textPt": "É longe daqui?",
+    "textEn": "Is it far from here?",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_009.wav",
+      "female": "audio/ptbr/female/travel_009.wav"
+    }
+  },
+  "travel_010": {
+    "type": "sentence",
+    "sourceId": "travel_010",
+    "textPt": "Eu adoro viajar de trem.",
+    "textEn": "I love traveling by train.",
+    "ptbr": {
+      "male": "audio/ptbr/male/travel_010.wav",
+      "female": "audio/ptbr/female/travel_010.wav"
+    }
+  },
+  "fam_001": {
+    "type": "sentence",
+    "sourceId": "fam_001",
+    "textPt": "Minha família é muito importante para mim.",
+    "textEn": "My family is very important to me.",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_001.wav",
+      "female": "audio/ptbr/female/fam_001.wav"
+    }
+  },
+  "fam_002": {
+    "type": "sentence",
+    "sourceId": "fam_002",
+    "textPt": "Eu tenho duas irmãs e um irmão.",
+    "textEn": "I have two sisters and one brother.",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_002.wav",
+      "female": "audio/ptbr/female/fam_002.wav"
+    }
+  },
+  "fam_003": {
+    "type": "sentence",
+    "sourceId": "fam_003",
+    "textPt": "Você é próximo dos seus pais?",
+    "textEn": "Are you close with your parents?",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_003.wav",
+      "female": "audio/ptbr/female/fam_003.wav"
+    }
+  },
+  "fam_004": {
+    "type": "sentence",
+    "sourceId": "fam_004",
+    "textPt": "Meu melhor amigo mora em outra cidade.",
+    "textEn": "My best friend lives in another city.",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_004.wav",
+      "female": "audio/ptbr/female/fam_004.wav"
+    }
+  },
+  "fam_005": {
+    "type": "sentence",
+    "sourceId": "fam_005",
+    "textPt": "Vou encontrar meus amigos para jantar hoje à noite.",
+    "textEn": "I'm meeting my friends for dinner tonight.",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_005.wav",
+      "female": "audio/ptbr/female/fam_005.wav"
+    }
+  },
+  "fam_006": {
+    "type": "sentence",
+    "sourceId": "fam_006",
+    "textPt": "Você tem irmãos?",
+    "textEn": "Do you have any siblings?",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_006.wav",
+      "female": "audio/ptbr/female/fam_006.wav"
+    }
+  },
+  "fam_007": {
+    "type": "sentence",
+    "sourceId": "fam_007",
+    "textPt": "Sinto muita saudade da minha família.",
+    "textEn": "I miss my family a lot.",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_007.wav",
+      "female": "audio/ptbr/female/fam_007.wav"
+    }
+  },
+  "fam_008": {
+    "type": "sentence",
+    "sourceId": "fam_008",
+    "textPt": "Meus pais são divorciados.",
+    "textEn": "My parents are divorced.",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_008.wav",
+      "female": "audio/ptbr/female/fam_008.wav"
+    }
+  },
+  "fam_009": {
+    "type": "sentence",
+    "sourceId": "fam_009",
+    "textPt": "A gente gosta de passar os domingos juntos.",
+    "textEn": "We like to spend Sundays together.",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_009.wav",
+      "female": "audio/ptbr/female/fam_009.wav"
+    }
+  },
+  "fam_010": {
+    "type": "sentence",
+    "sourceId": "fam_010",
+    "textPt": "Eu me dou muito bem com a minha irmã.",
+    "textEn": "I get along really well with my sister.",
+    "ptbr": {
+      "male": "audio/ptbr/male/fam_010.wav",
+      "female": "audio/ptbr/female/fam_010.wav"
+    }
+  },
+  "daily_001": {
+    "type": "sentence",
+    "sourceId": "daily_001",
+    "textPt": "Eu geralmente acordo por volta das sete.",
+    "textEn": "I usually wake up around seven.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_001.wav",
+      "female": "audio/ptbr/female/daily_001.wav"
+    }
+  },
+  "daily_002": {
+    "type": "sentence",
+    "sourceId": "daily_002",
+    "textPt": "Eu tomo café antes de começar a trabalhar.",
+    "textEn": "I drink coffee before starting work.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_002.wav",
+      "female": "audio/ptbr/female/daily_002.wav"
+    }
+  },
+  "daily_003": {
+    "type": "sentence",
+    "sourceId": "daily_003",
+    "textPt": "Eu tomo banho depois da academia.",
+    "textEn": "I take a shower after the gym.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_003.wav",
+      "female": "audio/ptbr/female/daily_003.wav"
+    }
+  },
+  "daily_004": {
+    "type": "sentence",
+    "sourceId": "daily_004",
+    "textPt": "Eu trabalho de casa na maioria dos dias.",
+    "textEn": "I work from home most days.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_004.wav",
+      "female": "audio/ptbr/female/daily_004.wav"
+    }
+  },
+  "daily_005": {
+    "type": "sentence",
+    "sourceId": "daily_005",
+    "textPt": "À noite eu gosto de ler ou assistir séries.",
+    "textEn": "At night I like to read or watch series.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_005.wav",
+      "female": "audio/ptbr/female/daily_005.wav"
+    }
+  },
+  "daily_006": {
+    "type": "sentence",
+    "sourceId": "daily_006",
+    "textPt": "Eu preciso limpar a casa neste fim de semana.",
+    "textEn": "I need to clean the house this weekend.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_006.wav",
+      "female": "audio/ptbr/female/daily_006.wav"
+    }
+  },
+  "daily_007": {
+    "type": "sentence",
+    "sourceId": "daily_007",
+    "textPt": "Às vezes eu trabalho até tarde.",
+    "textEn": "Sometimes I work late.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_007.wav",
+      "female": "audio/ptbr/female/daily_007.wav"
+    }
+  },
+  "daily_008": {
+    "type": "sentence",
+    "sourceId": "daily_008",
+    "textPt": "Eu tento correr três vezes por semana.",
+    "textEn": "I try to go running three times a week.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_008.wav",
+      "female": "audio/ptbr/female/daily_008.wav"
+    }
+  },
+  "daily_009": {
+    "type": "sentence",
+    "sourceId": "daily_009",
+    "textPt": "Eu geralmente cozinho em casa.",
+    "textEn": "I usually cook at home.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_009.wav",
+      "female": "audio/ptbr/female/daily_009.wav"
+    }
+  },
+  "daily_010": {
+    "type": "sentence",
+    "sourceId": "daily_010",
+    "textPt": "Eu vou dormir muito tarde.",
+    "textEn": "I go to bed very late.",
+    "ptbr": {
+      "male": "audio/ptbr/male/daily_010.wav",
+      "female": "audio/ptbr/female/daily_010.wav"
+    }
+  },
+  "feel_001": {
+    "type": "sentence",
+    "sourceId": "feel_001",
+    "textPt": "Eu estou muito cansado hoje.",
+    "textEn": "I'm really tired today.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_001.wav",
+      "female": "audio/ptbr/female/feel_001.wav"
+    }
+  },
+  "feel_002": {
+    "type": "sentence",
+    "sourceId": "feel_002",
+    "textPt": "Eu estou muito feliz de estar aqui.",
+    "textEn": "I'm very happy to be here.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_002.wav",
+      "female": "audio/ptbr/female/feel_002.wav"
+    }
+  },
+  "feel_003": {
+    "type": "sentence",
+    "sourceId": "feel_003",
+    "textPt": "Eu estou um pouco ansioso com o amanhã.",
+    "textEn": "I'm a little anxious about tomorrow.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_003.wav",
+      "female": "audio/ptbr/female/feel_003.wav"
+    }
+  },
+  "feel_004": {
+    "type": "sentence",
+    "sourceId": "feel_004",
+    "textPt": "Estou frustrado porque eu não entendo.",
+    "textEn": "I'm frustrated because I don't understand.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_004.wav",
+      "female": "audio/ptbr/female/feel_004.wav"
+    }
+  },
+  "feel_005": {
+    "type": "sentence",
+    "sourceId": "feel_005",
+    "textPt": "Estou me sentindo bem melhor agora.",
+    "textEn": "I'm feeling much better now.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_005.wav",
+      "female": "audio/ptbr/female/feel_005.wav"
+    }
+  },
+  "feel_006": {
+    "type": "sentence",
+    "sourceId": "feel_006",
+    "textPt": "Eu fico nervoso quando falo em português.",
+    "textEn": "I get nervous when I speak in Portuguese.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_006.wav",
+      "female": "audio/ptbr/female/feel_006.wav"
+    }
+  },
+  "feel_007": {
+    "type": "sentence",
+    "sourceId": "feel_007",
+    "textPt": "Às vezes eu me sinto um pouco inseguro.",
+    "textEn": "Sometimes I feel a bit insecure.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_007.wav",
+      "female": "audio/ptbr/female/feel_007.wav"
+    }
+  },
+  "feel_008": {
+    "type": "sentence",
+    "sourceId": "feel_008",
+    "textPt": "Eu sou grato pela sua ajuda.",
+    "textEn": "I'm grateful for your help.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_008.wav",
+      "female": "audio/ptbr/female/feel_008.wav"
+    }
+  },
+  "feel_009": {
+    "type": "sentence",
+    "sourceId": "feel_009",
+    "textPt": "Estou um pouco envergonhado.",
+    "textEn": "I'm a bit embarrassed.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_009.wav",
+      "female": "audio/ptbr/female/feel_009.wav"
+    }
+  },
+  "feel_010": {
+    "type": "sentence",
+    "sourceId": "feel_010",
+    "textPt": "Estou empolgado com essa viagem.",
+    "textEn": "I'm excited about this trip.",
+    "ptbr": {
+      "male": "audio/ptbr/male/feel_010.wav",
+      "female": "audio/ptbr/female/feel_010.wav"
+    }
+  },
+  "help_001": {
+    "type": "sentence",
+    "sourceId": "help_001",
+    "textPt": "Você pode me ajudar, por favor?",
+    "textEn": "Can you help me, please?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_001.wav",
+      "female": "audio/ptbr/female/help_001.wav"
+    }
+  },
+  "help_002": {
+    "type": "sentence",
+    "sourceId": "help_002",
+    "textPt": "Você pode repetir mais devagar?",
+    "textEn": "Could you repeat that more slowly?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_002.wav",
+      "female": "audio/ptbr/female/help_002.wav"
+    }
+  },
+  "help_003": {
+    "type": "sentence",
+    "sourceId": "help_003",
+    "textPt": "Eu não entendi, você pode explicar de novo?",
+    "textEn": "I didn't understand, can you explain again?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_003.wav",
+      "female": "audio/ptbr/female/help_003.wav"
+    }
+  },
+  "help_004": {
+    "type": "sentence",
+    "sourceId": "help_004",
+    "textPt": "Como se fala isso em português?",
+    "textEn": "How do you say this in Portuguese?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_004.wav",
+      "female": "audio/ptbr/female/help_004.wav"
+    }
+  },
+  "help_005": {
+    "type": "sentence",
+    "sourceId": "help_005",
+    "textPt": "O que essa palavra quer dizer?",
+    "textEn": "What does this word mean?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_005.wav",
+      "female": "audio/ptbr/female/help_005.wav"
+    }
+  },
+  "help_006": {
+    "type": "sentence",
+    "sourceId": "help_006",
+    "textPt": "Você pode escrever para mim?",
+    "textEn": "Can you write it down for me?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_006.wav",
+      "female": "audio/ptbr/female/help_006.wav"
+    }
+  },
+  "help_007": {
+    "type": "sentence",
+    "sourceId": "help_007",
+    "textPt": "Desculpa, eu não te ouvi.",
+    "textEn": "Sorry, I didn't hear you.",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_007.wav",
+      "female": "audio/ptbr/female/help_007.wav"
+    }
+  },
+  "help_008": {
+    "type": "sentence",
+    "sourceId": "help_008",
+    "textPt": "Isso está certo?",
+    "textEn": "Is this correct?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_008.wav",
+      "female": "audio/ptbr/female/help_008.wav"
+    }
+  },
+  "help_009": {
+    "type": "sentence",
+    "sourceId": "help_009",
+    "textPt": "O que eu devo fazer agora?",
+    "textEn": "What should I do now?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_009.wav",
+      "female": "audio/ptbr/female/help_009.wav"
+    }
+  },
+  "help_010": {
+    "type": "sentence",
+    "sourceId": "help_010",
+    "textPt": "Posso te fazer uma pergunta?",
+    "textEn": "Can I ask you a question?",
+    "ptbr": {
+      "male": "audio/ptbr/male/help_010.wav",
+      "female": "audio/ptbr/female/help_010.wav"
+    }
+  },
+  "shop_001": {
+    "type": "sentence",
+    "sourceId": "shop_001",
+    "textPt": "Quanto custa isso?",
+    "textEn": "How much does this cost?",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_001.wav",
+      "female": "audio/ptbr/female/shop_001.wav"
+    }
+  },
+  "shop_002": {
+    "type": "sentence",
+    "sourceId": "shop_002",
+    "textPt": "Vocês aceitam cartão de crédito?",
+    "textEn": "Do you accept credit card?",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_002.wav",
+      "female": "audio/ptbr/female/shop_002.wav"
+    }
+  },
+  "shop_003": {
+    "type": "sentence",
+    "sourceId": "shop_003",
+    "textPt": "Posso pagar em dinheiro?",
+    "textEn": "Can I pay in cash?",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_003.wav",
+      "female": "audio/ptbr/female/shop_003.wav"
+    }
+  },
+  "shop_004": {
+    "type": "sentence",
+    "sourceId": "shop_004",
+    "textPt": "Você tem isso em outro tamanho?",
+    "textEn": "Do you have this in another size?",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_004.wav",
+      "female": "audio/ptbr/female/shop_004.wav"
+    }
+  },
+  "shop_005": {
+    "type": "sentence",
+    "sourceId": "shop_005",
+    "textPt": "Eu só estou dando uma olhada, obrigado.",
+    "textEn": "I'm just looking, thank you.",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_005.wav",
+      "female": "audio/ptbr/female/shop_005.wav"
+    }
+  },
+  "shop_006": {
+    "type": "sentence",
+    "sourceId": "shop_006",
+    "textPt": "Tem algum desconto à vista?",
+    "textEn": "Is there any discount in cash?",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_006.wav",
+      "female": "audio/ptbr/female/shop_006.wav"
+    }
+  },
+  "shop_007": {
+    "type": "sentence",
+    "sourceId": "shop_007",
+    "textPt": "Onde fica o supermercado?",
+    "textEn": "Where is the supermarket?",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_007.wav",
+      "female": "audio/ptbr/female/shop_007.wav"
+    }
+  },
+  "shop_008": {
+    "type": "sentence",
+    "sourceId": "shop_008",
+    "textPt": "Eu preciso comprar algumas coisas no mercado.",
+    "textEn": "I need to buy some groceries.",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_008.wav",
+      "female": "audio/ptbr/female/shop_008.wav"
+    }
+  },
+  "shop_009": {
+    "type": "sentence",
+    "sourceId": "shop_009",
+    "textPt": "Posso trocar isso se não funcionar?",
+    "textEn": "Can I return this if it doesn't work?",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_009.wav",
+      "female": "audio/ptbr/female/shop_009.wav"
+    }
+  },
+  "shop_010": {
+    "type": "sentence",
+    "sourceId": "shop_010",
+    "textPt": "É muito caro para mim.",
+    "textEn": "It's too expensive for me.",
+    "ptbr": {
+      "male": "audio/ptbr/male/shop_010.wav",
+      "female": "audio/ptbr/female/shop_010.wav"
+    }
+  },
+  "dir_001": {
+    "type": "sentence",
+    "sourceId": "dir_001",
+    "textPt": "Vire à direita na próxima esquina.",
+    "textEn": "Turn right at the next corner.",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_001.wav",
+      "female": "audio/ptbr/female/dir_001.wav"
+    }
+  },
+  "dir_002": {
+    "type": "sentence",
+    "sourceId": "dir_002",
+    "textPt": "Siga em frente e depois vire à esquerda.",
+    "textEn": "Go straight and then turn left.",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_002.wav",
+      "female": "audio/ptbr/female/dir_002.wav"
+    }
+  },
+  "dir_003": {
+    "type": "sentence",
+    "sourceId": "dir_003",
+    "textPt": "Onde fica a estação de metrô mais próxima?",
+    "textEn": "Where is the nearest subway station?",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_003.wav",
+      "female": "audio/ptbr/female/dir_003.wav"
+    }
+  },
+  "dir_004": {
+    "type": "sentence",
+    "sourceId": "dir_004",
+    "textPt": "Dá para ir a pé ou é melhor pegar um ônibus?",
+    "textEn": "Can I walk there, or is it better to take a bus?",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_004.wav",
+      "female": "audio/ptbr/female/dir_004.wav"
+    }
+  },
+  "dir_005": {
+    "type": "sentence",
+    "sourceId": "dir_005",
+    "textPt": "Eu estou um pouco perdido.",
+    "textEn": "I'm a bit lost.",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_005.wav",
+      "female": "audio/ptbr/female/dir_005.wav"
+    }
+  },
+  "dir_006": {
+    "type": "sentence",
+    "sourceId": "dir_006",
+    "textPt": "Tem um ponto de ônibus perto daqui?",
+    "textEn": "Is there a bus stop close by?",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_006.wav",
+      "female": "audio/ptbr/female/dir_006.wav"
+    }
+  },
+  "dir_007": {
+    "type": "sentence",
+    "sourceId": "dir_007",
+    "textPt": "Quanto tempo leva de carro?",
+    "textEn": "How long does it take by car?",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_007.wav",
+      "female": "audio/ptbr/female/dir_007.wav"
+    }
+  },
+  "dir_008": {
+    "type": "sentence",
+    "sourceId": "dir_008",
+    "textPt": "Tem muito trânsito agora?",
+    "textEn": "Is there a lot of traffic now?",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_008.wav",
+      "female": "audio/ptbr/female/dir_008.wav"
+    }
+  },
+  "dir_009": {
+    "type": "sentence",
+    "sourceId": "dir_009",
+    "textPt": "Eu perdi o meu ônibus.",
+    "textEn": "I missed my bus.",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_009.wav",
+      "female": "audio/ptbr/female/dir_009.wav"
+    }
+  },
+  "dir_010": {
+    "type": "sentence",
+    "sourceId": "dir_010",
+    "textPt": "Você pode me mostrar no mapa?",
+    "textEn": "Can you show me on the map?",
+    "ptbr": {
+      "male": "audio/ptbr/male/dir_010.wav",
+      "female": "audio/ptbr/female/dir_010.wav"
+    }
+  },
+  "work_001": {
+    "type": "sentence",
+    "sourceId": "work_001",
+    "textPt": "Eu trabalho das nove às cinco.",
+    "textEn": "I work from nine to five.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_001.wav",
+      "female": "audio/ptbr/female/work_001.wav"
+    }
+  },
+  "work_002": {
+    "type": "sentence",
+    "sourceId": "work_002",
+    "textPt": "Eu tenho uma reunião de manhã.",
+    "textEn": "I have a meeting in the morning.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_002.wav",
+      "female": "audio/ptbr/female/work_002.wav"
+    }
+  },
+  "work_003": {
+    "type": "sentence",
+    "sourceId": "work_003",
+    "textPt": "Eu estudo português todos os dias.",
+    "textEn": "I study Portuguese every day.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_003.wav",
+      "female": "audio/ptbr/female/work_003.wav"
+    }
+  },
+  "work_004": {
+    "type": "sentence",
+    "sourceId": "work_004",
+    "textPt": "Eu preciso terminar este projeto hoje.",
+    "textEn": "I need to finish this project today.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_004.wav",
+      "female": "audio/ptbr/female/work_004.wav"
+    }
+  },
+  "work_005": {
+    "type": "sentence",
+    "sourceId": "work_005",
+    "textPt": "Você trabalha onde?",
+    "textEn": "Where do you work?",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_005.wav",
+      "female": "audio/ptbr/female/work_005.wav"
+    }
+  },
+  "work_006": {
+    "type": "sentence",
+    "sourceId": "work_006",
+    "textPt": "Estou procurando um trabalho novo.",
+    "textEn": "I'm looking for a new job.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_006.wav",
+      "female": "audio/ptbr/female/work_006.wav"
+    }
+  },
+  "work_007": {
+    "type": "sentence",
+    "sourceId": "work_007",
+    "textPt": "Eu tenho uma prova na semana que vem.",
+    "textEn": "I have an exam next week.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_007.wav",
+      "female": "audio/ptbr/female/work_007.wav"
+    }
+  },
+  "work_008": {
+    "type": "sentence",
+    "sourceId": "work_008",
+    "textPt": "Eu trabalho remotamente na maior parte do tempo.",
+    "textEn": "I work remotely most of the time.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_008.wav",
+      "female": "audio/ptbr/female/work_008.wav"
+    }
+  },
+  "work_009": {
+    "type": "sentence",
+    "sourceId": "work_009",
+    "textPt": "Eu estou fazendo um curso online.",
+    "textEn": "I'm taking an online course.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_009.wav",
+      "female": "audio/ptbr/female/work_009.wav"
+    }
+  },
+  "work_010": {
+    "type": "sentence",
+    "sourceId": "work_010",
+    "textPt": "Eu preciso de uma pausa.",
+    "textEn": "I need a break.",
+    "ptbr": {
+      "male": "audio/ptbr/male/work_010.wav",
+      "female": "audio/ptbr/female/work_010.wav"
+    }
+  },
+  "social_001": {
+    "type": "sentence",
+    "sourceId": "social_001",
+    "textPt": "Oi, tudo bem?",
+    "textEn": "Hi, how are you?",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_001.wav",
+      "female": "audio/ptbr/female/social_001.wav"
+    }
+  },
+  "social_002": {
+    "type": "sentence",
+    "sourceId": "social_002",
+    "textPt": "Prazer em te conhecer.",
+    "textEn": "Nice to meet you.",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_002.wav",
+      "female": "audio/ptbr/female/social_002.wav"
+    }
+  },
+  "social_003": {
+    "type": "sentence",
+    "sourceId": "social_003",
+    "textPt": "De onde você é?",
+    "textEn": "Where are you from?",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_003.wav",
+      "female": "audio/ptbr/female/social_003.wav"
+    }
+  },
+  "social_004": {
+    "type": "sentence",
+    "sourceId": "social_004",
+    "textPt": "Há quanto tempo você mora aqui?",
+    "textEn": "How long have you lived here?",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_004.wav",
+      "female": "audio/ptbr/female/social_004.wav"
+    }
+  },
+  "social_005": {
+    "type": "sentence",
+    "sourceId": "social_005",
+    "textPt": "O que você gosta de fazer para se divertir?",
+    "textEn": "What do you like to do for fun?",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_005.wav",
+      "female": "audio/ptbr/female/social_005.wav"
+    }
+  },
+  "social_006": {
+    "type": "sentence",
+    "sourceId": "social_006",
+    "textPt": "Eu gosto muito desta cidade.",
+    "textEn": "I really like this city.",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_006.wav",
+      "female": "audio/ptbr/female/social_006.wav"
+    }
+  },
+  "social_007": {
+    "type": "sentence",
+    "sourceId": "social_007",
+    "textPt": "Você tem planos para o fim de semana?",
+    "textEn": "Do you have any plans for the weekend?",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_007.wav",
+      "female": "audio/ptbr/female/social_007.wav"
+    }
+  },
+  "social_008": {
+    "type": "sentence",
+    "sourceId": "social_008",
+    "textPt": "Foi muito bom conversar com você.",
+    "textEn": "It was great talking to you.",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_008.wav",
+      "female": "audio/ptbr/female/social_008.wav"
+    }
+  },
+  "social_009": {
+    "type": "sentence",
+    "sourceId": "social_009",
+    "textPt": "Vamos manter contato.",
+    "textEn": "Let's keep in touch.",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_009.wav",
+      "female": "audio/ptbr/female/social_009.wav"
+    }
+  },
+  "social_010": {
+    "type": "sentence",
+    "sourceId": "social_010",
+    "textPt": "Bom fim de semana!",
+    "textEn": "Have a good weekend!",
+    "ptbr": {
+      "male": "audio/ptbr/male/social_010.wav",
+      "female": "audio/ptbr/female/social_010.wav"
+    }
+  }
+}

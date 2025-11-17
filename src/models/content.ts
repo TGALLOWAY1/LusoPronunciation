@@ -26,6 +26,7 @@ export interface Word {
   difficulty: 1 | 2 | 3 | 4 | 5;
   trickyFeature?: string;  // "nasal ão", "rr", "lh", etc.
   notes?: string;          // Any extra tips for me
+  audioId?: string;        // Points to audio_index.json (e.g., "word_001")
 }
 
 /**
@@ -39,5 +40,6 @@ export interface Sentence {
   categories: CategoryId[]; // e.g. ["foods"]
   tags?: string[];         // ["nasal", "present-tense"]
   wordIds?: WordId[];      // Optional linkage to Word entries
+  audioId?: string;        // Points to audio_index.json (e.g., "sentence_001")
 }
 

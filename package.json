@@ -1,0 +1,15 @@
+{
+  "name": "lusopronounce",
+  "version": "1.0.0",
+  "description": "A Personal Pronunciation Trainer For Brazilian Portuguese",
+  "scripts": {
+    "generate:audio": "node scripts/generate_audio.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "microsoft-cognitiveservices-speech-sdk": "^1.47.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  }
+}
