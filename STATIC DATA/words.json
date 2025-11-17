@@ -1,0 +1,1126 @@
+{
+    "language_pair": "en-pt-BR",
+    "version": "1.0",
+    "categories": [
+      {
+        "id": "food",
+        "label_en": "Food & Eating",
+        "label_pt": "Comida e Refeições",
+        "words": [
+          {
+            "id": "food_word_001",
+            "pt": "água",
+            "en": "water",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Stress on 'á'; final 'gua' like 'gwa'."
+          },
+          {
+            "id": "food_word_002",
+            "pt": "arroz",
+            "en": "rice",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Double 'rr' is strong guttural; final 'z' sounds like 's'."
+          },
+          {
+            "id": "food_word_003",
+            "pt": "feijão",
+            "en": "beans",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'ão'; sounds like 'fay-ZHOWN'."
+          },
+          {
+            "id": "food_word_004",
+            "pt": "pão",
+            "en": "bread",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'ão'; mouth open, sound in nose."
+          },
+          {
+            "id": "food_word_005",
+            "pt": "café",
+            "en": "coffee",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on last syllable: ca-FÉ."
+          },
+          {
+            "id": "food_word_006",
+            "pt": "chá",
+            "en": "tea",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Sounds like 'shah'; open 'á'."
+          },
+          {
+            "id": "food_word_007",
+            "pt": "suco",
+            "en": "juice",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "'u' like 'oo' in 'food'."
+          },
+          {
+            "id": "food_word_008",
+            "pt": "cerveja",
+            "en": "beer",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'ce' sounds like 'se'; 'j' like 'zh'."
+          },
+          {
+            "id": "food_word_009",
+            "pt": "vinho",
+            "en": "wine",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'nh' like 'ny' in 'canyon'; nasal 'vin-'."
+          },
+          {
+            "id": "food_word_010",
+            "pt": "salada",
+            "en": "salad",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Similar to Spanish; stress on 'la'."
+          },
+          {
+            "id": "food_word_011",
+            "pt": "fruta",
+            "en": "fruit",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "'u' is 'oo'; stress on 'fru'."
+          },
+          {
+            "id": "food_word_012",
+            "pt": "legumes",
+            "en": "vegetables",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'mes' sounds like 'mees'."
+          },
+          {
+            "id": "food_word_013",
+            "pt": "carne",
+            "en": "meat",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Initial 'car' with guttural 'r'."
+          },
+          {
+            "id": "food_word_014",
+            "pt": "frango",
+            "en": "chicken",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'an' in 'fran'; final 'go' like 'goo'."
+          },
+          {
+            "id": "food_word_015",
+            "pt": "peixe",
+            "en": "fish",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Sounds like 'PAY-shee'."
+          },
+          {
+            "id": "food_word_016",
+            "pt": "ovo",
+            "en": "egg",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Two syllables: 'Ô-vo'."
+          },
+          {
+            "id": "food_word_017",
+            "pt": "café da manhã",
+            "en": "breakfast",
+            "pos": "phrase",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'ã' in 'manhã'; three words linked together."
+          },
+          {
+            "id": "food_word_018",
+            "pt": "almoço",
+            "en": "lunch",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'al-MÔ-so'; closed 'ô'."
+          },
+          {
+            "id": "food_word_019",
+            "pt": "jantar",
+            "en": "dinner",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'tar' has guttural 'r'."
+          },
+          {
+            "id": "food_word_020",
+            "pt": "lanche",
+            "en": "snack",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'lan'; 'che' like 'shee'."
+          },
+          {
+            "id": "food_word_021",
+            "pt": "sobremesa",
+            "en": "dessert",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'me'; 's' between vowels sounds like 'z'."
+          },
+          {
+            "id": "food_word_022",
+            "pt": "garfo",
+            "en": "fork",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Guttural 'r'; stress on 'gar'."
+          },
+          {
+            "id": "food_word_023",
+            "pt": "faca",
+            "en": "knife",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Soft 'c' like 'k'; 'FA-ka'."
+          },
+          {
+            "id": "food_word_024",
+            "pt": "colher",
+            "en": "spoon",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'lh' like 'ly'; final 'her' with guttural 'r'."
+          },
+          {
+            "id": "food_word_025",
+            "pt": "prato",
+            "en": "plate",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'pra'; 'r' is light here."
+          },
+          {
+            "id": "food_word_026",
+            "pt": "copo",
+            "en": "glass (cup)",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Open 'ó'; sounds like 'KO-po'."
+          },
+          {
+            "id": "food_word_027",
+            "pt": "conta",
+            "en": "bill, check",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'on'; 'ta' unstressed."
+          },
+          {
+            "id": "food_word_028",
+            "pt": "cardápio",
+            "en": "menu",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Stress on 'dá'; 'pi' like 'pyu'."
+          },
+          {
+            "id": "food_word_029",
+            "pt": "vegetariano",
+            "en": "vegetarian",
+            "pos": "adjective",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Four syllables; stress on 'a': ve-ge-ta-ri-A-no."
+          },
+          {
+            "id": "food_word_030",
+            "pt": "vegano",
+            "en": "vegan",
+            "pos": "adjective",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'ga'; 'g' like 'g' in 'go'."
+          }
+        ]
+      },
+      {
+        "id": "travel",
+        "label_en": "Travel",
+        "label_pt": "Viagem",
+        "words": [
+          {
+            "id": "travel_word_001",
+            "pt": "viagem",
+            "en": "trip, journey",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'gem' like 'zhẽ'; nasal sound."
+          },
+          {
+            "id": "travel_word_002",
+            "pt": "aeroporto",
+            "en": "airport",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Four syllables; 'r' in 'por' is guttural."
+          },
+          {
+            "id": "travel_word_003",
+            "pt": "avião",
+            "en": "airplane",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'ão'; stress on last syllable."
+          },
+          {
+            "id": "travel_word_004",
+            "pt": "passagem",
+            "en": "ticket (travel)",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'gem' like 'zhẽ'; stress on 'sa'."
+          },
+          {
+            "id": "travel_word_005",
+            "pt": "bagagem",
+            "en": "luggage",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'gagem' like 'gah-zhẽ'."
+          },
+          {
+            "id": "travel_word_006",
+            "pt": "mala",
+            "en": "suitcase",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Two syllables; 'MA-la'."
+          },
+          {
+            "id": "travel_word_007",
+            "pt": "mochila",
+            "en": "backpack",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'ch' like 'sh'; 'mo-SHEE-la'."
+          },
+          {
+            "id": "travel_word_008",
+            "pt": "hotel",
+            "en": "hotel",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'tel'; 'h' is silent."
+          },
+          {
+            "id": "travel_word_009",
+            "pt": "hostel",
+            "en": "hostel",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Close to English; 'ho-steu'."
+          },
+          {
+            "id": "travel_word_010",
+            "pt": "reserva",
+            "en": "reservation",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Guttural 'r'; stress on 'ser'."
+          },
+          {
+            "id": "travel_word_011",
+            "pt": "check-in",
+            "en": "check-in",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Borrowed from English."
+          },
+          {
+            "id": "travel_word_012",
+            "pt": "check-out",
+            "en": "check-out",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Borrowed from English."
+          },
+          {
+            "id": "travel_word_013",
+            "pt": "bilhete",
+            "en": "ticket",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'lh' like 'ly'; 'bi-LHE-chee'."
+          },
+          {
+            "id": "travel_word_014",
+            "pt": "ônibus",
+            "en": "bus",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Stress on 'ô'; 'ni' like 'nee'; 'bus' like 'boos'."
+          },
+          {
+            "id": "travel_word_015",
+            "pt": "trem",
+            "en": "train",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'em'; sounds like 'treing'."
+          },
+          {
+            "id": "travel_word_016",
+            "pt": "metrô",
+            "en": "subway, metro",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Stress on last syllable; 'ô' closed."
+          },
+          {
+            "id": "travel_word_017",
+            "pt": "parada",
+            "en": "stop (bus/train)",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on second syllable: pa-RA-da."
+          },
+          {
+            "id": "travel_word_018",
+            "pt": "ponto de ônibus",
+            "en": "bus stop",
+            "pos": "phrase",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'on' in 'ponto'; 'ônibus' tricky vowels."
+          },
+          {
+            "id": "travel_word_019",
+            "pt": "mapa",
+            "en": "map",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Similar to English; 'MA-pa'."
+          },
+          {
+            "id": "travel_word_020",
+            "pt": "guia",
+            "en": "guide",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Two vowels: 'gui-a'; 'gui' like 'gee'."
+          },
+          {
+            "id": "travel_word_021",
+            "pt": "turista",
+            "en": "tourist",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Almost like English; 'too-REES-ta'."
+          },
+          {
+            "id": "travel_word_022",
+            "pt": "passeio",
+            "en": "tour, walk",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'ss' like 's'; 'ei' like 'ay'."
+          },
+          {
+            "id": "travel_word_023",
+            "pt": "praia",
+            "en": "beach",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Sounds like 'PRAH-ya'; 'ai' like 'eye'."
+          },
+          {
+            "id": "travel_word_024",
+            "pt": "montanha",
+            "en": "mountain",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'an'; 'nh' like 'ny'."
+          },
+          {
+            "id": "travel_word_025",
+            "pt": "cidade",
+            "en": "city",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'de' like 'djee'."
+          },
+          {
+            "id": "travel_word_026",
+            "pt": "centro",
+            "en": "downtown, center",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'en'; 'tro' with rolled/guttural 'r'."
+          },
+          {
+            "id": "travel_word_027",
+            "pt": "interior",
+            "en": "countryside, interior",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Stress on last syllable: in-te-ri-OR."
+          },
+          {
+            "id": "travel_word_028",
+            "pt": "visto",
+            "en": "visa",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "'s' between vowels sounds like 'z'."
+          },
+          {
+            "id": "travel_word_029",
+            "pt": "fronteira",
+            "en": "border",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'on'; 'teira' like 'TAY-ra'."
+          },
+          {
+            "id": "travel_word_030",
+            "pt": "alfândega",
+            "en": "customs",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'an'; stress on 'fân'."
+          }
+        ]
+      },
+  
+      {
+        "id": "family_friends",
+        "label_en": "Family & Friends",
+        "label_pt": "Família e Amigos",
+        "words": [
+          {
+            "id": "fam_word_001",
+            "pt": "família",
+            "en": "family",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Stress on 'mí'; final 'lia' like 'lya'."
+          },
+          {
+            "id": "fam_word_002",
+            "pt": "mãe",
+            "en": "mother, mom",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal diphthong 'ãe'; very nasal."
+          },
+          {
+            "id": "fam_word_003",
+            "pt": "pai",
+            "en": "father, dad",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Sounds like 'pie'."
+          },
+          {
+            "id": "fam_word_004",
+            "pt": "irmão",
+            "en": "brother",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Initial 'ir' like 'eer'; nasal 'ão'."
+          },
+          {
+            "id": "fam_word_005",
+            "pt": "irmã",
+            "en": "sister",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'ã' nasal; no 'o'."
+          },
+          {
+            "id": "fam_word_006",
+            "pt": "filho",
+            "en": "son",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'lh' like 'ly'; 'FEE-lyo'."
+          },
+          {
+            "id": "fam_word_007",
+            "pt": "filha",
+            "en": "daughter",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Same 'lh' sound as 'filho'."
+          },
+          {
+            "id": "fam_word_008",
+            "pt": "namorado",
+            "en": "boyfriend",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'ra': na-mo-RA-do."
+          },
+          {
+            "id": "fam_word_009",
+            "pt": "namorada",
+            "en": "girlfriend",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'ra' as well."
+          },
+          {
+            "id": "fam_word_010",
+            "pt": "marido",
+            "en": "husband",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'ri'; 'ma-REE-do'."
+          },
+          {
+            "id": "fam_word_011",
+            "pt": "esposa",
+            "en": "wife",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "'s' between vowels like 'z': e-SPO-za."
+          },
+          {
+            "id": "fam_word_012",
+            "pt": "amigo",
+            "en": "friend (male)",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'mi': a-MI-go."
+          },
+          {
+            "id": "fam_word_013",
+            "pt": "amiga",
+            "en": "friend (female)",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Same pattern: a-MI-ga."
+          },
+          {
+            "id": "fam_word_014",
+            "pt": "colega",
+            "en": "colleague",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'le': co-LE-ga."
+          },
+          {
+            "id": "fam_word_015",
+            "pt": "vizinho",
+            "en": "neighbor (male)",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'nh' like 'ny'; vi-ZIN-nyo."
+          },
+          {
+            "id": "fam_word_016",
+            "pt": "vizinha",
+            "en": "neighbor (female)",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Same 'nh' sound; vi-ZIN-nya."
+          },
+          {
+            "id": "fam_word_017",
+            "pt": "tio",
+            "en": "uncle",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Sounds like 'chee-o' in Brazil."
+          },
+          {
+            "id": "fam_word_018",
+            "pt": "tia",
+            "en": "aunt",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Sounds like 'chee-a'."
+          },
+          {
+            "id": "fam_word_019",
+            "pt": "primo",
+            "en": "cousin (male)",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'pri'; 'PRÍ-mo'."
+          },
+          {
+            "id": "fam_word_020",
+            "pt": "prima",
+            "en": "cousin (female)",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Same but 'PRÍ-ma'."
+          },
+          {
+            "id": "fam_word_021",
+            "pt": "avô",
+            "en": "grandfather",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Closed 'ô'; 'a-VÔ'."
+          },
+          {
+            "id": "fam_word_022",
+            "pt": "avó",
+            "en": "grandmother",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Open 'ó'; 'a-VÓ'."
+          },
+          {
+            "id": "fam_word_023",
+            "pt": "neto",
+            "en": "grandson",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "NE-to."
+          },
+          {
+            "id": "fam_word_024",
+            "pt": "neta",
+            "en": "granddaughter",
+            "pos": "noun",
+            "difficulty": 1,
+            "difficult_for_english": false,
+            "pronunciation_notes": "NE-ta."
+          },
+          {
+            "id": "fam_word_025",
+            "pt": "sogro",
+            "en": "father-in-law",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Guttural 'gr'; 'SO-gro'."
+          },
+          {
+            "id": "fam_word_026",
+            "pt": "sogra",
+            "en": "mother-in-law",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Same 'gr' cluster."
+          },
+          {
+            "id": "fam_word_027",
+            "pt": "cunhado",
+            "en": "brother-in-law",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'nh'; 'cu-NHA-do'."
+          },
+          {
+            "id": "fam_word_028",
+            "pt": "cunhada",
+            "en": "sister-in-law",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Same 'nh' sound."
+          },
+          {
+            "id": "fam_word_029",
+            "pt": "enteado",
+            "en": "stepson",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'e' like 'eh'; stress on 'a'."
+          },
+          {
+            "id": "fam_word_030",
+            "pt": "enteada",
+            "en": "stepdaughter",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Same pattern as 'enteado'."
+          }
+        ]
+      },
+  
+      {
+        "id": "daily_routine",
+        "label_en": "Daily Routine",
+        "label_pt": "Rotina Diária",
+        "words": [
+          {
+            "id": "daily_word_001",
+            "pt": "acordar",
+            "en": "to wake up",
+            "pos": "verb",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Guttural 'r'; stress on 'dar'."
+          },
+          {
+            "id": "daily_word_002",
+            "pt": "dormir",
+            "en": "to sleep",
+            "pos": "verb",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'mir' like 'meer'; guttural 'r'."
+          },
+          {
+            "id": "daily_word_003",
+            "pt": "tomar banho",
+            "en": "to take a shower",
+            "pos": "phrase",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'banho' with 'nh' and nasal vowel."
+          },
+          {
+            "id": "daily_word_004",
+            "pt": "escovar os dentes",
+            "en": "to brush (one's) teeth",
+            "pos": "phrase",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'tes' like 'tchees'."
+          },
+          {
+            "id": "daily_word_005",
+            "pt": "trabalhar",
+            "en": "to work",
+            "pos": "verb",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'lh' sound; final 'har' guttural."
+          },
+          {
+            "id": "daily_word_006",
+            "pt": "estudar",
+            "en": "to study",
+            "pos": "verb",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'dar'; 'es' like 'ees'."
+          },
+          {
+            "id": "daily_word_007",
+            "pt": "almoçar",
+            "en": "to have lunch",
+            "pos": "verb",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Ç = 's'; final 'çar' guttural."
+          },
+          {
+            "id": "daily_word_008",
+            "pt": "jantar",
+            "en": "to have dinner",
+            "pos": "verb",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Same pronunciation as the noun."
+          },
+          {
+            "id": "daily_word_009",
+            "pt": "cozinhar",
+            "en": "to cook",
+            "pos": "verb",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'nh' and final 'har' are tricky."
+          },
+          {
+            "id": "daily_word_010",
+            "pt": "lavar louça",
+            "en": "to wash the dishes",
+            "pos": "phrase",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'ç' in 'louça' like 's'; 'lou' like 'low'."
+          },
+          {
+            "id": "daily_word_011",
+            "pt": "limpar",
+            "en": "to clean",
+            "pos": "verb",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'im'; final 'par' guttural."
+          },
+          {
+            "id": "daily_word_012",
+            "pt": "correr",
+            "en": "to run",
+            "pos": "verb",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Double 'rr' strong in throat."
+          },
+          {
+            "id": "daily_word_013",
+            "pt": "caminhar",
+            "en": "to walk",
+            "pos": "verb",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'nh' plus final 'har'."
+          },
+          {
+            "id": "daily_word_014",
+            "pt": "ouvir música",
+            "en": "to listen to music",
+            "pos": "phrase",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'ou' like 'oh'; 'vir' guttural."
+          },
+          {
+            "id": "daily_word_015",
+            "pt": "ler",
+            "en": "to read",
+            "pos": "verb",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Single syllable; final 'r' guttural."
+          },
+          {
+            "id": "daily_word_016",
+            "pt": "assistir",
+            "en": "to watch",
+            "pos": "verb",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'tir' like 'cheer'."
+          },
+          {
+            "id": "daily_word_017",
+            "pt": "acordado",
+            "en": "awake",
+            "pos": "adjective",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Guttural 'r'; stress on 'da'."
+          },
+          {
+            "id": "daily_word_018",
+            "pt": "atrasado",
+            "en": "late (running late)",
+            "pos": "adjective",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'tr' cluster with guttural 'r'."
+          },
+          {
+            "id": "daily_word_019",
+            "pt": "horário",
+            "en": "schedule, time",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Stress on 'rá'; 'rio' like 'ryo'."
+          },
+          {
+            "id": "daily_word_020",
+            "pt": "reunião",
+            "en": "meeting",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'ão'; three vowels in a row."
+          },
+          {
+            "id": "daily_word_021",
+            "pt": "pausa",
+            "en": "break, pause",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "'au' like 'ow' in 'cow'."
+          },
+          {
+            "id": "daily_word_022",
+            "pt": "descanso",
+            "en": "rest",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'an'; 'des' like 'des'."
+          },
+          {
+            "id": "daily_word_023",
+            "pt": "rotina",
+            "en": "routine",
+            "pos": "noun",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on 'ti'; 'RO-TEE-na'."
+          },
+          {
+            "id": "daily_word_024",
+            "pt": "ginástica",
+            "en": "workout, exercise",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Nasal 'nas'; 'sti' like 'shchee'."
+          },
+          {
+            "id": "daily_word_025",
+            "pt": "academia",
+            "en": "gym",
+            "pos": "noun",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Stress on 'mi'; a-ca-de-MI-a."
+          },
+          {
+            "id": "daily_word_026",
+            "pt": "pegar o ônibus",
+            "en": "to take the bus",
+            "pos": "phrase",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Includes tricky 'ônibus'."
+          },
+          {
+            "id": "daily_word_027",
+            "pt": "dirigir",
+            "en": "to drive",
+            "pos": "verb",
+            "difficulty": 3,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Final 'gir' like 'zheer'."
+          },
+          {
+            "id": "daily_word_028",
+            "pt": "trabalhar de casa",
+            "en": "to work from home",
+            "pos": "phrase",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "'lh' plus phrase rhythm."
+          },
+          {
+            "id": "daily_word_029",
+            "pt": "organizar",
+            "en": "to organize",
+            "pos": "verb",
+            "difficulty": 2,
+            "difficult_for_english": false,
+            "pronunciation_notes": "Stress on last syllable 'zar'."
+          },
+          {
+            "id": "daily_word_030",
+            "pt": "compromisso",
+            "en": "appointment, commitment",
+            "pos": "noun",
+            "difficulty": 4,
+            "difficult_for_english": true,
+            "pronunciation_notes": "Double 'ss'; 'ç' sound; nasal 'om'."
+          }
+        ]
+      }
+  
+      /* You can continue in this same pattern for:
+         - feelings
+         - questions_help
+         - shopping_money
+         - directions_transport
+         - work_study
+         - small_talk_social
+         using ~30 words each with the same fields. */
+    ]
+  }
+  
