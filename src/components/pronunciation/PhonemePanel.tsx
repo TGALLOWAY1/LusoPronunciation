@@ -50,10 +50,10 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-            Phoneme Analysis: <span className="text-primary-600 dark:text-primary-400">{word.text}</span>
+            Sound Details: <span className="text-primary-600 dark:text-primary-400">{word.text}</span>
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            Score: {word.score}/100 • Level: {word.level}
+            Overall score: {word.score}/100 • Level: {word.level}
           </p>
         </div>
         {onClose && (
@@ -91,16 +91,18 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
           </div>
         </div>
       ) : (
-        <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-          No phoneme data available for this word.
-        </p>
+        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+            Detailed sound analysis is not available for this word. Focus on listening to the native pronunciation and practicing the word as a whole.
+          </p>
+        </div>
       )}
 
       {/* Tips section */}
       {problemPhonemes.length > 0 && (
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-            💡 Tips for Improvement:
+            💡 Focus Areas:
           </h4>
           <ul className="space-y-2">
             {problemPhonemes.map((phoneme, index) => (
