@@ -1,0 +1,177 @@
+{
+  "a": {
+    "ipa": "a",
+    "type": "vowel",
+    "description": "Open front vowel, like 'a' in 'father'.",
+    "examplePt": "casa",
+    "exampleEn": "father"
+  },
+  "e": {
+    "ipa": "e",
+    "type": "vowel",
+    "description": "Mid front vowel, similar to 'e' in 'bet' but often tenser.",
+    "examplePt": "dela",
+    "exampleEn": "bed"
+  },
+  "e̞": {
+    "ipa": "e̞",
+    "type": "vowel",
+    "description": "Close-mid front vowel, between 'say' and 'bed'.",
+    "examplePt": "mesa",
+    "exampleEn": "say (without the glide)"
+  },
+  "i": {
+    "ipa": "i",
+    "type": "vowel",
+    "description": "Close front vowel, like 'ee' in 'see'.",
+    "examplePt": "vida",
+    "exampleEn": "see"
+  },
+  "o": {
+    "ipa": "o",
+    "type": "vowel",
+    "description": "Mid back rounded vowel, like 'o' in 'bought' in many accents.",
+    "examplePt": "porta",
+    "exampleEn": "law"
+  },
+  "o̞": {
+    "ipa": "o̞",
+    "type": "vowel",
+    "description": "Close-mid back rounded vowel, similar to the 'o' in 'go' but shorter.",
+    "examplePt": "pouco",
+    "exampleEn": "go"
+  },
+  "u": {
+    "ipa": "u",
+    "type": "vowel",
+    "description": "Close back rounded vowel, like 'oo' in 'food'.",
+    "examplePt": "lula",
+    "exampleEn": "food"
+  },
+  "ɐ": {
+    "ipa": "ɐ",
+    "type": "vowel",
+    "description": "Central vowel often used in unstressed 'a', between 'uh' and 'a'.",
+    "examplePt": "cama",
+    "exampleEn": "sofa (the 'a' sound)"
+  },
+  "ɐ̃": {
+    "ipa": "ɐ̃",
+    "type": "vowel",
+    "description": "Nasalized central vowel, like 'an' in French 'sans'.",
+    "examplePt": "mãe",
+    "exampleEn": "French 'sans'"
+  },
+  "õ": {
+    "ipa": "õ",
+    "type": "vowel",
+    "description": "Nasalized mid-back vowel, similar to 'on' in French 'bon'.",
+    "examplePt": "bom",
+    "exampleEn": "French 'bon'"
+  },
+  "ɾ": {
+    "ipa": "ɾ",
+    "type": "consonant",
+    "description": "Flapped 'r', like the American English 'tt' in 'water' (fast speech).",
+    "examplePt": "caro",
+    "exampleEn": "water (American, fast)"
+  },
+  "ʁ": {
+    "ipa": "ʁ",
+    "type": "consonant",
+    "description": "Guttural 'r' pronounced in the back of the throat, like French or some German 'r'.",
+    "examplePt": "rua",
+    "exampleEn": "French 'r' in 'Paris'"
+  },
+  "ʃ": {
+    "ipa": "ʃ",
+    "type": "consonant",
+    "description": "Voiceless 'sh' sound.",
+    "examplePt": "chuva",
+    "exampleEn": "she"
+  },
+  "ʒ": {
+    "ipa": "ʒ",
+    "type": "consonant",
+    "description": "Voiced 'zh' sound, like 's' in 'measure'.",
+    "examplePt": "viagem",
+    "exampleEn": "measure"
+  },
+  "ʎ": {
+    "ipa": "ʎ",
+    "type": "consonant",
+    "description": "Palatal 'lh' sound, like Italian 'gl' in 'famiglia'.",
+    "examplePt": "filho",
+    "exampleEn": "million (the 'lli' part, approximated)"
+  },
+  "ɲ": {
+    "ipa": "ɲ",
+    "type": "consonant",
+    "description": "Palatal nasal, like Spanish 'ñ'.",
+    "examplePt": "banho",
+    "exampleEn": "canyon (the 'ny' part)"
+  },
+  "s": {
+    "ipa": "s",
+    "type": "consonant",
+    "description": "Voiceless 's' sound.",
+    "examplePt": "sim",
+    "exampleEn": "see"
+  },
+  "z": {
+    "ipa": "z",
+    "type": "consonant",
+    "description": "Voiced 'z' sound.",
+    "examplePt": "mesa",
+    "exampleEn": "zoo"
+  },
+  "tʃ": {
+    "ipa": "tʃ",
+    "type": "consonant",
+    "description": "Affricate 'tch' sound, like 'ch' in 'church'.",
+    "examplePt": "tchau",
+    "exampleEn": "church"
+  },
+  "dʒ": {
+    "ipa": "dʒ",
+    "type": "consonant",
+    "description": "Affricate 'dj' sound, like 'j' in 'judge'.",
+    "examplePt": "dia",
+    "exampleEn": "judge"
+  },
+  "m": {
+    "ipa": "m",
+    "type": "consonant",
+    "description": "Voiced bilabial nasal.",
+    "examplePt": "mãe",
+    "exampleEn": "man"
+  },
+  "n": {
+    "ipa": "n",
+    "type": "consonant",
+    "description": "Alveolar nasal.",
+    "examplePt": "nada",
+    "exampleEn": "no"
+  },
+  "l": {
+    "ipa": "l",
+    "type": "consonant",
+    "description": "Lateral 'l' sound.",
+    "examplePt": "lado",
+    "exampleEn": "light"
+  },
+  "f": {
+    "ipa": "f",
+    "type": "consonant",
+    "description": "Voiceless labiodental fricative.",
+    "examplePt": "falar",
+    "exampleEn": "fine"
+  },
+  "v": {
+    "ipa": "v",
+    "type": "consonant",
+    "description": "Voiced labiodental fricative.",
+    "examplePt": "vida",
+    "exampleEn": "voice"
+  }
+}

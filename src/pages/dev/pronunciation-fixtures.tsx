@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
 import { aggregateScoresByDifficulty } from '@/lib/pronunciationAggregationUtils';
 import { PronunciationFeedbackPanel, PhraseDifficultyPerformancePlot, DifficultyScoreBarChart } from '@/components/pronunciation';
@@ -17,12 +17,12 @@ export default function PronunciationFixtures() {
     // Load all practice phrases once (async now due to sentence matching)
     getAllPracticePhrasesFromFixtures()
       .then((allPhrases) => {
-        setPhrases(allPhrases);
-        
-        // Select first phrase by default
-        if (allPhrases.length > 0) {
-          setSelectedPhrase(allPhrases[0]);
-        }
+    setPhrases(allPhrases);
+    
+    // Select first phrase by default
+    if (allPhrases.length > 0) {
+      setSelectedPhrase(allPhrases[0]);
+    }
       })
       .catch((error) => {
         console.error('Failed to load practice phrases:', error);
@@ -40,6 +40,63 @@ export default function PronunciationFixtures() {
       setSelectedPhrase(phrase);
     }
   };
+
+  // Keyboard navigation handlers
+  const moveToPreviousPhrase = useCallback(() => {
+    if (!selectedPhrase || phrases.length === 0) return;
+    
+    const currentIndex = phrases.findIndex((p) => p.id === selectedPhrase.id);
+    if (currentIndex === -1) return;
+    
+    // Don't wrap - only move if not at the first phrase
+    if (currentIndex > 0) {
+      setSelectedPhrase(phrases[currentIndex - 1]);
+    }
+  }, [selectedPhrase, phrases]);
+
+  const moveToNextPhrase = useCallback(() => {
+    if (!selectedPhrase || phrases.length === 0) return;
+    
+    const currentIndex = phrases.findIndex((p) => p.id === selectedPhrase.id);
+    if (currentIndex === -1) return;
+    
+    // Don't wrap - only move if not at the last phrase
+    if (currentIndex < phrases.length - 1) {
+      setSelectedPhrase(phrases[currentIndex + 1]);
+    }
+  }, [selectedPhrase, phrases]);
+
+  // Keyboard event listener for arrow key navigation
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      // Only navigate if a phrase is selected
+      if (!selectedPhrase) return;
+
+      // Do not override text input behavior
+      const target = e.target;
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        (target instanceof HTMLElement && target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        moveToPreviousPhrase();
+      }
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        moveToNextPhrase();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhrase, phrases, moveToPreviousPhrase, moveToNextPhrase]);
 
   const getDifficultyColor = (difficulty: number): string => {
     switch (difficulty) {
@@ -86,11 +143,11 @@ export default function PronunciationFixtures() {
             />
 
             {/* Phrase list */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-                Phrases ({phrases.length})
-              </h2>
-              <div className="space-y-2 max-h-[600px] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+            <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              Phrases ({phrases.length})
+            </h2>
+            <div className="space-y-2 max-h-[600px] overflow-y-auto">
               {phrases.map((phrase) => (
                 <button
                   key={phrase.id}
@@ -119,20 +176,20 @@ export default function PronunciationFixtures() {
                 </button>
               ))}
             </div>
-          </div>
+            </div>
           </div>
 
           {/* Right side: Selected phrase details */}
           <div className="space-y-6">
             {/* Selected phrase details */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              {selectedPhrase ? (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            {selectedPhrase ? (
                 <PronunciationFeedbackPanel phrase={selectedPhrase} />
-              ) : (
-                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                  <p>Select a phrase from the list to view details</p>
-                </div>
-              )}
+            ) : (
+              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                <p>Select a phrase from the list to view details</p>
+              </div>
+            )}
             </div>
 
             {/* Difficulty average chart */}

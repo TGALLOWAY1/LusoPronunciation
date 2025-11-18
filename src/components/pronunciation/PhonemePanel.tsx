@@ -1,4 +1,5 @@
 import type { WordFeedback } from '@/types/pronunciationFixtures';
+import { getPhonemeMetadata } from '@/lib/phonemeMetadata';
 
 interface PhonemePanelProps {
   word?: WordFeedback | null;
@@ -76,7 +77,21 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
           <div className="flex flex-wrap gap-2">
             {word.phonemes.map((phoneme, index) => {
               const colors = getPhonemeColors(phoneme.score);
-              const tooltipText = `${phoneme.symbol} • ${phoneme.score}/100${phoneme.tip ? ` • ${phoneme.tip}` : ''}`;
+              const metadata = getPhonemeMetadata(phoneme.symbol);
+              
+              // Build enriched tooltip
+              let tooltipText = `${phoneme.symbol} • ${phoneme.score}/100`;
+              if (metadata) {
+                tooltipText += ` • ${metadata.description}`;
+                if (metadata.examplePt) {
+                  tooltipText += ` • PT: ${metadata.examplePt}`;
+                }
+                if (metadata.exampleEn) {
+                  tooltipText += ` • EN: ${metadata.exampleEn}`;
+                }
+              } else if (phoneme.tip) {
+                tooltipText += ` • ${phoneme.tip}`;
+              }
               
               return (
                 <span
@@ -98,25 +113,103 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
         </div>
       )}
 
-      {/* Tips section */}
+      {/* How to pronounce these sounds */}
+      {word.phonemes && word.phonemes.length > 0 && (
+        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            🔊 How to pronounce these sounds:
+          </h4>
+          <div className="space-y-3">
+            {word.phonemes.map((phoneme, index) => {
+              const metadata = getPhonemeMetadata(phoneme.symbol);
+              
+              if (metadata) {
+                return (
+                  <div
+                    key={index}
+                    className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600"
+                  >
+                    <div className="flex items-start gap-2">
+                      <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {phoneme.symbol}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
+                          <strong>How to say it:</strong> {metadata.description}
+                        </p>
+                        <div className="flex flex-wrap gap-3 text-xs text-gray-600 dark:text-gray-400">
+                          {metadata.examplePt && (
+                            <span>
+                              <strong>PT:</strong> <em>{metadata.examplePt}</em>
+                            </span>
+                          )}
+                          {metadata.exampleEn && (
+                            <span>
+                              <strong>EN:</strong> <em>{metadata.exampleEn}</em>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                        {phoneme.score}/100
+                      </span>
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div
+                    key={index}
+                    className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600"
+                  >
+                    <div className="flex items-start gap-2">
+                      <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        {phoneme.symbol}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 italic">
+                          No extra info available for this sound yet.
+                        </p>
+                        {phoneme.tip && (
+                          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                            {phoneme.tip}
+                          </p>
+                        )}
+                      </div>
+                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                        {phoneme.score}/100
+                      </span>
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Tips section for problem phonemes */}
       {problemPhonemes.length > 0 && (
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
             💡 Focus Areas:
           </h4>
           <ul className="space-y-2">
-            {problemPhonemes.map((phoneme, index) => (
-              <li
-                key={index}
-                className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300"
-              >
-                <span className="text-rose-500 dark:text-rose-400 mt-0.5">•</span>
-                <span>
-                  <strong className="font-medium">{phoneme.symbol}:</strong>{' '}
-                  {phoneme.tip || `Score: ${phoneme.score}/100 - needs practice`}
-                </span>
-              </li>
-            ))}
+            {problemPhonemes.map((phoneme, index) => {
+              const metadata = getPhonemeMetadata(phoneme.symbol);
+              return (
+                <li
+                  key={index}
+                  className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300"
+                >
+                  <span className="text-rose-500 dark:text-rose-400 mt-0.5">•</span>
+                  <span>
+                    <strong className="font-medium">{phoneme.symbol}:</strong>{' '}
+                    {phoneme.tip || metadata?.description || `Score: ${phoneme.score}/100 - needs practice`}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

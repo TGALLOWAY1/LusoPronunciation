@@ -83,6 +83,7 @@ function getNativeAudioUrl(sentence: Sentence | null): string | null {
 export type PracticePhraseFromFixture = {
   id: string;              // e.g. "phrase_1"
   text: string;            // Portuguese phrase text
+  translationEn?: string;  // English translation (if available from sentences.json)
   difficulty: number;
   audioUrl: string;        // URL to use in <audio src=...>
   attempt: AttemptScore;   // single "fixture attempt" containing overall scores
@@ -292,9 +293,10 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
     fixture.azureJsonFile
   );
 
-  // Find matching sentence for native audio
+  // Find matching sentence for native audio and English translation
   const matchingSentence = await findMatchingSentence(fixture.text);
   const nativeAudioUrl = getNativeAudioUrl(matchingSentence);
+  const translationEn = matchingSentence?.translationEn;
 
   // Build sentenceAudio with native and user variants
   const sentenceAudio: AudioVariant[] = [];
@@ -338,6 +340,7 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
   return {
     id: fixture.id,
     text: fixture.text,
+    translationEn,
     difficulty: fixture.difficulty,
     audioUrl,
     attempt,

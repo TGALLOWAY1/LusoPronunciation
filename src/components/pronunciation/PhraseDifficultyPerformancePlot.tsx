@@ -1,32 +1,34 @@
+import { useState } from 'react';
 import type { PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
 
 interface PhraseDifficultyPerformancePlotProps {
   phrases: PracticePhraseFromFixture[];
   selectedPhraseId: string | null;
   onPhraseSelect?: (phraseId: string) => void;
-  width?: number;
-  height?: number;
 }
 
 /**
  * Scatter plot showing phrases by difficulty (x-axis) and overall score (y-axis).
  * Highlights the currently selected phrase and allows clicking dots to select phrases.
+ * Uses responsive SVG with viewBox for full-width layout.
  */
 export default function PhraseDifficultyPerformancePlot({
   phrases,
   selectedPhraseId,
   onPhraseSelect,
-  width = 300,
-  height = 200,
 }: PhraseDifficultyPerformancePlotProps) {
+  const [hoveredPointId, setHoveredPointId] = useState<string | null>(null);
   if (phrases.length === 0) {
     return null;
   }
 
-  // Calculate padding and chart area
-  const padding = { top: 20, right: 20, bottom: 30, left: 40 };
-  const chartWidth = width - padding.left - padding.right;
-  const chartHeight = height - padding.top - padding.bottom;
+  // Use viewBox coordinates for responsive scaling
+  // Increased left padding to accommodate y-axis label inside
+  const viewBoxWidth = 400;
+  const viewBoxHeight = 250;
+  const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+  const chartWidth = viewBoxWidth - padding.left - padding.right;
+  const chartHeight = viewBoxHeight - padding.top - padding.bottom;
 
   // Extract data points
   const dataPoints = phrases.map((phrase) => ({
@@ -41,7 +43,7 @@ export default function PhraseDifficultyPerformancePlot({
   const maxDifficulty = Math.max(...dataPoints.map((d) => d.difficulty));
   const maxScore = 100;
 
-  // Normalize coordinates to SVG space
+  // Normalize coordinates to viewBox space
   const normalizeX = (difficulty: number): number => {
     const range = maxDifficulty - minDifficulty || 1;
     return padding.left + ((difficulty - minDifficulty) / range) * chartWidth;
@@ -60,15 +62,15 @@ export default function PhraseDifficultyPerformancePlot({
   const scoreTicks = [0, 25, 50, 75, 100];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700 w-full">
       <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
         Performance by Difficulty
       </h3>
-      <div className="relative">
+      <div className="relative w-full" style={{ paddingBottom: '62.5%' }}>
         <svg
-          width={width}
-          height={height}
-          className="overflow-visible"
+          viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
+          className="absolute inset-0 w-full h-full overflow-visible"
+          preserveAspectRatio="xMidYMid meet"
           aria-label="Phrase performance scatter plot"
         >
           {/* Grid lines for scores (horizontal) */}
@@ -115,7 +117,7 @@ export default function PhraseDifficultyPerformancePlot({
             return (
               <text
                 key={`y-label-${score}`}
-                x={padding.left - 8}
+                x={padding.left - 6}
                 y={y + 4}
                 textAnchor="end"
                 className="text-xs fill-gray-600 dark:fill-gray-400"
@@ -125,6 +127,17 @@ export default function PhraseDifficultyPerformancePlot({
             );
           })}
 
+          {/* Y-axis label "Score" inside chart */}
+          <text
+            x={8}
+            y={padding.top + chartHeight / 2}
+            textAnchor="middle"
+            className="text-xs fill-gray-600 dark:fill-gray-400 font-medium"
+            transform={`rotate(-90, 8, ${padding.top + chartHeight / 2})`}
+          >
+            Score
+          </text>
+
           {/* X-axis labels (difficulty) */}
           {difficultyTicks.map((difficulty) => {
             const x = normalizeX(difficulty);
@@ -132,7 +145,7 @@ export default function PhraseDifficultyPerformancePlot({
               <text
                 key={`x-label-${difficulty}`}
                 x={x}
-                y={height - padding.bottom + 16}
+                y={viewBoxHeight - padding.bottom + 12}
                 textAnchor="middle"
                 className="text-xs fill-gray-600 dark:fill-gray-400"
               >
@@ -140,6 +153,16 @@ export default function PhraseDifficultyPerformancePlot({
               </text>
             );
           })}
+
+          {/* X-axis label "Difficulty" centered below chart */}
+          <text
+            x={padding.left + chartWidth / 2}
+            y={viewBoxHeight - 8}
+            textAnchor="middle"
+            className="text-xs fill-gray-600 dark:fill-gray-400 font-medium"
+          >
+            Difficulty
+          </text>
 
           {/* Axis lines */}
           <line
@@ -166,13 +189,21 @@ export default function PhraseDifficultyPerformancePlot({
             const x = normalizeX(point.difficulty);
             const y = normalizeY(point.score);
             const isSelected = point.id === selectedPhraseId;
-            const radius = isSelected ? 6 : 4;
+            const isHovered = hoveredPointId === point.id;
+            // Slightly larger radius on hover, but not enough to cause cursor issues
+            const baseRadius = isSelected ? 6 : 4;
+            const radius = isHovered ? baseRadius + 1 : baseRadius;
+            const hitRadius = 10; // Larger hit area for easier clicking
             const fillColor = isSelected
-              ? 'text-blue-500 dark:text-blue-400'
-              : 'text-gray-500 dark:text-gray-400';
+              ? 'fill-blue-500 dark:fill-blue-400'
+              : isHovered
+              ? 'fill-blue-400 dark:fill-blue-500'
+              : 'fill-gray-500 dark:fill-gray-400';
             const strokeColor = isSelected
-              ? 'text-blue-600 dark:text-blue-300'
-              : 'text-gray-600 dark:text-gray-500';
+              ? 'stroke-blue-600 dark:stroke-blue-300'
+              : isHovered
+              ? 'stroke-blue-500 dark:stroke-blue-400'
+              : 'stroke-gray-600 dark:stroke-gray-500';
 
             return (
               <g key={point.id}>
@@ -181,7 +212,7 @@ export default function PhraseDifficultyPerformancePlot({
                   <circle
                     cx={x}
                     cy={y}
-                    r={radius + 3}
+                    r={baseRadius + 3}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -189,33 +220,38 @@ export default function PhraseDifficultyPerformancePlot({
                     opacity="0.5"
                   />
                 )}
-                {/* Main point */}
+                {/* Invisible larger hit area for easier clicking */}
+                <circle
+                  cx={x}
+                  cy={y}
+                  r={hitRadius}
+                  fill="transparent"
+                  className="cursor-pointer"
+                  onClick={() => onPhraseSelect?.(point.id)}
+                  onMouseEnter={() => setHoveredPointId(point.id)}
+                  onMouseLeave={() => setHoveredPointId(null)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onPhraseSelect?.(point.id);
+                    }
+                  }}
+                  aria-label={`Select phrase ${point.id}: Difficulty ${point.difficulty}, Score ${point.score}`}
+                />
+                {/* Main point - visible circle */}
                 <circle
                   cx={x}
                   cy={y}
                   r={radius}
-                  fill="currentColor"
-                  stroke="currentColor"
+                  className={`${fillColor} ${strokeColor} transition-all pointer-events-none`}
                   strokeWidth={isSelected ? 2 : 1}
-                  className={`${fillColor} ${strokeColor} cursor-pointer transition-all hover:scale-125`}
-                  onClick={() => onPhraseSelect?.(point.id)}
-                  aria-label={`Phrase ${point.id}: Difficulty ${point.difficulty}, Score ${point.score}`}
                 />
               </g>
             );
           })}
         </svg>
-
-        {/* Axis labels */}
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-6 text-xs text-gray-600 dark:text-gray-400">
-          Difficulty
-        </div>
-        <div
-          className="absolute left-0 top-1/2 transform -translate-x-8 -translate-y-1/2 -rotate-90 text-xs text-gray-600 dark:text-gray-400"
-          style={{ writingMode: 'vertical-rl' }}
-        >
-          Overall Score
-        </div>
       </div>
     </div>
   );

@@ -1,10 +1,23 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
 import type { WordFeedback } from '@/types/pronunciationFixtures';
 import SentenceAudioControls from './SentenceAudioControls';
 import PhraseScoreOverview from './PhraseScoreOverview';
 import InteractiveWordStrip from './InteractiveWordStrip';
 import PhonemePanel from './PhonemePanel';
+
+/**
+ * Practice mode represents how the user is practicing pronunciation.
+ * This is used by scoring logic to differentiate between practice approaches.
+ * 
+ * - 'textOnly': User is reading the sentence without hearing native audio
+ * - 'audioPlusText': User has heard native audio while seeing the text
+ * - 'audioOnly': User is practicing by listening only (no text visible)
+ * 
+ * TODO: When scoring logic is implemented, use this mode to adjust scoring
+ * or provide different feedback based on the practice approach.
+ */
+export type PracticeMode = 'textOnly' | 'audioPlusText' | 'audioOnly';
 
 interface PronunciationFeedbackPanelProps {
   phrase: PracticePhraseFromFixture;
@@ -19,6 +32,8 @@ export default function PronunciationFeedbackPanel({
   phrase,
 }: PronunciationFeedbackPanelProps) {
   const [selectedWord, setSelectedWord] = useState<WordFeedback | null>(null);
+  const [showEnglish, setShowEnglish] = useState(false);
+  const [practiceMode, setPracticeMode] = useState<PracticeMode>('textOnly');
   
   // Centralized audio state
   const [activeSentenceType, setActiveSentenceType] = useState<'native' | 'user' | null>(null);
@@ -30,6 +45,21 @@ export default function PronunciationFeedbackPanel({
   const wordAudioRef = useRef<HTMLAudioElement>(null);
   
   const currentAttemptScore = phrase.attempt;
+
+  // Reset practice mode when phrase changes
+  useEffect(() => {
+    setPracticeMode('textOnly');
+    setShowEnglish(false);
+  }, [phrase.id]);
+
+  // Log practice mode when it changes (for debugging and future scoring integration)
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      console.log(`[PracticeMode] Current mode: ${practiceMode} for phrase "${phrase.id}"`);
+    }
+    // TODO: When scoring logic is implemented, pass practiceMode to the attempt creation
+    // Example: createAttempt({ ...attemptData, practiceMode })
+  }, [practiceMode, phrase.id]);
 
   const getDifficultyColor = (difficulty: number): string => {
     switch (difficulty) {
@@ -66,6 +96,12 @@ export default function PronunciationFeedbackPanel({
     setActiveWordType(null);
     // Set sentence state
     setActiveSentenceType(type);
+    
+    // Update practice mode when native audio is played
+    // If text is visible (which it always is in this view), mode becomes 'audioPlusText'
+    if (type === 'native') {
+      setPracticeMode('audioPlusText');
+    }
   };
 
   const handleSentenceStop = () => {
@@ -91,72 +127,40 @@ export default function PronunciationFeedbackPanel({
     setActiveWordType(null);
   };
 
-  // Practice word handler - highlights word and plays native audio
-  const handlePracticeWord = (wordIndex: number) => {
-    // Find the word
-    const word = phrase.words?.find((w) => w.index === wordIndex);
-    if (!word) return;
-
-    // Check if native audio exists for this word
-    const nativeAudio = phrase.wordAudios?.find(
-      (a) => a.type === 'native' && a.wordIndex === wordIndex
-    );
-
-    if (!nativeAudio) {
-      // If no native audio, just open the phoneme panel
-      setSelectedWord(word);
-      return;
-    }
-
-    // Stop sentence audio if playing
-    if (sentenceAudioRef.current) {
-      sentenceAudioRef.current.pause();
-      sentenceAudioRef.current.currentTime = 0;
-    }
-
-    // Clear sentence state
-    setActiveSentenceType(null);
-
-    // Set word state and play native audio
-    setActiveWordIndex(wordIndex);
-    setActiveWordType('native');
-
-    // Play the native audio
-    if (wordAudioRef.current) {
-      wordAudioRef.current.pause();
-      wordAudioRef.current.currentTime = 0;
-      wordAudioRef.current.src = nativeAudio.url;
-      wordAudioRef.current.play().catch((error) => {
-        console.error(`Failed to play native audio for word "${word.text}":`, error);
-        setActiveWordIndex(null);
-        setActiveWordType(null);
-      });
-    }
-  };
+  // Note: Practice word handler removed - practice functionality will be on
+  // dedicated Practice Words page. See BACKLOG.md for future implementation.
 
   return (
     <div className="space-y-6">
-      {/* How to use this lab */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2">
-          📚 How to use this lab
-        </h3>
-        <ol className="text-xs text-blue-800 dark:text-blue-300 space-y-1.5 list-decimal list-inside">
-          <li>Listen to the native sentence to hear the target pronunciation.</li>
-          <li>Compare with your recording to identify differences.</li>
-          <li>Click words to hear native vs your pronunciation side-by-side.</li>
-          <li>Open word details to fix difficult sounds and track your progress.</li>
-        </ol>
-      </div>
-
       {/* Phrase text and difficulty badge */}
       <div>
-        <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-          {phrase.text}
-        </p>
-        <span className={`badge ${getDifficultyColor(phrase.difficulty)}`}>
-          Difficulty {phrase.difficulty}
-        </span>
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <div className="flex-1">
+            <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              {phrase.text}
+            </p>
+            {/* English translation toggle and display */}
+            {phrase.translationEn && (
+              <div className="space-y-2">
+                <button
+                  onClick={() => setShowEnglish(!showEnglish)}
+                  className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors flex items-center gap-1"
+                  aria-label={showEnglish ? 'Hide English translation' : 'Show English translation'}
+                >
+                  {showEnglish ? '▼' : '▶'} {showEnglish ? 'Hide English' : 'Show English'}
+                </button>
+                {showEnglish && (
+                  <p className="text-lg text-gray-600 dark:text-gray-400 italic">
+                    {phrase.translationEn}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+          <span className={`badge ${getDifficultyColor(phrase.difficulty)} flex-shrink-0`}>
+            Difficulty {phrase.difficulty}
+          </span>
+        </div>
       </div>
 
       {/* Sentence audio controls */}
@@ -173,7 +177,6 @@ export default function PronunciationFeedbackPanel({
         attemptScore={currentAttemptScore}
         words={phrase.words}
         onWordSelected={handleWordSelected}
-        onPracticeWord={handlePracticeWord}
       />
 
       {/* Interactive word strip */}

@@ -6,7 +6,7 @@ interface PhraseScoreOverviewProps {
   attemptScore: AttemptScore;
   words?: WordFeedback[];
   onWordSelected?: (word: WordFeedback) => void;
-  onPracticeWord?: (wordIndex: number) => void;
+  // onPracticeWord removed - practice functionality will be on dedicated Practice Words page
 }
 
 /**
@@ -62,13 +62,14 @@ function generateTrendData(currentScore: number): number[] {
 }
 
 /**
- * Graphical score representation with progress bars and top words to practice.
+ * Graphical score representation with progress bars for pronunciation assessment.
+ * Note: Practice-specific features (e.g., "Focus on these words") are handled
+ * on a dedicated Practice Words page, not in the assessment view.
  */
 export default function PhraseScoreOverview({
   attemptScore,
-  words,
+  words: _words,
   onWordSelected: _onWordSelected,
-  onPracticeWord,
 }: PhraseScoreOverviewProps) {
   const overall = Math.round(attemptScore.overallAccuracy);
   const accuracy = Math.round(attemptScore.overallAccuracy);
@@ -82,14 +83,14 @@ export default function PhraseScoreOverview({
   // TODO: Replace with real multi-attempt data when available
   const trendScores = generateTrendData(attemptScore.overallAccuracy);
 
-  // Get top 3 words to practice (lowest scores)
-  // Filter to words with valid numeric scores
-  const topWordsToPractice = words
-    ? [...words]
-        .filter((word) => typeof word.score === 'number' && !isNaN(word.score))
-        .sort((a, b) => a.score - b.score)
-        .slice(0, 3)
-    : [];
+  // Note: Top words calculation logic kept for potential reuse, but not rendered
+  // in assessment view. Practice functionality will be on dedicated Practice Words page.
+  // const topWordsToPractice = words
+  //   ? [...words]
+  //       .filter((word) => typeof word.score === 'number' && !isNaN(word.score))
+  //       .sort((a, b) => a.score - b.score)
+  //       .slice(0, 3)
+  //   : [];
 
   const getScoreColor = (score: number) => {
     if (score >= 90) return 'bg-emerald-500';
@@ -213,38 +214,6 @@ export default function PhraseScoreOverview({
           {feedbackMessage}
         </p>
       </div>
-
-      {/* Top 3 words to practice */}
-      {topWordsToPractice.length > 0 && (
-        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-            🎯 Focus on These Words:
-          </h4>
-          <div className="space-y-2">
-            {topWordsToPractice.map((word) => (
-              <div
-                key={word.index}
-                className="flex items-center justify-between gap-2 p-2 bg-rose-50 dark:bg-rose-900/20 rounded-lg border border-rose-200 dark:border-rose-800"
-              >
-                <div className="flex-1 min-w-0">
-                  <span className="text-sm font-medium text-rose-900 dark:text-rose-200">
-                    {word.text}
-                  </span>
-                  <span className="text-xs text-rose-700 dark:text-rose-300 ml-2">
-                    {word.score}/100
-                  </span>
-                </div>
-                <button
-                  onClick={() => onPracticeWord?.(word.index)}
-                  className="px-3 py-1 bg-rose-500 hover:bg-rose-600 dark:bg-rose-600 dark:hover:bg-rose-700 text-white text-xs font-medium rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
-                >
-                  Practice
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
