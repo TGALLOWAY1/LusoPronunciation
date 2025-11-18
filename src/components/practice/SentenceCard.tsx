@@ -1,6 +1,8 @@
-import { memo } from 'react';
+import { memo, useState, useCallback, useEffect } from 'react';
 import type { Sentence } from '@/lib/types';
+import type { AttemptScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
+import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
 
 interface SentenceCardProps {
   sentence: Sentence;
@@ -9,6 +11,96 @@ interface SentenceCardProps {
 }
 
 function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [attempts, setAttempts] = useState<AttemptScore[]>([]);
+  
+  const {
+    isRecording,
+    audioBlob,
+    audioUrl,
+    startRecording,
+    stopRecording,
+    reset,
+    error: recorderError,
+  } = useMicrophoneRecorder();
+
+  // Track if we're waiting for blob after stopping
+  const [pendingSubmission, setPendingSubmission] = useState(false);
+
+  // Define submitRecording before useEffect that uses it
+  const submitRecording = useCallback(async (blob: Blob, url: string | undefined) => {
+    setIsSubmitting(true);
+    
+    try {
+      // Build FormData
+      const formData = new FormData();
+      formData.append('audio', blob, `${sentence.id}-attempt.ogg`);
+      formData.append('sentenceId', sentence.id);
+      formData.append('referenceText', sentence.textPt);
+      formData.append('language', 'pt-BR');
+
+      // POST to API endpoint
+      const response = await fetch('/api/pronunciation-assessment', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}`);
+      }
+
+      const { rawAzure, attemptScore } = await response.json();
+
+      // Log rawAzure in development for debugging
+      if (import.meta.env.DEV) {
+        console.debug('Azure pronunciation assessment response:', rawAzure);
+      }
+
+      // Create new attempt with audioUrl from recorder
+      const newAttempt: AttemptScore = {
+        ...attemptScore,
+        audioUrl: url || undefined,
+      };
+
+      // Add to attempts list
+      setAttempts(prev => [newAttempt, ...prev]);
+
+      // Reset recorder for next recording
+      reset();
+    } catch (error) {
+      console.error('Error submitting pronunciation assessment:', error);
+      alert(`Failed to assess pronunciation: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsSubmitting(false);
+      setPendingSubmission(false);
+    }
+  }, [sentence.id, sentence.textPt, reset]);
+
+  // Reset recorder when sentence changes
+  useEffect(() => {
+    reset();
+    setAttempts([]);
+  }, [sentence.id, reset]);
+
+  // Submit when audioBlob becomes available after stopping
+  useEffect(() => {
+    if (pendingSubmission && audioBlob && !isRecording) {
+      setPendingSubmission(false);
+      submitRecording(audioBlob, audioUrl || undefined);
+    }
+  }, [audioBlob, audioUrl, isRecording, pendingSubmission, submitRecording]);
+
+  const handleRecordToggle = useCallback(async () => {
+    if (isRecording) {
+      // Stop recording - blob will be available in onstop handler
+      setPendingSubmission(true);
+      stopRecording();
+    } else {
+      // Start recording
+      await startRecording();
+    }
+  }, [isRecording, startRecording, stopRecording]);
   const difficultyColors = {
     1: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
     2: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
@@ -85,6 +177,51 @@ function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps)
         <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded">
           <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-1">💡 Pronunciation Tip</p>
           <p className="text-sm text-blue-800 dark:text-blue-300">{sentence.pronunciationNotes}</p>
+        </div>
+      )}
+
+      {/* Recording controls */}
+      <div className="mb-6">
+        <button
+          onClick={handleRecordToggle}
+          disabled={isSubmitting}
+          className={`btn btn-md ${
+            isRecording
+              ? 'btn-danger'
+              : 'btn-primary'
+          } w-full sm:w-auto`}
+        >
+          {isRecording ? (
+            <>
+              <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+              Stop & Score
+            </>
+          ) : (
+            'Record'
+          )}
+        </button>
+        {recorderError && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-400">{recorderError}</p>
+        )}
+      </div>
+
+      {/* Attempts list */}
+      {attempts.length > 0 && (
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+            Attempts
+          </h3>
+          <ul className="space-y-2">
+            {attempts.map((attempt, index) => (
+              <li
+                key={attempt.attemptId}
+                className="text-sm text-gray-600 dark:text-gray-400"
+              >
+                Attempt #{attempts.length - index} – overallAccuracy {attempt.overallAccuracy.toFixed(1)} (
+                {new Date(attempt.createdAt).toLocaleString()})
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

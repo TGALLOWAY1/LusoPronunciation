@@ -1,0 +1,228 @@
+[
+    {
+        "Id": "e67a7634b42b431c99d9e63044ecfa41",
+        "RecognitionStatus": "Success",
+        "Offset": 3800000,
+        "Duration": 13100000,
+        "Channel": 0,
+        "DisplayText": "Oi tudo bem.",
+        "SNR": 23.67897,
+        "NBest": [
+            {
+                "Confidence": 0.96029776,
+                "Lexical": "oi tudo bem",
+                "ITN": "oi tudo bem",
+                "MaskedITN": "oi tudo bem",
+                "Display": "Oi tudo bem.",
+                "PronunciationAssessment": {
+                    "AccuracyScore": 97,
+                    "FluencyScore": 98,
+                    "ProsodyScore": 80.3,
+                    "CompletenessScore": 100,
+                    "PronScore": 91.1
+                },
+                "Words": [
+                    {
+                        "Word": "oi",
+                        "Offset": 3800000,
+                        "Duration": 6100000,
+                        "PronunciationAssessment": {
+                            "AccuracyScore": 97,
+                            "ErrorType": "None",
+                            "Feedback": {
+                                "Prosody": {
+                                    "Break": {
+                                        "ErrorTypes": [
+                                            "None"
+                                        ],
+                                        "BreakLength": 0
+                                    },
+                                    "Intonation": {
+                                        "ErrorTypes": [],
+                                        "Monotone": {
+                                            "SyllablePitchDeltaConfidence": 0.2550939
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "Syllables": [
+                            {
+                                "Syllable": "oy",
+                                "Grapheme": "oi",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 97
+                                },
+                                "Offset": 3800000,
+                                "Duration": 6100000
+                            }
+                        ],
+                        "Phonemes": [
+                            {
+                                "Phoneme": "oy",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 97
+                                },
+                                "Offset": 3800000,
+                                "Duration": 6100000
+                            }
+                        ],
+                        "Punctuation": ","
+                    },
+                    {
+                        "Word": "tudo",
+                        "Offset": 10200000,
+                        "Duration": 2900000,
+                        "PronunciationAssessment": {
+                            "AccuracyScore": 97,
+                            "ErrorType": "None",
+                            "Feedback": {
+                                "Prosody": {
+                                    "Break": {
+                                        "ErrorTypes": [
+                                            "MissingBreak"
+                                        ],
+                                        "UnexpectedBreak": {
+                                            "Confidence": 0.06153849
+                                        },
+                                        "MissingBreak": {
+                                            "Confidence": 0.9692308
+                                        },
+                                        "BreakLength": 200000
+                                    },
+                                    "Intonation": {
+                                        "ErrorTypes": [],
+                                        "Monotone": {
+                                            "SyllablePitchDeltaConfidence": 0.2550939
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "Syllables": [
+                            {
+                                "Syllable": "tuw",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 91
+                                },
+                                "Offset": 10200000,
+                                "Duration": 1600000
+                            },
+                            {
+                                "Syllable": "dow",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 98
+                                },
+                                "Offset": 11900000,
+                                "Duration": 1200000
+                            }
+                        ],
+                        "Phonemes": [
+                            {
+                                "Phoneme": "t",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 90
+                                },
+                                "Offset": 10200000,
+                                "Duration": 1100000
+                            },
+                            {
+                                "Phoneme": "uw",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 95
+                                },
+                                "Offset": 11400000,
+                                "Duration": 400000
+                            },
+                            {
+                                "Phoneme": "d",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 94
+                                },
+                                "Offset": 11900000,
+                                "Duration": 400000
+                            },
+                            {
+                                "Phoneme": "ow",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 100
+                                },
+                                "Offset": 12400000,
+                                "Duration": 700000
+                            }
+                        ]
+                    },
+                    {
+                        "Word": "bem",
+                        "Offset": 13200000,
+                        "Duration": 3700000,
+                        "PronunciationAssessment": {
+                            "AccuracyScore": 97,
+                            "ErrorType": "None",
+                            "Feedback": {
+                                "Prosody": {
+                                    "Break": {
+                                        "ErrorTypes": [
+                                            "None"
+                                        ],
+                                        "UnexpectedBreak": {
+                                            "Confidence": 3.0769232e-8
+                                        },
+                                        "MissingBreak": {
+                                            "Confidence": 1
+                                        },
+                                        "BreakLength": 0
+                                    },
+                                    "Intonation": {
+                                        "ErrorTypes": [],
+                                        "Monotone": {
+                                            "SyllablePitchDeltaConfidence": 0.2550939
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "Syllables": [
+                            {
+                                "Syllable": "behm",
+                                "Grapheme": "bem",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 91
+                                },
+                                "Offset": 13200000,
+                                "Duration": 3700000
+                            }
+                        ],
+                        "Phonemes": [
+                            {
+                                "Phoneme": "b",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 100
+                                },
+                                "Offset": 13200000,
+                                "Duration": 500000
+                            },
+                            {
+                                "Phoneme": "eh",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 100
+                                },
+                                "Offset": 13800000,
+                                "Duration": 900000
+                            },
+                            {
+                                "Phoneme": "m",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 84
+                                },
+                                "Offset": 14800000,
+                                "Duration": 2100000
+                            }
+                        ],
+                        "Punctuation": "?"
+                    }
+                ]
+            }
+        ]
+    }
+]

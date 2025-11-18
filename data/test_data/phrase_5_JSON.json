@@ -1,0 +1,275 @@
+[
+    {
+        "Id": "82cb9d572c5a40ac961c48fbc0f4477e",
+        "RecognitionStatus": "Success",
+        "Offset": 1600000,
+        "Duration": 20100000,
+        "Channel": 0,
+        "DisplayText": "Você trabalha onde.",
+        "SNR": 31.35129,
+        "NBest": [
+            {
+                "Confidence": 0.9165282,
+                "Lexical": "você trabalha onde",
+                "ITN": "você trabalha onde",
+                "MaskedITN": "você trabalha onde",
+                "Display": "Você trabalha onde.",
+                "PronunciationAssessment": {
+                    "AccuracyScore": 58,
+                    "FluencyScore": 100,
+                    "ProsodyScore": 60.6,
+                    "CompletenessScore": 33,
+                    "PronScore": 56.9
+                },
+                "Words": [
+                    {
+                        "Word": "você",
+                        "Offset": 1600000,
+                        "Duration": 7700000,
+                        "PronunciationAssessment": {
+                            "AccuracyScore": 54,
+                            "ErrorType": "Mispronunciation",
+                            "Feedback": {
+                                "Prosody": {
+                                    "Break": {
+                                        "ErrorTypes": [
+                                            "None"
+                                        ],
+                                        "BreakLength": 0
+                                    },
+                                    "Intonation": {
+                                        "ErrorTypes": [],
+                                        "Monotone": {
+                                            "SyllablePitchDeltaConfidence": 0.18921347
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "Syllables": [
+                            {
+                                "Syllable": "vowsh",
+                                "Grapheme": "você",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 51
+                                },
+                                "Offset": 1600000,
+                                "Duration": 7700000
+                            }
+                        ],
+                        "Phonemes": [
+                            {
+                                "Phoneme": "v",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 67
+                                },
+                                "Offset": 1600000,
+                                "Duration": 3500000
+                            },
+                            {
+                                "Phoneme": "ow",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 74
+                                },
+                                "Offset": 5200000,
+                                "Duration": 1300000
+                            },
+                            {
+                                "Phoneme": "sh",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 19
+                                },
+                                "Offset": 6600000,
+                                "Duration": 2700000
+                            }
+                        ]
+                    },
+                    {
+                        "Word": "trabalha",
+                        "Offset": 9400000,
+                        "Duration": 8700000,
+                        "PronunciationAssessment": {
+                            "AccuracyScore": 50,
+                            "ErrorType": "Mispronunciation",
+                            "Feedback": {
+                                "Prosody": {
+                                    "Break": {
+                                        "ErrorTypes": [
+                                            "None"
+                                        ],
+                                        "UnexpectedBreak": {
+                                            "Confidence": 2.4752476e-8
+                                        },
+                                        "MissingBreak": {
+                                            "Confidence": 1
+                                        },
+                                        "BreakLength": 0
+                                    },
+                                    "Intonation": {
+                                        "ErrorTypes": [],
+                                        "Monotone": {
+                                            "SyllablePitchDeltaConfidence": 0.18921347
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "Syllables": [
+                            {
+                                "Syllable": "trae",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 45
+                                },
+                                "Offset": 9400000,
+                                "Duration": 1700000
+                            },
+                            {
+                                "Syllable": "bax",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 51
+                                },
+                                "Offset": 11200000,
+                                "Duration": 3300000
+                            },
+                            {
+                                "Syllable": "lax",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 71
+                                },
+                                "Offset": 14600000,
+                                "Duration": 3500000
+                            }
+                        ],
+                        "Phonemes": [
+                            {
+                                "Phoneme": "t",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 45
+                                },
+                                "Offset": 9400000,
+                                "Duration": 1000000
+                            },
+                            {
+                                "Phoneme": "r",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 36
+                                },
+                                "Offset": 10500000,
+                                "Duration": 300000
+                            },
+                            {
+                                "Phoneme": "ae",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 55
+                                },
+                                "Offset": 10900000,
+                                "Duration": 200000
+                            },
+                            {
+                                "Phoneme": "b",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 62
+                                },
+                                "Offset": 11200000,
+                                "Duration": 1500000
+                            },
+                            {
+                                "Phoneme": "ax",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 41
+                                },
+                                "Offset": 12800000,
+                                "Duration": 1700000
+                            },
+                            {
+                                "Phoneme": "l",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 36
+                                },
+                                "Offset": 14600000,
+                                "Duration": 300000
+                            },
+                            {
+                                "Phoneme": "ax",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 75
+                                },
+                                "Offset": 15000000,
+                                "Duration": 3100000
+                            }
+                        ]
+                    },
+                    {
+                        "Word": "onde",
+                        "Offset": 18200000,
+                        "Duration": 3500000,
+                        "PronunciationAssessment": {
+                            "AccuracyScore": 70,
+                            "ErrorType": "None",
+                            "Feedback": {
+                                "Prosody": {
+                                    "Break": {
+                                        "ErrorTypes": [
+                                            "None"
+                                        ],
+                                        "UnexpectedBreak": {
+                                            "Confidence": 2.4752476e-8
+                                        },
+                                        "MissingBreak": {
+                                            "Confidence": 1
+                                        },
+                                        "BreakLength": 0
+                                    },
+                                    "Intonation": {
+                                        "ErrorTypes": [],
+                                        "Monotone": {
+                                            "SyllablePitchDeltaConfidence": 0.18921347
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "Syllables": [
+                            {
+                                "Syllable": "aond",
+                                "Grapheme": "onde",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 62
+                                },
+                                "Offset": 18200000,
+                                "Duration": 3500000
+                            }
+                        ],
+                        "Phonemes": [
+                            {
+                                "Phoneme": "ao",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 94
+                                },
+                                "Offset": 18200000,
+                                "Duration": 1500000
+                            },
+                            {
+                                "Phoneme": "n",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 80
+                                },
+                                "Offset": 19800000,
+                                "Duration": 700000
+                            },
+                            {
+                                "Phoneme": "d",
+                                "PronunciationAssessment": {
+                                    "AccuracyScore": 7
+                                },
+                                "Offset": 20600000,
+                                "Duration": 1100000
+                            }
+                        ],
+                        "Punctuation": "?"
+                    }
+                ]
+            }
+        ]
+    }
+]
