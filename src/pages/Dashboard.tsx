@@ -10,7 +10,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { getLastPracticeMode } from '@/lib/storage';
 
 export default function Dashboard() {
-  const { getDueCount } = useProgressStore();
+  const { getDueCount, getProgressEntry, entries } = useProgressStore();
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [words, setWords] = useState<Word[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -42,33 +42,70 @@ export default function Dashboard() {
     loadData();
   }, []);
 
-  // Calculate category progress (placeholder - will be replaced with real progress later)
-  const getCategoryProgress = (categoryId: string) => {
-    const categorySentences = sentences.filter(s => s.categoryId === categoryId);
-    const categoryWords = words.filter(w => w.categoryId === categoryId);
-    const totalItems = categorySentences.length + categoryWords.length;
-    
-    // Placeholder: return random progress between 0-100 for now
-    // This will be replaced with real progress from LocalStorage later
-    const placeholderProgress = Math.floor(Math.random() * 100);
-    const completedItems = Math.floor((placeholderProgress / 100) * totalItems);
-    
-    return {
-      progress: placeholderProgress,
-      totalItems,
-      completedItems,
-    };
-  };
-
   // Memoize category progress calculation
+  // Include entries in dependencies to recalculate when progress changes
   const categoryProgressMap = useMemo(() => {
+    // Helper function to check if an item is completed based on its progress entry
+    const isItemCompleted = (itemId: string, itemType: 'sentence' | 'word'): boolean => {
+      const progressEntry = getProgressEntry(itemId, itemType);
+      if (!progressEntry || !progressEntry.lastRating) {
+        return false;
+      }
+
+      // For sentences: 'easy' or 'good' ratings are considered completed (equivalent to >= 4 on 1-5 scale)
+      if (itemType === 'sentence') {
+        const rating = progressEntry.lastRating;
+        return rating === 'easy' || rating === 'good';
+      }
+
+      // For words: 'know' action is considered completed
+      if (itemType === 'word') {
+        return progressEntry.lastRating === 'know';
+      }
+
+      return false;
+    };
+
+    // Calculate category progress based on real progress data
+    const getCategoryProgress = (categoryId: string) => {
+      const categorySentences = sentences.filter(s => s.categoryId === categoryId);
+      const categoryWords = words.filter(w => w.categoryId === categoryId);
+      const totalItems = categorySentences.length + categoryWords.length;
+      
+      // Count completed items by checking progress entries
+      let completedItems = 0;
+      
+      // Check each sentence
+      for (const sentence of categorySentences) {
+        if (isItemCompleted(sentence.id, 'sentence')) {
+          completedItems++;
+        }
+      }
+      
+      // Check each word
+      for (const word of categoryWords) {
+        if (isItemCompleted(word.id, 'word')) {
+          completedItems++;
+        }
+      }
+      
+      // Calculate progress percentage
+      const progress = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+      
+      return {
+        progress,
+        totalItems,
+        completedItems,
+      };
+    };
+
     const map = new Map<string, { progress: number; totalItems: number; completedItems: number }>();
     categories.forEach(category => {
       const { progress, totalItems, completedItems } = getCategoryProgress(category.id);
       map.set(category.id, { progress, totalItems, completedItems });
     });
     return map;
-  }, [categories, sentences, words]);
+  }, [categories, sentences, words, entries, getProgressEntry]);
 
   if (loading) {
     return (
