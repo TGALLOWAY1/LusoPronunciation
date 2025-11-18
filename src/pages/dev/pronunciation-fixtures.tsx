@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
+import SentenceFeedback, { type OverallScores, type WordFeedback } from '@/components/practice/SentenceFeedback';
 
 /**
  * Development page for exploring pronunciation fixtures.
@@ -116,43 +117,33 @@ export default function PronunciationFixtures() {
                   </span>
                 </div>
 
-                {/* Score breakdown */}
+                {/* Pronunciation Feedback - using shared component */}
                 <div className="mb-6">
-                  <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-gray-100">
-                    Score Breakdown
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Accuracy</p>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                        {Math.round(selectedPhrase.attempt.overallAccuracy)} / 100
-                      </p>
-                    </div>
-                    {selectedPhrase.attempt.fluency !== undefined && (
-                      <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Fluency</p>
-                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                          {Math.round(selectedPhrase.attempt.fluency)} / 100
-                        </p>
-                      </div>
-                    )}
-                    {selectedPhrase.attempt.completeness !== undefined && (
-                      <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Completeness</p>
-                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                          {Math.round(selectedPhrase.attempt.completeness)} / 100
-                        </p>
-                      </div>
-                    )}
-                    {selectedPhrase.attempt.prosody !== undefined && (
-                      <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Prosody</p>
-                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                          {Math.round(selectedPhrase.attempt.prosody)} / 100
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                  {(() => {
+                    // Map fixture attempt to SentenceFeedbackProps format
+                    const overall: OverallScores = {
+                      accuracy: selectedPhrase.attempt.overallAccuracy,
+                      fluency: selectedPhrase.attempt.fluency,
+                      completeness: selectedPhrase.attempt.completeness,
+                      prosody: selectedPhrase.attempt.prosody,
+                    };
+
+                    // Map word scores if available, otherwise create from text
+                    const words: WordFeedback[] = selectedPhrase.attempt.wordScores.length > 0
+                      ? selectedPhrase.attempt.wordScores.map((ws, index) => ({
+                          index,
+                          text: ws.word,
+                          accuracyScore: ws.accuracy,
+                          errorType: ws.errorType,
+                        }))
+                      : selectedPhrase.text.split(/\s+/).map((word, index) => ({
+                          index,
+                          text: word,
+                          accuracyScore: selectedPhrase.attempt.overallAccuracy, // Use overall as fallback
+                        }));
+
+                    return <SentenceFeedback overall={overall} words={words} />;
+                  })()}
                 </div>
 
                 {/* Audio player */}
