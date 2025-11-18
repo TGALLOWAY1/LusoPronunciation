@@ -44,7 +44,7 @@ export default function PronunciationFixtures() {
   // Keyboard navigation handlers
   const moveToPreviousPhrase = useCallback(() => {
     if (!selectedPhrase || phrases.length === 0) return;
-
+    
     const currentIndex = phrases.findIndex((p) => p.id === selectedPhrase.id);
     if (currentIndex === -1) return;
     

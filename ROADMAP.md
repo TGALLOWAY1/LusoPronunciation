@@ -23,7 +23,11 @@ V1 (MVP) — Local, Static App
     [x] Progress store with React Context
     [x] LocalStorage persistence
     [x] Rating system for sentences and words
-[] Implement pronunciation scoring
+[] Feat 5 - Implement pronunciation scoring (done with test data from Azure AI Studio manual conversion) and data fixutures
+[] Feat 6 - Implement UI/UX for word by word pronunciation assessment 
+ 
+
+
 
 RETROSPECTIVE 
 [] Review roadmap, docs and implementation notes for an updated roadmap before moving on to new features
