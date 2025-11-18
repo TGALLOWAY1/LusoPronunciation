@@ -6,7 +6,7 @@
  */
 
 import { PRONUNCIATION_FIXTURES, getFixtureById, getFixturesByDifficulty } from '@/mock/pronunciationFixtures';
-import type { PronunciationFixture } from '@/types/pronunciationFixtures';
+import type { PronunciationFixture, WordFeedback } from '@/types/pronunciationFixtures';
 import type { AttemptScore } from '@/types/pronunciation';
 
 /**
@@ -19,7 +19,56 @@ export type PracticePhraseFromFixture = {
   difficulty: number;
   audioUrl: string;        // URL to use in <audio src=...>
   attempt: AttemptScore;   // single "fixture attempt" containing overall scores
+  words?: WordFeedback[];  // word-level feedback for UI display
 };
+
+/**
+ * Maps a numeric score to a word feedback level.
+ * 
+ * @param score - The score (0-100)
+ * @returns The corresponding level
+ */
+function mapScoreToLevel(score: number): WordFeedback['level'] {
+  if (score >= 90) return 'excellent';
+  if (score >= 80) return 'good';
+  if (score >= 70) return 'ok';
+  return 'practice';
+}
+
+/**
+ * Generates synthetic word-level feedback from phrase text and overall score.
+ * This is a fallback when real per-word data is not available.
+ * 
+ * @param text - The phrase text
+ * @param overallScore - The overall pronunciation score
+ * @returns Array of word feedback objects
+ */
+function generateSyntheticWordFeedback(text: string, overallScore: number): WordFeedback[] {
+  // Split text into words, removing punctuation
+  const words = text.split(/\s+/).map(w => w.replace(/[.,!?;:]/g, '')).filter(w => w.length > 0);
+  
+  return words.map((word, index) => {
+    // Generate score around overall score with small random jitter (±10 points)
+    const jitter = (Math.random() - 0.5) * 20;
+    const wordScore = Math.max(0, Math.min(100, overallScore + jitter));
+    const level = mapScoreToLevel(wordScore);
+    
+    // Occasionally add error types for lower scores
+    let errorType: string | undefined;
+    if (wordScore < 70 && Math.random() < 0.3) {
+      const errorTypes = ['mispronounced', 'omitted', 'extra'];
+      errorType = errorTypes[Math.floor(Math.random() * errorTypes.length)];
+    }
+    
+    return {
+      index,
+      text: word,
+      score: Math.round(wordScore),
+      level,
+      errorType,
+    };
+  });
+}
 
 /**
  * Converts a PronunciationFixture to a PracticePhraseFromFixture.
@@ -47,12 +96,16 @@ export function fixtureToPracticePhrase(fixture: PronunciationFixture): Practice
     audioUrl,
   };
 
+  // Generate word-level feedback (synthetic for now)
+  const words = generateSyntheticWordFeedback(fixture.text, fixture.scores.overall);
+
   return {
     id: fixture.id,
     text: fixture.text,
     difficulty: fixture.difficulty,
     audioUrl,
     attempt,
+    words,
   };
 }
 

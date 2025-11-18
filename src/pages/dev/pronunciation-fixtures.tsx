@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
+import { PronunciationFeedbackPanel } from '@/components/pronunciation';
 
 /**
  * Development page for exploring pronunciation fixtures.
@@ -10,7 +11,6 @@ import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } fro
 export default function PronunciationFixtures() {
   const [phrases, setPhrases] = useState<PracticePhraseFromFixture[]>([]);
   const [selectedPhrase, setSelectedPhrase] = useState<PracticePhraseFromFixture | null>(null);
-  const [audioError, setAudioError] = useState<string | null>(null);
 
   useEffect(() => {
     // Load all practice phrases once (no network requests)
@@ -26,11 +26,6 @@ export default function PronunciationFixtures() {
 
   const handlePhraseClick = (phrase: PracticePhraseFromFixture) => {
     setSelectedPhrase(phrase);
-    setAudioError(null);
-  };
-
-  const handleAudioError = () => {
-    setAudioError('Audio file could not be loaded. Check the file path.');
   };
 
   const getDifficultyColor = (difficulty: number): string => {
@@ -101,91 +96,7 @@ export default function PronunciationFixtures() {
           {/* Right side: Selected phrase details */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             {selectedPhrase ? (
-              <>
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-                  Phrase Details
-                </h2>
-
-                {/* Phrase text and difficulty */}
-                <div className="mb-6">
-                  <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                    {selectedPhrase.text}
-                  </p>
-                  <span className={`badge ${getDifficultyColor(selectedPhrase.difficulty)}`}>
-                    Difficulty {selectedPhrase.difficulty}
-                  </span>
-                </div>
-
-                {/* Score breakdown */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-gray-100">
-                    Score Breakdown
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Accuracy</p>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                        {Math.round(selectedPhrase.attempt.overallAccuracy)} / 100
-                      </p>
-                    </div>
-                    {selectedPhrase.attempt.fluency !== undefined && (
-                      <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Fluency</p>
-                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                          {Math.round(selectedPhrase.attempt.fluency)} / 100
-                        </p>
-                      </div>
-                    )}
-                    {selectedPhrase.attempt.completeness !== undefined && (
-                      <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Completeness</p>
-                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                          {Math.round(selectedPhrase.attempt.completeness)} / 100
-                        </p>
-                      </div>
-                    )}
-                    {selectedPhrase.attempt.prosody !== undefined && (
-                      <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Prosody</p>
-                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                          {Math.round(selectedPhrase.attempt.prosody)} / 100
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Audio player */}
-                <div className="mb-4">
-                  <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-gray-100">
-                    Audio Playback
-                  </h3>
-                  <audio
-                    controls
-                    src={selectedPhrase.audioUrl}
-                    onError={handleAudioError}
-                    className="w-full"
-                  >
-                    Your browser does not support the audio element.
-                  </audio>
-                  {audioError && (
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-400">{audioError}</p>
-                  )}
-                  <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    Source: <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">{selectedPhrase.audioUrl}</code>
-                  </p>
-                </div>
-
-                {/* Additional metadata */}
-                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    <strong>Attempt ID:</strong> {selectedPhrase.attempt.attemptId}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    <strong>Created:</strong> {new Date(selectedPhrase.attempt.createdAt).toLocaleString()}
-                  </p>
-                </div>
-              </>
+              <PronunciationFeedbackPanel phrase={selectedPhrase} />
             ) : (
               <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                 <p>Select a phrase from the list to view details</p>

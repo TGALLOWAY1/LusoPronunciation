@@ -20,3 +20,11 @@ export type PronunciationFixtureSet = {
   phrases: PronunciationFixture[];
 };
 
+export interface WordFeedback {
+  index: number;
+  text: string;
+  score: number; // 0–100
+  level: 'excellent' | 'good' | 'ok' | 'practice';
+  errorType?: string;
+}
+
