@@ -87,7 +87,14 @@
   }
 
   .badge-primary {
-    @apply bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200;
+    @apply bg-primary-100 dark:bg-primary-900;
+    color: #0c3f22; /* primary-800 */
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .badge-primary {
+      color: #b8e5c7; /* primary-200 */
+    }
   }
 
   .badge-secondary {

@@ -5,6 +5,7 @@ import Dashboard from '../pages/Dashboard';
 import SentencePractice from '../pages/SentencePractice';
 import WordPractice from '../pages/WordPractice';
 import Review from '../pages/Review';
+import PronunciationFixtures from '../pages/dev/pronunciation-fixtures';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/practice/sentence" element={<SentencePractice />} />
             <Route path="/practice/word" element={<WordPractice />} />
             <Route path="/review" element={<Review />} />
+            <Route path="/dev/pronunciation-fixtures" element={<PronunciationFixtures />} />
           </Routes>
         </AppLayout>
       </BrowserRouter>
