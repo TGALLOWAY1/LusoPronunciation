@@ -49,9 +49,9 @@ export default function PronunciationFixtures() {
         {/* Header note */}
         <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded">
           <p className="text-sm text-blue-800 dark:text-blue-200">
-            <strong>Development Page:</strong> This page uses fixture data from{' '}
-            <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">data/test_data/pronunciation_fixtures.json</code>{' '}
-            for UI prototyping and regression testing.
+            <strong>Pronunciation Lab:</strong> Interactive pronunciation assessment UX using fixture data from{' '}
+            <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">data/test_data/pronunciation_fixtures.json</code>.
+            Compare native vs user audio, explore word-by-word feedback, and inspect phoneme details.
           </p>
         </div>
 

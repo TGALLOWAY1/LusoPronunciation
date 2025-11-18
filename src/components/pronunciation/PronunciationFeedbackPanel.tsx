@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import type { PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
-import AttemptScoreSummary from './AttemptScoreSummary';
-import WordScoreRow from './WordScoreRow';
+import type { WordFeedback } from '@/types/pronunciationFixtures';
+import SentenceAudioControls from './SentenceAudioControls';
+import PhraseScoreOverview from './PhraseScoreOverview';
+import InteractiveWordStrip from './InteractiveWordStrip';
+import PhonemePanel from './PhonemePanel';
 
 interface PronunciationFeedbackPanelProps {
   phrase: PracticePhraseFromFixture;
-  selectedAttemptIndex?: number; // default 0 for now
 }
 
 /**
@@ -13,10 +16,8 @@ interface PronunciationFeedbackPanelProps {
  */
 export default function PronunciationFeedbackPanel({
   phrase,
-  selectedAttemptIndex: _selectedAttemptIndex = 0,
 }: PronunciationFeedbackPanelProps) {
-  // For now, we only have one attempt (the fixture attempt)
-  // selectedAttemptIndex is reserved for future multi-attempt support
+  const [selectedWord, setSelectedWord] = useState<WordFeedback | null>(null);
   const currentAttemptScore = phrase.attempt;
 
   const getDifficultyColor = (difficulty: number): string => {
@@ -34,6 +35,14 @@ export default function PronunciationFeedbackPanel({
     }
   };
 
+  const handleWordSelected = (word: WordFeedback) => {
+    setSelectedWord(word);
+  };
+
+  const handleClosePhonemePanel = () => {
+    setSelectedWord(null);
+  };
+
   return (
     <div className="space-y-6">
       {/* Phrase text and difficulty badge */}
@@ -46,30 +55,25 @@ export default function PronunciationFeedbackPanel({
         </span>
       </div>
 
-      {/* Overall score summary */}
-      <AttemptScoreSummary attemptScore={currentAttemptScore} />
+      {/* Sentence audio controls */}
+      <SentenceAudioControls sentenceAudio={phrase.sentenceAudio} />
 
-      {/* Audio player */}
-      <div>
-        <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-gray-100">
-          Audio Playback
-        </h3>
-        <audio
-          controls
-          src={phrase.audioUrl}
-          className="w-full"
-        >
-          Your browser does not support the audio element.
-        </audio>
-      </div>
+      {/* Graphical score overview */}
+      <PhraseScoreOverview
+        attemptScore={currentAttemptScore}
+        words={phrase.words}
+        onWordSelected={handleWordSelected}
+      />
 
-      {/* Word-by-word feedback */}
-      <div>
-        <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-gray-100">
-          Word-by-Word Feedback
-        </h3>
-        <WordScoreRow words={phrase.words} />
-      </div>
+      {/* Interactive word strip */}
+      <InteractiveWordStrip
+        words={phrase.words}
+        wordAudios={phrase.wordAudios}
+        onWordSelected={handleWordSelected}
+      />
+
+      {/* Phoneme panel */}
+      <PhonemePanel word={selectedWord} onClose={handleClosePhonemePanel} />
     </div>
   );
 }

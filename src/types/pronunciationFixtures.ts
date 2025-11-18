@@ -20,11 +20,31 @@ export type PronunciationFixtureSet = {
   phrases: PronunciationFixture[];
 };
 
+export interface AudioVariant {
+  type: 'native' | 'user';
+  url: string;
+}
+
+export interface WordAudioVariant extends AudioVariant {
+  wordIndex: number;
+  startTimeMs?: number;
+  endTimeMs?: number;
+}
+
+export interface PhonemeFeedback {
+  symbol: string;
+  score: number;
+  exampleWord?: string;
+  tip?: string;
+  isProblem?: boolean;
+}
+
 export interface WordFeedback {
   index: number;
   text: string;
   score: number; // 0–100
   level: 'excellent' | 'good' | 'ok' | 'practice';
   errorType?: string;
+  phonemes?: PhonemeFeedback[];
 }
 

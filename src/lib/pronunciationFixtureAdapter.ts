@@ -6,7 +6,7 @@
  */
 
 import { PRONUNCIATION_FIXTURES, getFixtureById, getFixturesByDifficulty } from '@/mock/pronunciationFixtures';
-import type { PronunciationFixture, WordFeedback } from '@/types/pronunciationFixtures';
+import type { PronunciationFixture, WordFeedback, AudioVariant, WordAudioVariant, PhonemeFeedback } from '@/types/pronunciationFixtures';
 import type { AttemptScore } from '@/types/pronunciation';
 
 /**
@@ -19,6 +19,8 @@ export type PracticePhraseFromFixture = {
   difficulty: number;
   audioUrl: string;        // URL to use in <audio src=...>
   attempt: AttemptScore;   // single "fixture attempt" containing overall scores
+  sentenceAudio: AudioVariant[];      // [native, user]
+  wordAudios?: WordAudioVariant[];    // optional for now
   words?: WordFeedback[];  // word-level feedback for UI display
 };
 
@@ -33,6 +35,45 @@ function mapScoreToLevel(score: number): WordFeedback['level'] {
   if (score >= 80) return 'good';
   if (score >= 70) return 'ok';
   return 'practice';
+}
+
+/**
+ * Builds synthetic phoneme feedback for a word.
+ * Creates 2-4 phonemes per word with scores around the word score.
+ * 
+ * @param word - The word feedback object
+ * @returns Array of phoneme feedback objects
+ */
+function buildSyntheticPhonemesForWord(word: WordFeedback): PhonemeFeedback[] {
+  // Simple phoneme mapping for Portuguese (simplified for demo)
+  const commonPhonemes = ['a', 'e', 'i', 'o', 'u', 'b', 'd', 'f', 'g', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'z'];
+  const numPhonemes = Math.min(Math.max(2, Math.floor(word.text.length / 2)), 4);
+  
+  return Array.from({ length: numPhonemes }, (_, i) => {
+    const symbol = commonPhonemes[i % commonPhonemes.length];
+    // Generate score around word score with small variation (±5 points)
+    const jitter = (Math.random() - 0.5) * 10;
+    const phonemeScore = Math.max(0, Math.min(100, word.score + jitter));
+    const isProblem = phonemeScore < 80;
+    
+    let tip: string | undefined;
+    if (isProblem) {
+      const tips = [
+        `Focus on the ${symbol} sound - try to make it clearer`,
+        `The ${symbol} sound needs more precision`,
+        `Practice the ${symbol} sound more slowly`,
+      ];
+      tip = tips[Math.floor(Math.random() * tips.length)];
+    }
+    
+    return {
+      symbol,
+      score: Math.round(phonemeScore),
+      exampleWord: word.text,
+      tip,
+      isProblem,
+    };
+  });
 }
 
 /**
@@ -60,13 +101,18 @@ function generateSyntheticWordFeedback(text: string, overallScore: number): Word
       errorType = errorTypes[Math.floor(Math.random() * errorTypes.length)];
     }
     
-    return {
+    const wordFeedback: WordFeedback = {
       index,
       text: word,
       score: Math.round(wordScore),
       level,
       errorType,
     };
+    
+    // Add phonemes to the word
+    wordFeedback.phonemes = buildSyntheticPhonemesForWord(wordFeedback);
+    
+    return wordFeedback;
   });
 }
 
@@ -99,12 +145,41 @@ export function fixtureToPracticePhrase(fixture: PronunciationFixture): Practice
   // Generate word-level feedback (synthetic for now)
   const words = generateSyntheticWordFeedback(fixture.text, fixture.scores.overall);
 
+  // Build sentenceAudio with native and user variants
+  const sentenceAudio: AudioVariant[] = [
+    {
+      type: 'native',
+      url: `/audio/fixtures/native/${fixture.id}.wav`,
+    },
+    {
+      type: 'user',
+      url: audioUrl, // existing fixture audio path
+    },
+  ];
+
+  // Build wordAudios (optional, for future use)
+  // Create both native and user variants for each word
+  const wordAudios: WordAudioVariant[] = words.flatMap((_word, index) => [
+    {
+      type: 'native',
+      wordIndex: index,
+      url: `/audio/fixtures/native/${fixture.id}_word_${index}.wav`,
+    },
+    {
+      type: 'user',
+      wordIndex: index,
+      url: `/audio/fixtures/user/${fixture.id}_word_${index}.wav`,
+    },
+  ]);
+
   return {
     id: fixture.id,
     text: fixture.text,
     difficulty: fixture.difficulty,
     audioUrl,
     attempt,
+    sentenceAudio,
+    wordAudios,
     words,
   };
 }
