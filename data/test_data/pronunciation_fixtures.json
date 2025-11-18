@@ -1,0 +1,154 @@
+{
+  "phrases": [
+    {
+      "id": "phrase_1",
+      "phraseNumber": 1,
+      "text": "Oi, tudo bem?",
+      "difficulty": 1,
+      "audioFile": "data/test_data/Phrase 1 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_1_JSON.json",
+      "scores": {
+        "overall": 91.1,
+        "accuracy": 97,
+        "fluency": 98,
+        "completeness": 100,
+        "prosody": 80.3
+      }
+    },
+    {
+      "id": "phrase_2",
+      "phraseNumber": 2,
+      "text": "Posso ver o cardápio, por favor?",
+      "difficulty": 1,
+      "audioFile": "data/test_data/Phrase 2 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_2_JSON.json",
+      "scores": {
+        "overall": 74.2,
+        "accuracy": 70,
+        "fluency": 92,
+        "completeness": 86,
+        "prosody": 61.5
+      }
+    },
+    {
+      "id": "phrase_3",
+      "phraseNumber": 3,
+      "text": "Você pode me ajudar, por favor?",
+      "difficulty": 2,
+      "audioFile": "data/test_data/Phrase 3 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_3_JSON.json",
+      "scores": {
+        "overall": 66.3,
+        "accuracy": 65,
+        "fluency": 87,
+        "completeness": 57,
+        "prosody": 65.5
+      }
+    },
+    {
+      "id": "phrase_4",
+      "phraseNumber": 4,
+      "text": "Quanto custa isso?",
+      "difficulty": 2,
+      "audioFile": "data/test_data/Phrase 4 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_4_JSON.json",
+      "scores": {
+        "overall": 80.9,
+        "accuracy": 74,
+        "fluency": 85,
+        "completeness": 100,
+        "prosody": 72.7
+      }
+    },
+    {
+      "id": "phrase_5",
+      "phraseNumber": 5,
+      "text": "Você trabalha onde?",
+      "difficulty": 2,
+      "audioFile": "data/test_data/Phrase 5 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_5_JSON.json",
+      "scores": {
+        "overall": 56.9,
+        "accuracy": 58,
+        "fluency": 100,
+        "completeness": 33,
+        "prosody": 60.6
+      }
+    },
+    {
+      "id": "phrase_6",
+      "phraseNumber": 6,
+      "text": "Tem alguma coisa vegana no cardápio?",
+      "difficulty": 3,
+      "audioFile": "data/test_data/Phrase 6 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_6_JSON.json",
+      "scores": {
+        "overall": 75.8,
+        "accuracy": 69,
+        "fluency": 88,
+        "completeness": 83,
+        "prosody": 70.1
+      }
+    },
+    {
+      "id": "phrase_7",
+      "phraseNumber": 7,
+      "text": "Onde fica a rodoviária?",
+      "difficulty": 3,
+      "audioFile": "data/test_data/Phrase 7 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_7_JSON.json",
+      "scores": {
+        "overall": 77.3,
+        "accuracy": 76,
+        "fluency": 99,
+        "completeness": 80,
+        "prosody": 65.7
+      }
+    },
+    {
+      "id": "phrase_8",
+      "phraseNumber": 8,
+      "text": "Eu estou muito feliz de estar aqui.",
+      "difficulty": 3,
+      "audioFile": "data/test_data/Phrase 8 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_8_JSON.json",
+      "scores": {
+        "overall": 71.3,
+        "accuracy": 70,
+        "fluency": 89,
+        "completeness": 71,
+        "prosody": 63.3
+      }
+    },
+    {
+      "id": "phrase_9",
+      "phraseNumber": 9,
+      "text": "Vou encontrar meus amigos para jantar hoje à noite.",
+      "difficulty": 4,
+      "audioFile": "data/test_data/Phrase 9 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_9_JSON.json",
+      "scores": {
+        "overall": 75.4,
+        "accuracy": 72,
+        "fluency": 93,
+        "completeness": 89,
+        "prosody": 61.6
+      }
+    },
+    {
+      "id": "phrase_10",
+      "phraseNumber": 10,
+      "text": "À noite eu gosto de ler ou assistir séries.",
+      "difficulty": 4,
+      "audioFile": "data/test_data/Phrase 10 Audio.wav",
+      "azureJsonFile": "data/test_data/phrase_10_JSON.json",
+      "scores": {
+        "overall": 85.6,
+        "accuracy": 84,
+        "fluency": 99,
+        "completeness": 100,
+        "prosody": 72.5
+      }
+    }
+  ]
+}

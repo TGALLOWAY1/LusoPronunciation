@@ -25,15 +25,16 @@ V1 (MVP) — Local, Static App
     [x] Rating system for sentences and words
 [] Implement pronunciation scoring
 
-V2
+RETROSPECTIVE 
+[] Review roadmap, docs and implementation notes for an updated roadmap before moving on to new features
 
- Category system flashcards 
- Progress per category
- Multiple-choice testing
- Better speech scoring UI
- Real-time phoneme highlighting
-[] Add multiple speech files for each sentence (evaluate the different models)
-[] Add a 'notes' section for seeing grammar rules and pitfalls that are common 
+
+V2
+ [] Category system flashcards 
+ [] Progress per category
+ [] Multiple-choice testing
+ [] Add multiple speech files for each sentence (evaluate the different models)
+ [] Add a 'notes' section for seeing grammar rules and pitfalls that are common 
 
 
 TODO 

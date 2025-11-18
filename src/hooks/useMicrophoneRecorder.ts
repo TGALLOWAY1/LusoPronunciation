@@ -1,20 +1,41 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 
+// Type alias for MediaRecorder error events
+type MediaRecorderErrorEventLike = Event & { error?: DOMException };
+
 export type UseMicrophoneRecorderResult = {
   isRecording: boolean;
   audioBlob: Blob | null;
   audioUrl: string | null;
   startRecording: () => Promise<void>;
-  stopRecording: () => Promise<void>;
+  stopRecording: () => void;
   reset: () => void;
   error: string | null;
 };
+
+/**
+ * Helper function to properly release a MediaStream and all its tracks.
+ * This ensures the audio device is fully released.
+ */
+function releaseMediaStream(stream: MediaStream | null): void {
+  if (stream) {
+    stream.getTracks().forEach(track => {
+      track.stop();
+      // Remove all event listeners to prevent memory leaks
+      track.onended = null;
+      track.onmute = null;
+      track.onunmute = null;
+    });
+  }
+}
 
 /**
  * React hook for recording audio from the user's microphone.
  * 
  * Uses MediaRecorder API with preferred codec 'audio/ogg;codecs=opus',
  * falling back to browser default if unsupported.
+ * 
+ * Ensures proper cleanup of MediaStreams to release audio device locks.
  */
 export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
   const [isRecording, setIsRecording] = useState(false);
@@ -25,6 +46,7 @@ export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const currentAudioUrlRef = useRef<string | null>(null);
 
   // Cleanup function to revoke object URL
   const revokeAudioUrl = useCallback((url: string | null) => {
@@ -33,8 +55,8 @@ export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
     }
   }, []);
 
-  // Reset function
-  const reset = useCallback(() => {
+  // Comprehensive cleanup function
+  const cleanup = useCallback(() => {
     // Stop recording if active
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       try {
@@ -44,14 +66,15 @@ export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
       }
     }
 
-    // Stop all tracks
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
+    // Release MediaStream and all tracks
+    releaseMediaStream(streamRef.current);
+    streamRef.current = null;
 
     // Revoke previous URL
-    revokeAudioUrl(audioUrl);
+    if (currentAudioUrlRef.current) {
+      revokeAudioUrl(currentAudioUrlRef.current);
+      currentAudioUrlRef.current = null;
+    }
 
     // Reset state
     setIsRecording(false);
@@ -60,16 +83,21 @@ export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
     setError(null);
     chunksRef.current = [];
     mediaRecorderRef.current = null;
-  }, [audioUrl, revokeAudioUrl]);
+  }, [revokeAudioUrl]);
+
+  // Reset function
+  const reset = useCallback(() => {
+    cleanup();
+  }, [cleanup]);
 
   // Start recording
   const startRecording = useCallback(async () => {
+    // Clean up any existing stream first
+    cleanup();
+
     try {
       // Reset any previous error
       setError(null);
-
-      // Revoke previous audio URL if exists
-      revokeAudioUrl(audioUrl);
 
       // Reset previous state
       setAudioBlob(null);
@@ -114,12 +142,11 @@ export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
         // Create object URL for playback
         const url = URL.createObjectURL(blob);
         setAudioUrl(url);
+        currentAudioUrlRef.current = url;
 
-        // Stop all tracks
-        if (streamRef.current) {
-          streamRef.current.getTracks().forEach(track => track.stop());
-          streamRef.current = null;
-        }
+        // Release MediaStream after recording is complete
+        releaseMediaStream(streamRef.current);
+        streamRef.current = null;
 
         setIsRecording(false);
         chunksRef.current = [];
@@ -127,15 +154,22 @@ export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
 
       // Handle errors
       mediaRecorder.onerror = (event) => {
-        const errorEvent = event as MediaRecorderErrorEvent;
+        const errorEvent = event as MediaRecorderErrorEventLike;
         setError(`Recording error: ${errorEvent.error?.message || 'Unknown error'}`);
         setIsRecording(false);
+        // Clean up stream on error
+        releaseMediaStream(streamRef.current);
+        streamRef.current = null;
       };
 
       // Start recording
       mediaRecorder.start();
       setIsRecording(true);
     } catch (err) {
+      // Always clean up stream on error
+      releaseMediaStream(streamRef.current);
+      streamRef.current = null;
+
       // Handle permission denied or other errors
       if (err instanceof DOMException) {
         if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
@@ -152,15 +186,20 @@ export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
       }
       setIsRecording(false);
     }
-  }, [audioUrl, revokeAudioUrl]);
+  }, [cleanup]);
 
   // Stop recording
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       try {
         mediaRecorderRef.current.stop();
+        // Stream will be released in onstop handler
       } catch (err) {
         setError(`Failed to stop recording: ${err instanceof Error ? err.message : 'Unknown error'}`);
+        // If stop fails, still release the stream to free the device
+        releaseMediaStream(streamRef.current);
+        streamRef.current = null;
+        setIsRecording(false);
       }
     } else {
       // If not recording, just reset
@@ -168,27 +207,49 @@ export function useMicrophoneRecorder(): UseMicrophoneRecorderResult {
     }
   }, [reset]);
 
-  // Cleanup on unmount
+  // Cleanup on unmount - always run, don't depend on audioUrl
   useEffect(() => {
     return () => {
-      // Stop recording if active
-      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-        try {
-          mediaRecorderRef.current.stop();
-        } catch (err) {
-          // Ignore errors
+      cleanup();
+    };
+  }, [cleanup]);
+
+  // Release stream when page becomes hidden or is about to unload
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && streamRef.current) {
+        // Page is hidden - release the stream to free the audio device
+        releaseMediaStream(streamRef.current);
+        streamRef.current = null;
+        if (isRecording) {
+          setIsRecording(false);
+          // Try to stop recording if active
+          if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+            try {
+              mediaRecorderRef.current.stop();
+            } catch (err) {
+              // Ignore errors
+            }
+          }
         }
       }
-
-      // Stop all tracks
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
-      }
-
-      // Revoke object URL
-      revokeAudioUrl(audioUrl);
     };
-  }, [audioUrl, revokeAudioUrl]);
+
+    const handleBeforeUnload = () => {
+      // Page is unloading - ensure all streams are released
+      cleanup();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('pagehide', handleBeforeUnload);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('pagehide', handleBeforeUnload);
+    };
+  }, [cleanup, isRecording]);
 
   return {
     isRecording,

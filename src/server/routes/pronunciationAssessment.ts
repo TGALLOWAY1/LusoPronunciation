@@ -112,9 +112,9 @@ export async function handlePronunciationAssessment(
     const language = formData.get('language');
 
     // Validate required fields
-    if (!audioFile || !(audioFile instanceof File || audioFile instanceof Blob)) {
+    if (!audioFile) {
       return new Response(
-        JSON.stringify({ error: 'Missing or invalid audio file' }),
+        JSON.stringify({ error: 'Missing audio file' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -141,8 +141,28 @@ export async function handlePronunciationAssessment(
     }
 
     // Convert audio file to Buffer
-    const arrayBuffer = await audioFile.arrayBuffer();
-    const audioBuffer = Buffer.from(arrayBuffer);
+    // audioFile from FormData can be File, Blob, or string - we'll convert it to Buffer
+    let audioBuffer: Buffer;
+    try {
+      if (typeof audioFile === 'string') {
+        // If it's already a string, convert directly
+        audioBuffer = Buffer.from(audioFile, 'base64');
+      } else if ('arrayBuffer' in audioFile && typeof audioFile.arrayBuffer === 'function') {
+        // If it has arrayBuffer method (File/Blob), use it
+        const arrayBuffer = await audioFile.arrayBuffer();
+        audioBuffer = Buffer.from(arrayBuffer);
+      } else if (Buffer.isBuffer(audioFile)) {
+        // If it's already a Buffer, use it directly
+        audioBuffer = audioFile;
+      } else {
+        throw new Error('Unsupported audio file format');
+      }
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: 'Failed to process audio file', details: error instanceof Error ? error.message : 'Unknown error' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Build Azure endpoint URL
     const azureEndpoint = `https://${region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${encodeURIComponent(language)}&format=detailed`;
@@ -151,6 +171,8 @@ export async function handlePronunciationAssessment(
     const paHeader = buildPronunciationAssessmentHeader(referenceText);
 
     // Call Azure Speech API
+    // Convert Buffer to Uint8Array for fetch compatibility
+    const audioBody = new Uint8Array(audioBuffer);
     const azureResponse = await fetch(azureEndpoint, {
       method: 'POST',
       headers: {
@@ -158,7 +180,7 @@ export async function handlePronunciationAssessment(
         'Ocp-Apim-Subscription-Key': key,
         'Pronunciation-Assessment': paHeader,
       },
-      body: audioBuffer,
+      body: audioBody,
     });
 
     // Handle non-200 responses
