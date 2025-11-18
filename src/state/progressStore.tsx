@@ -15,6 +15,7 @@ interface ProgressEntry {
 
 interface ProgressStore {
   entries: Record<string, ProgressEntry>;
+  storageError: boolean;
   rateSentence: (sentenceId: string, rating: DifficultyRating) => void;
   rateWord: (wordId: string, action: WordAction) => void;
   getDueItems: (itemType?: ItemType) => ProgressEntry[];
@@ -54,11 +55,28 @@ function loadProgressFromStorage(): Record<string, ProgressEntry> {
   return {};
 }
 
-function saveProgressToStorage(entries: Record<string, ProgressEntry>): void {
+/**
+ * Saves progress to localStorage with quota error handling.
+ * @returns true if save was successful, false if quota exceeded or other error
+ */
+function saveProgressToStorage(entries: Record<string, ProgressEntry>): boolean {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    const serialized = JSON.stringify(entries);
+    localStorage.setItem(STORAGE_KEY, serialized);
+    return true;
   } catch (error) {
+    // Check if it's a quota exceeded error
+    if (error instanceof DOMException && (
+      error.code === 22 || // QUOTA_EXCEEDED_ERR
+      error.code === 1014 || // NS_ERROR_DOM_QUOTA_REACHED
+      error.name === 'QuotaExceededError' ||
+      error.name === 'NS_ERROR_DOM_QUOTA_REACHED'
+    )) {
+      console.error('Storage quota exceeded. Unable to save progress.');
+      return false;
+    }
     console.error('Error saving progress to storage:', error);
+    return false;
   }
 }
 
@@ -70,10 +88,12 @@ export function ProgressStoreProvider({ children }: { children: ReactNode }) {
   const [entries, setEntries] = useState<Record<string, ProgressEntry>>(() =>
     loadProgressFromStorage()
   );
+  const [storageError, setStorageError] = useState(false);
 
   // Save to localStorage whenever entries change
   useEffect(() => {
-    saveProgressToStorage(entries);
+    const success = saveProgressToStorage(entries);
+    setStorageError(!success);
   }, [entries]);
 
   const rateSentence = (sentenceId: string, rating: DifficultyRating) => {
@@ -138,6 +158,7 @@ export function ProgressStoreProvider({ children }: { children: ReactNode }) {
 
   const value: ProgressStore = {
     entries,
+    storageError,
     rateSentence,
     rateWord,
     getDueItems,

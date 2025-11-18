@@ -7,21 +7,24 @@ import SummaryCard from '@/components/dashboard/SummaryCard';
 import CategoryProgress from '@/components/dashboard/CategoryProgress';
 import ContinuePracticeCard from '@/components/dashboard/ContinuePracticeCard';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import ErrorMessage from '@/components/common/ErrorMessage';
 import { getLastPracticeMode } from '@/lib/storage';
 
 export default function Dashboard() {
-  const { getDueCount, getProgressEntry, entries } = useProgressStore();
+  const { getDueCount, getProgressEntry, entries, storageError } = useProgressStore();
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [words, setWords] = useState<Word[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [lastPracticeMode, setLastPracticeMode] = useState<'sentence' | 'word' | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const dueCount = getDueCount();
 
   useEffect(() => {
     async function loadData() {
       try {
+        setError(null);
         const [sentencesData, wordsData, categoriesData] = await Promise.all([
           loadAllSentences(),
           loadAllWords(),
@@ -34,6 +37,10 @@ export default function Dashboard() {
         setLastPracticeMode(getLastPracticeMode());
       } catch (error) {
         console.error('Error loading dashboard data:', error);
+        const message = error instanceof Error 
+          ? error.message 
+          : 'Failed to load dashboard data';
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -117,6 +124,44 @@ export default function Dashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-6">
+      {/* Storage Error Banner */}
+      {storageError && (
+        <ErrorMessage
+          title="Storage Full"
+          message="Unable to save progress. Your browser's storage is full. Please free up space to continue saving your progress."
+        />
+      )}
+
+      {/* Data Loading Error */}
+      {error && (
+        <ErrorMessage
+          title="Failed to Load Data"
+          message={error}
+          onRetry={() => {
+            setLoading(true);
+            setError(null);
+            // Reload data
+            Promise.all([
+              loadAllSentences(),
+              loadAllWords(),
+              loadAllCategories(),
+            ])
+              .then(([sentencesData, wordsData, categoriesData]) => {
+                setSentences(sentencesData);
+                setWords(wordsData);
+                setCategories(categoriesData);
+                setLastPracticeMode(getLastPracticeMode());
+                setLoading(false);
+              })
+              .catch((err) => {
+                console.error('Error reloading dashboard data:', err);
+                setError(err instanceof Error ? err.message : 'Failed to reload data');
+                setLoading(false);
+              });
+          }}
+        />
+      )}
+
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-600 dark:to-primary-700 rounded-lg shadow-lg p-6 md:p-8 text-white">
         <h1 className="text-3xl md:text-4xl font-bold mb-3">Welcome to LusoPronounce</h1>

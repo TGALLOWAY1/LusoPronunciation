@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
-import SentenceFeedback, { type OverallScores, type WordFeedback } from '@/components/practice/SentenceFeedback';
+import { aggregateScoresByDifficulty } from '@/lib/pronunciationAggregationUtils';
+import { PronunciationFeedbackPanel, PhraseDifficultyPerformancePlot, DifficultyScoreBarChart } from '@/components/pronunciation';
 
 /**
  * Development page for exploring pronunciation fixtures.
@@ -11,28 +12,91 @@ import SentenceFeedback, { type OverallScores, type WordFeedback } from '@/compo
 export default function PronunciationFixtures() {
   const [phrases, setPhrases] = useState<PracticePhraseFromFixture[]>([]);
   const [selectedPhrase, setSelectedPhrase] = useState<PracticePhraseFromFixture | null>(null);
-  const [audioError, setAudioError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load all practice phrases once (no network requests)
-    const allPhrases = getAllPracticePhrasesFromFixtures();
+    // Load all practice phrases once (async now due to sentence matching)
+    getAllPracticePhrasesFromFixtures()
+      .then((allPhrases) => {
     setPhrases(allPhrases);
     
     // Select first phrase by default
     if (allPhrases.length > 0) {
       setSelectedPhrase(allPhrases[0]);
     }
+      })
+      .catch((error) => {
+        console.error('Failed to load practice phrases:', error);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
 
   const handlePhraseClick = (phrase: PracticePhraseFromFixture) => {
     setSelectedPhrase(phrase);
-    setAudioError(null);
   };
 
-  const handleAudioError = () => {
-    setAudioError('Audio file could not be loaded. Check the file path.');
+  const handlePhraseSelectFromPlot = (phraseId: string) => {
+    const phrase = phrases.find((p) => p.id === phraseId);
+    if (phrase) {
+      setSelectedPhrase(phrase);
+    }
   };
+
+  // Keyboard navigation handlers
+  const moveToPreviousPhrase = useCallback(() => {
+    if (!selectedPhrase || phrases.length === 0) return;
+
+    const currentIndex = phrases.findIndex((p) => p.id === selectedPhrase.id);
+    if (currentIndex === -1) return;
+    
+    // Don't wrap - only move if not at the first phrase
+    if (currentIndex > 0) {
+      setSelectedPhrase(phrases[currentIndex - 1]);
+    }
+  }, [selectedPhrase, phrases]);
+
+  const moveToNextPhrase = useCallback(() => {
+    if (!selectedPhrase || phrases.length === 0) return;
+    
+    const currentIndex = phrases.findIndex((p) => p.id === selectedPhrase.id);
+    if (currentIndex === -1) return;
+    
+    // Don't wrap - only move if not at the last phrase
+    if (currentIndex < phrases.length - 1) {
+      setSelectedPhrase(phrases[currentIndex + 1]);
+    }
+  }, [selectedPhrase, phrases]);
+
+  // Keyboard event listener for arrow key navigation
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      // Only navigate if a phrase is selected
+      if (!selectedPhrase) return;
+
+      // Do not override text input behavior
+      const target = e.target;
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        (target instanceof HTMLElement && target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        moveToPreviousPhrase();
+      }
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        moveToNextPhrase();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhrase, phrases, moveToPreviousPhrase, moveToNextPhrase]);
 
   const getDifficultyColor = (difficulty: number): string => {
     switch (difficulty) {
@@ -49,21 +113,36 @@ export default function PronunciationFixtures() {
     }
   };
 
+  // Aggregate scores by difficulty for the summary chart
+  const difficultyAverages = useMemo(() => {
+    return aggregateScoresByDifficulty(phrases);
+  }, [phrases]);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header note */}
-        <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded">
-          <p className="text-sm text-blue-800 dark:text-blue-200">
-            <strong>Development Page:</strong> This page uses fixture data from{' '}
-            <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">data/test_data/pronunciation_fixtures.json</code>{' '}
-            for UI prototyping and regression testing.
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+            Pronunciation Lab (Fixture Data)
+          </h1>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Interactive pronunciation practice tool powered by test fixtures. Use this lab to explore pronunciation feedback, compare native and user audio, and practice word-by-word pronunciation.
           </p>
         </div>
 
         {/* Main content area */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left side: Phrase list */}
+          {/* Left side: Plot and Phrase list */}
+          <div className="space-y-4">
+            {/* Performance plot */}
+            <PhraseDifficultyPerformancePlot
+              phrases={phrases}
+              selectedPhraseId={selectedPhrase?.id || null}
+              onPhraseSelect={handlePhraseSelectFromPlot}
+            />
+
+            {/* Phrase list */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
               Phrases ({phrases.length})
@@ -97,91 +176,24 @@ export default function PronunciationFixtures() {
                 </button>
               ))}
             </div>
+            </div>
           </div>
 
           {/* Right side: Selected phrase details */}
+          <div className="space-y-6">
+            {/* Selected phrase details */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             {selectedPhrase ? (
-              <>
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-                  Phrase Details
-                </h2>
-
-                {/* Phrase text and difficulty */}
-                <div className="mb-6">
-                  <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                    {selectedPhrase.text}
-                  </p>
-                  <span className={`badge ${getDifficultyColor(selectedPhrase.difficulty)}`}>
-                    Difficulty {selectedPhrase.difficulty}
-                  </span>
-                </div>
-
-                {/* Pronunciation Feedback - using shared component */}
-                <div className="mb-6">
-                  {(() => {
-                    // Map fixture attempt to SentenceFeedbackProps format
-                    const overall: OverallScores = {
-                      accuracy: selectedPhrase.attempt.overallAccuracy,
-                      fluency: selectedPhrase.attempt.fluency,
-                      completeness: selectedPhrase.attempt.completeness,
-                      prosody: selectedPhrase.attempt.prosody,
-                    };
-
-                    // Map word scores if available, otherwise create from text
-                    const words: WordFeedback[] = selectedPhrase.attempt.wordScores.length > 0
-                      ? selectedPhrase.attempt.wordScores.map((ws, index) => ({
-                          index,
-                          text: ws.word,
-                          accuracyScore: ws.accuracy,
-                          errorType: ws.errorType,
-                        }))
-                      : selectedPhrase.text.split(/\s+/).map((word, index) => ({
-                          index,
-                          text: word,
-                          accuracyScore: selectedPhrase.attempt.overallAccuracy, // Use overall as fallback
-                        }));
-
-                    return <SentenceFeedback overall={overall} words={words} />;
-                  })()}
-                </div>
-
-                {/* Audio player */}
-                <div className="mb-4">
-                  <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-gray-100">
-                    Audio Playback
-                  </h3>
-                  <audio
-                    controls
-                    src={selectedPhrase.audioUrl}
-                    onError={handleAudioError}
-                    className="w-full"
-                  >
-                    Your browser does not support the audio element.
-                  </audio>
-                  {audioError && (
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-400">{audioError}</p>
-                  )}
-                  <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    Source: <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">{selectedPhrase.audioUrl}</code>
-                  </p>
-                </div>
-
-                {/* Additional metadata */}
-                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    <strong>Attempt ID:</strong> {selectedPhrase.attempt.attemptId}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    <strong>Created:</strong> {new Date(selectedPhrase.attempt.createdAt).toLocaleString()}
-                  </p>
-                </div>
-              </>
+                <PronunciationFeedbackPanel phrase={selectedPhrase} />
             ) : (
               <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                 <p>Select a phrase from the list to view details</p>
               </div>
             )}
+            </div>
+
+            {/* Difficulty average chart */}
+            <DifficultyScoreBarChart data={difficultyAverages} />
           </div>
         </div>
       </div>

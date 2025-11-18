@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import type { ErrorType } from '@/types/pronunciation';
+import type { PhonemeFeedback } from '@/types/pronunciationFixtures';
 import WordFeedbackChip from './WordFeedbackChip';
+import PhonemeChip from '../pronunciation/PhonemeChip';
 import { getScoreColor, formatScore } from '@/lib/pronunciationDisplay';
 
 export interface OverallScores {
@@ -16,6 +18,7 @@ export interface WordFeedback {
   text: string;
   accuracyScore: number;
   errorType?: ErrorType | string;
+  phonemes?: PhonemeFeedback[]; // Optional phoneme data
 }
 
 export interface SentenceFeedbackProps {
@@ -75,15 +78,28 @@ function SentenceFeedback({ overall, words }: SentenceFeedbackProps) {
           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Word-by-Word Feedback
           </h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="space-y-3">
             {words.map((word, index) => (
-              <WordFeedbackChip
-                key={index}
-                word={word.text}
-                accuracyScore={word.accuracyScore}
-                errorType={word.errorType}
-                index={word.index}
-              />
+              <div key={index} className="space-y-1.5">
+                <WordFeedbackChip
+                  word={word.text}
+                  accuracyScore={word.accuracyScore}
+                  errorType={word.errorType}
+                  index={word.index}
+                />
+                {/* Phoneme chips under each word */}
+                {word.phonemes && word.phonemes.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 ml-1">
+                    {word.phonemes.map((phoneme, phonemeIndex) => (
+                      <PhonemeChip
+                        key={phonemeIndex}
+                        symbol={phoneme.symbol}
+                        score={phoneme.score}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>

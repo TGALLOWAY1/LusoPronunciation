@@ -1,0 +1,276 @@
+{
+    "aa": {
+      "ipa": "ɑ",
+      "description": "Open back unrounded vowel",
+      "englishExamples": ["father", "spa"],
+      "portugueseExamples": ["pá"],
+      "notes": "Like 'a' in 'pai' but more open."
+    },
+    "ae": {
+      "ipa": "æ",
+      "description": "Near-open front unrounded vowel",
+      "englishExamples": ["cat", "trap"],
+      "portugueseExamples": [],
+      "notes": "Does not exist in Portuguese."
+    },
+    "ah": {
+      "ipa": "ʌ",
+      "description": "Open-mid back unrounded vowel",
+      "englishExamples": ["cup", "luck"],
+      "portugueseExamples": [],
+      "notes": "Closest Portuguese equivalent is /ɐ/, but not identical."
+    },
+    "ao": {
+      "ipa": "ɔ",
+      "description": "Open-mid back rounded vowel",
+      "englishExamples": ["thought", "law"],
+      "portugueseExamples": ["sol"],
+      "notes": "Similar to Portuguese 'ó'."
+    },
+    "aw": {
+      "ipa": "aʊ",
+      "description": "Diphthong starting with open front vowel, gliding to near-close back",
+      "englishExamples": ["now", "house"],
+      "portugueseExamples": ["au in 'sauna"],
+      "notes": "Common in English but rare in Portuguese except loanwords."
+    },
+    "ay": {
+      "ipa": "aɪ",
+      "description": "Diphthong starting with open front vowel",
+      "englishExamples": ["my", "light"],
+      "portugueseExamples": ["pai"],
+      "notes": "This diphthong exists naturally in Portuguese words like 'pai'."
+    },
+    "b": {
+      "ipa": "b",
+      "description": "Voiced bilabial stop",
+      "englishExamples": ["bat", "baby"],
+      "portugueseExamples": ["bola"],
+      "notes": "Same sound as Portuguese 'b'."
+    },
+    "ch": {
+      "ipa": "tʃ",
+      "description": "Voiceless postalveolar affricate",
+      "englishExamples": ["chair", "cheese"],
+      "portugueseExamples": ["tchau"],
+      "notes": "Same sound as 'tch' in Portuguese."
+    },
+    "d": {
+      "ipa": "d",
+      "description": "Voiced alveolar stop",
+      "englishExamples": ["dog", "did"],
+      "portugueseExamples": ["dia", "dado"],
+      "notes": "Same as 'd' in Portuguese."
+    },
+    "dh": {
+      "ipa": "ð",
+      "description": "Voiced dental fricative",
+      "englishExamples": ["this", "them"],
+      "portugueseExamples": [],
+      "notes": "Does NOT exist in Portuguese."
+    },
+    "eh": {
+      "ipa": "ɛ",
+      "description": "Open-mid front unrounded vowel",
+      "englishExamples": ["bed", "met"],
+      "portugueseExamples": ["pé"],
+      "notes": "Very close to Portuguese open 'é'."
+    },
+    "er": {
+      "ipa": "ɝ",
+      "description": "R-colored mid central vowel",
+      "englishExamples": ["bird", "her"],
+      "portugueseExamples": [],
+      "notes": "Portuguese does NOT have an R-colored vowel."
+    },
+    "ey": {
+      "ipa": "eɪ",
+      "description": "Diphthong beginning with close-mid front vowel",
+      "englishExamples": ["say", "eight"],
+      "portugueseExamples": ["lei"],
+      "notes": "Portuguese equivalent only appears in certain diphthongs."
+    },
+    "f": {
+      "ipa": "f",
+      "description": "Voiceless labiodental fricative",
+      "englishExamples": ["fan", "coffee"],
+      "portugueseExamples": ["faca"],
+      "notes": "Identical sound in Portuguese."
+    },
+    "g": {
+      "ipa": "ɡ",
+      "description": "Voiced velar stop",
+      "englishExamples": ["go", "gift"],
+      "portugueseExamples": ["gato"],
+      "notes": "Same sound as hard 'g' in Portuguese."
+    },
+    "hh": {
+      "ipa": "h",
+      "description": "Voiceless glottal fricative",
+      "englishExamples": ["hat", "hello"],
+      "portugueseExamples": [],
+      "notes": "Does NOT exist in Brazilian Portuguese except in loanwords."
+    },
+    "ih": {
+      "ipa": "ɪ",
+      "description": "Near-close near-front unrounded vowel",
+      "englishExamples": ["sit", "milk"],
+      "portugueseExamples": [],
+      "notes": "Closest Portuguese sound is unstressed 'i' but not identical."
+    },
+    "iy": {
+      "ipa": "i",
+      "description": "Close front unrounded vowel",
+      "englishExamples": ["see", "machine"],
+      "portugueseExamples": ["fino"],
+      "notes": "Same as Portuguese 'i'."
+    },
+    "jh": {
+      "ipa": "dʒ",
+      "description": "Voiced postalveolar affricate",
+      "englishExamples": ["judge", "jam"],
+      "portugueseExamples": [],
+      "notes": "Not native to PT-BR; appears in loanwords (e.g. 'jeans')."
+    },
+    "k": {
+      "ipa": "k",
+      "description": "Voiceless velar stop",
+      "englishExamples": ["cat", "kind"],
+      "portugueseExamples": ["casa"],
+      "notes": "Identical in Portuguese."
+    },
+    "l": {
+      "ipa": "l",
+      "description": "Voiced alveolar lateral approximant",
+      "englishExamples": ["light", "love"],
+      "portugueseExamples": ["lado"],
+      "notes": "Portuguese also has 'dark L' in some dialects ('mal')."
+    },
+    "m": {
+      "ipa": "m",
+      "description": "Bilabial nasal",
+      "englishExamples": ["man", "some"],
+      "portugueseExamples": ["mão"],
+      "notes": "Same in both languages."
+    },
+    "n": {
+      "ipa": "n",
+      "description": "Alveolar nasal",
+      "englishExamples": ["no", "ten"],
+      "portugueseExamples": ["nada"],
+      "notes": "Same in both languages."
+    },
+    "ng": {
+      "ipa": "ŋ",
+      "description": "Velar nasal",
+      "englishExamples": ["sing", "long"],
+      "portugueseExamples": [],
+      "notes": "PT-BR does not use this sound natively."
+    },
+    "ow": {
+      "ipa": "oʊ",
+      "description": "Diphthong with mid-back rounded start",
+      "englishExamples": ["go", "home"],
+      "portugueseExamples": ["tô"],
+      "notes": "Portuguese version is shorter and monophthong-like."
+    },
+    "oy": {
+      "ipa": "ɔɪ",
+      "description": "Diphthong (mid-back rounded → near-close front)",
+      "englishExamples": ["boy", "toy"],
+      "portugueseExamples": [],
+      "notes": "Does not exist in Portuguese."
+    },
+    "p": {
+      "ipa": "p",
+      "description": "Voiceless bilabial stop",
+      "englishExamples": ["pen", "happy"],
+      "portugueseExamples": ["pato"],
+      "notes": "Same in Portuguese."
+    },
+    "r": {
+      "ipa": "ɹ",
+      "description": "Voiced alveolar approximant (American R)",
+      "englishExamples": ["red", "car"],
+      "portugueseExamples": [],
+      "notes": "Portuguese *never* uses this sound. Their 'r' is guttural or tapped."
+    },
+    "s": {
+      "ipa": "s",
+      "description": "Voiceless alveolar fricative",
+      "englishExamples": ["see", "snake"],
+      "portugueseExamples": ["sapo"],
+      "notes": "Identical sound; PT-BR also has variants depending on position."
+    },
+    "sh": {
+      "ipa": "ʃ",
+      "description": "Voiceless postalveolar fricative",
+      "englishExamples": ["shoe", "push"],
+      "portugueseExamples": ["chá"],
+      "notes": "Very common in Portuguese 'x' and 'ch'."
+    },
+    "t": {
+      "ipa": "t",
+      "description": "Voiceless alveolar stop",
+      "englishExamples": ["top", "cat"],
+      "portugueseExamples": ["tarde"],
+      "notes": "In many PT-BR regions, 't' before 'i' becomes [tʃ]."
+    },
+    "th": {
+      "ipa": "θ",
+      "description": "Voiceless dental fricative",
+      "englishExamples": ["think", "bath"],
+      "portugueseExamples": [],
+      "notes": "Does NOT exist in Portuguese."
+    },
+    "uh": {
+      "ipa": "ʊ",
+      "description": "Near-close near-back rounded vowel",
+      "englishExamples": ["book", "put"],
+      "portugueseExamples": [],
+      "notes": "Does not exist in Portuguese."
+    },
+    "uw": {
+      "ipa": "u",
+      "description": "Close back rounded vowel",
+      "englishExamples": ["blue", "food"],
+      "portugueseExamples": ["tudo"],
+      "notes": "Matches Portuguese 'u'."
+    },
+    "v": {
+      "ipa": "v",
+      "description": "Voiced labiodental fricative",
+      "englishExamples": ["voice", "victory"],
+      "portugueseExamples": ["vaca"],
+      "notes": "Same sound in PT-BR."
+    },
+    "w": {
+      "ipa": "w",
+      "description": "Voiced labio-velar approximant",
+      "englishExamples": ["we", "quick"],
+      "portugueseExamples": ["u in 'quase"],
+      "notes": "Appears as a glide in Portuguese."
+    },
+    "y": {
+      "ipa": "j",
+      "description": "Palatal approximant",
+      "englishExamples": ["yes"],
+      "portugueseExamples": ["ia in dia"],
+      "notes": "Very common between vowels in Portuguese."
+    },
+    "z": {
+      "ipa": "z",
+      "description": "Voiced alveolar fricative",
+      "englishExamples": ["zoo", "busy"],
+      "portugueseExamples": ["azeite"],
+      "notes": "Appears as 's' in many PT-BR positions."
+    },
+    "zh": {
+      "ipa": "ʒ",
+      "description": "Voiced postalveolar fricative",
+      "englishExamples": ["measure", "vision"],
+      "portugueseExamples": ["jogo"],
+      "notes": "Same as Portuguese 'j'."
+    }
+  }
+  

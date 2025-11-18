@@ -30,10 +30,17 @@ let cachedAudioIndex: AudioIndex | null = null;
 
 /**
  * Load and cache audio index.
+ * @throws Error if audio index cannot be loaded
  */
 export async function ensureAudioIndex(): Promise<AudioIndex> {
   if (!cachedAudioIndex) {
-    cachedAudioIndex = await loadAudioIndex();
+    try {
+      cachedAudioIndex = await loadAudioIndex();
+    } catch (error) {
+      console.error('Error ensuring audio index:', error);
+      // Return empty index as fallback rather than throwing
+      cachedAudioIndex = {};
+    }
   }
   return cachedAudioIndex;
 }
@@ -122,7 +129,10 @@ export async function loadAllSentences(): Promise<Sentence[]> {
     return sentences;
   } catch (error) {
     console.error('Error loading sentences:', error);
-    throw error;
+    const message = error instanceof Error 
+      ? error.message 
+      : 'Failed to load sentences data';
+    throw new Error(`Unable to load sentences: ${message}`);
   }
 }
 
@@ -158,7 +168,10 @@ export async function loadAllWords(): Promise<Word[]> {
     return words;
   } catch (error) {
     console.error('Error loading words:', error);
-    throw error;
+    const message = error instanceof Error 
+      ? error.message 
+      : 'Failed to load words data';
+    throw new Error(`Unable to load words: ${message}`);
   }
 }
 
@@ -188,7 +201,10 @@ export async function loadAllCategories(): Promise<Category[]> {
     return categories;
   } catch (error) {
     console.error('Error loading categories:', error);
-    throw error;
+    const message = error instanceof Error 
+      ? error.message 
+      : 'Failed to load categories data';
+    throw new Error(`Unable to load categories: ${message}`);
   }
 }
 
