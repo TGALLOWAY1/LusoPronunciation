@@ -152,6 +152,10 @@ export default function InteractiveWordStrip({
                 className={`transition-transform hover:scale-105 active:scale-95 ${
                   (isNativePlaying || isUserPlaying) ? 'ring-2 ring-offset-2 ring-emerald-400 dark:ring-emerald-500 rounded-full' : ''
                 }`}
+                title={word.phonemes && word.phonemes.length > 0 
+                  ? `Click to see phoneme breakdown for "${word.text}"`
+                  : `Click to see details for "${word.text}"`
+                }
               >
                 <WordScoreChip word={word} />
               </button>

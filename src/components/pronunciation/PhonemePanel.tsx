@@ -83,11 +83,11 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
               let tooltipText = `${phoneme.symbol} • ${phoneme.score}/100`;
               if (metadata) {
                 tooltipText += ` • ${metadata.description}`;
-                if (metadata.examplePt) {
-                  tooltipText += ` • PT: ${metadata.examplePt}`;
+                if (metadata.portugueseExamples.length > 0) {
+                  tooltipText += ` • PT: ${metadata.portugueseExamples[0]}`;
                 }
-                if (metadata.exampleEn) {
-                  tooltipText += ` • EN: ${metadata.exampleEn}`;
+                if (metadata.englishExamples.length > 0) {
+                  tooltipText += ` • EN: ${metadata.englishExamples[0]}`;
                 }
               } else if (phoneme.tip) {
                 tooltipText += ` • ${phoneme.tip}`;
@@ -138,14 +138,14 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
                           <strong>How to say it:</strong> {metadata.description}
                         </p>
                         <div className="flex flex-wrap gap-3 text-xs text-gray-600 dark:text-gray-400">
-                          {metadata.examplePt && (
+                          {metadata.portugueseExamples.length > 0 && (
                             <span>
-                              <strong>PT:</strong> <em>{metadata.examplePt}</em>
+                              <strong>PT:</strong> <em>{metadata.portugueseExamples.join(', ')}</em>
                             </span>
                           )}
-                          {metadata.exampleEn && (
+                          {metadata.englishExamples.length > 0 && (
                             <span>
-                              <strong>EN:</strong> <em>{metadata.exampleEn}</em>
+                              <strong>EN:</strong> <em>{metadata.englishExamples.join(', ')}</em>
                             </span>
                           )}
                         </div>

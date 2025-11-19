@@ -3,6 +3,7 @@ import type { Sentence } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
+import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
 
 interface SentenceCardProps {
   sentence: Sentence;
@@ -205,25 +206,28 @@ function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps)
         )}
       </div>
 
-      {/* Attempts list */}
-      {attempts.length > 0 && (
-        <div className="mb-6">
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-            Attempts
-          </h3>
-          <ul className="space-y-2">
-            {attempts.map((attempt, index) => (
-              <li
-                key={attempt.attemptId}
-                className="text-sm text-gray-600 dark:text-gray-400"
-              >
-                Attempt #{attempts.length - index} – overallAccuracy {attempt.overallAccuracy.toFixed(1)} (
-                {new Date(attempt.createdAt).toLocaleString()})
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {/* Pronunciation Feedback - show feedback for the most recent attempt */}
+      {attempts.length > 0 && (() => {
+        const latestAttempt = attempts[0]; // Most recent is first in array
+        
+        // Map AttemptScore to SentenceFeedbackProps
+        const overall: OverallScores = {
+          accuracy: latestAttempt.overallAccuracy,
+          fluency: latestAttempt.fluency,
+          completeness: latestAttempt.completeness,
+          prosody: latestAttempt.prosody,
+        };
+
+        // Map word scores to WordFeedback format
+        const words: WordFeedback[] = latestAttempt.wordScores.map((ws, index) => ({
+          index,
+          text: ws.word,
+          accuracyScore: ws.accuracy,
+          errorType: ws.errorType,
+        }));
+
+        return <SentenceFeedback overall={overall} words={words} />;
+      })()}
 
       {/* Category info (optional, subtle) */}
       <div className="text-xs text-gray-400 dark:text-gray-500">

@@ -60,17 +60,25 @@ export function getWordAudioUrl(
 
 /**
  * Load audio index from JSON file.
+ * Returns empty object if loading fails (graceful degradation).
+ * @throws Error only if there's a critical issue that should be surfaced
  */
 export async function loadAudioIndex(): Promise<AudioIndex> {
   try {
     const response = await fetch('/data/audio_index.json');
     if (!response.ok) {
-      console.warn('Failed to load audio_index.json, will use inferred paths');
+      console.warn(`Failed to load audio_index.json: ${response.status} ${response.statusText}. Will use inferred paths.`);
       return {};
     }
-    return await response.json();
+    const data = await response.json();
+    if (!data || typeof data !== 'object') {
+      console.warn('Invalid audio_index.json format, will use inferred paths');
+      return {};
+    }
+    return data;
   } catch (error) {
     console.warn('Error loading audio_index.json:', error);
+    // Return empty object as fallback - audio URLs will be inferred
     return {};
   }
 }

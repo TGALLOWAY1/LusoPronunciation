@@ -1,6 +1,11 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useState, useEffect } from 'react';
 import type { Word } from '@/lib/types';
+import type { AttemptScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
+import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
+import { scoreWordPronunciation } from '@/lib/wordPronunciation';
+import { addWordAttempt, getLatestWordAttempt } from '@/lib/practiceStore';
+import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
 
 interface WordCardProps {
   word: Word;
@@ -9,6 +14,81 @@ interface WordCardProps {
 }
 
 function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [latestAttempt, setLatestAttempt] = useState<AttemptScore | null>(null);
+  
+  const {
+    isRecording,
+    audioBlob,
+    audioUrl,
+    startRecording,
+    stopRecording,
+    reset,
+    error: recorderError,
+  } = useMicrophoneRecorder();
+
+  // Track if we're waiting for blob after stopping
+  const [pendingSubmission, setPendingSubmission] = useState(false);
+
+  // Load latest attempt on mount and when word changes
+  useEffect(() => {
+    const attempt = getLatestWordAttempt(word.id);
+    setLatestAttempt(attempt);
+  }, [word.id]);
+
+  // Define submitRecording before useEffect that uses it
+  const submitRecording = useCallback(async (blob: Blob, url: string | undefined) => {
+    setIsSubmitting(true);
+    
+    try {
+      // Score the pronunciation
+      const attemptScore = await scoreWordPronunciation(word.textPt, blob, word.id);
+
+      // Create new attempt with audioUrl from recorder
+      const newAttempt: AttemptScore = {
+        ...attemptScore,
+        audioUrl: url || undefined,
+      };
+
+      // Store attempt in practice store
+      addWordAttempt(word.id, newAttempt);
+      setLatestAttempt(newAttempt);
+
+      // Reset recorder for next recording
+      reset();
+    } catch (error) {
+      console.error('Error submitting word pronunciation assessment:', error);
+      alert(`Failed to assess pronunciation: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsSubmitting(false);
+      setPendingSubmission(false);
+    }
+  }, [word.id, word.textPt, reset]);
+
+  // Reset recorder when word changes
+  useEffect(() => {
+    reset();
+  }, [word.id, reset]);
+
+  // Submit when audioBlob becomes available after stopping
+  useEffect(() => {
+    if (pendingSubmission && audioBlob && !isRecording) {
+      setPendingSubmission(false);
+      submitRecording(audioBlob, audioUrl || undefined);
+    }
+  }, [audioBlob, audioUrl, isRecording, pendingSubmission, submitRecording]);
+
+  const handleRecordToggle = useCallback(async () => {
+    if (isRecording) {
+      // Stop recording - blob will be available in onstop handler
+      setPendingSubmission(true);
+      stopRecording();
+    } else {
+      // Start recording
+      await startRecording();
+    }
+  }, [isRecording, startRecording, stopRecording]);
+
   const handleKnowIt = useCallback(() => {
     onKnowIt(word.id);
   }, [word.id, onKnowIt]);
@@ -100,6 +180,59 @@ function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
           )}
         </div>
       )}
+
+      {/* Recording controls */}
+      <div className="mb-4">
+        <button
+          onClick={handleRecordToggle}
+          disabled={isSubmitting}
+          className={`btn btn-md ${
+            isRecording
+              ? 'btn-danger'
+              : 'btn-primary'
+          } w-full`}
+        >
+          {isRecording ? (
+            <>
+              <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+              Stop & Score
+            </>
+          ) : (
+            'Record Pronunciation'
+          )}
+        </button>
+        {recorderError && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-400">{recorderError}</p>
+        )}
+      </div>
+
+      {/* Pronunciation Feedback - show feedback for the most recent attempt */}
+      {latestAttempt && (() => {
+        // Map AttemptScore to SentenceFeedbackProps
+        const overall: OverallScores = {
+          accuracy: latestAttempt.overallAccuracy,
+          fluency: latestAttempt.fluency,
+          completeness: latestAttempt.completeness,
+          prosody: latestAttempt.prosody,
+        };
+
+        // Map word scores to WordFeedback format
+        // For a single word, the wordScores array should contain one entry
+        const words: WordFeedback[] = latestAttempt.wordScores.length > 0
+          ? latestAttempt.wordScores.map((ws, index) => ({
+              index,
+              text: ws.word,
+              accuracyScore: ws.accuracy,
+              errorType: ws.errorType,
+            }))
+          : [{
+              index: 0,
+              text: word.textPt,
+              accuracyScore: latestAttempt.overallAccuracy,
+            }];
+
+        return <SentenceFeedback overall={overall} words={words} />;
+      })()}
 
       {/* Action buttons */}
       <div className="flex flex-col sm:flex-row gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
