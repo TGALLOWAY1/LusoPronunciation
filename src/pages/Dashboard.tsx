@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useProgressStore } from '@/state/progressStore';
 import { loadAllSentences, loadAllWords, loadAllCategories } from '@/lib/data';
 import type { Sentence, Word, Category } from '@/lib/types';
+import { getWordStats } from '@/lib/wordStats';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import CategoryProgress from '@/components/dashboard/CategoryProgress';
 import ContinuePracticeCard from '@/components/dashboard/ContinuePracticeCard';
@@ -48,6 +49,11 @@ export default function Dashboard() {
 
     loadData();
   }, []);
+
+  // Calculate word statistics
+  const wordStats = useMemo(() => {
+    return getWordStats(words);
+  }, [words]);
 
   // Memoize category progress calculation
   // Include entries in dependencies to recalculate when progress changes
@@ -181,7 +187,7 @@ export default function Dashboard() {
         />
         <SummaryCard
           title="Total Words"
-          value={words.length}
+          value={wordStats.totalWords}
           icon="📝"
           description="Vocabulary items"
         />
@@ -192,6 +198,49 @@ export default function Dashboard() {
           description="Learning topics"
         />
       </div>
+
+      {/* Words by Category */}
+      {Object.keys(wordStats.byCategory).length > 0 && (
+        <div className="card">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            Words by Category
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {(() => {
+              // Get all category IDs that have words from words.json data
+              const categoryIdsWithWords = Object.keys(wordStats.byCategory)
+                .filter(catId => wordStats.byCategory[catId] > 0)
+                .sort();
+
+              // Create a map of category ID to category info for quick lookup
+              const categoryMap = new Map(categories.map(cat => [cat.id, cat]));
+
+              // Build list of all categories with words, using actual counts from words.json
+              return categoryIdsWithWords.map(categoryId => {
+                const wordCount = wordStats.byCategory[categoryId] || 0;
+                const category = categoryMap.get(categoryId);
+                
+                // Use category label from categories array if available, otherwise format the ID
+                const label = category?.labelEn || categoryId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                
+                return (
+                  <div
+                    key={categoryId}
+                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                  >
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {label}
+                    </span>
+                    <span className="text-lg font-bold text-primary-600 dark:text-primary-400">
+                      {wordCount}
+                    </span>
+                  </div>
+                );
+              });
+            })()}
+          </div>
+        </div>
+      )}
 
       {/* Continue Practice Card */}
       <ContinuePracticeCard lastMode={lastPracticeMode} />

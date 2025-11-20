@@ -46,5 +46,6 @@ export interface WordFeedback {
   level: 'excellent' | 'good' | 'ok' | 'practice';
   errorType?: string;
   phonemes?: PhonemeFeedback[];
+  wordId?: string; // Optional: ID from words.json for TTS audio lookup
 }
 

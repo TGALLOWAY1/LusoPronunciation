@@ -8,6 +8,11 @@
     "preview": "vite preview",
     "generate:audio": "node scripts/generate_audio.js",
     "generate:word-practice": "tsx scripts/buildSyntheticWordPracticeData.ts",
+    "analyze:words": "tsx scripts/analyzeWordsAndSentences.ts",
+    "audio:words": "tsx scripts/generateWordAudio.ts",
+    "audio:words:force": "tsx scripts/generateWordAudio.ts --force",
+    "audio:words:male": "tsx scripts/generateWordAudio.ts --voice=male",
+    "audio:words:female": "tsx scripts/generateWordAudio.ts --voice=female",
     "test": "vitest",
     "test:watch": "vitest --watch"
   },
