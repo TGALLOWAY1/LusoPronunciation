@@ -77,7 +77,10 @@ export default function PronunciationFeedbackPanel({
   };
 
   const handleWordSelected = (word: WordFeedback) => {
-    setSelectedWord(word);
+    console.log(`[PronunciationFeedbackPanel] Word selected: "${word.text}" (index ${word.index}, wordId: ${word.wordId || 'none'})`);
+    // Find the actual word from the phrase.words array to ensure we're using the correct reference
+    const actualWord = phrase.words?.find(w => w.index === word.index && w.text === word.text);
+    setSelectedWord(actualWord || word);
   };
 
   const handleClosePhonemePanel = () => {

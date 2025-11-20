@@ -8,11 +8,12 @@
 import { PRONUNCIATION_FIXTURES, getFixtureById, getFixturesByDifficulty } from '@/mock/pronunciationFixtures';
 import type { PronunciationFixture, WordFeedback, AudioVariant, WordAudioVariant, PhonemeFeedback } from '@/types/pronunciationFixtures';
 import type { AttemptScore } from '@/types/pronunciation';
-import { loadAllSentences } from './data';
-import type { Sentence } from './types';
+import { loadAllSentences, loadAllWords } from './data';
+import type { Sentence, Word } from './types';
 
-// Cache for sentences data
+// Cache for sentences and words data
 let cachedSentences: Sentence[] | null = null;
+let cachedWords: Word[] | null = null;
 
 /**
  * Normalizes Portuguese text for matching by:
@@ -27,6 +28,46 @@ function normalizePortugueseText(text: string): string {
     .replace(/\s+/g, ' ')
     .replace(/[.,!?;:]/g, '')
     .toLowerCase();
+}
+
+/**
+ * Normalizes a single word token for matching (more aggressive normalization).
+ * Removes punctuation but keeps diacritics.
+ */
+function normalizeWordToken(token: string): string {
+  return token
+    .toLowerCase()
+    .replace(/[.,!?;:"()…«»""'']/g, '')
+    .trim();
+}
+
+/**
+ * Finds a matching word from words.json by Portuguese text.
+ * 
+ * @param wordText - The word text to match
+ * @returns The matching word if found, null otherwise
+ */
+async function findMatchingWord(wordText: string): Promise<Word | null> {
+  if (!cachedWords) {
+    try {
+      cachedWords = await loadAllWords();
+    } catch (error) {
+      console.warn('Failed to load words for wordId matching:', error);
+      return null;
+    }
+  }
+
+  const normalizedWord = normalizeWordToken(wordText);
+
+  // Try to find exact match (normalized)
+  for (const word of cachedWords) {
+    const normalizedWordText = normalizeWordToken(word.textPt);
+    if (normalizedWordText === normalizedWord) {
+      return word;
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -170,8 +211,8 @@ function mapAzurePhonemeToPhonemeFeedback(
  * Extracts phoneme data from Azure JSON for a specific word.
  * 
  * @param azureJson - Parsed Azure JSON data
- * @param wordIndex - Index of the word in the phrase
- * @param wordText - The word text to match
+ * @param wordIndex - Index of the word in the phrase (used as fallback)
+ * @param wordText - The word text to match (primary matching method)
  * @returns Array of PhonemeFeedback or undefined if no data available
  */
 function extractPhonemesFromAzureJson(
@@ -182,12 +223,36 @@ function extractPhonemesFromAzureJson(
   const bestHypothesis = azureJson?.NBest?.[0];
   const words = bestHypothesis?.Words || [];
   
-  // Find the word by index or by text match
-  const wordData = words[wordIndex] || words.find((w: any) => 
-    w.Word?.toLowerCase() === wordText.toLowerCase()
-  );
+  // Normalize word text for matching (remove punctuation, lowercase)
+  const normalizedWordText = normalizeWordToken(wordText);
+  
+  // First, try to find by exact text match (case-insensitive, punctuation-agnostic)
+  // This is more reliable than index matching because Azure JSON may have different word order
+  let wordData = words.find((w: any) => {
+    const azureWord = w.Word || '';
+    const normalizedAzureWord = normalizeWordToken(azureWord);
+    return normalizedAzureWord === normalizedWordText;
+  });
+  
+  // If no text match found, fall back to index matching
+  if (!wordData && wordIndex < words.length) {
+    wordData = words[wordIndex];
+    // Verify the word at this index matches (case-insensitive)
+    const azureWord = wordData?.Word || '';
+    const normalizedAzureWord = normalizeWordToken(azureWord);
+    if (normalizedAzureWord !== normalizedWordText) {
+      // Index doesn't match, don't use it
+      wordData = undefined;
+    }
+  }
   
   if (!wordData) {
+    if (import.meta.env.DEV) {
+      console.warn(
+        `[PronunciationFixtureAdapter] Could not find Azure word data for "${wordText}" (index ${wordIndex}). ` +
+        `Available words: ${words.map((w: any) => w.Word).join(', ')}`
+      );
+    }
     return undefined;
   }
   
@@ -225,6 +290,23 @@ async function generateWordFeedback(
     azureJson = await loadAzureJson(azureJsonFile);
   }
   
+  // Match words to get wordIds (do this in parallel for all words)
+  const wordMatches = await Promise.all(
+    words.map(word => {
+      const match = findMatchingWord(word);
+      if (import.meta.env.DEV) {
+        match.then(m => {
+          if (m) {
+            console.log(`[PronunciationFixtureAdapter] Matched word "${word}" to wordId "${m.id}"`);
+          } else {
+            console.warn(`[PronunciationFixtureAdapter] No match found for word "${word}"`);
+          }
+        });
+      }
+      return match;
+    })
+  );
+
   return words.map((word, index) => {
     // Generate score around overall score with small random jitter (±10 points)
     // This is still synthetic since we don't have per-word scores in fixtures
@@ -239,12 +321,15 @@ async function generateWordFeedback(
       errorType = errorTypes[Math.floor(Math.random() * errorTypes.length)];
     }
     
+    const matchedWord = wordMatches[index];
+    
     const wordFeedback: WordFeedback = {
       index,
       text: word,
       score: Math.round(wordScore),
       level,
       errorType,
+      wordId: matchedWord?.id, // Set wordId if a match was found
     };
     
     // Extract real phoneme data from Azure JSON if available

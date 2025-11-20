@@ -2,6 +2,7 @@ import { memo, useCallback, useState, useEffect } from 'react';
 import type { Word } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
+import WordAudioButton from './WordAudioButton';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
 import { scoreWordPronunciation } from '@/lib/wordPronunciation';
 import { addWordAttempt, getLatestWordAttempt } from '@/lib/practiceStore';
@@ -178,6 +179,13 @@ function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
               compact={true}
             />
           )}
+        </div>
+      )}
+      {/* Fallback to TTS audio if audio URLs not available */}
+      {!word.audioMaleUrl && !word.audioFemaleUrl && word.id && (
+        <div className="mb-4 flex gap-2">
+          <WordAudioButton wordId={word.id} voice="male" compact={true} />
+          <WordAudioButton wordId={word.id} voice="female" compact={true} />
         </div>
       )}
 
