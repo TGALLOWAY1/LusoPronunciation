@@ -1,7 +1,6 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
-import { aggregateScoresByDifficulty } from '@/lib/pronunciationAggregationUtils';
-import { PronunciationFeedbackPanel, PhraseDifficultyPerformancePlot, DifficultyScoreBarChart } from '@/components/pronunciation';
+import { PronunciationFeedbackPanel } from '@/components/pronunciation';
 
 /**
  * Development page for exploring pronunciation fixtures.
@@ -34,12 +33,6 @@ export default function PronunciationFixtures() {
     setSelectedPhrase(phrase);
   };
 
-  const handlePhraseSelectFromPlot = (phraseId: string) => {
-    const phrase = phrases.find((p) => p.id === phraseId);
-    if (phrase) {
-      setSelectedPhrase(phrase);
-    }
-  };
 
   // Keyboard navigation handlers
   const moveToPreviousPhrase = useCallback(() => {
@@ -113,11 +106,6 @@ export default function PronunciationFixtures() {
     }
   };
 
-  // Aggregate scores by difficulty for the summary chart
-  const difficultyAverages = useMemo(() => {
-    return aggregateScoresByDifficulty(phrases);
-  }, [phrases]);
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -131,18 +119,21 @@ export default function PronunciationFixtures() {
           </p>
         </div>
 
-        {/* Main content area */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left side: Plot and Phrase list */}
-          <div className="space-y-4">
-            {/* Performance plot */}
-            <PhraseDifficultyPerformancePlot
-              phrases={phrases}
-              selectedPhraseId={selectedPhrase?.id || null}
-              onPhraseSelect={handlePhraseSelectFromPlot}
-            />
+        {/* Main content area - Sentences panel centered */}
+        <div className="max-w-4xl mx-auto mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            {selectedPhrase ? (
+              <PronunciationFeedbackPanel phrase={selectedPhrase} />
+            ) : (
+              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                <p>Select a phrase from the list below to view details</p>
+              </div>
+            )}
+          </div>
+        </div>
 
-            {/* Phrase list */}
+        {/* Phrase list below */}
+        <div className="max-w-7xl mx-auto">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
               Phrases ({phrases.length})
@@ -176,24 +167,6 @@ export default function PronunciationFixtures() {
                 </button>
               ))}
             </div>
-            </div>
-          </div>
-
-          {/* Right side: Selected phrase details */}
-          <div className="space-y-6">
-            {/* Selected phrase details */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            {selectedPhrase ? (
-                <PronunciationFeedbackPanel phrase={selectedPhrase} />
-            ) : (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                <p>Select a phrase from the list to view details</p>
-              </div>
-            )}
-            </div>
-
-            {/* Difficulty average chart */}
-            <DifficultyScoreBarChart data={difficultyAverages} />
           </div>
         </div>
       </div>

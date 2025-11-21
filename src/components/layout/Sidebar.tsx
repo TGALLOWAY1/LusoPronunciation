@@ -11,6 +11,7 @@ const navItems: NavItem[] = [
   { path: '/practice/sentence', label: 'Practice Sentences', icon: '💬' },
   { path: '/practice/word', label: 'Practice Words', icon: '📝' },
   { path: '/review', label: 'Review Queue', icon: '🔄' },
+  { path: '/sessions', label: 'Recent Sessions', icon: '📅' },
 ];
 
 // Dev-only navigation items
