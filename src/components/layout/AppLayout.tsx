@@ -12,7 +12,11 @@ const sectionLabels: Record<string, string> = {
   '/practice/sentence': 'Sentence Practice',
   '/practice/word': 'Word Practice',
   '/review': 'Review Queue',
+  '/dev/analytics': 'Dev Analytics',
 };
+
+// Check if dev features should be enabled
+const isDevMode = import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_ANALYTICS === 'true';
 
 export default function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation();
@@ -57,6 +61,17 @@ export default function AppLayout({ children }: AppLayoutProps) {
             >
               🔄 Review
             </Link>
+            {/* Dev-only navigation items */}
+            {isDevMode && (
+              <Link
+                to="/dev/analytics"
+                className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  location.pathname === '/dev/analytics' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+                }`}
+              >
+                📈 Dev Analytics
+              </Link>
+            )}
           </div>
         </nav>
       </div>

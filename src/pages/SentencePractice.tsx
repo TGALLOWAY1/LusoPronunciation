@@ -1,6 +1,7 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { setLastPracticeMode } from '@/lib/storage';
 import { useProgressStore } from '@/state/progressStore';
+import { usePracticeLogStore } from '@/state/practiceLogStore';
 import {
   loadAllSentences,
   loadAllCategories,
@@ -18,6 +19,8 @@ import PageTransition from '@/components/common/PageTransition';
 
 export default function SentencePractice() {
   const { rateSentence } = useProgressStore();
+  const { startSession, endSession } = usePracticeLogStore();
+  const sessionIdRef = useRef<string | null>(null);
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +31,20 @@ export default function SentencePractice() {
   useEffect(() => {
     setLastPracticeMode('sentence');
   }, []);
+
+  // Start practice session when component mounts
+  useEffect(() => {
+    const sessionId = startSession('sentences');
+    sessionIdRef.current = sessionId;
+
+    // End session when component unmounts
+    return () => {
+      if (sessionIdRef.current) {
+        endSession(sessionIdRef.current);
+        sessionIdRef.current = null;
+      }
+    };
+  }, [startSession, endSession]);
 
   useEffect(() => {
     async function loadData() {
@@ -181,6 +198,7 @@ export default function SentencePractice() {
               sentence={currentSentence}
               currentIndex={currentIndex}
               totalCount={filteredSentences.length}
+              sessionId={sessionIdRef.current}
             />
 
             {/* Navigation buttons */}

@@ -1,19 +1,23 @@
-import { memo, useState, useCallback, useEffect } from 'react';
+import { memo, useState, useCallback, useEffect, useRef } from 'react';
 import type { Sentence } from '@/lib/types';
-import type { AttemptScore } from '@/types/pronunciation';
+import type { AttemptScore, WordScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
 import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
 import { useSettingsStore } from '@/state/settingsStore';
+import { usePracticeLogStore } from '@/state/practiceLogStore';
+import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
 interface SentenceCardProps {
   sentence: Sentence;
   currentIndex: number;
   totalCount: number;
+  sessionId: string | null;
 }
 
-function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps) {
+function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: SentenceCardProps) {
   const { selectedVoice } = useSettingsStore();
+  const { logSentenceAttempt } = usePracticeLogStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [attempts, setAttempts] = useState<AttemptScore[]>([]);
   
@@ -29,6 +33,28 @@ function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps)
 
   // Track if we're waiting for blob after stopping
   const [pendingSubmission, setPendingSubmission] = useState(false);
+
+  // UX tracking state for current attempt
+  const [hintUsedForCurrentAttempt, setHintUsedForCurrentAttempt] = useState(false);
+  const [slowedPlaybackUsedForCurrentAttempt, setSlowedPlaybackUsedForCurrentAttempt] = useState(false);
+  const [nativeModelPlayCountForCurrentAttempt, setNativeModelPlayCountForCurrentAttempt] = useState(0);
+  const retriesForCurrentSentenceRef = useRef<number>(0);
+  const currentSentenceIdRef = useRef<string | null>(null);
+  const recordingStartTimeRef = useRef<number | null>(null);
+
+  // Track native audio plays using useAudioPlayer hook
+  const nativeAudioUrl = selectedVoice === 'male' ? sentence.audioMaleUrl : sentence.audioFemaleUrl;
+  const { isPlaying: isNativePlaying } = useAudioPlayer(nativeAudioUrl || null);
+  const prevIsNativePlayingRef = useRef(false);
+
+  // Track when native audio starts playing
+  useEffect(() => {
+    if (isNativePlaying && !prevIsNativePlayingRef.current) {
+      // Audio just started playing
+      setNativeModelPlayCountForCurrentAttempt(prev => prev + 1);
+    }
+    prevIsNativePlayingRef.current = isNativePlaying;
+  }, [isNativePlaying]);
 
   // Define submitRecording before useEffect that uses it
   const submitRecording = useCallback(async (blob: Blob, url: string | undefined) => {
@@ -69,8 +95,64 @@ function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps)
       // Add to attempts list
       setAttempts(prev => [newAttempt, ...prev]);
 
+      // Calculate recording duration if we have start time
+      const recordingDurationSeconds = recordingStartTimeRef.current
+        ? Math.round((Date.now() - recordingStartTimeRef.current) / 1000)
+        : undefined;
+
+      // Log to practice log store
+      if (sessionId) {
+        try {
+          // Determine if attempt passed (using 70 as threshold - TODO: make configurable)
+          const passed = attemptScore.overallAccuracy >= 70;
+
+          // Map word scores to the format expected by SentencePracticeAttempt
+          const wordScores = attemptScore.wordScores.map((ws: WordScore) => ({
+            token: ws.word,
+            overallScore: ws.accuracy,
+            accuracyScore: ws.accuracy,
+            // TODO: Map wordId if we have word references
+            // TODO: Map phonemeScores if available from Azure response
+          }));
+
+          logSentenceAttempt({
+            sessionId,
+            sentenceId: sentence.id,
+            difficulty: sentence.difficulty,
+            category: sentence.categoryId,
+            overallScore: attemptScore.overallAccuracy,
+            accuracyScore: attemptScore.overallAccuracy, // Azure returns overallAccuracy as the main score
+            fluencyScore: attemptScore.fluency ?? 0,
+            completenessScore: attemptScore.completeness ?? 0,
+            prosodyScore: attemptScore.prosody,
+            passed,
+            // TODO: Add targetOverallThreshold and targetAccuracyThreshold if they exist
+            recordingDurationSeconds,
+            retriesInThisSession: retriesForCurrentSentenceRef.current,
+            usedHint: hintUsedForCurrentAttempt,
+            slowedAudioPlayback: slowedPlaybackUsedForCurrentAttempt,
+            listenedToNativeModelCount: nativeModelPlayCountForCurrentAttempt,
+            wordScores: wordScores.length > 0 ? wordScores : undefined,
+          });
+
+          // Reset UX flags for next attempt
+          setHintUsedForCurrentAttempt(false);
+          setSlowedPlaybackUsedForCurrentAttempt(false);
+          setNativeModelPlayCountForCurrentAttempt(0);
+          // Increment retries for next attempt on same sentence
+          retriesForCurrentSentenceRef.current++;
+        } catch (error) {
+          if (import.meta.env.DEV) {
+            console.warn('Failed to log sentence attempt:', error);
+          }
+        }
+      } else if (import.meta.env.DEV) {
+        console.warn('Cannot log sentence attempt: sessionId is missing');
+      }
+
       // Reset recorder for next recording
       reset();
+      recordingStartTimeRef.current = null;
     } catch (error) {
       console.error('Error submitting pronunciation assessment:', error);
       alert(`Failed to assess pronunciation: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -80,10 +162,19 @@ function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps)
     }
   }, [sentence.id, sentence.textPt, reset]);
 
-  // Reset recorder when sentence changes
+  // Reset recorder and UX tracking when sentence changes
   useEffect(() => {
     reset();
     setAttempts([]);
+    // Reset UX flags for new sentence
+    setHintUsedForCurrentAttempt(false);
+    setSlowedPlaybackUsedForCurrentAttempt(false);
+    setNativeModelPlayCountForCurrentAttempt(0);
+    // Reset retries only if sentence actually changed
+    if (currentSentenceIdRef.current !== sentence.id) {
+      retriesForCurrentSentenceRef.current = 0;
+      currentSentenceIdRef.current = sentence.id;
+    }
   }, [sentence.id, reset]);
 
   // Submit when audioBlob becomes available after stopping
@@ -100,10 +191,12 @@ function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps)
       setPendingSubmission(true);
       stopRecording();
     } else {
-      // Start recording
+      // Start recording - track start time for duration calculation
+      recordingStartTimeRef.current = Date.now();
       await startRecording();
     }
   }, [isRecording, startRecording, stopRecording]);
+
   const difficultyColors = {
     1: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
     2: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
@@ -170,9 +263,13 @@ function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps)
         );
       })()}
 
-      {/* Pronunciation tips */}
+      {/* Pronunciation tips - track as hint usage */}
       {sentence.pronunciationNotes && (
-        <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded">
+        <div 
+          className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded cursor-pointer"
+          onClick={() => setHintUsedForCurrentAttempt(true)}
+          title="Click to mark as hint used"
+        >
           <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-1">💡 Pronunciation Tip</p>
           <p className="text-sm text-blue-800 dark:text-blue-300">{sentence.pronunciationNotes}</p>
         </div>

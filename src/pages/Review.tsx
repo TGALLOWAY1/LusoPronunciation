@@ -185,6 +185,7 @@ export default function Review() {
                 sentence={currentItem.item as Sentence}
                 currentIndex={currentIndex}
                 totalCount={totalDue}
+                sessionId={null}
               />
               <NavigationButtons
                 onPrevious={handlePrevious}
@@ -198,6 +199,7 @@ export default function Review() {
             <>
               <WordCard
                 word={currentItem.item as Word}
+                sessionId={null}
                 onKnowIt={handleWordKnowIt}
                 onReviewLater={handleWordReviewLater}
               />

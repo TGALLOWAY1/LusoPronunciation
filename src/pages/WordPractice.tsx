@@ -1,5 +1,6 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { setLastPracticeMode } from '@/lib/storage';
+import { usePracticeLogStore } from '@/state/practiceLogStore';
 import {
   loadAllWords,
   loadAllCategories,
@@ -7,7 +8,7 @@ import {
 } from '@/lib/data';
 import type { Word, Category } from '@/lib/types';
 import WordStudyCard from '@/components/practice/WordStudyCard';
-import WordDrillCard from '@/components/practice/WordDrillCard';
+import WordCard from '@/components/practice/WordCard';
 import CategoryFilterChips from '@/components/practice/CategoryFilterChips';
 import ViewModeToggle, { type ViewMode } from '@/components/practice/ViewModeToggle';
 import NavigationButtons from '@/components/practice/NavigationButtons';
@@ -21,6 +22,8 @@ const WORDS_PER_PAGE = 20;
 const TRANSLATION_TOGGLE_STORAGE_KEY = 'lusopronounce_word_drill_show_translation';
 
 export default function WordPractice() {
+  const { startSession, endSession } = usePracticeLogStore();
+  const sessionIdRef = useRef<string | null>(null);
   const [words, setWords] = useState<Word[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +36,20 @@ export default function WordPractice() {
   useEffect(() => {
     setLastPracticeMode('word');
   }, []);
+
+  // Start practice session when component mounts
+  useEffect(() => {
+    const sessionId = startSession('words');
+    sessionIdRef.current = sessionId;
+
+    // End session when component unmounts
+    return () => {
+      if (sessionIdRef.current) {
+        endSession(sessionIdRef.current);
+        sessionIdRef.current = null;
+      }
+    };
+  }, [startSession, endSession]);
 
   // Load translation toggle preference from localStorage
   useEffect(() => {
@@ -271,7 +288,7 @@ export default function WordPractice() {
           </button>
         </div>
       ) : viewMode === 'drill' ? (
-        /* Drill Mode - Single card view with logging */
+        /* Drill Mode - Single card view with recording/assessment */
         <div className="max-w-2xl mx-auto">
           {/* Translation toggle */}
           <div className="mb-4 flex items-center justify-center">
@@ -290,11 +307,11 @@ export default function WordPractice() {
 
           {currentDrillWord && (
             <>
-              <WordDrillCard
+              <WordCard
                 word={currentDrillWord}
-                showTranslation={showTranslation}
+                sessionId={sessionIdRef.current}
                 onKnowIt={handleDrillKnowIt}
-                onDontKnowIt={handleDrillDontKnowIt}
+                onReviewLater={handleDrillDontKnowIt}
               />
               <NavigationButtons
                 onPrevious={handleDrillPrevious}
