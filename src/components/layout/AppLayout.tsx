@@ -12,6 +12,7 @@ const sectionLabels: Record<string, string> = {
   '/practice/sentence': 'Sentence Practice',
   '/practice/word': 'Word Practice',
   '/review': 'Review Queue',
+  '/sessions': 'Recent Sessions',
   '/dev/analytics': 'Dev Analytics',
 };
 
@@ -60,6 +61,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
               }`}
             >
               🔄 Review
+            </Link>
+            <Link
+              to="/sessions"
+              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                location.pathname === '/sessions' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+              }`}
+            >
+              📅 Sessions
             </Link>
             {/* Dev-only navigation items */}
             {isDevMode && (

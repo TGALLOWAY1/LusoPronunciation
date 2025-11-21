@@ -13,18 +13,7 @@ export default function DifficultyScoreBarChart({
   data,
   maxScore = 100,
 }: DifficultyScoreBarChartProps) {
-  if (data.length === 0) {
-    return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-          Average overall score by difficulty (fixtures)
-        </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
-          No data available
-        </p>
-      </div>
-    );
-  }
+  // Always show the chart even if all counts are 0
 
   // Get color for difficulty level
   const getDifficultyColor = (difficulty: number): string => {
@@ -70,6 +59,7 @@ export default function DifficultyScoreBarChart({
       <div className="space-y-3">
         {data.map((item) => {
           const barWidth = (item.averageScore / maxScore) * 100;
+          const hasData = item.count > 0 && item.averageScore > 0;
           
           return (
             <div key={item.difficulty} className="space-y-1">
@@ -79,25 +69,43 @@ export default function DifficultyScoreBarChart({
                   <span className={`text-sm font-medium ${getDifficultyTextColor(item.difficulty)}`}>
                     Difficulty {item.difficulty}
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    ({item.count} {item.count === 1 ? 'phrase' : 'phrases'})
-                  </span>
+                  {hasData ? (
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      ({item.count} {item.count === 1 ? 'attempt' : 'attempts'})
+                    </span>
+                  ) : (
+                    <span className="text-xs text-gray-400 dark:text-gray-500">
+                      (no attempts)
+                    </span>
+                  )}
                 </div>
-                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  {item.averageScore.toFixed(1)}
-                </span>
+                {hasData ? (
+                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    {item.averageScore.toFixed(1)}
+                  </span>
+                ) : (
+                  <span className="text-xs text-gray-400 dark:text-gray-500">
+                    N/A
+                  </span>
+                )}
               </div>
               
               {/* Bar */}
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-6 overflow-hidden">
-                <div
-                  className={`h-full transition-all duration-500 ${getDifficultyColor(item.difficulty)} flex items-center justify-end pr-2`}
-                  style={{ width: `${barWidth}%` }}
-                >
-                  <span className="text-xs font-medium text-white opacity-90">
-                    {barWidth >= 15 ? `${item.averageScore.toFixed(1)}` : ''}
-                  </span>
-                </div>
+                {hasData ? (
+                  <div
+                    className={`h-full transition-all duration-500 ${getDifficultyColor(item.difficulty)} flex items-center justify-end pr-2`}
+                    style={{ width: `${barWidth}%` }}
+                  >
+                    <span className="text-xs font-medium text-white opacity-90">
+                      {barWidth >= 15 ? `${item.averageScore.toFixed(1)}` : ''}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="h-full flex items-center justify-center">
+                    <span className="text-xs text-gray-400 dark:text-gray-500">No data</span>
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -105,11 +113,13 @@ export default function DifficultyScoreBarChart({
       </div>
       
       {/* Optional: Summary note */}
-      <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-        <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-          Based on {data.reduce((sum, item) => sum + item.count, 0)} total phrases
-        </p>
-      </div>
+      {data.reduce((sum, item) => sum + item.count, 0) > 0 && (
+        <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+          <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+            Based on {data.reduce((sum, item) => sum + item.count, 0)} total attempts
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -4,10 +4,11 @@ import { SettingsStoreProvider } from '../state/settingsStore';
 import { PracticeLogStoreProvider } from '../state/practiceLogStore';
 import AppLayout from '../components/layout/AppLayout';
 import { ErrorBoundary } from '../components/common/ErrorBoundary';
-import Dashboard from '../pages/Dashboard';
+import UserDashboardPage from '../pages/UserDashboardPage';
 import SentencePractice from '../pages/SentencePractice';
 import WordPractice from '../pages/WordPractice';
 import Review from '../pages/Review';
+import RecentSessions from '../pages/RecentSessions';
 import PronunciationFixtures from '../pages/dev/pronunciation-fixtures';
 import DevAnalyticsPage from '../pages/dev/DevAnalyticsPage';
 
@@ -16,10 +17,11 @@ function AppRoutes() {
     <BrowserRouter>
       <AppLayout>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<UserDashboardPage />} />
           <Route path="/practice/sentence" element={<SentencePractice />} />
           <Route path="/practice/word" element={<WordPractice />} />
           <Route path="/review" element={<Review />} />
+          <Route path="/sessions" element={<RecentSessions />} />
           <Route path="/dev/pronunciation-fixtures" element={<PronunciationFixtures />} />
           <Route path="/dev/analytics" element={<DevAnalyticsPage />} />
         </Routes>
