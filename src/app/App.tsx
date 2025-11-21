@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProgressStoreProvider } from '../state/progressStore';
+import { SettingsStoreProvider } from '../state/settingsStore';
 import AppLayout from '../components/layout/AppLayout';
 import { ErrorBoundary } from '../components/common/ErrorBoundary';
 import Dashboard from '../pages/Dashboard';
@@ -27,9 +28,11 @@ function AppRoutes() {
 function App() {
   return (
     <ErrorBoundary>
-      <ProgressStoreProvider>
-        <AppRoutes />
-      </ProgressStoreProvider>
+      <SettingsStoreProvider>
+        <ProgressStoreProvider>
+          <AppRoutes />
+        </ProgressStoreProvider>
+      </SettingsStoreProvider>
     </ErrorBoundary>
   );
 }

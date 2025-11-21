@@ -4,6 +4,7 @@ import type { AttemptScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
 import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
+import { useSettingsStore } from '@/state/settingsStore';
 
 interface SentenceCardProps {
   sentence: Sentence;
@@ -12,6 +13,7 @@ interface SentenceCardProps {
 }
 
 function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps) {
+  const { selectedVoice } = useSettingsStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [attempts, setAttempts] = useState<AttemptScore[]>([]);
   
@@ -151,27 +153,22 @@ function SentenceCard({ sentence, currentIndex, totalCount }: SentenceCardProps)
         </p>
       </div>
 
-      {/* Audio playback controls */}
-      {(sentence.audioMaleUrl || sentence.audioFemaleUrl) && (
-        <div className="mb-6 flex gap-3">
-          {sentence.audioMaleUrl && (
+      {/* Audio playback controls - uses global voice setting */}
+      {(() => {
+        const audioUrl = selectedVoice === 'male' ? sentence.audioMaleUrl : sentence.audioFemaleUrl;
+        if (!audioUrl) return null;
+        
+        return (
+          <div className="mb-6 flex gap-3">
             <AudioPlayerButton
-              audioUrl={sentence.audioMaleUrl}
-              label="Male Voice"
-              icon="👨"
-              variant="male"
+              audioUrl={audioUrl}
+              label={selectedVoice === 'male' ? 'Male Voice' : 'Female Voice'}
+              icon={selectedVoice === 'male' ? '👨' : '👩'}
+              variant={selectedVoice}
             />
-          )}
-          {sentence.audioFemaleUrl && (
-            <AudioPlayerButton
-              audioUrl={sentence.audioFemaleUrl}
-              label="Female Voice"
-              icon="👩"
-              variant="female"
-            />
-          )}
-        </div>
-      )}
+          </div>
+        );
+      })()}
 
       {/* Pronunciation tips */}
       {sentence.pronunciationNotes && (

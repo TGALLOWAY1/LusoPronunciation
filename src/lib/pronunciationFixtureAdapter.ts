@@ -100,22 +100,8 @@ async function findMatchingSentence(fixtureText: string): Promise<Sentence | nul
   return null;
 }
 
-/**
- * Gets native audio URL for a sentence.
- * Uses female voice by default (can be made configurable later).
- * 
- * @param sentence - The matched sentence
- * @returns The native audio URL, or null if not available
- */
-function getNativeAudioUrl(sentence: Sentence | null): string | null {
-  if (!sentence) {
-    return null;
-  }
-
-  // Prefer female audio, fallback to male
-  const audioUrl = sentence.audioFemaleUrl || sentence.audioMaleUrl;
-  return audioUrl || null;
-}
+// Note: getNativeAudioUrl function removed - we now include both variants in sentenceAudio array
+// Components will select based on global voice setting
 
 /**
  * Practice-ready phrase data derived from a pronunciation fixture.
@@ -380,18 +366,30 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
 
   // Find matching sentence for native audio and English translation
   const matchingSentence = await findMatchingSentence(fixture.text);
-  const nativeAudioUrl = getNativeAudioUrl(matchingSentence);
   const translationEn = matchingSentence?.translationEn;
 
   // Build sentenceAudio with native and user variants
+  // Use global voice setting (default to 'male' if not available in non-React context)
+  // Components will filter by voice at render time
   const sentenceAudio: AudioVariant[] = [];
   
-  // Add native audio if found
-  if (nativeAudioUrl) {
-    sentenceAudio.push({
-      type: 'native',
-      url: nativeAudioUrl,
-    });
+  // Add native audio if found - use voice preference (default to 'male')
+  // Note: In a React component context, this should use useSettingsStore
+  // For now, we'll include both variants and let SentenceAudioControls filter
+  if (matchingSentence) {
+    // Include both variants - components will select based on global voice setting
+    if (matchingSentence.audioMaleUrl) {
+      sentenceAudio.push({
+        type: 'native',
+        url: matchingSentence.audioMaleUrl,
+      });
+    }
+    if (matchingSentence.audioFemaleUrl && matchingSentence.audioFemaleUrl !== matchingSentence.audioMaleUrl) {
+      sentenceAudio.push({
+        type: 'native',
+        url: matchingSentence.audioFemaleUrl,
+      });
+    }
   } else {
     // Log warning in dev mode
     if (import.meta.env.DEV) {

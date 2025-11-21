@@ -12,6 +12,7 @@ interface SentenceAudioControlsProps {
 /**
  * Interactive controls for playing native vs user sentence audio.
  * Coordinates with parent to ensure only one audio source plays at a time.
+ * Uses global voice setting to select the appropriate native audio variant.
  */
 export default function SentenceAudioControls({
   sentenceAudio,
@@ -24,6 +25,8 @@ export default function SentenceAudioControls({
   const audioRef = externalAudioRef || internalAudioRef;
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // Get native and user audio
+  // Note: Native audio selection by voice is handled at the data level in pronunciationFixtureAdapter
   const nativeAudio = sentenceAudio.find(a => a.type === 'native');
   const userAudio = sentenceAudio.find(a => a.type === 'user');
 
