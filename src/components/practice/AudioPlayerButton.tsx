@@ -73,7 +73,7 @@ function AudioPlayerButton({ audioUrl, label, icon, variant = 'male', compact = 
           </>
         ) : (
           <>
-            <span>{icon}</span>
+            <span>{compact ? '▶' : icon}</span>
             {!compact && <span className="text-sm">{label}</span>}
           </>
         )}

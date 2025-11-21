@@ -1,3 +1,6 @@
+// TODO: This script will be replaced or wrapped by the new unified pipeline.
+// See: src/pipeline/azureTTSClient.ts, src/pipeline/audioJobPlanner.ts, src/pipeline/runTTSJobs.ts
+
 // Load .env file, but don't override existing environment variables
 // This allows shell environment variables to take precedence
 require("dotenv").config({ override: false });

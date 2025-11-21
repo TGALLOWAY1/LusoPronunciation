@@ -7,6 +7,7 @@ import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
 import { scoreWordPronunciation } from '@/lib/wordPronunciation';
 import { addWordAttempt, getLatestWordAttempt } from '@/lib/practiceStore';
 import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
+import { useSettingsStore } from '@/state/settingsStore';
 
 interface WordCardProps {
   word: Word;
@@ -15,6 +16,7 @@ interface WordCardProps {
 }
 
 function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
+  const { selectedVoice } = useSettingsStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [latestAttempt, setLatestAttempt] = useState<AttemptScore | null>(null);
   
@@ -158,36 +160,27 @@ function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
         </div>
       )}
 
-      {/* Audio playback controls */}
-      {(word.audioMaleUrl || word.audioFemaleUrl) && (
-        <div className="mb-4 flex gap-2">
-          {word.audioMaleUrl && (
-            <AudioPlayerButton
-              audioUrl={word.audioMaleUrl}
-              label="Male"
-              icon="👨"
-              variant="male"
-              compact={true}
-            />
-          )}
-          {word.audioFemaleUrl && (
-            <AudioPlayerButton
-              audioUrl={word.audioFemaleUrl}
-              label="Female"
-              icon="👩"
-              variant="female"
-              compact={true}
-            />
-          )}
-        </div>
-      )}
-      {/* Fallback to TTS audio if audio URLs not available */}
-      {!word.audioMaleUrl && !word.audioFemaleUrl && word.id && (
-        <div className="mb-4 flex gap-2">
-          <WordAudioButton wordId={word.id} voice="male" compact={true} />
-          <WordAudioButton wordId={word.id} voice="female" compact={true} />
-        </div>
-      )}
+      {/* Audio playback controls - uses global voice setting */}
+      <div className="mb-4 flex gap-2">
+        {(() => {
+          const audioUrl = selectedVoice === 'male' ? word.audioMaleUrl : word.audioFemaleUrl;
+          
+          if (audioUrl) {
+            return (
+              <AudioPlayerButton
+                audioUrl={audioUrl}
+                label="Play"
+                icon="▶"
+                variant={selectedVoice}
+                compact={true}
+              />
+            );
+          } else if (word.id) {
+            return <WordAudioButton wordId={word.id} compact={true} />;
+          }
+          return null;
+        })()}
+      </div>
 
       {/* Recording controls */}
       <div className="mb-4">

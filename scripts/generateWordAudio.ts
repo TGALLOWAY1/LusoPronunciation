@@ -3,6 +3,9 @@
 /**
  * Generate Azure TTS Audio for All Words
  * 
+ * TODO: This script will be replaced or wrapped by the new unified pipeline.
+ * See: src/pipeline/azureTTSClient.ts, src/pipeline/audioJobPlanner.ts, src/pipeline/runTTSJobs.ts
+ * 
  * Synthesizes pronunciation audio for every word in words.json
  * using male and female Brazilian Portuguese voices.
  * 

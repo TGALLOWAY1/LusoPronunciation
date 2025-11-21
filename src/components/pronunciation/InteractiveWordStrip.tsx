@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import type { WordFeedback, WordAudioVariant } from '@/types/pronunciationFixtures';
-import { getWordAudioPath } from '@/lib/wordAudioPaths';
-import { getPreferredWordVoice } from '@/lib/storage';
+import { useSettingsStore } from '@/state/settingsStore';
+import { getAudioUrlForWordSync } from '@/utils/audioRouting';
 import WordScoreChip from './WordScoreChip';
 
 interface InteractiveWordStripProps {
@@ -42,33 +42,8 @@ export default function InteractiveWordStrip({
   const activeWordIndex = externalActiveWordIndex !== undefined ? externalActiveWordIndex : internalActiveWordIndex;
   const activeWordType = externalActiveWordType !== undefined ? externalActiveWordType : internalActiveWordType;
 
-  // Track preferred voice and update when storage changes
-  const [preferredVoice, setPreferredVoice] = useState<'male' | 'female'>(getPreferredWordVoice());
-
-  // Listen for voice preference changes
-  useEffect(() => {
-    const handleVoiceChange = (e: CustomEvent) => {
-      if (e.detail?.voice) {
-        setPreferredVoice(e.detail.voice);
-      } else {
-        setPreferredVoice(getPreferredWordVoice());
-      }
-    };
-
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'lusopronounce_preferredWordVoice') {
-        setPreferredVoice(getPreferredWordVoice());
-      }
-    };
-
-    window.addEventListener('voicePreferenceChanged', handleVoiceChange as EventListener);
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('voicePreferenceChanged', handleVoiceChange as EventListener);
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
+  // Use global voice setting
+  const { selectedVoice } = useSettingsStore();
 
   const handleWordClick = (word: WordFeedback, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -250,11 +225,10 @@ export default function InteractiveWordStrip({
       return;
     }
 
-    // Get current preferred voice (may have changed)
-    const voice = getPreferredWordVoice();
-    const audioPath = getWordAudioPath(word.wordId, voice);
+    // Use global voice setting
+    const audioPath = getAudioUrlForWordSync(word.wordId, selectedVoice);
     
-    console.log(`[InteractiveWordStrip] Playing TTS audio for word "${word.text}" (${word.wordId}) with ${voice} voice from ${audioPath}`);
+    console.log(`[InteractiveWordStrip] Playing TTS audio for word "${word.text}" (${word.wordId}) with ${selectedVoice} voice from ${audioPath}`);
 
     // Stop any currently playing TTS audio
     if (ttsAudioRef.current) {
@@ -311,6 +285,11 @@ export default function InteractiveWordStrip({
     }
 
     // Set source and load
+    if (!audioPath) {
+      console.error(`No audio path found for word "${word.wordId}" with voice "${selectedVoice}"`);
+      return;
+    }
+    
     ttsAudioRef.current.src = audioPath;
     ttsAudioRef.current.load(); // Force reload the audio
     
@@ -390,7 +369,7 @@ export default function InteractiveWordStrip({
                   isPlaying ? 'ring-2 ring-offset-2 ring-emerald-400 dark:ring-emerald-500 rounded-full' : ''
                 }`}
                 title={word.wordId 
-                  ? `Click to play ${preferredVoice} pronunciation and see phoneme breakdown for "${word.text}"`
+                  ? `Click to play ${selectedVoice} pronunciation and see phoneme breakdown for "${word.text}"`
                   : word.phonemes && word.phonemes.length > 0 
                     ? `Click to see phoneme breakdown for "${word.text}"`
                     : `Click to see details for "${word.text}"`
