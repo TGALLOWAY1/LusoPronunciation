@@ -5,6 +5,19 @@
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
+// ============================================================================
+// Practice Logging and Progress Analytics Types
+// ============================================================================
+
+/**
+ * Basic ID type aliases for practice logging
+ */
+export type SentenceId = string;
+export type WordId = string;
+export type PhonemeId = string;
+export type DifficultyLevel = Difficulty; // Alias for 1 | 2 | 3 | 4 | 5
+export type ContentCategory = string; // Category ID (e.g., "food", "travel")
+
 /**
  * Raw sentence structure from sentences.json
  */
@@ -122,5 +135,212 @@ export interface Category {
   id: string;
   labelEn: string;
   labelPt: string;
+}
+
+// ============================================================================
+// Practice Logging and Progress Analytics Types
+// ============================================================================
+
+/**
+ * A practice session represents a continuous period of practice activity.
+ */
+export interface PracticeSession {
+  sessionId: string;
+  userId: string;
+  startedAt: string; // ISO timestamp
+  endedAt: string; // ISO timestamp
+  durationSeconds: number;
+  mode: "sentences" | "words" | "mixed" | "assessment";
+  device?: "desktop" | "mobile";
+  appVersion?: string;
+  totalAttempts: number;
+  sentenceAttempts: number;
+  wordAttempts: number;
+  avgOverallScore?: number;
+  avgFluencyScore?: number;
+  avgAccuracyScore?: number;
+  avgCompletenessScore?: number;
+  avgProsodyScore?: number;
+  dailyStreakAfterSession?: number;
+}
+
+/**
+ * A single attempt at practicing a sentence.
+ */
+export interface SentencePracticeAttempt {
+  attemptId: string;
+  userId: string;
+  sessionId: string;
+  sentenceId: SentenceId;
+  difficulty: DifficultyLevel;
+  category: ContentCategory;
+  createdAt: string; // ISO timestamp
+  overallScore: number; // 0-100
+  accuracyScore: number; // 0-100
+  fluencyScore: number; // 0-100
+  completenessScore: number; // 0-100
+  prosodyScore?: number; // 0-100
+  passed?: boolean;
+  targetOverallThreshold?: number;
+  targetAccuracyThreshold?: number;
+  recordingDurationSeconds?: number;
+  retriesInThisSession?: number;
+  usedHint?: boolean;
+  slowedAudioPlayback?: boolean;
+  listenedToNativeModelCount?: number;
+  confidenceLabel?: "unknown" | "learning" | "review" | "known";
+  wordScores?: {
+    wordId?: WordId;
+    token: string;
+    overallScore: number;
+    accuracyScore?: number;
+    fluencyScore?: number;
+    phonemeScores?: {
+      phonemeId: PhonemeId;
+      overallScore: number;
+    }[];
+  }[];
+}
+
+/**
+ * A single attempt at practicing a word.
+ */
+export interface WordPracticeAttempt {
+  attemptId: string;
+  userId: string;
+  sessionId: string;
+  wordId: WordId;
+  difficulty: DifficultyLevel;
+  category: ContentCategory;
+  createdAt: string; // ISO timestamp
+  overallScore: number; // 0-100
+  accuracyScore: number; // 0-100
+  fluencyScore?: number; // 0-100
+  completenessScore?: number; // 0-100
+  prosodyScore?: number; // 0-100
+  passed?: boolean;
+  targetOverallThreshold?: number;
+  recordingDurationSeconds?: number;
+  retriesInThisSession?: number;
+  usedHint?: boolean;
+  slowedAudioPlayback?: boolean;
+  listenedToNativeModelCount?: number;
+  phonemeScores?: {
+    phonemeId: PhonemeId;
+    overallScore: number;
+  }[];
+}
+
+/**
+ * Aggregate progress tracking for a sentence.
+ */
+export interface SentenceProgress {
+  userId: string;
+  sentenceId: SentenceId;
+  attempts: number;
+  successfulAttempts: number;
+  lastPracticedAt?: string; // ISO timestamp
+  firstPracticedAt?: string; // ISO timestamp
+  bestOverallScore?: number; // 0-100
+  bestAccuracyScore?: number; // 0-100
+  avgOverallScore?: number; // 0-100
+  avgAccuracyScore?: number; // 0-100
+  avgFluencyScore?: number; // 0-100
+  avgCompletenessScore?: number; // 0-100
+  status: "new" | "learning" | "review" | "known";
+  easeFactor?: number; // For spaced repetition algorithms
+  intervalDays?: number; // Days until next review
+  nextReviewDueAt?: string; // ISO timestamp
+  difficulty: DifficultyLevel;
+  category: ContentCategory;
+}
+
+/**
+ * Aggregate progress tracking for a word.
+ */
+export interface WordProgress {
+  userId: string;
+  wordId: WordId;
+  attempts: number;
+  successfulAttempts: number;
+  lastPracticedAt?: string; // ISO timestamp
+  firstPracticedAt?: string; // ISO timestamp
+  bestOverallScore?: number; // 0-100
+  avgOverallScore?: number; // 0-100
+  avgAccuracyScore?: number; // 0-100
+  status: "new" | "learning" | "review" | "known";
+  difficulty: DifficultyLevel;
+  category: ContentCategory;
+}
+
+/**
+ * Global statistics aggregated across all user practice activity.
+ */
+export interface UserGlobalStats {
+  userId: string;
+  totalPracticeSessions: number;
+  totalPracticeSeconds: number;
+  totalSentenceAttempts: number;
+  totalWordAttempts: number;
+  totalSentencesAvailable: number;
+  totalWordsAvailable: number;
+  sentencesPracticedCount: number;
+  wordsPracticedCount: number;
+  sentencesKnownCount: number;
+  sentencesLearningCount: number;
+  sentencesReviewCount: number;
+  sentencesNewCount: number;
+  wordsKnownCount: number;
+  wordsLearningCount: number;
+  wordsReviewCount: number;
+  wordsNewCount: number;
+  rolling7DayAvgOverallScore?: number; // 0-100
+  rolling30DayAvgOverallScore?: number; // 0-100
+  rolling7DayPracticeMinutes?: number;
+  currentDailyStreak: number;
+  longestDailyStreak: number;
+  lastPracticeDate?: string; // ISO date string (YYYY-MM-DD)
+  estimatedCEFR?: "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
+}
+
+/**
+ * Statistics aggregated by difficulty level.
+ */
+export interface DifficultyStats {
+  userId: string;
+  difficulty: DifficultyLevel;
+  sentenceAttempts: number;
+  wordAttempts: number;
+  avgOverallScore?: number; // 0-100
+  avgAccuracyScore?: number; // 0-100
+  sentencesKnownCount: number;
+  wordsKnownCount: number;
+}
+
+/**
+ * Statistics aggregated by content category.
+ */
+export interface CategoryStats {
+  userId: string;
+  category: ContentCategory;
+  sentenceAttempts: number;
+  wordAttempts: number;
+  avgOverallScore?: number; // 0-100
+  avgAccuracyScore?: number; // 0-100
+  sentencesKnownCount: number;
+  wordsKnownCount: number;
+}
+
+/**
+ * Statistics aggregated by phoneme.
+ */
+export interface PhonemeStats {
+  userId: string;
+  phonemeId: PhonemeId;
+  attempts: number;
+  avgOverallScore?: number; // 0-100
+  bestOverallScore?: number; // 0-100
+  lastPracticedAt?: string; // ISO timestamp
+  weaknessLabel?: "weak" | "ok" | "strong";
 }
 

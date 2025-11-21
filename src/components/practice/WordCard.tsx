@@ -1,4 +1,4 @@
-import { memo, useCallback, useState, useEffect } from 'react';
+import { memo, useCallback, useState, useEffect, useRef } from 'react';
 import type { Word } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
@@ -8,15 +8,19 @@ import { scoreWordPronunciation } from '@/lib/wordPronunciation';
 import { addWordAttempt, getLatestWordAttempt } from '@/lib/practiceStore';
 import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
 import { useSettingsStore } from '@/state/settingsStore';
+import { usePracticeLogStore } from '@/state/practiceLogStore';
+import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 
 interface WordCardProps {
   word: Word;
+  sessionId: string | null;
   onKnowIt: (wordId: string) => void;
   onReviewLater: (wordId: string) => void;
 }
 
-function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
+function WordCard({ word, sessionId, onKnowIt, onReviewLater }: WordCardProps) {
   const { selectedVoice } = useSettingsStore();
+  const { logWordAttempt } = usePracticeLogStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [latestAttempt, setLatestAttempt] = useState<AttemptScore | null>(null);
   
@@ -32,6 +36,28 @@ function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
 
   // Track if we're waiting for blob after stopping
   const [pendingSubmission, setPendingSubmission] = useState(false);
+
+  // UX tracking state for current attempt
+  const [hintUsedForCurrentAttempt, setHintUsedForCurrentAttempt] = useState(false);
+  const [slowedPlaybackUsedForCurrentAttempt, setSlowedPlaybackUsedForCurrentAttempt] = useState(false);
+  const [nativeModelPlayCountForCurrentAttempt, setNativeModelPlayCountForCurrentAttempt] = useState(0);
+  const retriesForCurrentWordRef = useRef<number>(0);
+  const currentWordIdRef = useRef<string | null>(null);
+  const recordingStartTimeRef = useRef<number | null>(null);
+
+  // Track native audio plays using useAudioPlayer hook
+  const nativeAudioUrl = selectedVoice === 'male' ? word.audioMaleUrl : word.audioFemaleUrl;
+  const { isPlaying: isNativePlaying } = useAudioPlayer(nativeAudioUrl || null);
+  const prevIsNativePlayingRef = useRef(false);
+
+  // Track when native audio starts playing
+  useEffect(() => {
+    if (isNativePlaying && !prevIsNativePlayingRef.current) {
+      // Audio just started playing
+      setNativeModelPlayCountForCurrentAttempt(prev => prev + 1);
+    }
+    prevIsNativePlayingRef.current = isNativePlaying;
+  }, [isNativePlaying]);
 
   // Load latest attempt on mount and when word changes
   useEffect(() => {
@@ -57,8 +83,59 @@ function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
       addWordAttempt(word.id, newAttempt);
       setLatestAttempt(newAttempt);
 
+      // Calculate recording duration if we have start time
+      const recordingDurationSeconds = recordingStartTimeRef.current
+        ? Math.round((Date.now() - recordingStartTimeRef.current) / 1000)
+        : undefined;
+
+      // Log to practice log store
+      if (sessionId) {
+        try {
+          // Determine if attempt passed (using 70 as threshold - TODO: make configurable)
+          const passed = attemptScore.overallAccuracy >= 70;
+
+          // Map phoneme scores if available (TODO: extract from Azure response if available)
+          // For now, leave undefined as phoneme-level detail may not be in the response
+          const phonemeScores = undefined; // TODO: Extract phoneme scores from Azure response if available
+
+          logWordAttempt({
+            sessionId,
+            wordId: word.id,
+            difficulty: word.difficulty,
+            category: word.categoryId,
+            overallScore: attemptScore.overallAccuracy,
+            accuracyScore: attemptScore.overallAccuracy, // Azure returns overallAccuracy as the main score
+            fluencyScore: attemptScore.fluency,
+            completenessScore: attemptScore.completeness,
+            prosodyScore: attemptScore.prosody,
+            passed,
+            // TODO: Add targetOverallThreshold if it exists
+            recordingDurationSeconds,
+            retriesInThisSession: retriesForCurrentWordRef.current,
+            usedHint: hintUsedForCurrentAttempt,
+            slowedAudioPlayback: slowedPlaybackUsedForCurrentAttempt,
+            listenedToNativeModelCount: nativeModelPlayCountForCurrentAttempt,
+            phonemeScores,
+          });
+
+          // Reset UX flags for next attempt
+          setHintUsedForCurrentAttempt(false);
+          setSlowedPlaybackUsedForCurrentAttempt(false);
+          setNativeModelPlayCountForCurrentAttempt(0);
+          // Increment retries for next attempt on same word
+          retriesForCurrentWordRef.current++;
+        } catch (error) {
+          if (import.meta.env.DEV) {
+            console.warn('Failed to log word attempt:', error);
+          }
+        }
+      } else if (import.meta.env.DEV) {
+        console.warn('Cannot log word attempt: sessionId is missing');
+      }
+
       // Reset recorder for next recording
       reset();
+      recordingStartTimeRef.current = null;
     } catch (error) {
       console.error('Error submitting word pronunciation assessment:', error);
       alert(`Failed to assess pronunciation: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -66,11 +143,20 @@ function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
       setIsSubmitting(false);
       setPendingSubmission(false);
     }
-  }, [word.id, word.textPt, reset]);
+  }, [word.id, word.textPt, word.difficulty, word.categoryId, sessionId, reset, logWordAttempt, hintUsedForCurrentAttempt, slowedPlaybackUsedForCurrentAttempt, nativeModelPlayCountForCurrentAttempt]);
 
-  // Reset recorder when word changes
+  // Reset recorder and UX tracking when word changes
   useEffect(() => {
     reset();
+    // Reset UX flags for new word
+    setHintUsedForCurrentAttempt(false);
+    setSlowedPlaybackUsedForCurrentAttempt(false);
+    setNativeModelPlayCountForCurrentAttempt(0);
+    // Reset retries only if word actually changed
+    if (currentWordIdRef.current !== word.id) {
+      retriesForCurrentWordRef.current = 0;
+      currentWordIdRef.current = word.id;
+    }
   }, [word.id, reset]);
 
   // Submit when audioBlob becomes available after stopping
@@ -87,7 +173,8 @@ function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
       setPendingSubmission(true);
       stopRecording();
     } else {
-      // Start recording
+      // Start recording - track start time for duration calculation
+      recordingStartTimeRef.current = Date.now();
       await startRecording();
     }
   }, [isRecording, startRecording, stopRecording]);
@@ -153,9 +240,13 @@ function WordCard({ word, onKnowIt, onReviewLater }: WordCardProps) {
         </p>
       </div>
 
-      {/* Pronunciation notes */}
+      {/* Pronunciation notes - track as hint usage */}
       {word.pronunciationNotes && (
-        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded text-sm">
+        <div 
+          className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded text-sm cursor-pointer"
+          onClick={() => setHintUsedForCurrentAttempt(true)}
+          title="Click to mark as hint used"
+        >
           <p className="text-blue-800 dark:text-blue-300">{word.pronunciationNotes}</p>
         </div>
       )}
