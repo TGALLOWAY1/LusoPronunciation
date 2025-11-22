@@ -1,86 +1,81 @@
-import { memo, useMemo, useCallback } from 'react';
+import { memo, useMemo } from 'react';
 import type { Category, Difficulty } from '@/lib/types';
+import { getDifficultyOptions } from '@/utils/difficultyLabels';
+import MultiSelect, { type MultiSelectOption } from '@/components/common/MultiSelect';
 
 interface FilterControlsProps {
   categories: Category[];
-  selectedCategory: string | null;
-  selectedDifficulty: Difficulty | null;
-  onCategoryChange: (categoryId: string | null) => void;
-  onDifficultyChange: (difficulty: Difficulty | null) => void;
+  selectedCategories: string[];
+  selectedDifficulties: Difficulty[];
+  onCategoryChange: (categoryIds: string[]) => void;
+  onDifficultyChange: (difficulties: Difficulty[]) => void;
 }
 
+/**
+ * FilterControls component for Category and Difficulty filtering.
+ * 
+ * This component provides multi-select dropdown filters for:
+ * - Category: Multiple categories can be selected
+ * - Difficulty: Multiple difficulty levels can be selected (Very Easy - Very Hard)
+ * 
+ * The "Current filters" header in SentencePractice displays a read-only summary
+ * of the same state managed here.
+ */
 function FilterControls({
   categories,
-  selectedCategory,
-  selectedDifficulty,
+  selectedCategories,
+  selectedDifficulties,
   onCategoryChange,
   onDifficultyChange,
 }: FilterControlsProps) {
-  const difficulties: { value: Difficulty; label: string }[] = useMemo(() => [
-    { value: 1, label: 'Very Easy' },
-    { value: 2, label: 'Easy' },
-    { value: 3, label: 'Medium' },
-    { value: 4, label: 'Hard' },
-    { value: 5, label: 'Very Hard' },
-  ], []);
+  const difficulties = getDifficultyOptions();
 
-  const handleCategoryClick = useCallback((categoryId: string | null) => {
-    onCategoryChange(categoryId);
-  }, [onCategoryChange]);
+  // Convert categories to MultiSelectOption format
+  const categoryOptions: MultiSelectOption[] = useMemo(() => {
+    return categories.map((category) => ({
+      value: category.id,
+      label: category.labelEn,
+    }));
+  }, [categories]);
 
-  const handleDifficultyClick = useCallback((difficulty: Difficulty | null) => {
-    onDifficultyChange(difficulty);
-  }, [onDifficultyChange]);
+  // Convert difficulties to MultiSelectOption format
+  const difficultyOptions: MultiSelectOption[] = useMemo(() => {
+    return difficulties.map((difficulty) => ({
+      value: difficulty.value,
+      label: difficulty.label,
+    }));
+  }, [difficulties]);
 
   return (
-    <div className="card card-compact mb-6">
-      <div className="flex flex-col md:flex-row gap-4">
+    <div className="card card-compact mb-6 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+      {/* Filters section header */}
+      <div className="mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+          Filters
+        </h3>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Category filter */}
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Category
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => handleCategoryClick(null)}
-              className={`chip ${selectedCategory === null ? 'chip-active' : 'chip-inactive'}`}
-            >
-              All
-            </button>
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => handleCategoryClick(category.id)}
-                className={`chip ${selectedCategory === category.id ? 'chip-active' : 'chip-inactive'}`}
-              >
-                {category.labelEn}
-              </button>
-            ))}
-          </div>
+          <MultiSelect
+            label="Category"
+            options={categoryOptions}
+            selectedValues={selectedCategories}
+            onChange={(values) => onCategoryChange(values as string[])}
+            placeholder="All categories"
+          />
         </div>
 
         {/* Difficulty filter */}
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Difficulty
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => handleDifficultyClick(null)}
-              className={`chip ${selectedDifficulty === null ? 'chip-active' : 'chip-inactive'}`}
-            >
-              All
-            </button>
-            {difficulties.map((difficulty) => (
-              <button
-                key={difficulty.value}
-                onClick={() => handleDifficultyClick(difficulty.value)}
-                className={`chip ${selectedDifficulty === difficulty.value ? 'chip-active' : 'chip-inactive'}`}
-              >
-                {difficulty.label}
-              </button>
-            ))}
-          </div>
+          <MultiSelect
+            label="Difficulty"
+            options={difficultyOptions}
+            selectedValues={selectedDifficulties}
+            onChange={(values) => onDifficultyChange(values as Difficulty[])}
+            placeholder="All difficulties"
+          />
         </div>
       </div>
     </div>

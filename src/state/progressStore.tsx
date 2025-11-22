@@ -96,6 +96,11 @@ export function ProgressStoreProvider({ children }: { children: ReactNode }) {
     setStorageError(!success);
   }, [entries]);
 
+  /**
+   * Rate a sentence with difficulty rating (Easy/Good/Hard).
+   * Note: This is still used by Review.tsx for spaced repetition.
+   * SentencePractice.tsx no longer uses this (Feat 15: progress tracked by pronunciation scores).
+   */
   const rateSentence = (sentenceId: string, rating: DifficultyRating) => {
     const key = getEntryKey(sentenceId, 'sentence');
     const now = new Date().toISOString();

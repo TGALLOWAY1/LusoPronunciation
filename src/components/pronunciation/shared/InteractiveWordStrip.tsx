@@ -59,7 +59,6 @@ export default function InteractiveWordStrip({
     const wordToSelect = actualWord || word;
     
     if (onWordSelected) {
-      console.log(`[InteractiveWordStrip] Selecting word: "${wordToSelect.text}" (index ${wordToSelect.index ?? wordToSelect.id}, wordId: ${wordToSelect.wordId || 'none'})`);
       onWordSelected(wordToSelect);
     }
     
@@ -69,10 +68,8 @@ export default function InteractiveWordStrip({
       a => a.type === 'native' && a.wordIndex === wordIdx
     );
     
-    if (nativeAudio && audioRef.current) {
-      // Prefer wordAudios when available (explicitly built for fixtures)
-      console.log(`[InteractiveWordStrip] Playing native audio from wordAudios for "${word.text}" from ${nativeAudio.url}`);
-      
+    // Guard against missing audio URL
+    if (nativeAudio && nativeAudio.url && audioRef.current) {
       // Stop any currently playing audio (both TTS and native)
       if (ttsAudioRef.current) {
         ttsAudioRef.current.pause();
@@ -99,26 +96,19 @@ export default function InteractiveWordStrip({
       // Play the native audio
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log(`[InteractiveWordStrip] Native audio started playing for "${word.text}"`);
-          })
-          .catch((error) => {
-            console.error(`[InteractiveWordStrip] Failed to play native audio for word "${word.text}" from ${nativeAudio.url}:`, error);
-            if (onWordStop) {
-              onWordStop();
-            } else {
-              setInternalActiveWordIndex(null);
-              setInternalActiveWordType(null);
-            }
-          });
+        playPromise.catch((error) => {
+          console.error(`Failed to play audio for word "${word.text}":`, error);
+          if (onWordStop) {
+            onWordStop();
+          } else {
+            setInternalActiveWordIndex(null);
+            setInternalActiveWordType(null);
+          }
+        });
       }
     } else if (word.wordId) {
       // Fall back to TTS audio if wordAudios not available but wordId exists
-      console.log(`[InteractiveWordStrip] No wordAudios entry found, falling back to TTS for "${word.text}" (wordId: ${word.wordId})`);
       handleTtsAudioClick(e, word);
-    } else {
-      console.warn(`[InteractiveWordStrip] No audio available for word "${word.text}" (index ${wordIdx}). wordId: ${word.wordId || 'none'}, wordAudios:`, wordAudios);
     }
   };
 
@@ -145,7 +135,10 @@ export default function InteractiveWordStrip({
       a => a.type === type && a.wordIndex === wordIdx
     );
     
-    if (!audioVariant) return;
+    // Guard against missing audio URL
+    if (!audioVariant || !audioVariant.url) {
+      return;
+    }
 
     // Stop any currently playing audio
     audioRef.current.pause();
@@ -196,14 +189,13 @@ export default function InteractiveWordStrip({
     e.stopPropagation();
     
     if (!word.wordId) {
-      console.log(`[InteractiveWordStrip] Word "${word.text}" has no wordId, trying native audio fallback`);
       // If no wordId, try to play native audio if available
       const wordIdx = word.index ?? parseInt(word.id, 10);
       const nativeAudio = wordAudios?.find(
         a => a.type === 'native' && a.wordIndex === wordIdx
       );
-      if (nativeAudio && audioRef.current) {
-        console.log(`[InteractiveWordStrip] Playing native audio for "${word.text}" from ${nativeAudio.url}`);
+      // Guard against missing audio URL
+      if (nativeAudio && nativeAudio.url && audioRef.current) {
         // Stop any currently playing audio
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
@@ -227,8 +219,6 @@ export default function InteractiveWordStrip({
             setInternalActiveWordType(null);
           }
         });
-      } else {
-        console.warn(`[InteractiveWordStrip] No native audio available for word "${word.text}"`);
       }
       return;
     }
@@ -236,13 +226,15 @@ export default function InteractiveWordStrip({
     // Use global voice setting
     const audioPath = getAudioUrlForWordSync(word.wordId, selectedVoice);
     
-    console.log(`[InteractiveWordStrip] Playing TTS audio for word "${word.text}" (${word.wordId}) with ${selectedVoice} voice from ${audioPath}`);
+    // Guard against missing audio URL
+    if (!audioPath) {
+      return;
+    }
 
     // Stop any currently playing TTS audio
     if (ttsAudioRef.current) {
       if (activeTtsWordId === word.wordId && !ttsAudioRef.current.paused) {
         // If clicking the same word that's playing, stop it
-        console.log(`[InteractiveWordStrip] Stopping currently playing audio for "${word.text}"`);
         ttsAudioRef.current.pause();
         ttsAudioRef.current.currentTime = 0;
         setActiveTtsWordId(null);
@@ -269,7 +261,6 @@ export default function InteractiveWordStrip({
       ttsAudioRef.current = new Audio();
       
       ttsAudioRef.current.addEventListener('ended', () => {
-        console.log(`[InteractiveWordStrip] TTS audio finished`);
         setActiveTtsWordId(null);
       });
       
@@ -278,26 +269,12 @@ export default function InteractiveWordStrip({
         const errorMsg = error 
           ? `Error ${error.code}: ${error.message || 'Unknown error'}`
           : 'Unknown error';
-        const currentSrc = ttsAudioRef.current?.src || 'unknown';
-        console.error(`[InteractiveWordStrip] Failed to play TTS audio at path "${currentSrc}":`, errorMsg);
+        console.error(`Failed to play TTS audio:`, errorMsg);
         setActiveTtsWordId(null);
-      });
-      
-      ttsAudioRef.current.addEventListener('loadstart', () => {
-        console.log(`[InteractiveWordStrip] TTS audio loading from ${ttsAudioRef.current?.src}`);
-      });
-      
-      ttsAudioRef.current.addEventListener('canplay', () => {
-        console.log(`[InteractiveWordStrip] TTS audio ready to play`);
       });
     }
 
-    // Set source and load
-    if (!audioPath) {
-      console.error(`No audio path found for word "${word.wordId}" with voice "${selectedVoice}"`);
-      return;
-    }
-    
+    // Set source and load (audioPath already validated above)
     ttsAudioRef.current.src = audioPath;
     ttsAudioRef.current.load(); // Force reload the audio
     
@@ -309,11 +286,8 @@ export default function InteractiveWordStrip({
       
       if (playPromise !== undefined) {
         playPromise
-          .then(() => {
-            console.log(`[InteractiveWordStrip] TTS audio started playing for "${word.text}" (${word.wordId})`);
-          })
           .catch((error) => {
-            console.error(`[InteractiveWordStrip] Failed to play TTS audio for word "${word.text}" (${word.wordId}):`, error);
+            console.error(`Failed to play TTS audio for word "${word.text}":`, error);
             setActiveTtsWordId(null);
           });
       }
@@ -400,43 +374,22 @@ export default function InteractiveWordStrip({
               {/* Word chip - clickable to play audio and show phoneme panel */}
               <button
                 onClick={(e) => handleWordClick(word, e)}
-                className={`transition-transform hover:scale-105 active:scale-95 ${
-                  isPlaying ? 'ring-2 ring-offset-2 ring-emerald-400 dark:ring-emerald-500 rounded-full' : ''
+                className={`transition-all duration-200 hover:scale-105 active:scale-95 ${
+                  isPlaying 
+                    ? 'ring-2 ring-offset-2 ring-emerald-400 dark:ring-emerald-500 rounded-full bg-emerald-50 dark:bg-emerald-900/20 shadow-md' 
+                    : ''
                 }`}
-                title={word.wordId 
-                  ? `Click to play ${selectedVoice} pronunciation and see phoneme breakdown for "${word.text}"`
-                  : word.phonemes && word.phonemes.length > 0 
-                    ? `Click to see phoneme breakdown for "${word.text}"`
-                    : `Click to see details for "${word.text}"`
-                }
+                title={`Play pronunciation: ${word.text}`}
               >
                 <WordScoreChip word={chipWord} />
               </button>
-              
-              {/* Audio control buttons - only show native audio button if available */}
-              {nativeAudio && (
-                <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {/* Native audio button (synthesized from phrase audio) */}
-                  <button
-                    onClick={(e) => handleAudioClick(e, word, 'native')}
-                    className={`w-6 h-6 rounded-full text-xs flex items-center justify-center transition-all ${
-                      isNativePlaying
-                        ? 'bg-emerald-500 text-white shadow-lg animate-pulse'
-                        : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-900/50'
-                    }`}
-                    title="Play native pronunciation from phrase audio"
-                  >
-                    N
-                  </button>
-                </div>
-              )}
             </div>
           );
         })}
       </div>
 
       <p className="text-xs text-gray-500 dark:text-gray-400">
-        Click a word to play its pronunciation and see detailed phoneme analysis. Use the N button (if available) to play native audio from the phrase.
+        Click a word to play its pronunciation and see detailed phoneme analysis.
       </p>
 
       {/* Shared audio element for native/user audio */}

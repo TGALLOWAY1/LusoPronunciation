@@ -281,6 +281,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
             listenedToNativeModelCount: logParams.listenedToNativeModelCount,
             wordScores: wordScores.length > 0 ? wordScores : undefined,
             latencyMs, // Include latency in practice log
+            recordingUrl: audioUrl || undefined, // Include recording URL for playback (blob URL, may not persist across sessions)
           });
 
           // Increment retry count for this sentence
@@ -292,8 +293,11 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         }
       }
 
-      // Reset recorder for next recording
-      resetRecorder();
+      // Don't reset recorder after submission - preserve audioUrl for playback
+      // The recorder will be reset when:
+      // 1. User explicitly clicks "Reset" button
+      // 2. User starts a new recording (startRecording clears previous state)
+      // 3. Sentence changes (handled by parent component)
       recordingStartTimeRef.current = null;
     } catch (err) {
       // Check if request was aborted

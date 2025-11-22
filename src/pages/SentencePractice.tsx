@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { setLastPracticeMode } from '@/lib/storage';
-import { useProgressStore } from '@/state/progressStore';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import {
   loadAllSentences,
@@ -8,28 +7,39 @@ import {
   filterSentencesByCategory,
   filterSentencesByDifficulty,
 } from '@/lib/data';
-import type { Sentence, Category, Difficulty } from '@/lib/types';
+import { preloadAudioIndex } from '@/utils/audioRouting';
+import type { Sentence, Category, Difficulty, SentencePracticeAttempt } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import { stopAllAudio } from '@/hooks/useAudioPlayer';
+import { getDifficultyLabel } from '@/utils/difficultyLabels';
 import LivePracticeSection from '@/components/practice/LivePracticeSection';
 import ScoringPanel from '@/components/pronunciation/ScoringPanel';
+import ScoreHistory from '@/components/practice/ScoreHistory';
+import AttemptHistory from '@/components/practice/AttemptHistory';
 import FilterControls from '@/components/practice/FilterControls';
 import NavigationButtons from '@/components/practice/NavigationButtons';
-import DifficultyButtons, { type DifficultyRating } from '@/components/practice/DifficultyButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import PageTransition from '@/components/common/PageTransition';
 
+/**
+ * Feat 15: Sentence difficulty ratings ('Easy/Good/Hard') were removed.
+ * Progress is tracked by pronunciation attempts and scores instead.
+ */
 export default function SentencePractice() {
-  const { rateSentence } = useProgressStore();
-  const { startSession, endSession } = usePracticeLogStore();
+  const { startSession, endSession, getAttemptsBySentenceId } = usePracticeLogStore();
   const sessionIdRef = useRef<string | null>(null);
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [livePracticeCurrentAttempt, setLivePracticeCurrentAttempt] = useState<AttemptScore | null>(null);
+  const [latestRecordingUrlForCurrentSentence, setLatestRecordingUrlForCurrentSentence] = useState<string | null>(null);
+  // selectedAttemptId determines which attempt's scoring + recording are shown
+  const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
+  // Active tab in main panel: 'practice' or 'history'
+  const [activeTab, setActiveTab] = useState<'practice' | 'history'>('practice');
 
   useEffect(() => {
     setLastPracticeMode('sentence');
@@ -52,6 +62,9 @@ export default function SentencePractice() {
   useEffect(() => {
     async function loadData() {
       try {
+        // Feat 15: Preload audio index for word-by-word audio playback
+        await preloadAudioIndex();
+        
         const [sentencesData, categoriesData] = await Promise.all([
           loadAllSentences(),
           loadAllCategories(),
@@ -67,39 +80,170 @@ export default function SentencePractice() {
     loadData();
   }, []);
 
-  // Filter sentences based on selected category and difficulty
+  // Filter sentences based on selected categories and difficulties
   const filteredSentences = useMemo(() => {
     let filtered = sentences;
 
-    if (selectedCategory) {
-      filtered = filterSentencesByCategory(filtered, selectedCategory);
+    if (selectedCategories.length > 0) {
+      filtered = filterSentencesByCategory(filtered, selectedCategories);
     }
 
-    if (selectedDifficulty) {
-      filtered = filterSentencesByDifficulty(filtered, selectedDifficulty, selectedDifficulty);
+    if (selectedDifficulties.length > 0) {
+      // Filter by multiple specific difficulties
+      filtered = filtered.filter(s => selectedDifficulties.includes(s.difficulty));
     }
 
     return filtered;
-  }, [sentences, selectedCategory, selectedDifficulty]);
+  }, [sentences, selectedCategories, selectedDifficulties]);
+
+  // Get current filter summary labels (used in both empty and normal states)
+  const currentFilterSummary = useMemo(() => {
+    let categoryLabel: string;
+    if (selectedCategories.length === 0) {
+      categoryLabel = 'All categories';
+    } else if (selectedCategories.length === 1) {
+      const category = categories.find(cat => cat.id === selectedCategories[0]);
+      categoryLabel = category?.labelEn || 'All categories';
+    } else {
+      const categoryNames = selectedCategories
+        .map(id => categories.find(cat => cat.id === id)?.labelEn)
+        .filter(Boolean) as string[];
+      categoryLabel = categoryNames.join(', ');
+    }
+    
+    let difficultyLabel: string;
+    if (selectedDifficulties.length === 0) {
+      difficultyLabel = 'All difficulties';
+    } else if (selectedDifficulties.length === 1) {
+      difficultyLabel = getDifficultyLabel(selectedDifficulties[0]) || 'All difficulties';
+    } else {
+      const difficultyNames = selectedDifficulties
+        .map(d => getDifficultyLabel(d))
+        .filter(Boolean) as string[];
+      difficultyLabel = difficultyNames.join(', ');
+    }
+
+    return { categoryLabel, difficultyLabel };
+  }, [selectedCategories, selectedDifficulties, categories]);
 
   // Reset to first sentence when filters change
   useEffect(() => {
     setCurrentIndex(0);
-  }, [selectedCategory, selectedDifficulty]);
+  }, [selectedCategories, selectedDifficulties]);
 
   // Stop any playing audio when sentence changes (e.g., via filter change)
   useEffect(() => {
     stopAllAudio();
-  }, [selectedCategory, selectedDifficulty]);
+  }, [selectedCategories, selectedDifficulties]);
 
   const currentSentence = useMemo(() => {
     return filteredSentences[currentIndex];
   }, [filteredSentences, currentIndex]);
 
-  // Reset live practice attempt when sentence changes
+  // Get attempt history for current sentence (sorted by timestamp descending, most recent first)
+  const sentenceAttempts = useMemo(() => {
+    if (!currentSentence) return [];
+    return getAttemptsBySentenceId(currentSentence.id);
+  }, [currentSentence?.id, getAttemptsBySentenceId]);
+
+  // Auto-select most recent attempt when attempts change or sentence changes
+  useEffect(() => {
+    if (sentenceAttempts.length > 0) {
+      // If no attempt is selected, or the selected attempt no longer exists, select the most recent
+      const mostRecentAttempt = sentenceAttempts[0];
+      if (!selectedAttemptId || !sentenceAttempts.find(a => a.attemptId === selectedAttemptId)) {
+        setSelectedAttemptId(mostRecentAttempt.attemptId);
+      }
+    } else {
+      // No attempts for this sentence, clear selection
+      setSelectedAttemptId(null);
+    }
+  }, [sentenceAttempts, selectedAttemptId]);
+
+  // When a new attempt is logged (livePracticeCurrentAttempt changes), auto-select it
+  useEffect(() => {
+    if (livePracticeCurrentAttempt?.attemptId && currentSentence) {
+      // Find the matching attempt in sentenceAttempts
+      const matchingAttempt = sentenceAttempts.find(
+        a => a.attemptId === livePracticeCurrentAttempt.attemptId
+      );
+      if (matchingAttempt) {
+        setSelectedAttemptId(matchingAttempt.attemptId);
+      }
+    }
+  }, [livePracticeCurrentAttempt?.attemptId, sentenceAttempts, currentSentence]);
+
+  // Reset live practice attempt and recording URL when sentence changes
   useEffect(() => {
     setLivePracticeCurrentAttempt(null);
+    setLatestRecordingUrlForCurrentSentence(null);
+    setSelectedAttemptId(null); // Will be set by the auto-select effect above
+    setActiveTab('practice'); // Reset to practice tab when sentence changes
   }, [currentSentence?.id]);
+
+  /**
+   * Converts a SentencePracticeAttempt to AttemptScore for use in ScoringPanel.
+   */
+  const convertAttemptToAttemptScore = useCallback((attempt: SentencePracticeAttempt): AttemptScore => {
+    return {
+      attemptId: attempt.attemptId,
+      sentenceId: attempt.sentenceId,
+      overallAccuracy: attempt.overallScore,
+      fluency: attempt.fluencyScore,
+      completeness: attempt.completenessScore,
+      prosody: attempt.prosodyScore,
+      wordScores: attempt.wordScores?.map(ws => ({
+        word: ws.token,
+        accuracy: ws.overallScore,
+        errorType: undefined, // SentencePracticeAttempt doesn't store errorType
+      })) || [],
+      createdAt: attempt.createdAt,
+      audioUrl: attempt.recordingUrl,
+      latencyMs: attempt.latencyMs,
+    };
+  }, []);
+
+  // Derive the selected attempt object and convert it to AttemptScore
+  const selectedAttempt = useMemo(() => {
+    if (!selectedAttemptId || sentenceAttempts.length === 0) {
+      // Fall back to livePracticeCurrentAttempt if no selected attempt
+      return livePracticeCurrentAttempt;
+    }
+    const found = sentenceAttempts.find(a => a.attemptId === selectedAttemptId);
+    if (found) {
+      return convertAttemptToAttemptScore(found);
+    }
+    // Fall back to most recent attempt or livePracticeCurrentAttempt
+    return sentenceAttempts.length > 0 
+      ? convertAttemptToAttemptScore(sentenceAttempts[0])
+      : livePracticeCurrentAttempt;
+  }, [selectedAttemptId, sentenceAttempts, livePracticeCurrentAttempt, convertAttemptToAttemptScore]);
+
+  // Get recording URL from selected attempt
+  const selectedRecordingUrl = useMemo(() => {
+    if (selectedAttempt?.audioUrl) {
+      return selectedAttempt.audioUrl;
+    }
+    // Fall back to latestRecordingUrlForCurrentSentence if selected attempt has no recording
+    return latestRecordingUrlForCurrentSentence;
+  }, [selectedAttempt?.audioUrl, latestRecordingUrlForCurrentSentence]);
+
+  // Format timestamp for display
+  const formatAttemptTimestamp = useCallback((isoString: string): string => {
+    const date = new Date(isoString);
+    return date.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      year: date.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined,
+    });
+  }, []);
+
+  // Handle recording URL changes from LivePracticeSection
+  const handleRecordingUrlChange = useCallback((url: string | null) => {
+    setLatestRecordingUrlForCurrentSentence(url);
+  }, []);
 
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
@@ -114,23 +258,6 @@ export default function SentencePractice() {
       setCurrentIndex(prev => prev + 1);
     }
   }, [currentIndex, filteredSentences.length]);
-
-  const handleDifficultySelect = useCallback((rating: DifficultyRating) => {
-    if (!currentSentence) return;
-
-    // Save rating to progress store
-    rateSentence(currentSentence.id, rating);
-
-    // Stop any playing audio
-    stopAllAudio();
-
-    // Auto-advance to next sentence after selection
-    if (currentIndex < filteredSentences.length - 1) {
-      setTimeout(() => {
-        setCurrentIndex(prev => prev + 1);
-      }, 300);
-    }
-  }, [currentSentence, currentIndex, filteredSentences.length, rateSentence]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -162,19 +289,27 @@ export default function SentencePractice() {
         <h2 className="text-3xl font-bold text-gray-900 mb-6">Sentence Practice</h2>
         <FilterControls
           categories={categories}
-          selectedCategory={selectedCategory}
-          selectedDifficulty={selectedDifficulty}
-          onCategoryChange={setSelectedCategory}
-          onDifficultyChange={setSelectedDifficulty}
+          selectedCategories={selectedCategories}
+          selectedDifficulties={selectedDifficulties}
+          onCategoryChange={setSelectedCategories}
+          onDifficultyChange={setSelectedDifficulties}
         />
+        {/* Current filters summary header */}
+        <div className="mb-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Category: <span className="font-medium text-gray-900 dark:text-gray-200">{currentFilterSummary.categoryLabel}</span>
+            {' · '}
+            Difficulty: <span className="font-medium text-gray-900 dark:text-gray-200">{currentFilterSummary.difficultyLabel}</span>
+          </p>
+        </div>
         <div className="card text-center">
           <p className="text-gray-600 dark:text-gray-400 text-lg">
             No sentences found matching your filters.
           </p>
           <button
             onClick={() => {
-              setSelectedCategory(null);
-              setSelectedDifficulty(null);
+              setSelectedCategories([]);
+              setSelectedDifficulties([]);
             }}
             className="btn btn-primary btn-sm mt-4"
           >
@@ -194,11 +329,20 @@ export default function SentencePractice() {
         <div className="mb-6">
         <FilterControls
           categories={categories}
-          selectedCategory={selectedCategory}
-          selectedDifficulty={selectedDifficulty}
-          onCategoryChange={setSelectedCategory}
-          onDifficultyChange={setSelectedDifficulty}
+          selectedCategories={selectedCategories}
+          selectedDifficulties={selectedDifficulties}
+          onCategoryChange={setSelectedCategories}
+          onDifficultyChange={setSelectedDifficulties}
         />
+        </div>
+
+        {/* Current filters summary header */}
+        <div className="mb-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Category: <span className="font-medium text-gray-900 dark:text-gray-200">{currentFilterSummary.categoryLabel}</span>
+            {' · '}
+            Difficulty: <span className="font-medium text-gray-900 dark:text-gray-200">{currentFilterSummary.difficultyLabel}</span>
+          </p>
         </div>
 
         {/* Main content area - Two column layout */}
@@ -207,39 +351,115 @@ export default function SentencePractice() {
             {/* Main panel - takes 2 columns */}
             <div className="lg:col-span-2">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                <div className="mb-4">
+                <div className="mb-4 flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
                     {currentIndex + 1} of {filteredSentences.length}
                   </span>
+                  
+                  {/* Tabs */}
+                  <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+                    <button
+                      onClick={() => setActiveTab('practice')}
+                      className={`px-4 py-2 text-sm font-medium transition-colors ${
+                        activeTab === 'practice'
+                          ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      }`}
+                    >
+                      Practice
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('history')}
+                      className={`px-4 py-2 text-sm font-medium transition-colors ${
+                        activeTab === 'history'
+                          ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      }`}
+                    >
+                      History
+                    </button>
+                  </div>
                 </div>
-                <LivePracticeSection
-                  sentence={currentSentence}
-                  sessionId={sessionIdRef.current}
-                  onCurrentAttemptChange={setLivePracticeCurrentAttempt}
-                />
+                
+                {/* Tab Content */}
+                {activeTab === 'practice' ? (
+                  <LivePracticeSection
+                    sentence={currentSentence}
+                    sessionId={sessionIdRef.current}
+                    onCurrentAttemptChange={setLivePracticeCurrentAttempt}
+                    onRecordingUrlChange={handleRecordingUrlChange}
+                  />
+                ) : (
+                  <div className="mt-4 space-y-4">
+                    {/* Selected Attempt Recording */}
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                        Selected Attempt Recording
+                      </h3>
+                      {selectedRecordingUrl ? (
+                        <div className="space-y-2">
+                          <audio
+                            controls
+                            src={selectedRecordingUrl}
+                            className="w-full"
+                          />
+                          {selectedAttemptId && sentenceAttempts.find(a => a.attemptId === selectedAttemptId) && (
+                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                              Recording from {formatAttemptTimestamp(sentenceAttempts.find(a => a.attemptId === selectedAttemptId)!.createdAt)}
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                          <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
+                            {selectedAttemptId 
+                              ? 'No recording available for this attempt.'
+                              : 'Record this sentence to play back your pronunciation here.'}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Attempt History */}
+                    <AttemptHistory
+                      attempts={sentenceAttempts}
+                      selectedAttemptId={selectedAttemptId}
+                      onSelectAttempt={setSelectedAttemptId}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Scoring panel - takes 1 column */}
-            <div className="lg:col-span-1">
-              <ScoringPanel currentAttempt={livePracticeCurrentAttempt} />
+            <div className="lg:col-span-1 space-y-4">
+              <ScoringPanel currentAttempt={selectedAttempt} />
+              
+              {/* Score History - Trend chart */}
+              <ScoreHistory attempts={sentenceAttempts} />
             </div>
           </div>
         ) : null}
 
-        {/* Navigation and difficulty rating */}
+        {/* Navigation buttons */}
         {currentSentence && (
-          <div className="space-y-4">
-            {/* Navigation buttons */}
-            <NavigationButtons
-              onPrevious={handlePrevious}
-              onNext={handleNext}
-              canGoPrevious={currentIndex > 0}
-              canGoNext={currentIndex < filteredSentences.length - 1}
-            />
-
-            {/* Difficulty rating buttons */}
-            <DifficultyButtons onSelect={handleDifficultySelect} />
+          <div className="flex flex-col sm:flex-row gap-3 mt-6">
+            <button
+              onClick={handlePrevious}
+              disabled={currentIndex === 0}
+              className="btn btn-secondary btn-md flex-1 flex items-center justify-center gap-2"
+            >
+              <span>←</span>
+              <span>Previous sentence</span>
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={currentIndex >= filteredSentences.length - 1}
+              className="btn btn-primary btn-md flex-1 flex items-center justify-center gap-2"
+            >
+              <span>Next sentence</span>
+              <span>→</span>
+            </button>
           </div>
         )}
       </div>

@@ -14,6 +14,7 @@ export interface LivePracticeSectionProps {
   sentence: Sentence;
   sessionId: string | null;
   onCurrentAttemptChange?: (attempt: AttemptScore | null) => void;
+  onRecordingUrlChange?: (url: string | null) => void;
 }
 
 /**
@@ -60,7 +61,8 @@ function buildSentenceAudioVariants(
 export default function LivePracticeSection({ 
   sentence, 
   sessionId,
-  onCurrentAttemptChange 
+  onCurrentAttemptChange,
+  onRecordingUrlChange,
 }: LivePracticeSectionProps) {
   const { selectedVoice } = useSettingsStore();
   
@@ -84,6 +86,18 @@ export default function LivePracticeSection({
       onCurrentAttemptChange(currentAttempt);
     }
   }, [currentAttempt, onCurrentAttemptChange]);
+
+  // Notify parent of recording URL changes
+  useEffect(() => {
+    if (onRecordingUrlChange) {
+      onRecordingUrlChange(audioUrl);
+    }
+  }, [audioUrl, onRecordingUrlChange]);
+
+  // Reset recording when sentence changes (but preserve it after submission for current sentence)
+  useEffect(() => {
+    resetRecording();
+  }, [sentence.id, resetRecording]);
 
   // Handle submit button click
   const handleSubmit = useCallback(async () => {

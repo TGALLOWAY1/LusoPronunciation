@@ -55,7 +55,7 @@ export default function ScoringPanel({ currentAttempt }: ScoringPanelProps) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 space-y-6">
       <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-        Scoring
+        Current Score
       </h3>
 
       {/* Overall Pronunciation Score */}

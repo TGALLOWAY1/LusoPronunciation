@@ -23,6 +23,7 @@ import { getSentenceAudioUrl, getWordAudioUrl, loadAudioIndex } from './audio';
 import type { AudioIndex } from './types';
 import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
 import { sampleData } from '../data/sampleData';
+import { buildWordRefs } from '../pipeline/sentenceWordRefs';
 
 // Cache for loaded data
 let cachedSentences: Sentence[] | null = null;
@@ -277,12 +278,48 @@ export async function loadAllSentences(): Promise<Sentence[]> {
     
     const data: SentencesData = await response.json();
     
+    // Feat 15: Load words to compute wordRefs for legacy sentences
+    // Use the same normalization function as buildWordRefs
+    const normalizeToken = (token: string): string => {
+      return token
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^\w\s]/g, ''); // Remove punctuation
+    };
+    
+    let wordsForWordRefs: EnrichedWord[] = [];
+    try {
+      const wordsData = await loadAllWords();
+      // Convert Word[] to EnrichedWord[] format for buildWordRefs
+      wordsForWordRefs = wordsData.map(word => ({
+        id: word.id,
+        text: word.textPt,
+        normalizedText: normalizeToken(word.textPt),
+        category: word.categoryId,
+      }));
+    } catch (wordError) {
+      console.warn('Failed to load words for wordRefs computation:', wordError);
+    }
+    
     const sentences: Sentence[] = [];
     
     for (const category of data.categories) {
       if (category.sentences) {
         for (const rawSentence of category.sentences) {
-          sentences.push(transformSentence(rawSentence, category, audioIndex));
+          const sentence = transformSentence(rawSentence, category, audioIndex);
+          
+          // Feat 15: Compute wordRefs for legacy sentences if words are available
+          if (wordsForWordRefs.length > 0) {
+            const wordRefs = buildWordRefs(sentence.textPt, wordsForWordRefs);
+            // Convert to the format expected by Sentence interface (without startChar/endChar)
+            sentence.wordRefs = wordRefs.map(ref => ({
+              wordId: ref.wordId,
+              tokenIndex: ref.tokenIndex,
+            }));
+          }
+          
+          sentences.push(sentence);
         }
       }
     }
