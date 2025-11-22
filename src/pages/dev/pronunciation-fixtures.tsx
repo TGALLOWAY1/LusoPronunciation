@@ -7,6 +7,9 @@ import {
   type NormalizedWordAudioVariant,
 } from '@/components/pronunciation/shared';
 import type { AudioVariant, WordAudioVariant } from '@/types/pronunciationFixtures';
+import { loadAllCategories, type Category } from '@/lib/data';
+import MultiSelect, { type MultiSelectOption } from '@/components/common/MultiSelect';
+import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 
 /**
  * Adapter functions to convert fixture data to generic PronunciationFeedbackPanel props.
@@ -55,7 +58,7 @@ function adaptPhraseToPanelProps(
     sentenceAudio: adaptFixtureSentenceAudio(phrase),
     wordAudios: adaptFixtureWordAudio(phrase),
     words: phrase.words ? phrase.words.map(adaptFixtureWordsToNormalized) : undefined,
-    title: 'Pronunciation Lab',
+    title: undefined, // No title for practice page
     showDevControls: true,
   };
 }
@@ -69,6 +72,9 @@ function adaptPhraseToPanelProps(
 export default function PronunciationFixtures() {
   const [phrases, setPhrases] = useState<PracticePhraseFromFixture[]>([]);
   const [selectedPhrase, setSelectedPhrase] = useState<PracticePhraseFromFixture | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<number[]>([]);
 
   // Adapt selected phrase to generic panel props
   const panelProps = useMemo<PronunciationFeedbackPanelProps | null>(() => {
@@ -77,18 +83,22 @@ export default function PronunciationFixtures() {
   }, [selectedPhrase]);
 
   useEffect(() => {
-    // Load all practice phrases once (async now due to sentence matching)
-    getAllPracticePhrasesFromFixtures()
-      .then((allPhrases) => {
-    setPhrases(allPhrases);
-    
-    // Select first phrase by default
-    if (allPhrases.length > 0) {
-      setSelectedPhrase(allPhrases[0]);
-    }
+    // Load all practice phrases and categories
+    Promise.all([
+      getAllPracticePhrasesFromFixtures(),
+      loadAllCategories(),
+    ])
+      .then(([allPhrases, allCategories]) => {
+        setPhrases(allPhrases);
+        setCategories(allCategories);
+        
+        // Select first phrase by default
+        if (allPhrases.length > 0) {
+          setSelectedPhrase(allPhrases[0]);
+        }
       })
       .catch((error) => {
-        console.error('Failed to load practice phrases:', error);
+        console.error('Failed to load practice phrases or categories:', error);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
@@ -97,31 +107,51 @@ export default function PronunciationFixtures() {
     setSelectedPhrase(phrase);
   };
 
+  // Filter phrases based on selected categories and difficulties
+  const filteredPhrases = useMemo(() => {
+    let filtered = phrases;
+
+    // Filter by categories
+    if (selectedCategoryIds.length > 0) {
+      filtered = filtered.filter(phrase => 
+        phrase.categoryId && selectedCategoryIds.includes(phrase.categoryId)
+      );
+    }
+
+    // Filter by difficulties
+    if (selectedDifficulties.length > 0) {
+      filtered = filtered.filter(phrase => 
+        selectedDifficulties.includes(phrase.difficulty)
+      );
+    }
+
+    return filtered;
+  }, [phrases, selectedCategoryIds, selectedDifficulties]);
 
   // Keyboard navigation handlers
   const moveToPreviousPhrase = useCallback(() => {
-    if (!selectedPhrase || phrases.length === 0) return;
+    if (!selectedPhrase || filteredPhrases.length === 0) return;
     
-    const currentIndex = phrases.findIndex((p) => p.id === selectedPhrase.id);
+    const currentIndex = filteredPhrases.findIndex((p) => p.id === selectedPhrase.id);
     if (currentIndex === -1) return;
     
     // Don't wrap - only move if not at the first phrase
     if (currentIndex > 0) {
-      setSelectedPhrase(phrases[currentIndex - 1]);
+      setSelectedPhrase(filteredPhrases[currentIndex - 1]);
     }
-  }, [selectedPhrase, phrases]);
+  }, [selectedPhrase, filteredPhrases]);
 
   const moveToNextPhrase = useCallback(() => {
-    if (!selectedPhrase || phrases.length === 0) return;
+    if (!selectedPhrase || filteredPhrases.length === 0) return;
     
-    const currentIndex = phrases.findIndex((p) => p.id === selectedPhrase.id);
+    const currentIndex = filteredPhrases.findIndex((p) => p.id === selectedPhrase.id);
     if (currentIndex === -1) return;
     
     // Don't wrap - only move if not at the last phrase
-    if (currentIndex < phrases.length - 1) {
-      setSelectedPhrase(phrases[currentIndex + 1]);
+    if (currentIndex < filteredPhrases.length - 1) {
+      setSelectedPhrase(filteredPhrases[currentIndex + 1]);
     }
-  }, [selectedPhrase, phrases]);
+  }, [selectedPhrase, filteredPhrases]);
 
   // Keyboard event listener for arrow key navigation
   useEffect(() => {
@@ -153,7 +183,65 @@ export default function PronunciationFixtures() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedPhrase, phrases, moveToPreviousPhrase, moveToNextPhrase]);
+  }, [selectedPhrase, filteredPhrases, moveToPreviousPhrase, moveToNextPhrase]);
+
+  // Update selected phrase if it's filtered out
+  useEffect(() => {
+    if (selectedPhrase && !filteredPhrases.find(p => p.id === selectedPhrase.id)) {
+      // Current phrase is filtered out, select first available or null
+      setSelectedPhrase(filteredPhrases.length > 0 ? filteredPhrases[0] : null);
+    }
+  }, [filteredPhrases, selectedPhrase]);
+
+  // Get unique categories from phrases (only show categories that exist in phrases)
+  const availableCategories = useMemo(() => {
+    const categoryMap = new Map<string, Category>();
+    categories.forEach(cat => categoryMap.set(cat.id, cat));
+    
+    const phraseCategories = new Set<string>();
+    phrases.forEach(phrase => {
+      if (phrase.categoryId) {
+        phraseCategories.add(phrase.categoryId);
+      }
+    });
+
+    return Array.from(phraseCategories)
+      .map(id => categoryMap.get(id))
+      .filter((cat): cat is Category => cat !== undefined)
+      .sort((a, b) => a.labelEn.localeCompare(b.labelEn));
+  }, [categories, phrases]);
+
+  // Get unique difficulties from phrases
+  const availableDifficulties = useMemo(() => {
+    const difficulties = new Set<number>();
+    phrases.forEach(phrase => {
+      difficulties.add(phrase.difficulty);
+    });
+    return Array.from(difficulties).sort((a, b) => a - b);
+  }, [phrases]);
+
+  // Build category options for multiselect
+  const categoryOptions: MultiSelectOption[] = useMemo(() => {
+    return availableCategories.map(cat => ({
+      value: cat.id,
+      label: cat.labelEn,
+    }));
+  }, [availableCategories]);
+
+  // Build difficulty options for multiselect
+  const difficultyOptions: MultiSelectOption[] = useMemo(() => {
+    const difficultyLabels: Record<number, string> = {
+      1: 'Very Easy',
+      2: 'Easy',
+      3: 'Medium',
+      4: 'Hard',
+      5: 'Very Hard',
+    };
+    return availableDifficulties.map(diff => ({
+      value: diff,
+      label: difficultyLabels[diff] || `Difficulty ${diff}`,
+    }));
+  }, [availableDifficulties]);
 
   const getDifficultyColor = (difficulty: number): string => {
     switch (difficulty) {
@@ -173,26 +261,44 @@ export default function PronunciationFixtures() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            Pronunciation Lab (Fixture Data)
-          </h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Interactive pronunciation practice tool powered by test fixtures. Use this lab to explore pronunciation feedback, compare native and user audio, and practice word-by-word pronunciation.
-          </p>
+        {/* Filters */}
+        <div className="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MultiSelect
+              label="Category"
+              options={categoryOptions}
+              selectedValues={selectedCategoryIds}
+              onChange={(values) => setSelectedCategoryIds(values as string[])}
+              placeholder="Select categories..."
+            />
+            <MultiSelect
+              label="Difficulty"
+              options={difficultyOptions}
+              selectedValues={selectedDifficulties}
+              onChange={(values) => setSelectedDifficulties(values as number[])}
+              placeholder="Select difficulties..."
+            />
+          </div>
         </div>
 
-        {/* Main content area - Sentences panel centered */}
-        <div className="max-w-4xl mx-auto mb-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            {panelProps ? (
-              <PronunciationFeedbackPanel {...panelProps} />
-            ) : (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                <p>Select a phrase from the list below to view details</p>
-              </div>
-            )}
+        {/* Main content area - Two column layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Main panel - takes 2 columns */}
+          <div className="lg:col-span-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              {panelProps ? (
+                <PronunciationFeedbackPanel {...panelProps} />
+              ) : (
+                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                  <p>Select a phrase from the list below to view details</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Scoring panel - takes 1 column */}
+          <div className="lg:col-span-1">
+            <ScoringPanel currentAttempt={panelProps?.currentAttempt ?? null} />
           </div>
         </div>
 
@@ -200,10 +306,16 @@ export default function PronunciationFixtures() {
         <div className="max-w-7xl mx-auto">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-              Phrases ({phrases.length})
+              Phrases ({filteredPhrases.length} of {phrases.length})
             </h2>
             <div className="space-y-2 max-h-[600px] overflow-y-auto">
-              {phrases.map((phrase) => (
+              {filteredPhrases.length === 0 ? (
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <p>No phrases match the selected filters.</p>
+                  <p className="text-sm mt-2">Try adjusting your category or difficulty selections.</p>
+                </div>
+              ) : (
+                filteredPhrases.map((phrase) => (
                 <button
                   key={phrase.id}
                   onClick={() => handlePhraseClick(phrase)}
@@ -229,7 +341,8 @@ export default function PronunciationFixtures() {
                     </div>
                   </div>
                 </button>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>

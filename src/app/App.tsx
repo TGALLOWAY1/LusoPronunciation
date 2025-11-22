@@ -19,14 +19,10 @@ function AppRoutes() {
       <AppLayout>
         <Routes>
           <Route path="/" element={<UserDashboardPage />} />
-          {/* TODO: /practice/sentence is currently mapped to PronunciationFixtures to unify the UI.
-              Once live Azure integration is stable in the Lab layout, we can rename/refactor the page
-              so that both dev + practice use the same underlying component with different data sources. */}
           <Route path="/practice/sentence" element={<PronunciationFixtures />} />
           <Route path="/practice/word" element={<WordPractice />} />
           <Route path="/review" element={<Review />} />
           <Route path="/sessions" element={<RecentSessions />} />
-          <Route path="/dev/pronunciation-fixtures" element={<PronunciationFixtures />} />
           <Route path="/dev/analytics" element={<DevAnalyticsPage />} />
         </Routes>
       </AppLayout>

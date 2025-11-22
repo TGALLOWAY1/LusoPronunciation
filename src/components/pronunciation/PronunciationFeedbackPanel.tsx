@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
 import {
   SentenceAudioControls,
-  PhraseScoreOverview,
   InteractiveWordStrip,
   PhonemePanel,
   type NormalizedWordFeedback,
@@ -86,15 +85,6 @@ export default function PronunciationFeedbackPanel({
   // Refs for audio elements to enable stopping from parent
   const sentenceAudioRef = useRef<HTMLAudioElement>(null);
   const wordAudioRef = useRef<HTMLAudioElement>(null);
-
-  // Compute trend scores from attempts array (for PhraseScoreOverview)
-  const trendScores = useMemo(() => {
-    if (!attempts || attempts.length === 0) {
-      return undefined;
-    }
-    // Reverse to show oldest first (for chronological trend)
-    return [...attempts].reverse().map(a => a.overallAccuracy);
-  }, [attempts]);
 
   // Reset practice mode when sentence changes (use sentenceText as key)
   useEffect(() => {
@@ -256,16 +246,6 @@ export default function PronunciationFeedbackPanel({
             Record this sentence to see your pronunciation scores and word-by-word breakdown.
           </p>
         </div>
-      )}
-
-      {/* Graphical score overview - only show when we have attempts */}
-      {hasAttempts && (
-        <PhraseScoreOverview
-          attemptScore={currentAttempt}
-          words={words}
-          trendScores={trendScores}
-          onWordSelected={handleWordSelected}
-        />
       )}
 
       {/* Interactive word strip - show whenever we have word data */}

@@ -112,6 +112,7 @@ export type PracticePhraseFromFixture = {
   text: string;            // Portuguese phrase text
   translationEn?: string;  // English translation (if available from sentences.json)
   difficulty: number;
+  categoryId?: string;     // Category ID from matching sentence (if available)
   audioUrl: string;        // URL to use in <audio src=...>
   attempt: AttemptScore;   // single "fixture attempt" containing overall scores
   sentenceAudio: AudioVariant[];      // [native, user]
@@ -367,6 +368,7 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
   // Find matching sentence for native audio and English translation
   const matchingSentence = await findMatchingSentence(fixture.text);
   const translationEn = matchingSentence?.translationEn;
+  const categoryId = matchingSentence?.categoryId;
 
   // Build sentenceAudio with native and user variants
   // Use global voice setting (default to 'male' if not available in non-React context)
@@ -491,6 +493,7 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
     text: fixture.text,
     translationEn,
     difficulty: fixture.difficulty,
+    categoryId,
     audioUrl,
     attempt,
     sentenceAudio,
