@@ -18,5 +18,6 @@ export type AttemptScore = {
   wordScores: WordScore[];
   createdAt: string;
   audioUrl?: string; // local blob URL for playback
+  latencyMs?: number; // round-trip time for the Azure API call (ms)
 };
 

@@ -4,6 +4,62 @@
  * This handler processes audio recordings and sends them to Azure Speech Service
  * for pronunciation assessment.
  * 
+ * AZURE CONFIGURATION REQUIREMENTS:
+ * 
+ * Endpoint: https://{region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1
+ * 
+ * Required Headers:
+ * - Content-Type: audio/wav (preferred) or audio/webm; codecs=opus
+ * - Ocp-Apim-Subscription-Key: {your-key}
+ * - Pronunciation-Assessment: base64-encoded JSON config with ReferenceText
+ * 
+ * Required Query Parameters:
+ * - language: e.g., "pt-BR"
+ * - format: "detailed" (required for pronunciation assessment)
+ * 
+ * Pronunciation Assessment Config (base64-encoded in header):
+ * {
+ *   "ReferenceText": "the text to compare against",
+ *   "GradingSystem": "HundredMark",
+ *   "Granularity": "Word",
+ *   "Dimension": "Comprehensive",
+ *   "EnableMiscue": "True"
+ * }
+ * 
+ * AUDIO FORMAT REQUIREMENT:
+ * 
+ * CRITICAL: Azure Pronunciation Assessment REQUIRES PCM/WAV format:
+ * - Format: PCM/WAV (NOT webm/opus)
+ * - Sample Rate: 16,000 Hz
+ * - Bit Depth: 16 bits
+ * - Channels: Mono
+ * 
+ * MediaRecorder produces webm/opus, which Azure may not properly process.
+ * If PronunciationAssessment fields are missing in responses, the audio format
+ * is likely the cause. Convert webm/opus to WAV before sending to Azure.
+ * 
+ * RESPONSE NORMALIZATION:
+ * 
+ * Azure returns different response formats:
+ * - Azure Studio: Array format with nested PronunciationAssessment objects
+ * - REST API: Object format, may have scores directly on NBest[0] or nested
+ * 
+ * The normalizeAzurePronunciationResponse() function handles both formats and
+ * ensures consistent structure for mapping to AttemptScore.
+ * 
+ * KNOWN ISSUES:
+ * 
+ * 1. Audio Format Mismatch:
+ *    - Current: Sending webm/opus from MediaRecorder
+ *    - Required: PCM/WAV 16kHz 16-bit mono
+ *    - Impact: Azure may not return PronunciationAssessment fields
+ *    - Solution: Convert audio to WAV format before sending
+ * 
+ * 2. Response Structure Differences:
+ *    - Fixture JSON (Azure Studio): Array with nested PronunciationAssessment
+ *    - Live REST API: Object with scores directly or nested (varies)
+ *    - Solution: normalizeAzurePronunciationResponse() handles both
+ * 
  * To wire this into your server:
  * 
  * Example with Express:
@@ -32,8 +88,46 @@
  */
 
 import { randomUUID } from 'crypto';
-import { mapAzurePronunciationResultToAttemptScore } from '@/lib/pronunciationUtils';
-import type { AttemptScore } from '@/types/pronunciation';
+import { mapAzurePronunciationResultToAttemptScore } from '../../lib/pronunciationUtils';
+import type { AttemptScore } from '../../types/pronunciation';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { tmpdir } from 'os';
+import { join } from 'path';
+import { writeFile, readFile, unlink } from 'fs/promises';
+import { existsSync } from 'fs';
+
+const execAsync = promisify(exec);
+
+/**
+ * TODO: Audio Conversion Implementation Summary
+ * 
+ * Library Choice: ffmpeg-static (optional) + child_process.exec
+ * 
+ * Why this approach:
+ * - ffmpeg-static: Bundles ffmpeg binary (~50MB), no system dependency required
+ * - child_process.exec: Simple, direct interface (no wrapper library needed)
+ * - Most reliable for webm/opus → WAV conversion
+ * - Handles all codec variants and edge cases
+ * - Industry-standard tool
+ * 
+ * Trade-offs:
+ * - Binary size: ~50MB added to node_modules (only on server, not client)
+ * - Performance: Fast conversion (~100-500ms for typical 1-5 second recordings)
+ * - Fallback: If ffmpeg-static not installed, uses system ffmpeg (if available)
+ * - File I/O: Uses temp files (acceptable for <1MB audio files)
+ * 
+ * Alternative considered: @ffmpeg/ffmpeg (WASM)
+ * - Pros: Pure JS, no binary dependency
+ * - Cons: Slower (~2-5x), larger bundle, more complex API, potential memory issues
+ * 
+ * Future optimizations:
+ * - Cache converted WAVs if same audio blob is re-submitted (unlikely for live recordings)
+ * - Stream conversion instead of file-based (more complex, minimal benefit for <1MB files)
+ * - Consider WebAssembly solution if binary size becomes deployment issue
+ * - Batch conversion if multiple requests arrive simultaneously (add queue)
+ * - Pre-warm ffmpeg process pool for faster startup
+ */
 
 /**
  * Server-side Azure Speech configuration
@@ -59,6 +153,86 @@ function getAzureSpeechConfig() {
   }
 
   return { key, region };
+}
+
+/**
+ * Converts webm/opus audio buffer to PCM/WAV format required by Azure.
+ * 
+ * @param webmBuffer - Input webm/opus audio buffer
+ * @returns Promise resolving to WAV buffer (16kHz, 16-bit, mono PCM)
+ * @throws Error if conversion fails
+ */
+async function convertWebmOpusToWav(webmBuffer: Buffer): Promise<Buffer> {
+  // Use ffmpeg-static if available, otherwise fall back to system ffmpeg
+  let ffmpegPath = 'ffmpeg';
+  try {
+    // Try to use ffmpeg-static (bundled binary)
+    // Dynamic import to avoid requiring it at module load time
+    // @ts-ignore - ffmpeg-static is optional dependency, may not be installed
+    const ffmpegStatic = await import('ffmpeg-static').catch(() => null);
+    if (ffmpegStatic) {
+      // ffmpeg-static exports the path as default or as the module itself
+      if (typeof ffmpegStatic === 'string') {
+        ffmpegPath = ffmpegStatic;
+      } else if (typeof (ffmpegStatic as any).default === 'string') {
+        ffmpegPath = (ffmpegStatic as any).default;
+      } else if (typeof (ffmpegStatic as any) === 'string') {
+        ffmpegPath = ffmpegStatic as any;
+      }
+    }
+  } catch (err) {
+    // ffmpeg-static not installed, use system ffmpeg
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('[Audio Conversion] ffmpeg-static not found, using system ffmpeg. Install it for better reliability.');
+    }
+  }
+
+  // Create temporary files for input and output
+  const tempDir = tmpdir();
+  const inputPath = join(tempDir, `input_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.webm`);
+  const outputPath = join(tempDir, `output_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.wav`);
+
+  try {
+    // Write input buffer to temp file
+    await writeFile(inputPath, webmBuffer);
+
+    // Convert using ffmpeg: webm/opus -> WAV (16kHz, 16-bit, mono PCM)
+    // -f wav: WAV format
+    // -ar 16000: 16kHz sample rate
+    // -ac 1: Mono channel
+    // -sample_fmt s16: 16-bit signed integer samples
+    // -y: Overwrite output file
+    // -loglevel error: Only show errors (reduce noise)
+    const { stdout, stderr } = await execAsync(
+      `"${ffmpegPath}" -i "${inputPath}" -f wav -ar 16000 -ac 1 -sample_fmt s16 -loglevel error -y "${outputPath}"`,
+      { timeout: 10000 } // 10 second timeout
+    );
+
+    // Read converted WAV file
+    if (!existsSync(outputPath)) {
+      throw new Error(`ffmpeg conversion failed: output file not created. stderr: ${stderr || 'none'}`);
+    }
+
+    const wavBuffer = await readFile(outputPath);
+
+    // Verify WAV header (basic sanity check)
+    if (wavBuffer.length < 12 || wavBuffer.toString('ascii', 0, 4) !== 'RIFF' || wavBuffer.toString('ascii', 8, 12) !== 'WAVE') {
+      throw new Error('Converted file does not appear to be a valid WAV file');
+    }
+
+    return wavBuffer;
+  } finally {
+    // Clean up temp files
+    try {
+      if (existsSync(inputPath)) await unlink(inputPath).catch(() => {});
+      if (existsSync(outputPath)) await unlink(outputPath).catch(() => {});
+    } catch (cleanupErr) {
+      // Ignore cleanup errors (non-critical)
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('[Audio Conversion] Failed to clean up temp files:', cleanupErr);
+      }
+    }
+  }
 }
 
 /**
@@ -164,19 +338,67 @@ export async function handlePronunciationAssessment(
       );
     }
 
+    // Convert webm/opus to WAV format required by Azure
+    // Azure Pronunciation Assessment REQUIRES PCM/WAV (16kHz, 16-bit, mono)
+    let wavBuffer: Buffer;
+    let contentType: string;
+    
+    try {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('[Pronunciation Assessment] Converting webm/opus to WAV...');
+        const conversionStart = Date.now();
+        wavBuffer = await convertWebmOpusToWav(audioBuffer);
+        const conversionTime = Date.now() - conversionStart;
+        console.log(`[Pronunciation Assessment] Conversion completed in ${conversionTime}ms, output size: ${wavBuffer.length} bytes`);
+      } else {
+        wavBuffer = await convertWebmOpusToWav(audioBuffer);
+      }
+      contentType = 'audio/wav';
+    } catch (conversionError) {
+      console.error('[Pronunciation Assessment] Audio conversion failed:', conversionError);
+      // Fall back to original format (may not work, but better than failing completely)
+      wavBuffer = audioBuffer;
+      contentType = 'audio/webm; codecs=opus';
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('[Pronunciation Assessment] WARNING: Using original webm/opus format. Azure may not return PronunciationAssessment fields.');
+      }
+    }
+
     // Build Azure endpoint URL
+    // NOTE: This endpoint supports pronunciation assessment when the Pronunciation-Assessment header is included
     const azureEndpoint = `https://${region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${encodeURIComponent(language)}&format=detailed`;
 
     // Build pronunciation assessment header
     const paHeader = buildPronunciationAssessmentHeader(referenceText);
+    
+    // Comprehensive debug logging (development only)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[Pronunciation Assessment] ===== REQUEST DEBUG =====');
+      console.log('[Pronunciation Assessment] Endpoint:', azureEndpoint.replace(key, '***'));
+      console.log('[Pronunciation Assessment] Reference text:', referenceText);
+      console.log('[Pronunciation Assessment] Language:', language);
+      console.log('[Pronunciation Assessment] Input audio size:', audioBuffer.length, 'bytes');
+      console.log('[Pronunciation Assessment] Output audio size:', wavBuffer.length, 'bytes');
+      console.log('[Pronunciation Assessment] Content-Type:', contentType);
+      console.log('[Pronunciation Assessment] PA header (base64):', paHeader);
+      // Decode to verify
+      try {
+        const decoded = Buffer.from(paHeader, 'base64').toString('utf-8');
+        console.log('[Pronunciation Assessment] PA header (decoded):', decoded);
+      } catch (e) {
+        console.warn('[Pronunciation Assessment] Failed to decode PA header:', e);
+      }
+      console.log('[Pronunciation Assessment] ========================');
+    }
 
     // Call Azure Speech API
     // Convert Buffer to Uint8Array for fetch compatibility
-    const audioBody = new Uint8Array(audioBuffer);
+    const audioBody = new Uint8Array(wavBuffer);
+    
     const azureResponse = await fetch(azureEndpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'audio/ogg; codecs=opus; samplerate=16000',
+        'Content-Type': contentType,
         'Ocp-Apim-Subscription-Key': key,
         'Pronunciation-Assessment': paHeader,
       },
@@ -207,15 +429,66 @@ export async function handlePronunciationAssessment(
 
     // Parse Azure response
     const rawAzure = await azureResponse.json();
+    
+    // Comprehensive debug logging and save response (development only)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[Pronunciation Assessment] ===== RESPONSE DEBUG =====');
+      console.log('[Pronunciation Assessment] Response status:', azureResponse.status);
+      console.log('[Pronunciation Assessment] Response structure analysis:');
+      console.log('  - Is array?', Array.isArray(rawAzure));
+      console.log('  - Root keys:', Object.keys(Array.isArray(rawAzure) ? rawAzure[0] || {} : rawAzure || {}));
+      console.log('  - RecognitionStatus:', (Array.isArray(rawAzure) ? rawAzure[0] : rawAzure)?.RecognitionStatus);
+      console.log('  - DisplayText:', (Array.isArray(rawAzure) ? rawAzure[0] : rawAzure)?.DisplayText);
+      
+      const nBest = (Array.isArray(rawAzure) ? rawAzure[0] : rawAzure)?.NBest;
+      if (nBest && nBest[0]) {
+        const firstNBest = nBest[0];
+        console.log('  - NBest[0] keys:', Object.keys(firstNBest));
+        console.log('  - Has PronunciationAssessment?', !!firstNBest.PronunciationAssessment);
+        console.log('  - Direct AccuracyScore?', firstNBest.AccuracyScore !== undefined);
+        console.log('  - Nested AccuracyScore?', firstNBest.PronunciationAssessment?.AccuracyScore !== undefined);
+        console.log('  - Words count:', firstNBest.Words?.length ?? 0);
+        if (firstNBest.Words && firstNBest.Words[0]) {
+          const firstWord = firstNBest.Words[0];
+          console.log('  - First word:', firstWord.Word);
+          console.log('  - First word has PronunciationAssessment?', !!firstWord.PronunciationAssessment);
+          console.log('  - First word direct AccuracyScore?', firstWord.AccuracyScore !== undefined);
+        }
+      }
+      
+      // Save full response to file for detailed inspection
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      const debugDir = path.join(process.cwd(), 'data', 'debug');
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const filename = `azure_pronunciation_live_sample_${timestamp}.json`;
+      const filepath = path.join(debugDir, filename);
+      try {
+        await fs.mkdir(debugDir, { recursive: true });
+        await fs.writeFile(filepath, JSON.stringify(rawAzure, null, 2));
+        console.log(`[Pronunciation Assessment] Saved full response to: ${filepath}`);
+      } catch (err) {
+        console.warn('[Pronunciation Assessment] Failed to save response:', err);
+      }
+      
+      console.log('[Pronunciation Assessment] ===========================');
+    }
 
     // Map to AttemptScore
     const attemptId = randomUUID();
-    const attemptScore: AttemptScore = mapAzurePronunciationResultToAttemptScore(
-      rawAzure,
-      sentenceId,
-      attemptId,
-      undefined // audioUrl - client will attach the blob URL
-    );
+    let attemptScore: AttemptScore;
+    try {
+      attemptScore = mapAzurePronunciationResultToAttemptScore(
+        rawAzure,
+        sentenceId,
+        attemptId,
+        undefined // audioUrl - client will attach the blob URL
+      );
+    } catch (mappingError) {
+      console.error('[Pronunciation Assessment] Error mapping Azure response:', mappingError);
+      console.error('[Pronunciation Assessment] Raw Azure response:', JSON.stringify(rawAzure, null, 2));
+      throw new Error(`Failed to map Azure response: ${mappingError instanceof Error ? mappingError.message : 'Unknown mapping error'}`);
+    }
 
     // Return both raw and mapped response
     return new Response(

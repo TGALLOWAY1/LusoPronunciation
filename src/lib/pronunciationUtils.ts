@@ -1,4 +1,5 @@
-import type { AttemptScore, WordScore, ErrorType } from '@/types/pronunciation';
+import type { AttemptScore, WordScore, ErrorType } from '../types/pronunciation';
+import { normalizeAzurePronunciationResponse } from './azurePronunciationNormalizer';
 
 /**
  * Maps Azure's ErrorType values to our ErrorType enum
@@ -19,6 +20,8 @@ function mapAzureErrorType(azureErrorType: string | undefined): ErrorType {
 /**
  * Maps Azure Speech pronunciation assessment result to AttemptScore
  * 
+ * Uses the normalizer to handle different Azure response formats (Studio vs REST API).
+ * 
  * @param raw - The JSON response from Azure short-audio + pronunciation assessment
  * @param sentenceId - The ID of the sentence being assessed
  * @param attemptId - Unique identifier for this attempt
@@ -31,23 +34,22 @@ export function mapAzurePronunciationResultToAttemptScore(
   attemptId: string,
   audioUrl?: string
 ): AttemptScore {
-  // Extract the best hypothesis from NBest[0]
-  const bestHypothesis = raw?.NBest?.[0];
-  const pronunciationAssessment = bestHypothesis?.PronunciationAssessment || {};
-  const words = bestHypothesis?.Words || [];
+  // Normalize the Azure response to a consistent format
+  const normalized = normalizeAzurePronunciationResponse(raw);
+  
+  const { pronunciationAssessment, words } = normalized.bestHypothesis;
 
-  // Map overall scores (default to 0 if missing)
-  const overallAccuracy = pronunciationAssessment.AccuracyScore ?? 0;
-  const fluency = pronunciationAssessment.FluencyScore ?? undefined;
-  const completeness = pronunciationAssessment.CompletenessScore ?? undefined;
-  const prosody = pronunciationAssessment.ProsodyScore ?? undefined;
+  // Map overall scores from normalized structure
+  const overallAccuracy = pronunciationAssessment.accuracyScore ?? 0;
+  const fluency = pronunciationAssessment.fluencyScore;
+  const completeness = pronunciationAssessment.completenessScore;
+  const prosody = pronunciationAssessment.prosodyScore;
 
-  // Map word-level scores
-  const wordScores: WordScore[] = words.map((wordItem: any) => {
-    const wordText = wordItem.Word || '';
-    const wordAssessment = wordItem.PronunciationAssessment || {};
-    const wordAccuracy = wordAssessment.AccuracyScore ?? 0;
-    const errorType = mapAzureErrorType(wordAssessment.ErrorType);
+  // Map word-level scores from normalized structure
+  const wordScores: WordScore[] = words.map((wordItem) => {
+    const wordText = wordItem.word || '';
+    const wordAccuracy = wordItem.pronunciationAssessment.accuracyScore ?? 0;
+    const errorType = mapAzureErrorType(wordItem.pronunciationAssessment.errorType);
 
     return {
       word: wordText,

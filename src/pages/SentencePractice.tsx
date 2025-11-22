@@ -9,8 +9,10 @@ import {
   filterSentencesByDifficulty,
 } from '@/lib/data';
 import type { Sentence, Category, Difficulty } from '@/lib/types';
+import type { AttemptScore } from '@/types/pronunciation';
 import { stopAllAudio } from '@/hooks/useAudioPlayer';
-import SentenceCard from '@/components/practice/SentenceCard';
+import LivePracticeSection from '@/components/practice/LivePracticeSection';
+import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import FilterControls from '@/components/practice/FilterControls';
 import NavigationButtons from '@/components/practice/NavigationButtons';
 import DifficultyButtons, { type DifficultyRating } from '@/components/practice/DifficultyButtons';
@@ -27,6 +29,7 @@ export default function SentencePractice() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [livePracticeCurrentAttempt, setLivePracticeCurrentAttempt] = useState<AttemptScore | null>(null);
 
   useEffect(() => {
     setLastPracticeMode('sentence');
@@ -92,6 +95,11 @@ export default function SentencePractice() {
   const currentSentence = useMemo(() => {
     return filteredSentences[currentIndex];
   }, [filteredSentences, currentIndex]);
+
+  // Reset live practice attempt when sentence changes
+  useEffect(() => {
+    setLivePracticeCurrentAttempt(null);
+  }, [currentSentence?.id]);
 
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
@@ -179,10 +187,11 @@ export default function SentencePractice() {
 
   return (
     <PageTransition>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Sentence Practice</h2>
 
         {/* Filter controls */}
+        <div className="mb-6">
         <FilterControls
           categories={categories}
           selectedCategory={selectedCategory}
@@ -190,17 +199,37 @@ export default function SentencePractice() {
           onCategoryChange={setSelectedCategory}
           onDifficultyChange={setSelectedDifficulty}
         />
+        </div>
 
-        {/* Sentence card */}
+        {/* Main content area - Two column layout */}
+        {currentSentence ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            {/* Main panel - takes 2 columns */}
+            <div className="lg:col-span-2">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                <div className="mb-4">
+                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    {currentIndex + 1} of {filteredSentences.length}
+                  </span>
+                </div>
+                <LivePracticeSection
+                  sentence={currentSentence}
+                  sessionId={sessionIdRef.current}
+                  onCurrentAttemptChange={setLivePracticeCurrentAttempt}
+                />
+              </div>
+            </div>
+
+            {/* Scoring panel - takes 1 column */}
+            <div className="lg:col-span-1">
+              <ScoringPanel currentAttempt={livePracticeCurrentAttempt} />
+            </div>
+          </div>
+        ) : null}
+
+        {/* Navigation and difficulty rating */}
         {currentSentence && (
-          <>
-            <SentenceCard
-              sentence={currentSentence}
-              currentIndex={currentIndex}
-              totalCount={filteredSentences.length}
-              sessionId={sessionIdRef.current}
-            />
-
+          <div className="space-y-4">
             {/* Navigation buttons */}
             <NavigationButtons
               onPrevious={handlePrevious}
@@ -211,7 +240,7 @@ export default function SentencePractice() {
 
             {/* Difficulty rating buttons */}
             <DifficultyButtons onSelect={handleDifficultySelect} />
-          </>
+          </div>
         )}
       </div>
     </PageTransition>
