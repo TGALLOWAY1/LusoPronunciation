@@ -8,13 +8,14 @@ import {
   filterSentencesByDifficulty,
 } from '@/lib/data';
 import { preloadAudioIndex } from '@/utils/audioRouting';
-import type { Sentence, Category, Difficulty } from '@/lib/types';
+import type { Sentence, Category, Difficulty, SentencePracticeAttempt } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import { stopAllAudio } from '@/hooks/useAudioPlayer';
 import { getDifficultyLabel } from '@/utils/difficultyLabels';
 import LivePracticeSection from '@/components/practice/LivePracticeSection';
 import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import ScoreHistory from '@/components/practice/ScoreHistory';
+import AttemptHistory from '@/components/practice/AttemptHistory';
 import FilterControls from '@/components/practice/FilterControls';
 import NavigationButtons from '@/components/practice/NavigationButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -35,6 +36,10 @@ export default function SentencePractice() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [livePracticeCurrentAttempt, setLivePracticeCurrentAttempt] = useState<AttemptScore | null>(null);
   const [latestRecordingUrlForCurrentSentence, setLatestRecordingUrlForCurrentSentence] = useState<string | null>(null);
+  // selectedAttemptId determines which attempt's scoring + recording are shown
+  const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
+  // Active tab in main panel: 'practice' or 'history'
+  const [activeTab, setActiveTab] = useState<'practice' | 'history'>('practice');
 
   useEffect(() => {
     setLastPracticeMode('sentence');
@@ -135,17 +140,105 @@ export default function SentencePractice() {
     return filteredSentences[currentIndex];
   }, [filteredSentences, currentIndex]);
 
-  // Get attempt history for current sentence
+  // Get attempt history for current sentence (sorted by timestamp descending, most recent first)
   const sentenceAttempts = useMemo(() => {
     if (!currentSentence) return [];
     return getAttemptsBySentenceId(currentSentence.id);
   }, [currentSentence?.id, getAttemptsBySentenceId]);
 
+  // Auto-select most recent attempt when attempts change or sentence changes
+  useEffect(() => {
+    if (sentenceAttempts.length > 0) {
+      // If no attempt is selected, or the selected attempt no longer exists, select the most recent
+      const mostRecentAttempt = sentenceAttempts[0];
+      if (!selectedAttemptId || !sentenceAttempts.find(a => a.attemptId === selectedAttemptId)) {
+        setSelectedAttemptId(mostRecentAttempt.attemptId);
+      }
+    } else {
+      // No attempts for this sentence, clear selection
+      setSelectedAttemptId(null);
+    }
+  }, [sentenceAttempts, selectedAttemptId]);
+
+  // When a new attempt is logged (livePracticeCurrentAttempt changes), auto-select it
+  useEffect(() => {
+    if (livePracticeCurrentAttempt?.attemptId && currentSentence) {
+      // Find the matching attempt in sentenceAttempts
+      const matchingAttempt = sentenceAttempts.find(
+        a => a.attemptId === livePracticeCurrentAttempt.attemptId
+      );
+      if (matchingAttempt) {
+        setSelectedAttemptId(matchingAttempt.attemptId);
+      }
+    }
+  }, [livePracticeCurrentAttempt?.attemptId, sentenceAttempts, currentSentence]);
+
   // Reset live practice attempt and recording URL when sentence changes
   useEffect(() => {
     setLivePracticeCurrentAttempt(null);
     setLatestRecordingUrlForCurrentSentence(null);
+    setSelectedAttemptId(null); // Will be set by the auto-select effect above
+    setActiveTab('practice'); // Reset to practice tab when sentence changes
   }, [currentSentence?.id]);
+
+  /**
+   * Converts a SentencePracticeAttempt to AttemptScore for use in ScoringPanel.
+   */
+  const convertAttemptToAttemptScore = useCallback((attempt: SentencePracticeAttempt): AttemptScore => {
+    return {
+      attemptId: attempt.attemptId,
+      sentenceId: attempt.sentenceId,
+      overallAccuracy: attempt.overallScore,
+      fluency: attempt.fluencyScore,
+      completeness: attempt.completenessScore,
+      prosody: attempt.prosodyScore,
+      wordScores: attempt.wordScores?.map(ws => ({
+        word: ws.token,
+        accuracy: ws.overallScore,
+        errorType: undefined, // SentencePracticeAttempt doesn't store errorType
+      })) || [],
+      createdAt: attempt.createdAt,
+      audioUrl: attempt.recordingUrl,
+      latencyMs: attempt.latencyMs,
+    };
+  }, []);
+
+  // Derive the selected attempt object and convert it to AttemptScore
+  const selectedAttempt = useMemo(() => {
+    if (!selectedAttemptId || sentenceAttempts.length === 0) {
+      // Fall back to livePracticeCurrentAttempt if no selected attempt
+      return livePracticeCurrentAttempt;
+    }
+    const found = sentenceAttempts.find(a => a.attemptId === selectedAttemptId);
+    if (found) {
+      return convertAttemptToAttemptScore(found);
+    }
+    // Fall back to most recent attempt or livePracticeCurrentAttempt
+    return sentenceAttempts.length > 0 
+      ? convertAttemptToAttemptScore(sentenceAttempts[0])
+      : livePracticeCurrentAttempt;
+  }, [selectedAttemptId, sentenceAttempts, livePracticeCurrentAttempt, convertAttemptToAttemptScore]);
+
+  // Get recording URL from selected attempt
+  const selectedRecordingUrl = useMemo(() => {
+    if (selectedAttempt?.audioUrl) {
+      return selectedAttempt.audioUrl;
+    }
+    // Fall back to latestRecordingUrlForCurrentSentence if selected attempt has no recording
+    return latestRecordingUrlForCurrentSentence;
+  }, [selectedAttempt?.audioUrl, latestRecordingUrlForCurrentSentence]);
+
+  // Format timestamp for display
+  const formatAttemptTimestamp = useCallback((isoString: string): string => {
+    const date = new Date(isoString);
+    return date.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      year: date.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined,
+    });
+  }, []);
 
   // Handle recording URL changes from LivePracticeSection
   const handleRecordingUrlChange = useCallback((url: string | null) => {
@@ -258,56 +351,92 @@ export default function SentencePractice() {
             {/* Main panel - takes 2 columns */}
             <div className="lg:col-span-2">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                <div className="mb-4">
+                <div className="mb-4 flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
                     {currentIndex + 1} of {filteredSentences.length}
                   </span>
+                  
+                  {/* Tabs */}
+                  <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+                    <button
+                      onClick={() => setActiveTab('practice')}
+                      className={`px-4 py-2 text-sm font-medium transition-colors ${
+                        activeTab === 'practice'
+                          ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      }`}
+                    >
+                      Practice
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('history')}
+                      className={`px-4 py-2 text-sm font-medium transition-colors ${
+                        activeTab === 'history'
+                          ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      }`}
+                    >
+                      History
+                    </button>
+                  </div>
                 </div>
-                <LivePracticeSection
-                  sentence={currentSentence}
-                  sessionId={sessionIdRef.current}
-                  onCurrentAttemptChange={setLivePracticeCurrentAttempt}
-                  onRecordingUrlChange={handleRecordingUrlChange}
-                />
+                
+                {/* Tab Content */}
+                {activeTab === 'practice' ? (
+                  <LivePracticeSection
+                    sentence={currentSentence}
+                    sessionId={sessionIdRef.current}
+                    onCurrentAttemptChange={setLivePracticeCurrentAttempt}
+                    onRecordingUrlChange={handleRecordingUrlChange}
+                  />
+                ) : (
+                  <div className="mt-4 space-y-4">
+                    {/* Selected Attempt Recording */}
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                        Selected Attempt Recording
+                      </h3>
+                      {selectedRecordingUrl ? (
+                        <div className="space-y-2">
+                          <audio
+                            controls
+                            src={selectedRecordingUrl}
+                            className="w-full"
+                          />
+                          {selectedAttemptId && sentenceAttempts.find(a => a.attemptId === selectedAttemptId) && (
+                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                              Recording from {formatAttemptTimestamp(sentenceAttempts.find(a => a.attemptId === selectedAttemptId)!.createdAt)}
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                          <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
+                            {selectedAttemptId 
+                              ? 'No recording available for this attempt.'
+                              : 'Record this sentence to play back your pronunciation here.'}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Attempt History */}
+                    <AttemptHistory
+                      attempts={sentenceAttempts}
+                      selectedAttemptId={selectedAttemptId}
+                      onSelectAttempt={setSelectedAttemptId}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Scoring panel - takes 1 column */}
             <div className="lg:col-span-1 space-y-4">
-              <ScoringPanel currentAttempt={livePracticeCurrentAttempt} />
+              <ScoringPanel currentAttempt={selectedAttempt} />
               
-              {/* Score History */}
+              {/* Score History - Trend chart */}
               <ScoreHistory attempts={sentenceAttempts} />
-              
-              {/* My Latest Recording card */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                  My Latest Recording for this Sentence
-                </h3>
-                {latestRecordingUrlForCurrentSentence ? (
-                  <div className="space-y-2">
-                    <audio
-                      controls
-                      src={latestRecordingUrlForCurrentSentence}
-                      className="w-full"
-                    />
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
-                      This is your last attempt on this sentence.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-                    <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-                      Record this sentence to play back your pronunciation here.
-                    </p>
-                  </div>
-                )}
-              </div>
-              
-              {/* Progress explanation */}
-              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-                Your pronunciation scores and history now track your progress on this sentence.
-              </p>
             </div>
           </div>
         ) : null}

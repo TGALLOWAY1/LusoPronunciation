@@ -28,21 +28,16 @@ export default function ScoreHistory({ attempts }: ScoreHistoryProps) {
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {/* Trend visualization */}
-          <div className="pt-2 pb-2">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-600 dark:text-gray-400">
-                Progress over time
-              </span>
-            </div>
-            <PhraseTrendSparkline scores={scores} width={200} height={40} />
+        <div className="py-2">
+          {/* Trend visualization with axis labels */}
+          <div className="w-full">
+            <PhraseTrendSparkline scores={scores} height={120} />
           </div>
-
+          
           {/* Attempt count */}
-          <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
             <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-              Attempts on this sentence: <span className="font-semibold text-gray-900 dark:text-gray-100">{attempts.length}</span>
+              Attempts: <span className="font-semibold text-gray-900 dark:text-gray-100">{attempts.length}</span>
             </p>
           </div>
         </div>

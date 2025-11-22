@@ -281,6 +281,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
             listenedToNativeModelCount: logParams.listenedToNativeModelCount,
             wordScores: wordScores.length > 0 ? wordScores : undefined,
             latencyMs, // Include latency in practice log
+            recordingUrl: audioUrl || undefined, // Include recording URL for playback (blob URL, may not persist across sessions)
           });
 
           // Increment retry count for this sentence

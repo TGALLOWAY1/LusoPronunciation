@@ -1,3 +1,10 @@
+/**
+ * Practice Log Store
+ * 
+ * Manages and persists pronunciation attempt history for sentences and words.
+ * All sentence attempts are persisted to localStorage and can be viewed in Practice Sentences.
+ * Attempts are automatically saved on every log and restored on app load.
+ */
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import type {
   PracticeSession,
@@ -274,6 +281,11 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
     });
   }, []);
 
+  /**
+   * Logs a sentence practice attempt.
+   * The attempt is automatically persisted to localStorage and can be viewed in Practice Sentences.
+   * Every attempt is stored in the history, allowing users to review past attempts with scores and recordings.
+   */
   const logSentenceAttempt = useCallback(
     (
       attempt: Omit<SentencePracticeAttempt, 'attemptId' | 'userId' | 'createdAt'>
@@ -337,6 +349,10 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
     [state.sentenceAttempts, state.wordAttempts]
   );
 
+  /**
+   * Gets all attempts for a specific sentence, sorted by timestamp descending (most recent first).
+   * Used by Practice Sentences page to display attempt history.
+   */
   const getAttemptsBySentenceId = useCallback(
     (sentenceId: string) => {
       return state.sentenceAttempts
