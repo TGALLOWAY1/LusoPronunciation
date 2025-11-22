@@ -7,9 +7,13 @@ import {
   type NormalizedWordAudioVariant,
 } from '@/components/pronunciation/shared';
 import type { AudioVariant, WordAudioVariant } from '@/types/pronunciationFixtures';
-import { loadAllCategories, type Category } from '@/lib/data';
+import { loadAllCategories, loadAllSentences, type Category } from '@/lib/data';
+import type { Sentence } from '@/lib/types';
+import type { AttemptScore } from '@/types/pronunciation';
 import MultiSelect, { type MultiSelectOption } from '@/components/common/MultiSelect';
 import ScoringPanel from '@/components/pronunciation/ScoringPanel';
+import LivePracticeSection from '@/components/practice/LivePracticeSection';
+import { usePracticeLogStore } from '@/state/practiceLogStore';
 
 /**
  * Adapter functions to convert fixture data to generic PronunciationFeedbackPanel props.
@@ -64,33 +68,102 @@ function adaptPhraseToPanelProps(
 }
 
 /**
+ * Normalizes Portuguese text for matching by:
+ * - Trimming whitespace
+ * - Normalizing multiple spaces to single space
+ * - Removing punctuation
+ * - Converting to lowercase
+ */
+function normalizePortugueseText(text: string): string {
+  return text
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/[.,!?;:]/g, '')
+    .toLowerCase();
+}
+
+/**
+ * Matches a fixture phrase to a real sentence by comparing normalized Portuguese text.
+ * 
+ * @param phrase - The fixture phrase to match
+ * @param sentences - Array of sentences to search
+ * @returns The matching sentence if found, null otherwise
+ */
+function matchFixtureToSentence(
+  phrase: PracticePhraseFromFixture | null,
+  sentences: Sentence[]
+): Sentence | null {
+  if (!phrase) return null;
+
+  const normalizedPhrase = normalizePortugueseText(phrase.text);
+
+  // Try to find exact match (normalized)
+  for (const sentence of sentences) {
+    const normalizedSentence = normalizePortugueseText(sentence.textPt);
+    if (normalizedSentence === normalizedPhrase) {
+      return sentence;
+    }
+  }
+
+  return null;
+}
+
+/**
  * Development page for exploring pronunciation fixtures.
  * 
  * This page uses fixture data from data/test_data/pronunciation_fixtures.json
  * for UI prototyping and regression testing.
+ * 
+ * When a fixture phrase matches a real sentence in the dataset, live practice
+ * is enabled using the LivePracticeSection component.
  */
 export default function PronunciationFixtures() {
+  const { startSession } = usePracticeLogStore();
+  
   const [phrases, setPhrases] = useState<PracticePhraseFromFixture[]>([]);
   const [selectedPhrase, setSelectedPhrase] = useState<PracticePhraseFromFixture | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [sentences, setSentences] = useState<Sentence[]>([]);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<number[]>([]);
+  const [livePracticeCurrentAttempt, setLivePracticeCurrentAttempt] = useState<AttemptScore | null>(null);
 
-  // Adapt selected phrase to generic panel props
+  // Match selected phrase to a real sentence
+  const matchedSentence = useMemo(() => {
+    return matchFixtureToSentence(selectedPhrase, sentences);
+  }, [selectedPhrase, sentences]);
+
+  const canDoLivePractice = Boolean(matchedSentence);
+
+  // Reset live practice attempt when phrase changes
+  useEffect(() => {
+    setLivePracticeCurrentAttempt(null);
+  }, [selectedPhrase?.id]);
+
+  // Adapt selected phrase to generic panel props (for fixture-only mode)
   const panelProps = useMemo<PronunciationFeedbackPanelProps | null>(() => {
     if (!selectedPhrase) return null;
     return adaptPhraseToPanelProps(selectedPhrase);
   }, [selectedPhrase]);
 
+  // Start a practice session on mount
   useEffect(() => {
-    // Load all practice phrases and categories
+    const newSessionId = startSession('sentences');
+    setSessionId(newSessionId);
+  }, [startSession]);
+
+  useEffect(() => {
+    // Load all practice phrases, categories, and sentences
     Promise.all([
       getAllPracticePhrasesFromFixtures(),
       loadAllCategories(),
+      loadAllSentences(),
     ])
-      .then(([allPhrases, allCategories]) => {
+      .then(([allPhrases, allCategories, allSentences]) => {
         setPhrases(allPhrases);
         setCategories(allCategories);
+        setSentences(allSentences);
         
         // Select first phrase by default
         if (allPhrases.length > 0) {
@@ -98,7 +171,7 @@ export default function PronunciationFixtures() {
         }
       })
       .catch((error) => {
-        console.error('Failed to load practice phrases or categories:', error);
+        console.error('Failed to load practice phrases, categories, or sentences:', error);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
@@ -286,8 +359,21 @@ export default function PronunciationFixtures() {
           {/* Main panel - takes 2 columns */}
           <div className="lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              {panelProps ? (
-                <PronunciationFeedbackPanel {...panelProps} />
+              {canDoLivePractice && matchedSentence ? (
+                <LivePracticeSection 
+                  sentence={matchedSentence} 
+                  sessionId={sessionId}
+                  onCurrentAttemptChange={setLivePracticeCurrentAttempt}
+                />
+              ) : panelProps ? (
+                <>
+                  {!canDoLivePractice && selectedPhrase && (
+                    <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded text-sm text-yellow-800 dark:text-yellow-200">
+                      This fixture phrase doesn't have a matching sentence in your dataset yet, so live practice is disabled for it.
+                    </div>
+                  )}
+                  <PronunciationFeedbackPanel {...panelProps} />
+                </>
               ) : (
                 <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                   <p>Select a phrase from the list below to view details</p>
@@ -298,7 +384,13 @@ export default function PronunciationFixtures() {
 
           {/* Scoring panel - takes 1 column */}
           <div className="lg:col-span-1">
-            <ScoringPanel currentAttempt={panelProps?.currentAttempt ?? null} />
+            <ScoringPanel 
+              currentAttempt={
+                canDoLivePractice && matchedSentence
+                  ? livePracticeCurrentAttempt
+                  : panelProps?.currentAttempt ?? null
+              } 
+            />
           </div>
         </div>
 

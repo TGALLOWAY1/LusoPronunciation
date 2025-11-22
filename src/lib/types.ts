@@ -206,6 +206,7 @@ export interface SentencePracticeAttempt {
   slowedAudioPlayback?: boolean;
   listenedToNativeModelCount?: number;
   confidenceLabel?: "unknown" | "learning" | "review" | "known";
+  latencyMs?: number; // round-trip time for the Azure API call (ms)
   wordScores?: {
     wordId?: WordId;
     token: string;
