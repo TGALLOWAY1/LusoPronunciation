@@ -29,6 +29,7 @@ interface PracticeLogStore extends PracticeLogStoreState {
   getAttemptsBySessionId: (
     sessionId: string
   ) => { sentences: SentencePracticeAttempt[]; words: WordPracticeAttempt[] };
+  getAttemptsBySentenceId: (sentenceId: string) => SentencePracticeAttempt[];
   getLastNSessions: (n: number) => PracticeSession[];
   getRecentAttempts: (
     limit: number
@@ -336,6 +337,15 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
     [state.sentenceAttempts, state.wordAttempts]
   );
 
+  const getAttemptsBySentenceId = useCallback(
+    (sentenceId: string) => {
+      return state.sentenceAttempts
+        .filter((a) => a.sentenceId === sentenceId)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    },
+    [state.sentenceAttempts]
+  );
+
   const getLastNSessions = useCallback(
     (n: number) => {
       return [...state.sessions]
@@ -385,6 +395,7 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
       getAllSentenceAttempts,
       getAllWordAttempts,
       getAttemptsBySessionId,
+      getAttemptsBySentenceId,
       getLastNSessions,
       getRecentAttempts,
     }),
@@ -399,6 +410,7 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
       getAllSentenceAttempts,
       getAllWordAttempts,
       getAttemptsBySessionId,
+      getAttemptsBySentenceId,
       getLastNSessions,
       getRecentAttempts,
     ]

@@ -34,7 +34,12 @@ export function getSentenceAudioUrl(
 
 /**
  * Get audio URL for a word.
- * Words follow pattern: {category}_word_{number}
+ * 
+ * Word audio naming convention: public/audio/words/<wordId>_<gender>.wav
+ * Examples:
+ * - adj_001_female.wav
+ * - food_word_001_male.wav
+ * - basic_001_female.wav
  */
 export function getWordAudioUrl(
   wordId: string,
@@ -52,10 +57,11 @@ export function getWordAudioUrl(
     return undefined;
   }
 
-  // Fallback: infer from naming convention
-  // Pattern: {category}_word_{number} -> /audio/ptbr/{gender}/{category}_word_{number}.wav
-  // e.g., "food_word_001" -> "/audio/ptbr/male/food_word_001.wav"
-  return `/audio/ptbr/${gender}/${wordId}.wav`;
+  // Fallback: infer from filesystem naming convention
+  // Pattern: <wordId>_<gender>.wav -> /audio/words/<wordId>_<gender>.wav
+  // e.g., "food_word_001" + "male" -> "/audio/words/food_word_001_male.wav"
+  // e.g., "adj_001" + "female" -> "/audio/words/adj_001_female.wav"
+  return `/audio/words/${wordId}_${gender}.wav`;
 }
 
 /**

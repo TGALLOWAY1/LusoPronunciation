@@ -292,8 +292,11 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         }
       }
 
-      // Reset recorder for next recording
-      resetRecorder();
+      // Don't reset recorder after submission - preserve audioUrl for playback
+      // The recorder will be reset when:
+      // 1. User explicitly clicks "Reset" button
+      // 2. User starts a new recording (startRecording clears previous state)
+      // 3. Sentence changes (handled by parent component)
       recordingStartTimeRef.current = null;
     } catch (err) {
       // Check if request was aborted

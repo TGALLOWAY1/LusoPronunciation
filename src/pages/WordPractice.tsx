@@ -6,10 +6,11 @@ import {
   loadAllCategories,
   filterWordsByCategory,
 } from '@/lib/data';
-import type { Word, Category } from '@/lib/types';
+import type { Word, Category, Difficulty } from '@/lib/types';
+import { getDifficultyLabel } from '@/utils/difficultyLabels';
 import WordStudyCard from '@/components/practice/WordStudyCard';
 import WordCard from '@/components/practice/WordCard';
-import CategoryFilterChips from '@/components/practice/CategoryFilterChips';
+import FilterControls from '@/components/practice/FilterControls';
 import ViewModeToggle, { type ViewMode } from '@/components/practice/ViewModeToggle';
 import NavigationButtons from '@/components/practice/NavigationButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -27,7 +28,8 @@ export default function WordPractice() {
   const [words, setWords] = useState<Word[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
   const [displayedCount, setDisplayedCount] = useState(WORDS_PER_PAGE);
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [drillIndex, setDrillIndex] = useState(0);
@@ -82,27 +84,62 @@ export default function WordPractice() {
     loadData();
   }, []);
 
-  // Filter words based on selected category
+  // Filter words based on selected categories and difficulties
   const filteredWords = useMemo(() => {
     let filtered = words;
 
-    if (selectedCategory) {
-      filtered = filterWordsByCategory(filtered, selectedCategory);
+    if (selectedCategories.length > 0) {
+      filtered = filterWordsByCategory(filtered, selectedCategories);
+    }
+
+    if (selectedDifficulties.length > 0) {
+      // Filter by multiple specific difficulties
+      filtered = filtered.filter(w => selectedDifficulties.includes(w.difficulty));
     }
 
     return filtered;
-  }, [words, selectedCategory]);
+  }, [words, selectedCategories, selectedDifficulties]);
+
+  // Get current filter summary labels
+  const currentFilterSummary = useMemo(() => {
+    let categoryLabel: string;
+    if (selectedCategories.length === 0) {
+      categoryLabel = 'All categories';
+    } else if (selectedCategories.length === 1) {
+      const category = categories.find(cat => cat.id === selectedCategories[0]);
+      categoryLabel = category?.labelEn || 'All categories';
+    } else {
+      const categoryNames = selectedCategories
+        .map(id => categories.find(cat => cat.id === id)?.labelEn)
+        .filter(Boolean) as string[];
+      categoryLabel = categoryNames.join(', ');
+    }
+    
+    let difficultyLabel: string;
+    if (selectedDifficulties.length === 0) {
+      difficultyLabel = 'All difficulties';
+    } else if (selectedDifficulties.length === 1) {
+      difficultyLabel = getDifficultyLabel(selectedDifficulties[0]) || 'All difficulties';
+    } else {
+      const difficultyNames = selectedDifficulties
+        .map(d => getDifficultyLabel(d))
+        .filter(Boolean) as string[];
+      difficultyLabel = difficultyNames.join(', ');
+    }
+
+    return { categoryLabel, difficultyLabel };
+  }, [selectedCategories, selectedDifficulties, categories]);
 
   // Reset displayed count when filters change
   useEffect(() => {
     setDisplayedCount(WORDS_PER_PAGE);
-  }, [selectedCategory]);
+  }, [selectedCategories, selectedDifficulties]);
 
   // Reset drill index when filters change or view mode changes
   useEffect(() => {
     setDrillIndex(0);
     stopAllAudio();
-  }, [selectedCategory, viewMode]);
+  }, [selectedCategories, selectedDifficulties, viewMode]);
 
   // Words to display (pagination)
   const displayedWords = useMemo(() => {
@@ -205,10 +242,6 @@ export default function WordPractice() {
     }
   }, [currentDrillWord, drillIndex, filteredWords.length]);
 
-  // Memoize category label lookup
-  const selectedCategoryLabel = useMemo(() => {
-    return categories.find(c => c.id === selectedCategory)?.labelEn;
-  }, [categories, selectedCategory]);
 
   // Keyboard navigation for drill mode
   useEffect(() => {
@@ -244,32 +277,35 @@ export default function WordPractice() {
         <ViewModeToggle mode={viewMode} onModeChange={setViewMode} />
       </div>
 
-      {/* Category filter chips */}
-      <CategoryFilterChips
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-      />
+      {/* Filter controls */}
+      <div className="mb-6">
+        <FilterControls
+          categories={categories}
+          selectedCategories={selectedCategories}
+          selectedDifficulties={selectedDifficulties}
+          onCategoryChange={setSelectedCategories}
+          onDifficultyChange={setSelectedDifficulties}
+        />
+      </div>
+
+      {/* Current filters summary header */}
+      <div className="mb-4">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          Category: <span className="font-medium text-gray-900 dark:text-gray-200">{currentFilterSummary.categoryLabel}</span>
+          {' · '}
+          Difficulty: <span className="font-medium text-gray-900 dark:text-gray-200">{currentFilterSummary.difficultyLabel}</span>
+        </p>
+      </div>
 
       {/* Results count */}
       <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
         {viewMode === 'list' ? (
           <>
             Showing {displayedWords.length} of {filteredWords.length} words
-            {selectedCategory && selectedCategoryLabel && (
-              <span className="ml-2">
-                in <span className="font-medium">{selectedCategoryLabel}</span>
-              </span>
-            )}
           </>
         ) : (
           <>
             Word {drillIndex + 1} of {filteredWords.length}
-            {selectedCategory && selectedCategoryLabel && (
-              <span className="ml-2">
-                in <span className="font-medium">{selectedCategoryLabel}</span>
-              </span>
-            )}
           </>
         )}
       </div>
@@ -281,7 +317,10 @@ export default function WordPractice() {
             No words found matching your filters.
           </p>
           <button
-            onClick={() => setSelectedCategory(null)}
+            onClick={() => {
+              setSelectedCategories([]);
+              setSelectedDifficulties([]);
+            }}
             className="btn btn-primary btn-sm mt-4"
           >
             Clear filters

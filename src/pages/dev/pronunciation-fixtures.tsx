@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
+import { preloadAudioIndex } from '@/utils/audioRouting';
 import { PronunciationFeedbackPanel, type PronunciationFeedbackPanelProps } from '@/components/pronunciation';
 import {
   adaptFixtureWordsToNormalized,
@@ -154,13 +155,15 @@ export default function PronunciationFixtures() {
   }, [startSession]);
 
   useEffect(() => {
+    // Feat 15: Preload audio index for word-by-word audio playback
     // Load all practice phrases, categories, and sentences
     Promise.all([
+      preloadAudioIndex(),
       getAllPracticePhrasesFromFixtures(),
       loadAllCategories(),
       loadAllSentences(),
     ])
-      .then(([allPhrases, allCategories, allSentences]) => {
+      .then(([, allPhrases, allCategories, allSentences]) => {
         setPhrases(allPhrases);
         setCategories(allCategories);
         setSentences(allSentences);

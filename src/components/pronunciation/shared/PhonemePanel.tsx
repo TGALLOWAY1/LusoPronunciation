@@ -10,8 +10,20 @@ interface PhonemePanelProps {
  * Panel displaying phoneme details and tips for a selected word.
  */
 export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
+  // Empty state: no word selected
   if (!word) {
-    return null;
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          Sound Details (Phonemes & Tips)
+        </h3>
+        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Click a word in the sentence to see tips for its sounds.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const getPhonemeColors = (score: number) => {
@@ -52,9 +64,12 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-            Sound Details: <span className="text-primary-600 dark:text-primary-400">{word.text}</span>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
+            Sound Details (Phonemes & Tips)
           </h3>
+          <p className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <span className="text-primary-600 dark:text-primary-400">{word.text}</span>
+          </p>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
             Overall score: {wordScore}/100 • Level: {wordLevel}
           </p>
@@ -110,7 +125,7 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
       ) : (
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
           <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-            Detailed sound analysis is not available for this word. Focus on listening to the native pronunciation and practicing the word as a whole.
+            No phoneme data available for this word yet.
           </p>
         </div>
       )}

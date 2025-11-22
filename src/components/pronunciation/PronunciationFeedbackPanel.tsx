@@ -262,7 +262,7 @@ export default function PronunciationFeedbackPanel({
         />
       )}
 
-      {/* Phoneme panel - show whenever a word is selected */}
+      {/* Sound Details / Phoneme panel - always shown with empty state when no word selected */}
       <PhonemePanel word={selectedWord} onClose={handleClosePhonemePanel} />
 
       {/* Dev controls (optional, gated behind showDevControls) */}

@@ -22,6 +22,7 @@ function AppRoutes() {
           <Route path="/practice/word" element={<WordPractice />} />
           <Route path="/review" element={<Review />} />
           <Route path="/sessions" element={<RecentSessions />} />
+          <Route path="/dev/pronunciation-fixtures" element={<PronunciationFixtures />} />
           <Route path="/dev/analytics" element={<DevAnalyticsPage />} />
         </Routes>
       </AppLayout>
