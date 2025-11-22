@@ -21,6 +21,8 @@ import type {
 } from './types';
 import { getSentenceAudioUrl, getWordAudioUrl, loadAudioIndex } from './audio';
 import type { AudioIndex } from './types';
+import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
+import { sampleData } from '../data/sampleData';
 
 // Cache for loaded data
 let cachedSentences: Sentence[] | null = null;
@@ -46,6 +48,47 @@ export async function ensureAudioIndex(): Promise<AudioIndex> {
 }
 
 /**
+ * Transform enriched sentence data to app-friendly format.
+ */
+function transformEnrichedSentence(
+  enriched: EnrichedSentence,
+  categoryLabelEn: string,
+  categoryLabelPt: string,
+  audioIndex?: AudioIndex
+): Sentence {
+  const audioId = enriched.id; // Sentence IDs match audio IDs in index
+  
+  // Map difficultyScore to Difficulty (1-5 scale)
+  // If difficultyScore is provided, map it to 1-5 range
+  // Otherwise default to 3 (middle difficulty)
+  let difficulty: Difficulty = 3;
+  if (enriched.difficultyScore !== undefined) {
+    // Map 0-100 score to 1-5 scale
+    difficulty = Math.max(1, Math.min(5, Math.round((enriched.difficultyScore / 100) * 4) + 1)) as Difficulty;
+  }
+  
+  return {
+    id: enriched.id,
+    textPt: enriched.text,
+    translationEn: '', // EnrichedSentence doesn't have translation, will be empty
+    difficulty,
+    categoryId: enriched.category,
+    categoryLabelEn,
+    categoryLabelPt,
+    pronunciationNotes: undefined,
+    audioId,
+    audioMaleUrl: getSentenceAudioUrl(enriched.id, 'male', audioIndex),
+    audioFemaleUrl: getSentenceAudioUrl(enriched.id, 'female', audioIndex),
+    // Enriched fields (sentences don't have phonemes/ipa at sentence level)
+    tags: enriched.tags,
+    difficultyScore: enriched.difficultyScore,
+    cefr: enriched.cefr,
+    wordRefs: enriched.wordRefs,
+    hardForEnglish: enriched.hardForEnglish,
+  };
+}
+
+/**
  * Transform raw sentence data to app-friendly format.
  */
 function transformSentence(
@@ -67,6 +110,49 @@ function transformSentence(
     audioId,
     audioMaleUrl: getSentenceAudioUrl(raw.id, 'male', audioIndex),
     audioFemaleUrl: getSentenceAudioUrl(raw.id, 'female', audioIndex),
+  };
+}
+
+/**
+ * Transform enriched word data to app-friendly format.
+ */
+function transformEnrichedWord(
+  enriched: EnrichedWord,
+  categoryLabelEn: string,
+  categoryLabelPt: string,
+  audioIndex?: AudioIndex
+): Word {
+  const audioId = enriched.id; // Word IDs match audio IDs in index
+  
+  // Map difficultyScore to Difficulty (1-5 scale)
+  // If difficultyScore is provided, map it to 1-5 range
+  // Otherwise default to 3 (middle difficulty)
+  let difficulty: Difficulty = 3;
+  if (enriched.difficultyScore !== undefined) {
+    // Map 0-100 score to 1-5 scale
+    difficulty = Math.max(1, Math.min(5, Math.round((enriched.difficultyScore / 100) * 4) + 1)) as Difficulty;
+  }
+  
+  return {
+    id: enriched.id,
+    textPt: enriched.text,
+    translationEn: '', // EnrichedWord doesn't have translation, will be empty
+    partOfSpeech: enriched.partOfSpeech,
+    difficulty,
+    difficultForEnglish: enriched.englishDifficultyFlag ?? false,
+    categoryId: enriched.category,
+    categoryLabelEn,
+    categoryLabelPt,
+    pronunciationNotes: undefined,
+    audioId,
+    audioMaleUrl: getWordAudioUrl(enriched.id, 'male', audioIndex),
+    audioFemaleUrl: getWordAudioUrl(enriched.id, 'female', audioIndex),
+    // Enriched fields
+    phonemes: enriched.phonemes?.length > 0 ? enriched.phonemes : undefined,
+    ipa: enriched.ipa,
+    tags: enriched.tags,
+    difficultyScore: enriched.difficultyScore,
+    cefr: enriched.cefr,
   };
 }
 
@@ -98,7 +184,50 @@ function transformWord(
 }
 
 /**
- * Load all sentences from STATIC DATA/sentences.json.
+ * Load category labels from legacy data files.
+ * Used when loading master datasets to get category labels.
+ */
+async function loadCategoryLabels(): Promise<Map<string, { labelEn: string; labelPt: string }>> {
+  const categoryMap = new Map<string, { labelEn: string; labelPt: string }>();
+  
+  try {
+    // Try to load from sentences.json first
+    const response = await fetch('/data/sentences.json');
+    if (response.ok) {
+      const data: SentencesData = await response.json();
+      for (const category of data.categories) {
+        categoryMap.set(category.id, {
+          labelEn: category.label_en,
+          labelPt: category.label_pt,
+        });
+      }
+      return categoryMap;
+    }
+  } catch {
+    // Fall through to STATIC DATA
+  }
+  
+  try {
+    // Fallback to STATIC DATA
+    const response = await fetch('/STATIC DATA/sentences.json');
+    if (response.ok) {
+      const data: SentencesData = await response.json();
+      for (const category of data.categories) {
+        categoryMap.set(category.id, {
+          labelEn: category.label_en,
+          labelPt: category.label_pt,
+        });
+      }
+    }
+  } catch {
+    // If both fail, return empty map - category labels will be missing
+  }
+  
+  return categoryMap;
+}
+
+/**
+ * Load all sentences, preferring master dataset with fallback to legacy files.
  * Results are cached after first load.
  */
 export async function loadAllSentences(): Promise<Sentence[]> {
@@ -106,14 +235,47 @@ export async function loadAllSentences(): Promise<Sentence[]> {
     return cachedSentences;
   }
 
+  const audioIndex = await ensureAudioIndex();
+  
+  // Try to load from master dataset first
   try {
-    const response = await fetch('/STATIC DATA/sentences.json');
+    const masterResponse = await fetch('/data/masterSentences.json');
+    if (masterResponse.ok) {
+      const enrichedSentences: EnrichedSentence[] = await masterResponse.json();
+      // Check if we actually got data (not just empty array)
+      if (enrichedSentences.length > 0) {
+        const categoryLabels = await loadCategoryLabels();
+        
+        const sentences: Sentence[] = enrichedSentences.map(enriched => {
+          const categoryInfo = categoryLabels.get(enriched.category) || {
+            labelEn: enriched.category,
+            labelPt: enriched.category,
+          };
+          return transformEnrichedSentence(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
+        });
+        
+        cachedSentences = sentences;
+        console.log(`Loaded ${sentences.length} sentences from master dataset`);
+        return sentences;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to load master sentences, falling back to legacy files:', error);
+  }
+
+  // Fallback to legacy files
+  try {
+    // Try data/sentences.json first
+    let response = await fetch('/data/sentences.json');
     if (!response.ok) {
-      throw new Error(`Failed to load sentences.json: ${response.statusText}`);
+      // Fallback to STATIC DATA
+      response = await fetch('/STATIC DATA/sentences.json');
+      if (!response.ok) {
+        throw new Error(`Failed to load sentences.json: ${response.statusText}`);
+      }
     }
     
     const data: SentencesData = await response.json();
-    const audioIndex = await ensureAudioIndex();
     
     const sentences: Sentence[] = [];
     
@@ -126,18 +288,45 @@ export async function loadAllSentences(): Promise<Sentence[]> {
     }
     
     cachedSentences = sentences;
+    console.log(`Loaded ${sentences.length} sentences from legacy files`);
     return sentences;
   } catch (error) {
     console.error('Error loading sentences:', error);
-    const message = error instanceof Error 
-      ? error.message 
-      : 'Failed to load sentences data';
-    throw new Error(`Unable to load sentences: ${message}`);
+    // Temporary fallback to sample data if all else fails
+    console.warn('Falling back to sample data for sentences');
+    const sampleSentences: Sentence[] = sampleData.sentences.map(sample => {
+      // Map sample data format to Sentence format
+      const categoryId = sample.categories[0] || 'foods';
+      const category = sampleData.categories.find(c => c.id === categoryId) || {
+        id: categoryId,
+        name: categoryId,
+        description: '',
+      };
+      
+      return {
+        id: sample.id,
+        textPt: sample.textPt,
+        translationEn: sample.translationEn || '',
+        difficulty: sample.difficulty,
+        categoryId: category.id,
+        categoryLabelEn: category.name,
+        categoryLabelPt: category.name,
+        pronunciationNotes: undefined,
+        audioId: sample.id,
+        audioMaleUrl: getSentenceAudioUrl(sample.id, 'male', audioIndex),
+        audioFemaleUrl: getSentenceAudioUrl(sample.id, 'female', audioIndex),
+        tags: sample.tags,
+      };
+    });
+    
+    cachedSentences = sampleSentences;
+    console.log(`Loaded ${sampleSentences.length} sentences from sample data`);
+    return sampleSentences;
   }
 }
 
 /**
- * Load all words from STATIC DATA/words.json.
+ * Load all words, preferring master dataset with fallback to legacy files.
  * Results are cached after first load.
  */
 export async function loadAllWords(): Promise<Word[]> {
@@ -145,6 +334,38 @@ export async function loadAllWords(): Promise<Word[]> {
     return cachedWords;
   }
 
+  const audioIndex = await ensureAudioIndex();
+  
+  // Try to load from master dataset first
+  try {
+    const masterResponse = await fetch('/data/masterWords.json');
+    if (masterResponse.ok) {
+      const enrichedWords: EnrichedWord[] = await masterResponse.json();
+      // Check if we actually got data (not just empty array)
+      if (enrichedWords.length > 0) {
+        const categoryLabels = await loadCategoryLabels();
+        
+        const words: Word[] = enrichedWords.map(enriched => {
+          const categoryInfo = categoryLabels.get(enriched.category) || {
+            labelEn: enriched.category,
+            labelPt: enriched.category,
+          };
+          return transformEnrichedWord(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
+        });
+        
+        cachedWords = words;
+        console.log(`Loaded ${words.length} words from master dataset`);
+        return words;
+      } else {
+        // Empty array - fall through to legacy files
+        console.log('Master words file is empty, falling back to legacy files');
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to load master words, falling back to legacy files:', error);
+  }
+
+  // Fallback to legacy files
   try {
     const response = await fetch('/STATIC DATA/words.json');
     if (!response.ok) {
@@ -152,7 +373,6 @@ export async function loadAllWords(): Promise<Word[]> {
     }
     
     const data: WordsData = await response.json();
-    const audioIndex = await ensureAudioIndex();
     
     const words: Word[] = [];
     
@@ -165,6 +385,7 @@ export async function loadAllWords(): Promise<Word[]> {
     }
     
     cachedWords = words;
+    console.log(`Loaded ${words.length} words from legacy files`);
     return words;
   } catch (error) {
     console.error('Error loading words:', error);

@@ -8,8 +8,61 @@
  * more sophisticated phoneme analysis or external pronunciation APIs.
  */
 
-// TODO: Import phoneme metadata utilities when implementing grapheme-to-phoneme mapping
-// import { getAllPhonemes } from '../lib/phonemeMetadata';
+// TODO: Import phoneme metadata utilities when implementing full grapheme-to-phoneme mapping
+// import { getAllPhonemes, getPhonemeMetadata } from '../lib/phonemeMetadata';
+
+/**
+ * Gets phonemes and IPA for a token.
+ * 
+ * This is a simplified heuristic-based implementation. A full implementation
+ * would use grapheme-to-phoneme conversion rules or an external API.
+ * 
+ * For now, returns empty arrays and undefined IPA, but provides the structure
+ * for future enhancement.
+ * 
+ * @param token - The token (word) to analyze
+ * @returns Object with phonemes array and optional IPA string
+ */
+export function getPhonemesForToken(token: string): { phonemes: string[]; ipa?: string } {
+  if (!token || token.trim().length === 0) {
+    return { phonemes: [] };
+  }
+
+  // TODO: Implement full grapheme-to-phoneme mapping
+  // For now, return empty phonemes array
+  // Future: Use phonemeMetadata to map Portuguese graphemes to ARPABET/IPA symbols
+  
+  // Placeholder: could analyze token and return some basic phonemes
+  // This is a stub that can be enhanced later
+  const phonemes: string[] = [];
+  const ipa: string | undefined = undefined;
+
+  return { phonemes, ipa };
+}
+
+/**
+ * Determines if a word is hard for English speakers based on phoneme analysis.
+ * 
+ * Simple heuristic-based approach:
+ * - Identifies nasal vowels (ã, õ, ão) and difficult digraphs (lh, nh, rr, word-initial r)
+ * - Can also analyze phonemes array if provided
+ * 
+ * @param phonemes - Array of phoneme codes (ARPABET or similar)
+ * @returns true if the word is likely difficult for English speakers
+ */
+export function isHardForEnglish(phonemes: string[]): boolean {
+  // If phonemes are provided, analyze them
+  // For now, this is a simple stub - could check for specific difficult phonemes
+  if (phonemes.length > 0) {
+    // TODO: Check for difficult phonemes in the array
+    // Could look for nasal vowels, guttural R sounds, etc.
+  }
+
+  // For now, return false as a safe default
+  // The actual difficulty will be determined by analyzing the word text
+  // in the tagging/enrichment stage
+  return false;
+}
 
 /**
  * Maps a Portuguese word to phonemes and IPA, and determines if it's hard for English speakers.
@@ -57,13 +110,12 @@ export function mapWordToPhonemes(
     isHard = true;
   }
 
-  // TODO: Implement grapheme-to-phoneme mapping using phonemeMetadata
-  // For now, return undefined for IPA and phonemes
-  // Future: Use phonemeMetadata to map graphemes to ARPABET/IPA symbols
+  // Get phonemes using the helper function
+  const { phonemes, ipa } = getPhonemesForToken(word);
 
   return {
-    ipa: undefined,
-    phonemes: undefined,
+    ipa,
+    phonemes: phonemes.length > 0 ? phonemes : undefined,
     isHardForEnglishSpeakers: isHard,
   };
 }

@@ -21,28 +21,35 @@ function delay(ms: number): Promise<void> {
 }
 
 /**
- * Synthesizes text to speech using Azure TTS and saves to a WAV file.
+ * Synthesizes text to speech using Azure TTS and saves to a file.
  * 
  * Features:
- * - Idempotent: skips if output file already exists
+ * - Idempotent: skips if output file already exists and is non-empty
  * - Retry logic with exponential backoff for transient errors
  * - Automatic directory creation
  * 
- * @param text - The text to synthesize (PT-BR)
- * @param voice - Azure voice name (e.g., "pt-BR-AntonioNeural")
- * @param outputPath - Full path where the WAV file should be saved
+ * @param params - Synthesis parameters
+ * @param params.text - The text to synthesize (PT-BR)
+ * @param params.voiceName - Azure voice name (e.g., "pt-BR-AntonioNeural")
+ * @param params.outputPath - Full path where the WAV file should be saved
+ * @param params.retryCount - Optional number of retries (default: 3)
+ * @returns Promise that resolves with the output path on success
  * @throws {Error} If Azure credentials are missing or synthesis fails after retries
  */
-export async function synthesizeToWav(
-  text: string,
-  voice: string,
-  outputPath: string
-): Promise<void> {
-  // Check if file already exists (idempotent behavior)
+export async function textToSpeechToFile(params: {
+  text: string;
+  voiceName: string;
+  outputPath: string;
+  retryCount?: number;
+}): Promise<string> {
+  const { text, voiceName, outputPath, retryCount = MAX_RETRIES } = params;
+  // Check if file already exists and is non-empty (idempotent behavior)
   try {
-    await fs.access(outputPath);
-    // File exists, return early
-    return;
+    const stats = await fs.stat(outputPath);
+    if (stats.size > 0) {
+      // File exists and is non-empty, skip re-synthesizing
+      return outputPath;
+    }
   } catch {
     // File doesn't exist, proceed with synthesis
   }
@@ -64,26 +71,26 @@ export async function synthesizeToWav(
   // Create speech config
   const speechConfig = sdk.SpeechConfig.fromSubscription(speechKey, speechRegion);
   speechConfig.speechSynthesisLanguage = 'pt-BR';
-  speechConfig.speechSynthesisVoiceName = voice;
+  speechConfig.speechSynthesisVoiceName = voiceName;
 
   // Perform synthesis with retries
   let attempt = 0;
   let backoffMs = INITIAL_BACKOFF_MS;
 
-  while (attempt <= MAX_RETRIES) {
+  while (attempt <= retryCount) {
     try {
       await synthesizeOnce(text, speechConfig, outputPath);
-      return; // Success
+      return outputPath; // Success
     } catch (err) {
       attempt++;
-      const isLastAttempt = attempt > MAX_RETRIES;
+      const isLastAttempt = attempt > retryCount;
 
       const message = (err as Error).message ?? String(err);
 
       // Log the error
       if (isLastAttempt) {
         throw new Error(
-          `Failed to synthesize "${text.slice(0, 40)}..." after ${MAX_RETRIES} retries: ${message}`
+          `Failed to synthesize "${text.slice(0, 40)}..." after ${retryCount} retries: ${message}`
         );
       }
 
@@ -104,6 +111,9 @@ export async function synthesizeToWav(
       }
     }
   }
+
+  // This should never be reached, but TypeScript needs it for type safety
+  throw new Error('Unexpected end of retry loop');
 }
 
 /**

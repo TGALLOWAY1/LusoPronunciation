@@ -3,7 +3,7 @@ import type { Sentence } from '@/lib/types';
 import type { AttemptScore, WordScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
-import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
+import SentenceFeedback from './SentenceFeedback';
 import { useSettingsStore } from '@/state/settingsStore';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
@@ -20,6 +20,8 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
   const { logSentenceAttempt } = usePracticeLogStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [attempts, setAttempts] = useState<AttemptScore[]>([]);
+  // Store raw Azure responses keyed by attemptId for phoneme extraction
+  const [rawAzureResponses, setRawAzureResponses] = useState<Map<string, any>>(new Map());
   
   const {
     isRecording,
@@ -87,12 +89,23 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       }
 
       // Create new attempt with audioUrl from recorder
+      // Ensure attemptId and createdAt are set (they should be from server, but add fallbacks)
+      const attemptId = attemptScore.attemptId || `attempt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const newAttempt: AttemptScore = {
         ...attemptScore,
+        attemptId,
+        createdAt: attemptScore.createdAt || new Date().toISOString(),
         audioUrl: url || undefined,
       };
 
-      // Add to attempts list
+      // Store rawAzure response for phoneme extraction
+      setRawAzureResponses(prev => {
+        const next = new Map(prev);
+        next.set(attemptId, rawAzure);
+        return next;
+      });
+
+      // Add to attempts list (prepend so most recent is first)
       setAttempts(prev => [newAttempt, ...prev]);
 
       // Calculate recording duration if we have start time
@@ -166,6 +179,7 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
   useEffect(() => {
     reset();
     setAttempts([]);
+    setRawAzureResponses(new Map());
     // Reset UX flags for new sentence
     setHintUsedForCurrentAttempt(false);
     setSlowedPlaybackUsedForCurrentAttempt(false);
@@ -300,28 +314,15 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
         )}
       </div>
 
-      {/* Pronunciation Feedback - show feedback for the most recent attempt */}
-      {attempts.length > 0 && (() => {
-        const latestAttempt = attempts[0]; // Most recent is first in array
-        
-        // Map AttemptScore to SentenceFeedbackProps
-        const overall: OverallScores = {
-          accuracy: latestAttempt.overallAccuracy,
-          fluency: latestAttempt.fluency,
-          completeness: latestAttempt.completeness,
-          prosody: latestAttempt.prosody,
-        };
-
-        // Map word scores to WordFeedback format
-        const words: WordFeedback[] = latestAttempt.wordScores.map((ws, index) => ({
-          index,
-          text: ws.word,
-          accuracyScore: ws.accuracy,
-          errorType: ws.errorType,
-        }));
-
-        return <SentenceFeedback overall={overall} words={words} />;
-      })()}
+      {/* Pronunciation Feedback - always show panel scaffold, even before first attempt */}
+      <SentenceFeedback 
+        sentence={sentence}
+        attempts={attempts}
+        currentAttempt={attempts.length > 0 ? attempts[0] : null} // Most recent is first in array, or null if no attempts
+        rawAzureResponse={attempts.length > 0 && attempts[0]?.attemptId 
+          ? rawAzureResponses.get(attempts[0].attemptId) 
+          : undefined}
+      />
 
       {/* Category info (optional, subtle) */}
       <div className="text-xs text-gray-400 dark:text-gray-500">

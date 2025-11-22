@@ -1,21 +1,16 @@
 /**
  * Master dataset writers for the content generation pipeline.
  * 
- * Writes enriched MasterWord and MasterSentence arrays to canonical JSON files
+ * Writes enriched EnrichedWord and EnrichedSentence arrays to canonical JSON files
  * that serve as the source of truth for the application.
  * 
- * Output files:
- * - data/masterWords.json: Array of MasterWord entries
- * - data/masterSentences.json: Array of MasterSentence entries
- * 
- * Expected output sizes with default limits (from generationPipelineConfig):
- * - masterWords.json: ~2000 words (wordLimit default)
- * - masterSentences.json: ~1000 sentences (sentenceLimit default)
+ * Output files are configured via GenerationPipelineConfig paths.
  */
 
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import { MasterWord, MasterSentence } from '../types/contentGeneration';
+import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
+import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
 
 /**
  * Ensures a directory exists, creating it if necessary.
@@ -31,36 +26,48 @@ async function ensureDirectoryExists(dirPath: string): Promise<void> {
 }
 
 /**
- * Writes MasterWord array to data/masterWords.json.
+ * Writes EnrichedWord array to the configured master words path.
  * 
- * @param words - Array of MasterWord entries to write
+ * @param words - Array of EnrichedWord entries to write
+ * @param config - Generation pipeline configuration
  */
-export async function writeMasterWords(words: MasterWord[]): Promise<void> {
-  const outputDir = path.join(process.cwd(), 'data');
+export async function writeMasterWords(
+  words: EnrichedWord[],
+  config: GenerationPipelineConfig
+): Promise<void> {
+  const outputPath = path.join(process.cwd(), config.paths.masterWordsPath);
+  const outputDir = path.dirname(outputPath);
+  
+  // Ensure the directory structure exists
   await ensureDirectoryExists(outputDir);
 
-  const outputPath = path.join(outputDir, 'masterWords.json');
+  // Write pretty-printed JSON for readability
   const jsonContent = JSON.stringify(words, null, 2);
-
   await fs.writeFile(outputPath, jsonContent, 'utf-8');
+  
   console.log(`Wrote ${words.length} master words to ${outputPath}`);
 }
 
 /**
- * Writes MasterSentence array to data/masterSentences.json.
+ * Writes EnrichedSentence array to the configured master sentences path.
  * 
- * @param sentences - Array of MasterSentence entries to write
+ * @param sentences - Array of EnrichedSentence entries to write
+ * @param config - Generation pipeline configuration
  */
 export async function writeMasterSentences(
-  sentences: MasterSentence[]
+  sentences: EnrichedSentence[],
+  config: GenerationPipelineConfig
 ): Promise<void> {
-  const outputDir = path.join(process.cwd(), 'data');
+  const outputPath = path.join(process.cwd(), config.paths.masterSentencesPath);
+  const outputDir = path.dirname(outputPath);
+  
+  // Ensure the directory structure exists
   await ensureDirectoryExists(outputDir);
 
-  const outputPath = path.join(outputDir, 'masterSentences.json');
+  // Write pretty-printed JSON for readability
   const jsonContent = JSON.stringify(sentences, null, 2);
-
   await fs.writeFile(outputPath, jsonContent, 'utf-8');
+  
   console.log(`Wrote ${sentences.length} master sentences to ${outputPath}`);
 }
 

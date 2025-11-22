@@ -107,6 +107,17 @@ export interface Sentence {
   audioMaleUrl?: string;
   audioFemaleUrl?: string;
   audioId?: string;              // ID used to look up in audio_index.json
+  // Enriched fields (optional, from master datasets)
+  phonemes?: string[];            // ARPABET or similar phoneme codes
+  ipa?: string;                  // IPA representation
+  tags?: string[];               // Additional tags
+  difficultyScore?: number;      // Numeric difficulty score
+  cefr?: string;                 // CEFR level (A1, A2, B1, B2, C1, C2)
+  wordRefs?: {                   // References to words in this sentence
+    wordId: string;
+    tokenIndex: number;
+  }[];
+  hardForEnglish?: boolean;       // Whether this sentence is hard for English speakers
 }
 
 /**
@@ -126,6 +137,12 @@ export interface Word {
   audioMaleUrl?: string;
   audioFemaleUrl?: string;
   audioId?: string;               // ID used to look up in audio_index.json
+  // Enriched fields (optional, from master datasets)
+  phonemes?: string[];            // ARPABET or similar phoneme codes
+  ipa?: string;                  // IPA representation
+  tags?: string[];               // Additional tags
+  difficultyScore?: number;       // Numeric difficulty score
+  cefr?: string;                 // CEFR level (A1, A2, B1, B2, C1, C2)
 }
 
 /**

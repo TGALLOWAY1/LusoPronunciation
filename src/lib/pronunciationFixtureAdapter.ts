@@ -112,6 +112,7 @@ export type PracticePhraseFromFixture = {
   text: string;            // Portuguese phrase text
   translationEn?: string;  // English translation (if available from sentences.json)
   difficulty: number;
+  categoryId?: string;     // Category ID from matching sentence (if available)
   audioUrl: string;        // URL to use in <audio src=...>
   attempt: AttemptScore;   // single "fixture attempt" containing overall scores
   sentenceAudio: AudioVariant[];      // [native, user]
@@ -367,6 +368,7 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
   // Find matching sentence for native audio and English translation
   const matchingSentence = await findMatchingSentence(fixture.text);
   const translationEn = matchingSentence?.translationEn;
+  const categoryId = matchingSentence?.categoryId;
 
   // Build sentenceAudio with native and user variants
   // Use global voice setting (default to 'male' if not available in non-React context)
@@ -405,26 +407,93 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
     url: audioUrl, // existing fixture audio path
   });
 
-  // Build wordAudios (optional, for future use)
-  // Create both native and user variants for each word
-  const wordAudios: WordAudioVariant[] = words.flatMap((_word, index) => [
-    {
-      type: 'native',
-      wordIndex: index,
-      url: `/audio/fixtures/native/${fixture.id}_word_${index}.wav`,
-    },
-    {
-      type: 'user',
-      wordIndex: index,
-      url: `/audio/fixtures/user/${fixture.id}_word_${index}.wav`,
-    },
-  ]);
+  // Build wordAudios using real word IDs and proper audio paths
+  // Use the wordId from matched words to get actual audio URLs
+  const wordAudios: WordAudioVariant[] = [];
+  
+  // Import audio routing functions (dynamic import to avoid circular dependencies)
+  const { getAudioUrlForWordSync } = await import('@/utils/audioRouting');
+  
+  // Ensure words are loaded (they should be from generateWordFeedback, but ensure cache is populated)
+  if (!cachedWords || cachedWords.length === 0) {
+    try {
+      cachedWords = await loadAllWords();
+    } catch (error) {
+      console.warn('[PronunciationFixtureAdapter] Failed to load words for wordAudios:', error);
+    }
+  }
+  
+  for (let index = 0; index < words.length; index++) {
+    const word = words[index];
+    const wordId = word.wordId;
+    
+    if (wordId) {
+      // Build native audio URL using wordId (default to 'male' voice, components will filter by voice preference)
+      const nativeUrl = getAudioUrlForWordSync(wordId, 'male');
+      if (nativeUrl) {
+        wordAudios.push({
+          type: 'native',
+          wordIndex: index,
+          url: nativeUrl,
+        });
+      }
+      
+      // Also add female variant if different
+      const femaleUrl = getAudioUrlForWordSync(wordId, 'female');
+      if (femaleUrl && femaleUrl !== nativeUrl) {
+        wordAudios.push({
+          type: 'native',
+          wordIndex: index,
+          url: femaleUrl,
+        });
+      }
+    } else if (cachedWords && cachedWords.length > 0) {
+      // Fallback: Try to find word by text in cached words if wordId matching failed
+      // This handles cases where words aren't loading from master dataset
+      const normalizedWordText = normalizeWordToken(word.text);
+      const matchedWord = cachedWords.find(w => 
+        normalizeWordToken(w.textPt) === normalizedWordText
+      );
+      
+      if (matchedWord?.id) {
+        const nativeUrl = getAudioUrlForWordSync(matchedWord.id, 'male');
+        if (nativeUrl) {
+          wordAudios.push({
+            type: 'native',
+            wordIndex: index,
+            url: nativeUrl,
+          });
+        }
+        
+        const femaleUrl = getAudioUrlForWordSync(matchedWord.id, 'female');
+        if (femaleUrl && femaleUrl !== nativeUrl) {
+          wordAudios.push({
+            type: 'native',
+            wordIndex: index,
+            url: femaleUrl,
+          });
+        }
+      } else if (import.meta.env.DEV) {
+        console.warn(
+          `[PronunciationFixtureAdapter] Word at index ${index} ("${word.text}") has no wordId and no match found in cached words (${cachedWords.length} words available)`
+        );
+      }
+    } else if (import.meta.env.DEV) {
+      console.warn(
+        `[PronunciationFixtureAdapter] Word at index ${index} ("${word.text}") has no wordId and cachedWords is empty - word audio will not be available`
+      );
+    }
+    
+    // Note: User audio variants would require word-level extraction from sentence audio,
+    // which is not currently available. We only include native word audio for now.
+  }
 
   return {
     id: fixture.id,
     text: fixture.text,
     translationEn,
     difficulty: fixture.difficulty,
+    categoryId,
     audioUrl,
     attempt,
     sentenceAudio,

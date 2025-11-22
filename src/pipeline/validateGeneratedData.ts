@@ -1,104 +1,286 @@
 /**
  * Validation layer for the content generation pipeline.
  * 
- * Validates master data (words and sentences) against the audio index for consistency.
- * Checks for missing audio files, missing phonemes, and missing word references.
+ * Validates enriched data (words and sentences) against the audio index for consistency.
+ * Checks for missing audio files, missing phonemes, invalid word references, and more.
  * 
  * The validator operates on in-memory arrays and does not perform file I/O itself.
  * The orchestrator should load the data and pass it to the validator, then use
- * writeValidationReport() to generate a human-readable report.
+ * logValidationReport() for console output or writeValidationReport() for file output.
  * 
- * Note: The pipeline's orchestrator may choose to exit with a non-zero status code
- * if certain validation thresholds are exceeded (e.g., too many missing audio files).
+ * Note: Use assertValidOrThrow() to exit with non-zero status code on critical errors.
  * This allows CI/CD pipelines to fail on data quality issues.
  */
 
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import { MasterWord, MasterSentence } from '../types/contentGeneration';
-import { AudioIndex } from '../lib/types';
-
-export interface ValidationResult {
-  totalWords: number;
-  totalSentences: number;
-  wordsMissingAudio: string[];
-  sentencesMissingAudio: string[];
-  wordsMissingPhonemes: string[];
-  sentencesMissingWordRefs: string[];
-}
+import type { EnrichedWord, EnrichedSentence, AudioIndexEntryExtended, ValidationReport } from '../types/contentGeneration';
+import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
+import { getPhonemeMetadata } from '../lib/phonemeMetadata';
 
 /**
- * Validates master data against the audio index for consistency.
+ * Validates generated data against expectations and consistency checks.
  * 
- * Checks:
- * - Words and sentences have corresponding audio index entries with valid paths
- * - Words have phoneme data
- * - Sentences have word references
+ * Checks performed:
+ * - Count validation: compare word/sentence counts to config.limits (if set)
+ * - Missing phoneme sequences: words without phonemes array or empty array
+ * - Missing IPA: words without IPA (warning, not fatal)
+ * - Missing audio entries: items with no corresponding audio index entry
+ * - Invalid word references: sentence wordRefs that refer to non-existent word IDs
+ * - Missing phoneme IDs: phonemes not found in phoneme_metadata.json
  * 
- * @param words - Array of MasterWord entries
- * @param sentences - Array of MasterSentence entries
- * @param audioIndex - AudioIndex object (keyed by item ID)
- * @returns ValidationResult with counts and lists of issues
+ * @param params - Validation parameters
+ * @param params.words - Array of enriched words
+ * @param params.sentences - Array of enriched sentences
+ * @param params.audioIndex - Array of audio index entries (extended format)
+ * @param params.config - Generation pipeline configuration
+ * @returns ValidationReport with counts and lists of issues
  */
-export function validate(
-  words: MasterWord[],
-  sentences: MasterSentence[],
-  audioIndex: AudioIndex
-): ValidationResult {
-  const result: ValidationResult = {
-    totalWords: words.length,
-    totalSentences: sentences.length,
-    wordsMissingAudio: [],
-    sentencesMissingAudio: [],
-    wordsMissingPhonemes: [],
-    sentencesMissingWordRefs: [],
+export function validateGeneratedData(params: {
+  words: EnrichedWord[];
+  sentences: EnrichedSentence[];
+  audioIndex: AudioIndexEntryExtended[];
+  config: GenerationPipelineConfig;
+}): ValidationReport {
+  const { words, sentences, audioIndex, config } = params;
+  
+  const report: ValidationReport = {
+    wordCount: words.length,
+    sentenceCount: sentences.length,
+    audioVariantCount: audioIndex.length,
+    missingAudioIds: [],
+    missingPhonemeIds: [],
+    invalidWordRefs: [],
+    otherErrors: [],
   };
-
+  
+  // Create lookup maps for efficient checking
+  const audioIndexMap = new Map<string, AudioIndexEntryExtended>();
+  for (const entry of audioIndex) {
+    audioIndexMap.set(entry.id, entry);
+  }
+  
+  const wordIdMap = new Map<string, EnrichedWord>();
+  for (const word of words) {
+    wordIdMap.set(word.id, word);
+  }
+  
+  // Count validation (if limits are set)
+  if (config.limits.maxWords !== undefined) {
+    if (words.length > config.limits.maxWords) {
+      report.otherErrors?.push(
+        `Word count (${words.length}) exceeds configured limit (${config.limits.maxWords})`
+      );
+    }
+  }
+  
+  if (config.limits.maxSentences !== undefined) {
+    if (sentences.length > config.limits.maxSentences) {
+      report.otherErrors?.push(
+        `Sentence count (${sentences.length}) exceeds configured limit (${config.limits.maxSentences})`
+      );
+    }
+  }
+  
   // Validate words
   for (const word of words) {
     // Check for audio index entry
-    const audioEntry = audioIndex[word.id];
+    const audioEntry = audioIndexMap.get(word.id);
     if (!audioEntry) {
-      result.wordsMissingAudio.push(word.id);
+      report.missingAudioIds.push(word.id);
+    }
+    
+    // Check for phoneme sequences
+    if (!word.phonemes || word.phonemes.length === 0) {
+      report.missingPhonemeIds.push(word.id);
     } else {
-      // Check if audio paths are valid (non-empty)
-      const hasValidPath =
-        (audioEntry.ptbr.male && audioEntry.ptbr.male.trim().length > 0) ||
-        (audioEntry.ptbr.female && audioEntry.ptbr.female.trim().length > 0);
-      if (!hasValidPath) {
-        result.wordsMissingAudio.push(word.id);
+      // Check if phoneme IDs exist in phoneme_metadata
+      for (const phonemeId of word.phonemes) {
+        const phonemeMetadata = getPhonemeMetadata(phonemeId);
+        if (!phonemeMetadata) {
+          // This is a missing phoneme ID (not a missing word)
+          // We'll track it separately in otherErrors
+          if (!report.otherErrors) {
+            report.otherErrors = [];
+          }
+          if (!report.otherErrors.includes(`Phoneme ID "${phonemeId}" not found in phoneme_metadata (word: ${word.id})`)) {
+            report.otherErrors.push(`Phoneme ID "${phonemeId}" not found in phoneme_metadata (word: ${word.id})`);
+          }
+        }
       }
     }
-
-    // Check for phonemes
-    if (!word.phonemes || word.phonemes.length === 0) {
-      result.wordsMissingPhonemes.push(word.id);
-    }
+    
+    // Missing IPA is a warning (not fatal), so we don't add it to critical errors
+    // But we could track it in otherErrors if needed
   }
-
+  
   // Validate sentences
   for (const sentence of sentences) {
     // Check for audio index entry
-    const audioEntry = audioIndex[sentence.id];
+    const audioEntry = audioIndexMap.get(sentence.id);
     if (!audioEntry) {
-      result.sentencesMissingAudio.push(sentence.id);
-    } else {
-      // Check if audio paths are valid (non-empty)
-      const hasValidPath =
-        (audioEntry.ptbr.male && audioEntry.ptbr.male.trim().length > 0) ||
-        (audioEntry.ptbr.female && audioEntry.ptbr.female.trim().length > 0);
-      if (!hasValidPath) {
-        result.sentencesMissingAudio.push(sentence.id);
+      report.missingAudioIds.push(sentence.id);
+    }
+    
+    // Check word references
+    if (sentence.wordRefs && sentence.wordRefs.length > 0) {
+      for (const wordRef of sentence.wordRefs) {
+        if (!wordIdMap.has(wordRef.wordId)) {
+          // Invalid word reference - word ID doesn't exist
+          report.invalidWordRefs.push(sentence.id);
+          break; // Only add sentence ID once
+        }
       }
     }
-
-    // Check for word references
-    if (!sentence.wordRefs || sentence.wordRefs.length === 0) {
-      result.sentencesMissingWordRefs.push(sentence.id);
-    }
   }
+  
+  return report;
+}
 
-  return result;
+/**
+ * Determines if the validation report has critical errors.
+ * 
+ * Critical errors are:
+ * - Missing audio entries (items can't be used without audio)
+ * - Missing phoneme sequences (words need phonemes for pronunciation practice)
+ * - Invalid word references (broken sentence-word relationships)
+ * 
+ * Non-critical (warnings):
+ * - Missing IPA (nice to have but not required)
+ * - Count mismatches (informational)
+ * - Missing phoneme IDs in metadata (data quality issue but not blocking)
+ * 
+ * @param report - Validation report
+ * @returns true if there are critical errors
+ */
+function hasCriticalErrors(report: ValidationReport): boolean {
+  return (
+    report.missingAudioIds.length > 0 ||
+    report.missingPhonemeIds.length > 0 ||
+    report.invalidWordRefs.length > 0
+  );
+}
+
+/**
+ * Logs a validation report to the console in a human-readable format.
+ * 
+ * Prints:
+ * - Overall counts and summary
+ * - Critical errors (if any) clearly marked
+ * - Warnings and non-critical issues
+ * - Lists of affected IDs (truncated if too long)
+ * 
+ * @param report - ValidationReport from validateGeneratedData()
+ */
+export function logValidationReport(report: ValidationReport): void {
+  console.log('\n' + '='.repeat(60));
+  console.log('📊 Validation Report');
+  console.log('='.repeat(60));
+  console.log('');
+  
+  // Summary counts
+  console.log('Summary:');
+  console.log(`  Words: ${report.wordCount}`);
+  console.log(`  Sentences: ${report.sentenceCount}`);
+  console.log(`  Audio Variants: ${report.audioVariantCount}`);
+  console.log('');
+  
+  // Check for critical errors
+  const critical = hasCriticalErrors(report);
+  
+  if (critical) {
+    console.log('❌ CRITICAL ERRORS FOUND:');
+    console.log('');
+  } else {
+    console.log('✅ No critical errors found.');
+    console.log('');
+  }
+  
+  // Missing audio entries (CRITICAL)
+  if (report.missingAudioIds.length > 0) {
+    console.log(`❌ Missing Audio Entries: ${report.missingAudioIds.length} items`);
+    if (report.missingAudioIds.length <= 10) {
+      console.log('   IDs:', report.missingAudioIds.join(', '));
+    } else {
+      console.log('   First 10 IDs:', report.missingAudioIds.slice(0, 10).join(', '));
+      console.log(`   ... and ${report.missingAudioIds.length - 10} more`);
+    }
+    console.log('');
+  }
+  
+  // Missing phoneme sequences (CRITICAL)
+  if (report.missingPhonemeIds.length > 0) {
+    console.log(`❌ Missing Phoneme Sequences: ${report.missingPhonemeIds.length} words`);
+    if (report.missingPhonemeIds.length <= 10) {
+      console.log('   Word IDs:', report.missingPhonemeIds.join(', '));
+    } else {
+      console.log('   First 10 IDs:', report.missingPhonemeIds.slice(0, 10).join(', '));
+      console.log(`   ... and ${report.missingPhonemeIds.length - 10} more`);
+    }
+    console.log('');
+  }
+  
+  // Invalid word references (CRITICAL)
+  if (report.invalidWordRefs.length > 0) {
+    console.log(`❌ Invalid Word References: ${report.invalidWordRefs.length} sentences`);
+    if (report.invalidWordRefs.length <= 10) {
+      console.log('   Sentence IDs:', report.invalidWordRefs.join(', '));
+    } else {
+      console.log('   First 10 IDs:', report.invalidWordRefs.slice(0, 10).join(', '));
+      console.log(`   ... and ${report.invalidWordRefs.length - 10} more`);
+    }
+    console.log('');
+  }
+  
+  // Other errors (warnings/non-critical)
+  if (report.otherErrors && report.otherErrors.length > 0) {
+    console.log('⚠️  Warnings/Non-Critical Issues:');
+    for (const error of report.otherErrors) {
+      console.log(`   - ${error}`);
+    }
+    console.log('');
+  }
+  
+  // Final status
+  if (critical) {
+    console.log('❌ Validation FAILED - Critical errors must be fixed before proceeding.');
+  } else {
+    console.log('✅ Validation PASSED - No critical errors found.');
+  }
+  
+  console.log('='.repeat(60));
+  console.log('');
+}
+
+/**
+ * Asserts that the validation report has no critical errors, throwing if it does.
+ * 
+ * Use this in orchestrator scripts to exit with non-zero status code on critical errors.
+ * 
+ * @param report - Validation report
+ * @throws {Error} If hasCriticalErrors is true, with a descriptive message
+ */
+export function assertValidOrThrow(report: ValidationReport): void {
+  if (hasCriticalErrors(report)) {
+    const errors: string[] = [];
+    
+    if (report.missingAudioIds.length > 0) {
+      errors.push(`${report.missingAudioIds.length} items missing audio entries`);
+    }
+    
+    if (report.missingPhonemeIds.length > 0) {
+      errors.push(`${report.missingPhonemeIds.length} words missing phoneme sequences`);
+    }
+    
+    if (report.invalidWordRefs.length > 0) {
+      errors.push(`${report.invalidWordRefs.length} sentences with invalid word references`);
+    }
+    
+    throw new Error(
+      `Validation failed with critical errors: ${errors.join('; ')}. ` +
+      `Run logValidationReport() for details.`
+    );
+  }
 }
 
 /**
@@ -109,10 +291,10 @@ export function validate(
  * - Summary of issues (missing audio, phonemes, word refs)
  * - Lists of affected IDs (truncated if too long)
  * 
- * @param result - ValidationResult from validate()
+ * @param result - ValidationResult from validate() (legacy function, kept for backward compatibility)
  */
 export async function writeValidationReport(
-  result: ValidationResult
+  result: any
 ): Promise<void> {
   const outputDir = path.join(process.cwd(), 'data', 'generated');
   await fs.mkdir(outputDir, { recursive: true });

@@ -6,7 +6,7 @@ import WordAudioButton from './WordAudioButton';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
 import { scoreWordPronunciation } from '@/lib/wordPronunciation';
 import { addWordAttempt, getLatestWordAttempt } from '@/lib/practiceStore';
-import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
+import SentenceFeedback from './SentenceFeedback';
 import { useSettingsStore } from '@/state/settingsStore';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
@@ -299,32 +299,14 @@ function WordCard({ word, sessionId, onKnowIt, onReviewLater }: WordCardProps) {
       </div>
 
       {/* Pronunciation Feedback - show feedback for the most recent attempt */}
-      {latestAttempt && (() => {
-        // Map AttemptScore to SentenceFeedbackProps
-        const overall: OverallScores = {
-          accuracy: latestAttempt.overallAccuracy,
-          fluency: latestAttempt.fluency,
-          completeness: latestAttempt.completeness,
-          prosody: latestAttempt.prosody,
-        };
-
-        // Map word scores to WordFeedback format
-        // For a single word, the wordScores array should contain one entry
-        const words: WordFeedback[] = latestAttempt.wordScores.length > 0
-          ? latestAttempt.wordScores.map((ws, index) => ({
-              index,
-              text: ws.word,
-              accuracyScore: ws.accuracy,
-              errorType: ws.errorType,
-            }))
-          : [{
-              index: 0,
-              text: word.textPt,
-              accuracyScore: latestAttempt.overallAccuracy,
-            }];
-
-        return <SentenceFeedback overall={overall} words={words} />;
-      })()}
+      {latestAttempt && (
+        <SentenceFeedback 
+          currentAttempt={latestAttempt}
+          fallbackText={word.textPt}
+          fallbackTranslation={word.translationEn}
+          fallbackDifficulty={word.difficulty}
+        />
+      )}
 
       {/* Action buttons */}
       <div className="flex flex-col sm:flex-row gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">

@@ -27,6 +27,12 @@ export interface Word {
   trickyFeature?: string;  // "nasal ão", "rr", "lh", etc.
   notes?: string;          // Any extra tips for me
   audioId?: string;        // Points to audio_index.json (e.g., "word_001")
+  // Enriched fields (optional, from master datasets)
+  phonemes?: string[];     // ARPABET or similar phoneme codes
+  ipa?: string;           // IPA representation
+  tags?: string[];        // Additional tags
+  difficultyScore?: number; // Numeric difficulty score
+  cefr?: string;          // CEFR level (A1, A2, B1, B2, C1, C2)
 }
 
 /**
@@ -41,5 +47,15 @@ export interface Sentence {
   tags?: string[];         // ["nasal", "present-tense"]
   wordIds?: WordId[];      // Optional linkage to Word entries
   audioId?: string;        // Points to audio_index.json (e.g., "sentence_001")
+  // Enriched fields (optional, from master datasets)
+  phonemes?: string[];     // ARPABET or similar phoneme codes
+  ipa?: string;           // IPA representation
+  difficultyScore?: number; // Numeric difficulty score
+  cefr?: string;          // CEFR level (A1, A2, B1, B2, C1, C2)
+  wordRefs?: {             // References to words in this sentence
+    wordId: string;
+    tokenIndex: number;
+  }[];
+  hardForEnglish?: boolean; // Whether this sentence is hard for English speakers
 }
 

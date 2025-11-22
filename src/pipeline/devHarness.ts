@@ -11,7 +11,7 @@
  */
 
 import { loadRawWords, loadRawSentences } from './loadSourceLists';
-import { buildMasterWords, buildMasterSentences } from './enrichItems';
+import { enrichWords, enrichSentences } from './enrichItems';
 import { writeMasterWords, writeMasterSentences } from './writeCanonicalDatasets';
 import generationPipelineConfig from '../../config/generationPipeline.config';
 
@@ -32,30 +32,30 @@ export async function runDevHarness(): Promise<void> {
 
   // Load raw data
   console.log('\n--- Loading raw data ---');
-  const rawWords = await loadRawWords();
-  const rawSentences = await loadRawSentences();
+  const rawWords = await loadRawWords(generationPipelineConfig);
+  const rawSentences = await loadRawSentences(generationPipelineConfig);
 
   // Enrich words
   console.log('\n--- Enriching words ---');
-  const masterWords = buildMasterWords(
+  const masterWords = enrichWords(
     rawWords,
-    generationPipelineConfig.wordLimit
+    generationPipelineConfig
   );
   console.log(`Enriched ${masterWords.length} words`);
 
   // Enrich sentences
   console.log('\n--- Enriching sentences ---');
-  const masterSentences = buildMasterSentences(
+  const masterSentences = enrichSentences(
     rawSentences,
     masterWords,
-    generationPipelineConfig.sentenceLimit
+    generationPipelineConfig
   );
   console.log(`Enriched ${masterSentences.length} sentences`);
 
   // Write datasets
   console.log('\n--- Writing datasets ---');
-  await writeMasterWords(masterWords);
-  await writeMasterSentences(masterSentences);
+  await writeMasterWords(masterWords, generationPipelineConfig);
+  await writeMasterSentences(masterSentences, generationPipelineConfig);
 
   console.log('\n✅ Development harness completed successfully!');
   console.log(`   - ${masterWords.length} master words written`);
