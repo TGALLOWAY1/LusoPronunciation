@@ -3,7 +3,7 @@ import type { Sentence } from '@/lib/types';
 import type { AttemptScore, WordScore } from '@/types/pronunciation';
 import AudioPlayerButton from './AudioPlayerButton';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
-import SentenceFeedback, { type OverallScores, type WordFeedback } from './SentenceFeedback';
+import SentenceFeedback from './SentenceFeedback';
 import { useSettingsStore } from '@/state/settingsStore';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
@@ -87,12 +87,15 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       }
 
       // Create new attempt with audioUrl from recorder
+      // Ensure attemptId and createdAt are set (they should be from server, but add fallbacks)
       const newAttempt: AttemptScore = {
         ...attemptScore,
+        attemptId: attemptScore.attemptId || `attempt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        createdAt: attemptScore.createdAt || new Date().toISOString(),
         audioUrl: url || undefined,
       };
 
-      // Add to attempts list
+      // Add to attempts list (prepend so most recent is first)
       setAttempts(prev => [newAttempt, ...prev]);
 
       // Calculate recording duration if we have start time
@@ -301,27 +304,13 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       </div>
 
       {/* Pronunciation Feedback - show feedback for the most recent attempt */}
-      {attempts.length > 0 && (() => {
-        const latestAttempt = attempts[0]; // Most recent is first in array
-        
-        // Map AttemptScore to SentenceFeedbackProps
-        const overall: OverallScores = {
-          accuracy: latestAttempt.overallAccuracy,
-          fluency: latestAttempt.fluency,
-          completeness: latestAttempt.completeness,
-          prosody: latestAttempt.prosody,
-        };
-
-        // Map word scores to WordFeedback format
-        const words: WordFeedback[] = latestAttempt.wordScores.map((ws, index) => ({
-          index,
-          text: ws.word,
-          accuracyScore: ws.accuracy,
-          errorType: ws.errorType,
-        }));
-
-        return <SentenceFeedback overall={overall} words={words} />;
-      })()}
+      {attempts.length > 0 && (
+        <SentenceFeedback 
+          sentence={sentence}
+          attempts={attempts}
+          currentAttempt={attempts[0]} // Most recent is first in array
+        />
+      )}
 
       {/* Category info (optional, subtle) */}
       <div className="text-xs text-gray-400 dark:text-gray-500">

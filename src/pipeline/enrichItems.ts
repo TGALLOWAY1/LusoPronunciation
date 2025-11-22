@@ -1,150 +1,119 @@
 /**
  * Enrichment orchestrator for the content generation pipeline.
  * 
- * Transforms RawWordInput and RawSentenceInput into enriched MasterWord and
- * MasterSentence arrays by applying phoneme mapping, difficulty inference,
- * category inference, and word reference building.
+ * Transforms RawWord and RawSentence into enriched EnrichedWord and
+ * EnrichedSentence arrays by applying phoneme mapping, tagging, difficulty inference,
+ * and word reference building.
  */
 
-import {
-  RawWordInput,
-  RawSentenceInput,
-  MasterWord,
-  MasterSentence,
-} from '../types/contentGeneration';
-import { mapWordToPhonemes } from './phonemeMapper';
-import * as tagging from './tagging';
-import { buildWordRefs } from './sentenceWordRefs';
+import type { RawWord, RawSentence } from '../lib/types';
+import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
+import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
+import { getPhonemesForToken } from './phonemeMapper';
+import { applyWordTags, applySentenceTags, inferCategory } from './tagging';
+import { computeSentenceWordRefs } from './sentenceWordRefs';
 
 /**
- * Simple slugify helper to generate stable IDs from text.
+ * Normalizes text to lowercase for consistent matching.
  * 
- * @param text - The text to slugify
- * @returns Slugified string suitable for use in IDs
+ * @param text - The text to normalize
+ * @returns Normalized text in lowercase
  */
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-    .replace(/[^\w\s-]/g, '') // Remove special chars except spaces and hyphens
-    .trim()
-    .replace(/\s+/g, '_') // Replace spaces with underscores
-    .replace(/-+/g, '-') // Collapse multiple hyphens
-    .replace(/^_+|_+$/g, ''); // Remove leading/trailing underscores
+function normalizeText(text: string): string {
+  return text.toLowerCase().trim();
 }
 
 /**
- * Generates a stable ID for a word.
+ * Enriches raw words into EnrichedWord objects.
  * 
- * @param pt - The Portuguese word text
- * @param index - Optional index for uniqueness
- * @returns Word ID
+ * Steps:
+ * 1. Normalize text
+ * 2. Attach phonemes/IPA via phonemeMapper
+ * 3. Apply tags and difficulty heuristics via tagging
+ * 
+ * @param rawWords - Array of raw words from source data
+ * @param config - Generation pipeline configuration
+ * @returns Array of enriched word entries
  */
-function generateWordId(pt: string, index?: number): string {
-  const slug = slugify(pt);
-  // If slug is empty or too short, use index-based fallback
-  if (slug.length === 0) {
-    return `word_${index ?? Date.now()}`;
-  }
-  // Add index if provided to ensure uniqueness
-  return index !== undefined ? `word_${slug}_${index}` : `word_${slug}`;
-}
+export function enrichWords(
+  rawWords: RawWord[],
+  _config: GenerationPipelineConfig
+): EnrichedWord[] {
+  const enrichedWords: EnrichedWord[] = [];
 
-/**
- * Generates a stable ID for a sentence.
- * 
- * @param pt - The Portuguese sentence text
- * @param index - Optional index for uniqueness
- * @returns Sentence ID
- */
-function generateSentenceId(pt: string, index?: number): string {
-  // TODO: Improve ID generation - could use short hash of sentence text
-  // For now, use slugified version with index
-  const slug = slugify(pt.substring(0, 50)); // Use first 50 chars for slug
-  if (slug.length === 0) {
-    return `sentence_${index ?? Date.now()}`;
-  }
-  return index !== undefined ? `sentence_${slug}_${index}` : `sentence_${slug}`;
-}
-
-/**
- * Builds MasterWord array from RawWordInput array.
- * 
- * Applies phoneme mapping, difficulty inference, and category inference.
- * Generates stable IDs and enriches with all required fields.
- * 
- * @param rawWords - Array of raw word inputs
- * @param limit - Maximum number of words to process
- * @returns Array of enriched MasterWord entries
- */
-export function buildMasterWords(
-  rawWords: RawWordInput[],
-  limit: number
-): MasterWord[] {
-  const truncated = rawWords.slice(0, limit);
-  const masterWords: MasterWord[] = [];
-
-  for (let i = 0; i < truncated.length; i++) {
-    const raw = truncated[i];
-    const phonemeData = mapWordToPhonemes(raw.pt);
-
-    const masterWord: MasterWord = {
-      id: generateWordId(raw.pt, i),
-      text: raw.pt,
-      englishGloss: raw.english,
-      partOfSpeech: raw.partOfSpeech || 'unknown',
-      frequencyRank: raw.frequencyRank,
-      difficulty: tagging.inferWordDifficulty(raw.frequencyRank),
-      category: tagging.inferCategory(raw.category, raw.pt),
-      isHardForEnglishSpeakers: phonemeData.isHardForEnglishSpeakers,
-      ipa: phonemeData.ipa,
-      phonemes: phonemeData.phonemes,
+  for (const raw of rawWords) {
+    const text = raw.pt.trim();
+    const normalizedText = normalizeText(text);
+    
+    // Get phonemes and IPA
+    const { phonemes, ipa } = getPhonemesForToken(text);
+    
+    // Create base enriched word
+    const enrichedWord: EnrichedWord = {
+      id: raw.id,
+      text,
+      normalizedText,
+      category: inferCategory(undefined, text), // Could extract from raw data if available
+      partOfSpeech: raw.pos,
+      englishDifficultyFlag: raw.difficult_for_english,
+      phonemes: phonemes.length > 0 ? phonemes : [], // Ensure array is never undefined
+      ipa,
     };
-
-    masterWords.push(masterWord);
+    
+    // Apply tags and difficulty heuristics
+    const taggedWord = applyWordTags(enrichedWord);
+    
+    enrichedWords.push(taggedWord);
   }
 
-  return masterWords;
+  return enrichedWords;
 }
 
 /**
- * Builds MasterSentence array from RawSentenceInput array.
+ * Enriches raw sentences into EnrichedSentence objects.
  * 
- * Applies difficulty inference, category inference, tag inference, and
- * builds word references by matching sentence tokens to MasterWord entries.
+ * Steps:
+ * 1. Normalize text
+ * 2. Apply sentence-level tags and difficulty
+ * 3. Use computeSentenceWordRefs to produce wordRefs
  * 
- * @param rawSentences - Array of raw sentence inputs
- * @param words - Array of MasterWord entries for word reference matching
- * @param limit - Maximum number of sentences to process
- * @returns Array of enriched MasterSentence entries
+ * @param rawSentences - Array of raw sentences from source data
+ * @param words - Array of enriched words for word reference matching
+ * @param config - Generation pipeline configuration
+ * @returns Array of enriched sentence entries
  */
-export function buildMasterSentences(
-  rawSentences: RawSentenceInput[],
-  words: MasterWord[],
-  limit: number
-): MasterSentence[] {
-  const truncated = rawSentences.slice(0, limit);
-  const masterSentences: MasterSentence[] = [];
-
-  for (let i = 0; i < truncated.length; i++) {
-    const raw = truncated[i];
-    const wordRefs = buildWordRefs(raw.pt, words);
-
-    const masterSentence: MasterSentence = {
-      id: generateSentenceId(raw.pt, i),
-      text: raw.pt,
-      englishTranslation: raw.english,
-      frequencyRank: raw.frequencyRank,
-      difficulty: tagging.inferSentenceDifficulty(raw.frequencyRank),
-      category: tagging.inferCategory(raw.category, raw.pt),
-      tags: tagging.inferTagsForSentence(raw.pt),
-      wordRefs,
+export function enrichSentences(
+  rawSentences: RawSentence[],
+  words: EnrichedWord[],
+  _config: GenerationPipelineConfig
+): EnrichedSentence[] {
+  // First, create base enriched sentences
+  const baseEnriched: EnrichedSentence[] = rawSentences.map(raw => {
+    const text = raw.pt.trim();
+    const normalizedText = normalizeText(text);
+    
+    // Determine if sentence is hard for English speakers
+    // Simple heuristic: check if it contains difficult features
+    const hasNasal = normalizedText.includes('ã') || normalizedText.includes('õ') || normalizedText.includes('ão');
+    const hasLh = normalizedText.includes('lh');
+    const hasRr = normalizedText.includes('rr');
+    const hardForEnglish = hasNasal || hasLh || hasRr;
+    
+    return {
+      id: raw.id,
+      text,
+      normalizedText,
+      category: inferCategory(undefined, text), // Could extract from raw data if available
+      hardForEnglish,
     };
-
-    masterSentences.push(masterSentence);
-  }
-
-  return masterSentences;
+  });
+  
+  // Apply tags and difficulty heuristics
+  const taggedSentences = baseEnriched.map(sentence => applySentenceTags(sentence));
+  
+  // Compute word references
+  const sentencesWithRefs = computeSentenceWordRefs(taggedSentences, words);
+  
+  return sentencesWithRefs;
 }
 

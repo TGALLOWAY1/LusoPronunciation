@@ -13,7 +13,8 @@
     "audio:words:force": "tsx scripts/generateWordAudio.ts --force",
     "audio:words:male": "tsx scripts/generateWordAudio.ts --voice=male",
     "audio:words:female": "tsx scripts/generateWordAudio.ts --voice=female",
-    "generate:pipeline": "tsx scripts/generationPipeline.ts",
+    "generation:pipeline": "tsx scripts/generationPipeline.ts --stage=all",
+    "dev:test-enrichment": "tsx scripts/devTestEnrichment.ts",
     "test": "vitest",
     "test:watch": "vitest --watch"
   },

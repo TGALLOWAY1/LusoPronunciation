@@ -1,6 +1,64 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
-import { PronunciationFeedbackPanel } from '@/components/pronunciation';
+import { PronunciationFeedbackPanel, type PronunciationFeedbackPanelProps } from '@/components/pronunciation';
+import {
+  adaptWordFeedbackToNormalized,
+  type NormalizedAudioVariant,
+  type NormalizedWordAudioVariant,
+} from '@/components/pronunciation/shared';
+import type { AudioVariant, WordAudioVariant } from '@/types/pronunciationFixtures';
+
+/**
+ * Adapter functions to convert fixture data to generic PronunciationFeedbackPanel props.
+ */
+
+/**
+ * Converts fixture sentence audio to normalized format.
+ */
+function adaptFixtureSentenceAudio(
+  phrase: PracticePhraseFromFixture
+): NormalizedAudioVariant[] {
+  return phrase.sentenceAudio.map((audio: AudioVariant) => ({
+    type: audio.type,
+    url: audio.url,
+  }));
+}
+
+/**
+ * Converts fixture word audio to normalized format.
+ */
+function adaptFixtureWordAudio(
+  phrase: PracticePhraseFromFixture
+): NormalizedWordAudioVariant[] | undefined {
+  if (!phrase.wordAudios) return undefined;
+  return phrase.wordAudios.map((audio: WordAudioVariant) => ({
+    type: audio.type,
+    url: audio.url,
+    wordIndex: audio.wordIndex,
+    startTimeMs: audio.startTimeMs,
+    endTimeMs: audio.endTimeMs,
+  }));
+}
+
+/**
+ * Converts a PracticePhraseFromFixture to PronunciationFeedbackPanelProps.
+ */
+function adaptPhraseToPanelProps(
+  phrase: PracticePhraseFromFixture
+): PronunciationFeedbackPanelProps {
+  return {
+    attempts: [phrase.attempt], // Single attempt for fixtures
+    currentAttempt: phrase.attempt,
+    sentenceText: phrase.text,
+    translationText: phrase.translationEn,
+    difficulty: phrase.difficulty,
+    sentenceAudio: adaptFixtureSentenceAudio(phrase),
+    wordAudios: adaptFixtureWordAudio(phrase),
+    words: phrase.words ? phrase.words.map(adaptWordFeedbackToNormalized) : undefined,
+    title: 'Pronunciation Lab',
+    showDevControls: true,
+  };
+}
 
 /**
  * Development page for exploring pronunciation fixtures.
@@ -11,6 +69,12 @@ import { PronunciationFeedbackPanel } from '@/components/pronunciation';
 export default function PronunciationFixtures() {
   const [phrases, setPhrases] = useState<PracticePhraseFromFixture[]>([]);
   const [selectedPhrase, setSelectedPhrase] = useState<PracticePhraseFromFixture | null>(null);
+
+  // Adapt selected phrase to generic panel props
+  const panelProps = useMemo<PronunciationFeedbackPanelProps | null>(() => {
+    if (!selectedPhrase) return null;
+    return adaptPhraseToPanelProps(selectedPhrase);
+  }, [selectedPhrase]);
 
   useEffect(() => {
     // Load all practice phrases once (async now due to sentence matching)
@@ -122,8 +186,8 @@ export default function PronunciationFixtures() {
         {/* Main content area - Sentences panel centered */}
         <div className="max-w-4xl mx-auto mb-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            {selectedPhrase ? (
-              <PronunciationFeedbackPanel phrase={selectedPhrase} />
+            {panelProps ? (
+              <PronunciationFeedbackPanel {...panelProps} />
             ) : (
               <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                 <p>Select a phrase from the list below to view details</p>

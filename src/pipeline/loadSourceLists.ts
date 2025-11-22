@@ -2,7 +2,7 @@
  * Source loader for the content generation pipeline.
  * 
  * This module loads and normalizes raw data from existing JSON files into
- * RawWordInput and RawSentenceInput arrays for further processing.
+ * RawWord and RawSentence arrays for further processing.
  * 
  * Schema Notes:
  * 
@@ -15,108 +15,73 @@
  *   Root: { language_pair, version, categories: [...] }
  *   Category: { id, label_en, label_pt, sentences: [...] }
  *   Sentence: { id, en, pt, difficulty, pronunciation_notes? }
- * 
- * TODO: Future integration - Merge frequency data from CSV sources such as
- * data/source/word_frequency_ptbr.csv to populate frequencyRank fields.
  */
 
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import { RawWordInput, RawSentenceInput } from '../types/contentGeneration';
-import generationPipelineConfig from '../../config/generationPipeline.config';
+import type { RawWord, RawSentence, WordsData, SentencesData } from '../lib/types';
+import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
 
-// Types matching the JSON structure
-interface WordEntry {
-  id: string;
-  pt: string;
-  en: string;
-  pos: string;
-  difficulty: number;
-  difficult_for_english: boolean;
-  pronunciation_notes?: string;
-}
-
-interface SentenceEntry {
-  id: string;
-  en: string;
-  pt: string;
-  difficulty: number;
-  pronunciation_notes?: string;
-}
-
-interface WordsJson {
-  language_pair: string;
-  version: string;
-  categories: Array<{
-    id: string;
-    label_en: string;
-    label_pt: string;
-    words: WordEntry[];
-  }>;
-}
-
-interface SentencesJson {
-  language_pair: string;
-  version: string;
-  categories: Array<{
-    id: string;
-    label_en: string;
-    label_pt: string;
-    sentences: SentenceEntry[];
-  }>;
+/**
+ * Normalizes text to lowercase for consistent matching.
+ * 
+ * @param text - The text to normalize
+ * @returns Normalized text in lowercase
+ */
+function normalizeText(text: string): string {
+  return text.toLowerCase().trim();
 }
 
 /**
- * Loads and normalizes words from STATIC DATA/words.json into RawWordInput array.
+ * Loads and normalizes words from the configured JSON file into RawWord array.
  * 
- * @returns Promise resolving to an array of normalized RawWordInput entries
+ * @param config - Generation pipeline configuration
+ * @returns Promise resolving to an array of normalized RawWord entries
  */
-export async function loadRawWords(): Promise<RawWordInput[]> {
-  const wordsPath = path.join(process.cwd(), 'STATIC DATA', 'words.json');
+export async function loadRawWords(config: GenerationPipelineConfig): Promise<RawWord[]> {
+  const wordsPath = path.join(process.cwd(), config.paths.rawWordsJsonPath);
   
   console.log(`Loading words from: ${wordsPath}`);
   const content = await fs.readFile(wordsPath, 'utf-8');
-  const data: WordsJson = JSON.parse(content);
+  const data: WordsData = JSON.parse(content);
   
-  const rawWords: RawWordInput[] = [];
+  const rawWords: RawWord[] = [];
   
-  // Flatten categories and map words to RawWordInput
+  // Flatten categories and map words to RawWord
   for (const category of data.categories) {
-    for (const word of category.words) {
+    for (const word of category.words || []) {
       rawWords.push({
+        id: word.id,
         pt: word.pt.trim(),
-        english: word.en.trim(),
-        // frequencyRank will be populated later from frequency lists
-        // TODO: Merge frequency data from data/source/word_frequency_ptbr.csv
-        frequencyRank: undefined,
-        partOfSpeech: word.pos,
-        category: category.id,
+        en: word.en.trim(),
+        pos: word.pos,
+        difficulty: word.difficulty as 1 | 2 | 3 | 4 | 5,
+        difficult_for_english: word.difficult_for_english,
+        pronunciation_notes: word.pronunciation_notes,
       });
     }
   }
   
   // Normalize: deduplicate by PT text (case-insensitive comparison)
-  // Keep the first occurrence (or one with lower difficulty if available)
-  const seen = new Map<string, RawWordInput>();
-  const normalized: RawWordInput[] = [];
+  // Keep the first occurrence
+  const seen = new Map<string, RawWord>();
+  const normalized: RawWord[] = [];
   
   for (const word of rawWords) {
-    const key = word.pt.toLowerCase().trim();
+    const key = normalizeText(word.pt);
     
     if (!seen.has(key)) {
       seen.set(key, word);
       normalized.push(word);
     } else {
-      // If duplicate found, keep the existing one (first occurrence wins)
-      // In future, we could compare difficulty or other fields to keep the "best" one
+      // Keep first occurrence
       continue;
     }
   }
   
-  // Apply limit from config if enabled
-  // TODO: Consider applying limits in a later enrichment step instead
-  const limited = generationPipelineConfig.enableWords
-    ? normalized.slice(0, generationPipelineConfig.wordLimit)
+  // Apply limit from config if specified
+  const limited = config.limits.maxWords
+    ? normalized.slice(0, config.limits.maxWords)
     : normalized;
   
   console.log(`Loaded ${limited.length} raw words (${normalized.length} unique, ${rawWords.length} total before deduplication)`);
@@ -125,39 +90,39 @@ export async function loadRawWords(): Promise<RawWordInput[]> {
 }
 
 /**
- * Loads and normalizes sentences from data/sentences.json into RawSentenceInput array.
+ * Loads and normalizes sentences from the configured JSON file into RawSentence array.
  * 
- * @returns Promise resolving to an array of normalized RawSentenceInput entries
+ * @param config - Generation pipeline configuration
+ * @returns Promise resolving to an array of normalized RawSentence entries
  */
-export async function loadRawSentences(): Promise<RawSentenceInput[]> {
-  const sentencesPath = path.join(process.cwd(), 'data', 'sentences.json');
+export async function loadRawSentences(config: GenerationPipelineConfig): Promise<RawSentence[]> {
+  const sentencesPath = path.join(process.cwd(), config.paths.rawSentencesJsonPath);
   
   console.log(`Loading sentences from: ${sentencesPath}`);
   const content = await fs.readFile(sentencesPath, 'utf-8');
-  const data: SentencesJson = JSON.parse(content);
+  const data: SentencesData = JSON.parse(content);
   
-  const rawSentences: RawSentenceInput[] = [];
+  const rawSentences: RawSentence[] = [];
   
-  // Flatten categories and map sentences to RawSentenceInput
+  // Flatten categories and map sentences to RawSentence
   for (const category of data.categories) {
-    for (const sentence of category.sentences) {
+    for (const sentence of category.sentences || []) {
       rawSentences.push({
+        id: sentence.id,
         pt: sentence.pt.trim(),
-        english: sentence.en.trim() || '', // Use empty string if translation missing
-        // TODO: Handle missing translations - some sentences may not have English translations
-        // frequencyRank will be populated later from frequency lists
-        frequencyRank: undefined,
-        category: category.id,
+        en: sentence.en.trim(),
+        difficulty: sentence.difficulty as 1 | 2 | 3 | 4 | 5,
+        pronunciation_notes: sentence.pronunciation_notes,
       });
     }
   }
   
   // Normalize: deduplicate by PT text (case-insensitive comparison)
-  const seen = new Map<string, RawSentenceInput>();
-  const normalized: RawSentenceInput[] = [];
+  const seen = new Map<string, RawSentence>();
+  const normalized: RawSentence[] = [];
   
   for (const sentence of rawSentences) {
-    const key = sentence.pt.toLowerCase().trim();
+    const key = normalizeText(sentence.pt);
     
     if (!seen.has(key)) {
       seen.set(key, sentence);
@@ -168,10 +133,9 @@ export async function loadRawSentences(): Promise<RawSentenceInput[]> {
     }
   }
   
-  // Apply limit from config if enabled
-  // TODO: Consider applying limits in a later enrichment step instead
-  const limited = generationPipelineConfig.enableSentences
-    ? normalized.slice(0, generationPipelineConfig.sentenceLimit)
+  // Apply limit from config if specified
+  const limited = config.limits.maxSentences
+    ? normalized.slice(0, config.limits.maxSentences)
     : normalized;
   
   console.log(`Loaded ${limited.length} raw sentences (${normalized.length} unique, ${rawSentences.length} total before deduplication)`);
