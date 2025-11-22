@@ -19,49 +19,15 @@ export type {
 
 /**
  * Adapter functions to convert between different word feedback formats.
+ * Re-exported from adapters.ts for convenience.
  */
 
-import type { WordFeedback } from '@/types/pronunciationFixtures';
-import type { WordScore } from '@/types/pronunciation';
-import type { NormalizedWordFeedback } from './types';
+export {
+  adaptFixtureWordsToNormalized,
+  adaptWordScoresToNormalized,
+  buildWordAudioVariantsForSentence,
+} from './adapters';
 
-/**
- * Converts WordFeedback (from pronunciationFixtures) to NormalizedWordFeedback.
- */
-export function adaptWordFeedbackToNormalized(word: WordFeedback): NormalizedWordFeedback {
-  return {
-    id: word.wordId || `word_${word.index}`,
-    text: word.text,
-    accuracyScore: word.score,
-    errorType: word.errorType || null,
-    phonemes: word.phonemes,
-    wordId: word.wordId,
-    index: word.index,
-    level: word.level,
-    score: word.score,
-  };
-}
-
-/**
- * Converts WordScore (from pronunciation.ts) to NormalizedWordFeedback.
- */
-export function adaptWordScoreToNormalized(wordScore: WordScore, index: number): NormalizedWordFeedback {
-  // Map score to level
-  const score = wordScore.accuracy;
-  const level: NormalizedWordFeedback['level'] = 
-    score >= 90 ? 'excellent' :
-    score >= 80 ? 'good' :
-    score >= 70 ? 'ok' : 'practice';
-
-  return {
-    id: `word_${index}`,
-    text: wordScore.word,
-    accuracyScore: score,
-    errorType: wordScore.errorType || null,
-    phonemes: undefined, // WordScore doesn't have phonemes, but can be added later
-    index,
-    level,
-    score,
-  };
-}
+// Alias for backward compatibility
+export { adaptFixtureWordsToNormalized as adaptWordFeedbackToNormalized } from './adapters';
 

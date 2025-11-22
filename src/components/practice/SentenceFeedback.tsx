@@ -1,9 +1,14 @@
 import { memo, useMemo } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
 import type { Sentence } from '@/lib/types';
-import type { NormalizedWordFeedback, NormalizedAudioVariant } from '@/components/pronunciation/shared/types';
+import type { NormalizedAudioVariant } from '@/components/pronunciation/shared/types';
 import { PronunciationFeedbackPanel } from '@/components/pronunciation';
 import type { PronunciationFeedbackPanelProps } from '@/components/pronunciation';
+import {
+  adaptWordScoresToNormalized,
+  buildWordAudioVariantsForSentence,
+} from '@/components/pronunciation/shared';
+import { useSettingsStore } from '@/state/settingsStore';
 
 export interface SentenceFeedbackProps {
   /** Sentence data for context (text, translation, audio, etc.) - required for sentence practice */
@@ -12,6 +17,8 @@ export interface SentenceFeedbackProps {
   attempts?: AttemptScore[];
   /** Current attempt to display (optional, defaults to latest from attempts if provided) */
   currentAttempt?: AttemptScore | null;
+  /** Raw Azure response for the current attempt (used for phoneme extraction) */
+  rawAzureResponse?: any;
   /** Fallback text if sentence is not provided (for word practice compatibility) */
   fallbackText?: string;
   /** Fallback translation if sentence is not provided */
@@ -20,37 +27,6 @@ export interface SentenceFeedbackProps {
   fallbackDifficulty?: number;
 }
 
-/**
- * Maps WordScore array to NormalizedWordFeedback array.
- * This adapter allows word scores from live attempts to be used with shared components.
- */
-export function mapWordScoresToNormalized(
-  wordScores: AttemptScore['wordScores'] | undefined,
-  startIndex: number = 0
-): NormalizedWordFeedback[] {
-  if (!wordScores || wordScores.length === 0) {
-    return [];
-  }
-
-  return wordScores.map((ws, idx) => {
-    const score = ws.accuracy;
-    const level: NormalizedWordFeedback['level'] = 
-      score >= 90 ? 'excellent' :
-      score >= 80 ? 'good' :
-      score >= 70 ? 'ok' : 'practice';
-
-    return {
-      id: `word_${startIndex + idx}`,
-      text: ws.word,
-      accuracyScore: score,
-      errorType: ws.errorType || null,
-      phonemes: undefined, // WordScore doesn't have phonemes yet, but can be added later
-      index: startIndex + idx,
-      level,
-      score,
-    };
-  });
-}
 
 /**
  * Builds normalized audio variants from sentence audio URLs.
@@ -87,10 +63,13 @@ function SentenceFeedback({
   sentence,
   attempts = [],
   currentAttempt: providedCurrentAttempt,
+  rawAzureResponse,
   fallbackText,
   fallbackTranslation,
   fallbackDifficulty,
 }: SentenceFeedbackProps) {
+  const { selectedVoice } = useSettingsStore();
+
   // Derive current attempt if not provided but attempts array is available
   const currentAttempt = useMemo(() => {
     if (providedCurrentAttempt !== undefined) {
@@ -102,13 +81,14 @@ function SentenceFeedback({
     return null;
   }, [providedCurrentAttempt, attempts]);
 
-  // Normalize word scores for the panel
+  // Normalize word scores for the panel, extracting phonemes from Azure response
+  // Returns empty array if no word scores (not undefined)
   const normalizedWords = useMemo(() => {
     if (currentAttempt && currentAttempt.wordScores && currentAttempt.wordScores.length > 0) {
-      return mapWordScoresToNormalized(currentAttempt.wordScores);
+      return adaptWordScoresToNormalized(currentAttempt.wordScores, rawAzureResponse);
     }
-    return undefined;
-  }, [currentAttempt]);
+    return [];
+  }, [currentAttempt, rawAzureResponse]);
 
   // Build sentence audio variants (only if sentence is provided)
   const sentenceAudio = useMemo(() => {
@@ -118,37 +98,40 @@ function SentenceFeedback({
     return [];
   }, [sentence]);
 
+  // Build word audio variants from sentence wordRefs
+  // Returns empty array if no sentence or wordRefs (not undefined)
+  const wordAudios = useMemo(() => {
+    if (sentence) {
+      // Use selected voice from settings store
+      return buildWordAudioVariantsForSentence(sentence, selectedVoice);
+    }
+    return [];
+  }, [sentence, selectedVoice]);
+
   // Get text, translation, and difficulty from sentence or fallbacks
   const sentenceText = sentence?.textPt || fallbackText || '';
   const translationText = sentence?.translationEn || fallbackTranslation;
   const difficulty = sentence?.difficulty || fallbackDifficulty;
 
   // Build panel props
+  // hideHeaderContent=true because SentenceCard already shows sentence text, translation, difficulty, and audio controls above
+  // Don't pass sentenceAudio when hideHeaderContent is true to prevent "Compare Pronunciations" buttons from showing
   const panelProps: PronunciationFeedbackPanelProps = useMemo(() => ({
-    attempts: attempts,
-    currentAttempt: currentAttempt,
+    attempts: attempts ?? [],
+    currentAttempt: currentAttempt ?? null,
     sentenceText: sentenceText,
     translationText: translationText,
     difficulty: difficulty,
-    sentenceAudio: sentenceAudio.length > 0 ? sentenceAudio : undefined,
-    wordAudios: undefined, // Per-word audio not wired yet for live attempts
-    words: normalizedWords,
+    sentenceAudio: undefined, // Never pass sentenceAudio in Practice - SentenceCard handles audio playback
+    wordAudios: wordAudios.length > 0 ? wordAudios : undefined,
+    words: normalizedWords.length > 0 ? normalizedWords : undefined,
     title: undefined, // No title for practice page
     showDevControls: false,
-  }), [attempts, currentAttempt, sentenceText, translationText, difficulty, sentenceAudio, normalizedWords]);
+    hideHeaderContent: true, // Hide sentence text/translation/difficulty/audio since SentenceCard shows them above
+  }), [attempts, currentAttempt, sentenceText, translationText, difficulty, wordAudios, normalizedWords]);
 
-  // Empty state - no attempts yet
-  if (!currentAttempt && (!attempts || attempts.length === 0)) {
-    return (
-      <div className="mt-6 p-6 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 text-center">
-        <p className="text-gray-600 dark:text-gray-400">
-          Record your pronunciation to see detailed feedback and scores.
-        </p>
-      </div>
-    );
-  }
-
-  // Delegate to the generic panel component
+  // Always render the panel - it will handle empty state internally
+  // No card wrapper needed - SentenceCard already provides the card container
   return (
     <div className="mt-6">
       <PronunciationFeedbackPanel {...panelProps} />

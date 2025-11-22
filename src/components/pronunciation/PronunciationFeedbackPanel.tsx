@@ -49,6 +49,7 @@ export interface PronunciationFeedbackPanelProps {
   // Metadata (optional)
   title?: string; // e.g. "Pronunciation Lab" vs "Practice Feedback"
   showDevControls?: boolean; // raw JSON, extra toggles, etc.
+  hideHeaderContent?: boolean; // If true, hide sentence text, translation, difficulty, and sentence audio (for use in Practice where these are shown above)
 }
 
 /**
@@ -71,6 +72,7 @@ export default function PronunciationFeedbackPanel({
   words,
   title,
   showDevControls = false,
+  hideHeaderContent = false,
 }: PronunciationFeedbackPanelProps) {
   const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback | null>(null);
   const [showEnglish, setShowEnglish] = useState(false);
@@ -187,16 +189,8 @@ export default function PronunciationFeedbackPanel({
   // Note: Practice word handler removed - practice functionality will be on
   // dedicated Practice Words page. See BACKLOG.md for future implementation.
 
-  // Don't render if no current attempt
-  if (!currentAttempt) {
-    return (
-      <div className="p-6 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 text-center">
-        <p className="text-gray-600 dark:text-gray-400">
-          No pronunciation attempt available.
-        </p>
-      </div>
-    );
-  }
+  // Check if we have attempts
+  const hasAttempts = attempts && attempts.length > 0 && currentAttempt !== null;
 
   return (
     <div className="space-y-6">
@@ -207,59 +201,74 @@ export default function PronunciationFeedbackPanel({
         </div>
       )}
 
-      {/* Phrase text and difficulty badge */}
-      <div>
-        <div className="flex items-start justify-between gap-4 mb-2">
-          <div className="flex-1">
-            <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-              {sentenceText}
-            </p>
-            {/* English translation toggle and display */}
-            {translationText && (
-              <div className="space-y-2">
-                <button
-                  onClick={() => setShowEnglish(!showEnglish)}
-                  className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors flex items-center gap-1"
-                  aria-label={showEnglish ? 'Hide English translation' : 'Show English translation'}
-                >
-                  {showEnglish ? '▼' : '▶'} {showEnglish ? 'Hide English' : 'Show English'}
-                </button>
-                {showEnglish && (
-                  <p className="text-lg text-gray-600 dark:text-gray-400 italic">
-                    {translationText}
-                  </p>
+      {/* Phrase text, translation, difficulty badge, and sentence audio - hide if hideHeaderContent is true */}
+      {!hideHeaderContent && (
+        <>
+          <div>
+            <div className="flex items-start justify-between gap-4 mb-2">
+              <div className="flex-1">
+                <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                  {sentenceText}
+                </p>
+                {/* English translation toggle and display */}
+                {translationText && (
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => setShowEnglish(!showEnglish)}
+                      className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors flex items-center gap-1"
+                      aria-label={showEnglish ? 'Hide English translation' : 'Show English translation'}
+                    >
+                      {showEnglish ? '▼' : '▶'} {showEnglish ? 'Hide English' : 'Show English'}
+                    </button>
+                    {showEnglish && (
+                      <p className="text-lg text-gray-600 dark:text-gray-400 italic">
+                        {translationText}
+                      </p>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
+              {difficulty !== undefined && (
+                <span className={`badge ${getDifficultyColor(difficulty)} flex-shrink-0`}>
+                  Difficulty {difficulty}
+                </span>
+              )}
+            </div>
           </div>
-          {difficulty !== undefined && (
-            <span className={`badge ${getDifficultyColor(difficulty)} flex-shrink-0`}>
-              Difficulty {difficulty}
-            </span>
-          )}
-        </div>
-      </div>
 
-      {/* Sentence audio controls */}
-      {sentenceAudio && sentenceAudio.length > 0 && (
-        <SentenceAudioControls
-          sentenceAudio={sentenceAudio}
-          activeType={activeSentenceType}
-          audioRef={sentenceAudioRef}
-          onStart={handleSentenceStart}
-          onStop={handleSentenceStop}
+          {/* Sentence audio controls */}
+          {sentenceAudio && sentenceAudio.length > 0 && (
+            <SentenceAudioControls
+              sentenceAudio={sentenceAudio}
+              activeType={activeSentenceType}
+              audioRef={sentenceAudioRef}
+              onStart={handleSentenceStart}
+              onStop={handleSentenceStop}
+            />
+          )}
+        </>
+      )}
+
+      {/* Empty state - no attempts yet */}
+      {!hasAttempts && (
+        <div className="p-6 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 text-center">
+          <p className="text-gray-600 dark:text-gray-400">
+            Record this sentence to see your pronunciation scores and word-by-word breakdown.
+          </p>
+        </div>
+      )}
+
+      {/* Graphical score overview - only show when we have attempts */}
+      {hasAttempts && (
+        <PhraseScoreOverview
+          attemptScore={currentAttempt}
+          words={words}
+          trendScores={trendScores}
+          onWordSelected={handleWordSelected}
         />
       )}
 
-      {/* Graphical score overview */}
-      <PhraseScoreOverview
-        attemptScore={currentAttempt}
-        words={words}
-        trendScores={trendScores}
-        onWordSelected={handleWordSelected}
-      />
-
-      {/* Interactive word strip */}
+      {/* Interactive word strip - show whenever we have word data */}
       {words && words.length > 0 && (
         <InteractiveWordStrip
           words={words}
@@ -273,7 +282,7 @@ export default function PronunciationFeedbackPanel({
         />
       )}
 
-      {/* Phoneme panel */}
+      {/* Phoneme panel - show whenever a word is selected */}
       <PhonemePanel word={selectedWord} onClose={handleClosePhonemePanel} />
 
       {/* Dev controls (optional, gated behind showDevControls) */}

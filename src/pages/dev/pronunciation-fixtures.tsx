@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { getAllPracticePhrasesFromFixtures, type PracticePhraseFromFixture } from '@/lib/pronunciationFixtureAdapter';
 import { PronunciationFeedbackPanel, type PronunciationFeedbackPanelProps } from '@/components/pronunciation';
 import {
-  adaptWordFeedbackToNormalized,
+  adaptFixtureWordsToNormalized,
   type NormalizedAudioVariant,
   type NormalizedWordAudioVariant,
 } from '@/components/pronunciation/shared';
@@ -54,7 +54,7 @@ function adaptPhraseToPanelProps(
     difficulty: phrase.difficulty,
     sentenceAudio: adaptFixtureSentenceAudio(phrase),
     wordAudios: adaptFixtureWordAudio(phrase),
-    words: phrase.words ? phrase.words.map(adaptWordFeedbackToNormalized) : undefined,
+    words: phrase.words ? phrase.words.map(adaptFixtureWordsToNormalized) : undefined,
     title: 'Pronunciation Lab',
     showDevControls: true,
   };

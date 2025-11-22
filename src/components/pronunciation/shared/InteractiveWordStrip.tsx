@@ -63,61 +63,62 @@ export default function InteractiveWordStrip({
       onWordSelected(wordToSelect);
     }
     
-    // Then, play audio if word has wordId
-    if (word.wordId) {
+    // Then, play audio - prefer wordAudios array if available, then fall back to TTS
+    const wordIdx = word.index ?? parseInt(word.id, 10);
+    const nativeAudio = wordAudios?.find(
+      a => a.type === 'native' && a.wordIndex === wordIdx
+    );
+    
+    if (nativeAudio && audioRef.current) {
+      // Prefer wordAudios when available (explicitly built for fixtures)
+      console.log(`[InteractiveWordStrip] Playing native audio from wordAudios for "${word.text}" from ${nativeAudio.url}`);
+      
+      // Stop any currently playing audio (both TTS and native)
+      if (ttsAudioRef.current) {
+        ttsAudioRef.current.pause();
+        ttsAudioRef.current.currentTime = 0;
+      }
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      
+      // Clear TTS state
+      setActiveTtsWordId(null);
+      
+      // Notify parent
+      if (onWordStart) {
+        onWordStart(wordIdx, 'native');
+      } else {
+        setInternalActiveWordIndex(wordIdx);
+        setInternalActiveWordType('native');
+      }
+      
+      // Set source and load
+      audioRef.current.src = nativeAudio.url;
+      audioRef.current.load();
+      
+      // Play the native audio
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            console.log(`[InteractiveWordStrip] Native audio started playing for "${word.text}"`);
+          })
+          .catch((error) => {
+            console.error(`[InteractiveWordStrip] Failed to play native audio for word "${word.text}" from ${nativeAudio.url}:`, error);
+            if (onWordStop) {
+              onWordStop();
+            } else {
+              setInternalActiveWordIndex(null);
+              setInternalActiveWordType(null);
+            }
+          });
+      }
+    } else if (word.wordId) {
+      // Fall back to TTS audio if wordAudios not available but wordId exists
+      console.log(`[InteractiveWordStrip] No wordAudios entry found, falling back to TTS for "${word.text}" (wordId: ${word.wordId})`);
       handleTtsAudioClick(e, word);
     } else {
-      // If no wordId, try to play native audio if available
-      const wordIdx = word.index ?? parseInt(word.id, 10);
-      const nativeAudio = wordAudios?.find(
-        a => a.type === 'native' && a.wordIndex === wordIdx
-      );
-      if (nativeAudio && audioRef.current) {
-        console.log(`[InteractiveWordStrip] Attempting to play native audio for "${word.text}" from ${nativeAudio.url}`);
-        
-        // Stop any currently playing audio (both TTS and native)
-        if (ttsAudioRef.current) {
-          ttsAudioRef.current.pause();
-          ttsAudioRef.current.currentTime = 0;
-        }
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-        
-        // Clear TTS state
-        setActiveTtsWordId(null);
-        
-        // Notify parent
-        if (onWordStart) {
-          onWordStart(wordIdx, 'native');
-        } else {
-          setInternalActiveWordIndex(wordIdx);
-          setInternalActiveWordType('native');
-        }
-        
-        // Set source and load
-        audioRef.current.src = nativeAudio.url;
-        audioRef.current.load();
-        
-        // Play the native audio
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log(`[InteractiveWordStrip] Native audio started playing for "${word.text}"`);
-            })
-            .catch((error) => {
-              console.error(`[InteractiveWordStrip] Failed to play native audio for word "${word.text}" from ${nativeAudio.url}:`, error);
-              if (onWordStop) {
-                onWordStop();
-              } else {
-                setInternalActiveWordIndex(null);
-                setInternalActiveWordType(null);
-              }
-            });
-        }
-      } else {
-        console.warn(`[InteractiveWordStrip] No native audio available for word "${word.text}" (index ${wordIdx}). wordAudios:`, wordAudios);
-      }
+      console.warn(`[InteractiveWordStrip] No audio available for word "${word.text}" (index ${wordIdx}). wordId: ${word.wordId || 'none'}, wordAudios:`, wordAudios);
     }
   };
 

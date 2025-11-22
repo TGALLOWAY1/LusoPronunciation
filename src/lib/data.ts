@@ -341,19 +341,25 @@ export async function loadAllWords(): Promise<Word[]> {
     const masterResponse = await fetch('/data/masterWords.json');
     if (masterResponse.ok) {
       const enrichedWords: EnrichedWord[] = await masterResponse.json();
-      const categoryLabels = await loadCategoryLabels();
-      
-      const words: Word[] = enrichedWords.map(enriched => {
-        const categoryInfo = categoryLabels.get(enriched.category) || {
-          labelEn: enriched.category,
-          labelPt: enriched.category,
-        };
-        return transformEnrichedWord(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
-      });
-      
-      cachedWords = words;
-      console.log(`Loaded ${words.length} words from master dataset`);
-      return words;
+      // Check if we actually got data (not just empty array)
+      if (enrichedWords.length > 0) {
+        const categoryLabels = await loadCategoryLabels();
+        
+        const words: Word[] = enrichedWords.map(enriched => {
+          const categoryInfo = categoryLabels.get(enriched.category) || {
+            labelEn: enriched.category,
+            labelPt: enriched.category,
+          };
+          return transformEnrichedWord(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
+        });
+        
+        cachedWords = words;
+        console.log(`Loaded ${words.length} words from master dataset`);
+        return words;
+      } else {
+        // Empty array - fall through to legacy files
+        console.log('Master words file is empty, falling back to legacy files');
+      }
     }
   } catch (error) {
     console.warn('Failed to load master words, falling back to legacy files:', error);
