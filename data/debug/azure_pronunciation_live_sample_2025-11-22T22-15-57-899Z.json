@@ -1,0 +1,86 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 5800000,
+  "Duration": 38800000,
+  "DisplayText": "Estou com fome, o que você quer comer?",
+  "SNR": 30.356447,
+  "NBest": [
+    {
+      "Confidence": 0.904197,
+      "Lexical": "Estou com fome o que você quer comer",
+      "ITN": "Estou com fome o que você quer comer",
+      "MaskedITN": "estou com fome o que você quer comer",
+      "Display": "Estou com fome, o que você quer comer?",
+      "AccuracyScore": 78,
+      "FluencyScore": 96,
+      "CompletenessScore": 62,
+      "PronScore": 72,
+      "Words": [
+        {
+          "Word": "Estou",
+          "Offset": 5800000,
+          "Duration": 5400000,
+          "Confidence": 0,
+          "AccuracyScore": 97,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "com",
+          "Offset": 11300000,
+          "Duration": 2300000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "fome",
+          "Offset": 13700000,
+          "Duration": 6400000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "o",
+          "Offset": 21600000,
+          "Duration": 2000000,
+          "Confidence": 0,
+          "AccuracyScore": 97,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "que",
+          "Offset": 23700000,
+          "Duration": 5700000,
+          "Confidence": 0,
+          "AccuracyScore": 47,
+          "ErrorType": "Mispronunciation"
+        },
+        {
+          "Word": "você",
+          "Offset": 29800000,
+          "Duration": 5000000,
+          "Confidence": 0,
+          "AccuracyScore": 94,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "quer",
+          "Offset": 34900000,
+          "Duration": 4300000,
+          "Confidence": 0,
+          "AccuracyScore": 44,
+          "ErrorType": "Mispronunciation"
+        },
+        {
+          "Word": "comer",
+          "Offset": 39300000,
+          "Duration": 5300000,
+          "Confidence": 0,
+          "AccuracyScore": 47,
+          "ErrorType": "Mispronunciation"
+        }
+      ]
+    }
+  ]
+}

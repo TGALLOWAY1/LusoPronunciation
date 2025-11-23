@@ -1,0 +1,30 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 600000,
+  "Duration": 11900000,
+  "DisplayText": "Desculpe.",
+  "SNR": 34.980106,
+  "NBest": [
+    {
+      "Confidence": 0.84840196,
+      "Lexical": "desculpe",
+      "ITN": "desculpe",
+      "MaskedITN": "desculpe",
+      "Display": "Desculpe.",
+      "AccuracyScore": 79,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 87.4,
+      "Words": [
+        {
+          "Word": "desculpe",
+          "Offset": 600000,
+          "Duration": 11900000,
+          "Confidence": 0,
+          "AccuracyScore": 79,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

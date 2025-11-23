@@ -17,13 +17,29 @@ import type { AudioIndex, AudioIndexEntry } from '../lib/types';
 import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
 
 /**
- * Builds the old format path expected by src/lib/audio.ts.
+ * Builds the canonical URL path for audio files.
+ * 
+ * Canonical scheme:
+ * - Sentences: /audio/sentences/{voiceId}/{id}.wav
+ * - Words: /audio/words/{voiceId}/{id}.wav
+ * 
+ * @param itemType - Type of item ("word" | "sentence")
+ * @param voiceId - Voice ID (e.g., "ptbr_male")
+ * @param itemId - Item ID
+ * @returns Canonical URL path
+ */
+function buildCanonicalUrl(itemType: 'word' | 'sentence', voiceId: string, itemId: string): string {
+  return `/audio/${itemType}s/${voiceId}/${itemId}.wav`;
+}
+
+/**
+ * Builds the legacy format path for backward compatibility.
  * 
  * @param itemId - The item ID (word or sentence)
  * @param gender - The gender ("male" or "female")
- * @returns Path in old format (e.g., "audio/ptbr/male/word_001.wav")
+ * @returns Path in legacy format (e.g., "audio/ptbr/male/word_001.wav")
  */
-function buildOldFormatPath(itemId: string, gender: 'male' | 'female'): string {
+function buildLegacyPath(itemId: string, gender: 'male' | 'female'): string {
   return `audio/ptbr/${gender}/${itemId}.wav`;
 }
 
@@ -63,6 +79,7 @@ export async function buildAudioIndex(params: {
       male: '',
       female: '',
     };
+    const voices: Record<string, string> = {};
     
     // Track paths for each voice (for extended entries)
     const voicePaths: Array<{ voiceId: string; path: string; gender: 'male' | 'female' }> = [];
@@ -71,25 +88,29 @@ export async function buildAudioIndex(params: {
     for (const voice of config.voices) {
       voiceIds.add(voice.id);
       
-      // Build path matching audioJobPlanner format (for reference)
-      const newPath = path.join(
+      // Build canonical URL: /audio/words/{voiceId}/{wordId}.wav
+      const canonicalUrl = buildCanonicalUrl('word', voice.id, word.id);
+      voices[voice.id] = canonicalUrl;
+      
+      // Build legacy path for backward compatibility
+      const legacyPath = buildLegacyPath(word.id, voice.gender);
+      
+      // Set legacy path based on gender
+      if (voice.gender === 'male') {
+        ptbr.male = legacyPath;
+      } else if (voice.gender === 'female') {
+        ptbr.female = legacyPath;
+      }
+      
+      // Track physical path (for reference)
+      const physicalPath = path.join(
         audioBaseDir,
         'words',
         voice.id,
         `${word.id}.wav`
       ).replace(/\\/g, '/');
       
-      // Build old format path expected by src/lib/audio.ts
-      const oldPath = buildOldFormatPath(word.id, voice.gender);
-      
-      // Set path based on gender
-      if (voice.gender === 'male') {
-        ptbr.male = oldPath;
-      } else if (voice.gender === 'female') {
-        ptbr.female = oldPath;
-      }
-      
-      voicePaths.push({ voiceId: voice.id, path: newPath, gender: voice.gender });
+      voicePaths.push({ voiceId: voice.id, path: physicalPath, gender: voice.gender });
     }
     
     // Create one extended entry per voice (for internal tracking)
@@ -99,11 +120,12 @@ export async function buildAudioIndex(params: {
         type: 'word',
         sourceId: word.id,
         textPt: word.text,
-        textEn: '', // English translation not available in EnrichedWord
+        textEn: word.en || '', // Use preserved English translation
         ptbr: {
           male: voicePath.gender === 'male' ? ptbr.male : '',
           female: voicePath.gender === 'female' ? ptbr.female : '',
         },
+        voices, // Canonical URLs per voice
         voice: voicePath.voiceId,
         path: voicePath.path,
         text: word.text,
@@ -122,6 +144,7 @@ export async function buildAudioIndex(params: {
       male: '',
       female: '',
     };
+    const voices: Record<string, string> = {};
     
     // Track paths for each voice (for extended entries)
     const voicePaths: Array<{ voiceId: string; path: string; gender: 'male' | 'female' }> = [];
@@ -130,25 +153,29 @@ export async function buildAudioIndex(params: {
     for (const voice of config.voices) {
       voiceIds.add(voice.id);
       
-      // Build path matching audioJobPlanner format (for reference)
-      const newPath = path.join(
+      // Build canonical URL: /audio/sentences/{voiceId}/{sentenceId}.wav
+      const canonicalUrl = buildCanonicalUrl('sentence', voice.id, sentence.id);
+      voices[voice.id] = canonicalUrl;
+      
+      // Build legacy path for backward compatibility
+      const legacyPath = buildLegacyPath(sentence.id, voice.gender);
+      
+      // Set legacy path based on gender
+      if (voice.gender === 'male') {
+        ptbr.male = legacyPath;
+      } else if (voice.gender === 'female') {
+        ptbr.female = legacyPath;
+      }
+      
+      // Track physical path (for reference)
+      const physicalPath = path.join(
         audioBaseDir,
         'sentences',
         voice.id,
         `${sentence.id}.wav`
       ).replace(/\\/g, '/');
       
-      // Build old format path expected by src/lib/audio.ts
-      const oldPath = buildOldFormatPath(sentence.id, voice.gender);
-      
-      // Set path based on gender
-      if (voice.gender === 'male') {
-        ptbr.male = oldPath;
-      } else if (voice.gender === 'female') {
-        ptbr.female = oldPath;
-      }
-      
-      voicePaths.push({ voiceId: voice.id, path: newPath, gender: voice.gender });
+      voicePaths.push({ voiceId: voice.id, path: physicalPath, gender: voice.gender });
     }
     
     // Create one extended entry per voice (for internal tracking)
@@ -158,11 +185,12 @@ export async function buildAudioIndex(params: {
         type: 'sentence',
         sourceId: sentence.id,
         textPt: sentence.text,
-        textEn: '', // English translation not available in EnrichedSentence
+        textEn: sentence.en || '', // Use preserved English translation
         ptbr: {
           male: voicePath.gender === 'male' ? ptbr.male : '',
           female: voicePath.gender === 'female' ? ptbr.female : '',
         },
+        voices, // Canonical URLs per voice
         voice: voicePath.voiceId,
         path: voicePath.path,
         text: sentence.text,
@@ -186,7 +214,9 @@ export async function buildAudioIndex(params: {
 /**
  * Converts AudioIndexEntryExtended array to AudioIndex format (grouped by itemId).
  * 
- * Groups entries by itemId and combines male/female paths into a single entry.
+ * Groups entries by itemId and combines paths into a single entry with:
+ * - Legacy ptbr.male/female paths (for backward compatibility)
+ * - Canonical voices map (voiceId -> canonical URL)
  * 
  * @param entries - Array of extended entries
  * @returns AudioIndex object keyed by item ID
@@ -211,14 +241,21 @@ function convertToAudioIndex(entries: AudioIndexEntryExtended[]): AudioIndex {
       male: '',
       female: '',
     };
+    const voices: Record<string, string> = {};
     
     // Combine paths from all voices
     for (const entry of itemEntries) {
+      // Legacy paths
       if (entry.ptbr.male) {
         ptbr.male = entry.ptbr.male;
       }
       if (entry.ptbr.female) {
         ptbr.female = entry.ptbr.female;
+      }
+      
+      // Canonical URLs from voices field
+      if (entry.voices) {
+        Object.assign(voices, entry.voices);
       }
     }
     
@@ -228,6 +265,7 @@ function convertToAudioIndex(entries: AudioIndexEntryExtended[]): AudioIndex {
       textPt: firstEntry.textPt,
       textEn: firstEntry.textEn,
       ptbr,
+      voices: Object.keys(voices).length > 0 ? voices : undefined, // Only include if present
     };
     
     index[itemId] = audioEntry;

@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { getPhonemeMetadata } from '@/lib/phonemeMetadata';
+import { getPhonemeById } from '@/lib/phonemeMetadata';
 import { getScoreColor, getScoreBorderColor } from '@/lib/pronunciationDisplay';
 
 interface PhonemeChipProps {
@@ -13,16 +13,23 @@ interface PhonemeChipProps {
  */
 function PhonemeChip({ symbol, score }: PhonemeChipProps) {
   const [showTooltip, setShowTooltip] = useState(false);
-  const metadata = getPhonemeMetadata(symbol);
+  const metadata = getPhonemeById(symbol);
   
   // Determine chip styling based on score (if provided)
   const chipClasses = score !== undefined
     ? `inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border-2 transition-colors ${getScoreColor(score)} ${getScoreBorderColor(score)}`
     : 'inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border-2 transition-colors bg-gray-100 text-gray-800 border-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600';
 
+  // Prepare display values from metadata
+  const ipa = metadata?.ipa || '';
+  const description = metadata?.englishApprox || metadata?.articulation || '';
+  const ptExamples = metadata?.exampleWords?.map(w => w.pt).join(', ') || '';
+  const enExamples = metadata?.exampleWords?.map(w => w.english).join(', ') || '';
+  const notes = metadata?.teachingTips?.[0] || '';
+
   // Build tooltip text for native title attribute (fallback)
   const tooltipText = metadata 
-    ? `${symbol} → /${metadata.ipa}/\n${metadata.description}\n${metadata.englishExamples.length > 0 ? `EN: ${metadata.englishExamples.join(', ')}\n` : ''}${metadata.portugueseExamples.length > 0 ? `PT: ${metadata.portugueseExamples.join(', ')}` : ''}${score !== undefined ? `\nScore: ${Math.round(score)}/100` : ''}`
+    ? `${symbol} → /${ipa}/\n${description}\n${enExamples ? `EN: ${enExamples}\n` : ''}${ptExamples ? `PT: ${ptExamples}` : ''}${score !== undefined ? `\nScore: ${Math.round(score)}/100` : ''}`
     : `${symbol}\nNo metadata available${score !== undefined ? `\nScore: ${Math.round(score)}/100` : ''}`;
 
   return (
@@ -35,7 +42,7 @@ function PhonemeChip({ symbol, score }: PhonemeChipProps) {
       >
         <span className="font-mono">{symbol}</span>
         {metadata && (
-          <span className="ml-1 text-xs opacity-75">/{metadata.ipa}/</span>
+          <span className="ml-1 text-xs opacity-75">/{ipa}/</span>
         )}
         {score !== undefined && (
           <span className="ml-1 text-xs opacity-75">({Math.round(score)})</span>
@@ -48,24 +55,24 @@ function PhonemeChip({ symbol, score }: PhonemeChipProps) {
           {metadata ? (
             <div className="space-y-1.5">
               <div className="font-semibold text-sm border-b border-gray-700 pb-1">
-                {symbol} → /{metadata.ipa}/
+                {symbol} → /{ipa}/
               </div>
-              <div className="text-gray-300">{metadata.description}</div>
-              {metadata.englishExamples.length > 0 && (
+              <div className="text-gray-300">{description}</div>
+              {enExamples && (
                 <div>
                   <strong className="text-gray-400">English:</strong>{' '}
-                  <span className="text-gray-200">{metadata.englishExamples.join(', ')}</span>
+                  <span className="text-gray-200">{enExamples}</span>
                 </div>
               )}
-              {metadata.portugueseExamples.length > 0 && (
+              {ptExamples && (
                 <div>
                   <strong className="text-gray-400">Portuguese:</strong>{' '}
-                  <span className="text-gray-200">{metadata.portugueseExamples.join(', ')}</span>
+                  <span className="text-gray-200">{ptExamples}</span>
                 </div>
               )}
-              {metadata.notes && (
+              {notes && (
                 <div className="text-gray-400 italic mt-1 pt-1 border-t border-gray-700">
-                  {metadata.notes}
+                  {notes}
                 </div>
               )}
               {score !== undefined && (
@@ -94,6 +101,7 @@ function PhonemeChip({ symbol, score }: PhonemeChipProps) {
     </span>
   );
 }
+
 
 export default memo(PhonemeChip);
 

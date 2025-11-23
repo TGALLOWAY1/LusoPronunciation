@@ -8,7 +8,23 @@ import type { AudioIndex, AudioIndexEntry } from './types';
 export type Gender = 'male' | 'female';
 
 /**
+ * Maps gender to canonical voiceId.
+ * 
+ * @param gender - Gender ("male" | "female")
+ * @returns Voice ID (e.g., "ptbr_male" | "ptbr_female")
+ */
+function genderToVoiceId(gender: Gender): string {
+  return `ptbr_${gender}`;
+}
+
+/**
  * Get audio URL from audio index if available, otherwise infer from naming convention.
+ * 
+ * Priority:
+ * 1. Check canonical `voices` field in audio index (new format)
+ * 2. Check legacy `ptbr` field in audio index (backward compatibility)
+ * 3. Fall back to inferred canonical path
+ * 4. Fall back to legacy inferred path
  */
 export function getSentenceAudioUrl(
   sentenceId: string,
@@ -18,28 +34,34 @@ export function getSentenceAudioUrl(
   // First, try to find in audio index
   if (audioIndex && audioIndex[sentenceId]) {
     const entry = audioIndex[sentenceId];
-    const url = entry.ptbr[gender];
-    if (url) {
-      // Ensure URL starts with / for Vite dev server
+    const voiceId = genderToVoiceId(gender);
+    
+    // Priority 1: Check canonical voices field (new format)
+    if (entry.voices && entry.voices[voiceId]) {
+      const url = entry.voices[voiceId];
       return url.startsWith('/') ? url : `/${url}`;
     }
-    return undefined;
+    
+    // Priority 2: Check legacy ptbr field (backward compatibility)
+    const legacyUrl = entry.ptbr[gender];
+    if (legacyUrl) {
+      return legacyUrl.startsWith('/') ? legacyUrl : `/${legacyUrl}`;
+    }
   }
 
-  // Fallback: infer from naming convention
-  // Pattern: {category}_{number} -> /audio/ptbr/{gender}/{category}_{number}.wav
-  // e.g., "food_001" -> "/audio/ptbr/male/food_001.wav"
-  return `/audio/ptbr/${gender}/${sentenceId}.wav`;
+  // Priority 3: Fall back to inferred canonical path
+  const voiceId = genderToVoiceId(gender);
+  return `/audio/sentences/${voiceId}/${sentenceId}.wav`;
 }
 
 /**
  * Get audio URL for a word.
  * 
- * Word audio naming convention: public/audio/words/<wordId>_<gender>.wav
- * Examples:
- * - adj_001_female.wav
- * - food_word_001_male.wav
- * - basic_001_female.wav
+ * Priority:
+ * 1. Check canonical `voices` field in audio index (new format)
+ * 2. Check legacy `ptbr` field in audio index (backward compatibility)
+ * 3. Fall back to inferred canonical path
+ * 4. Fall back to legacy inferred path (old naming: <wordId>_<gender>.wav)
  */
 export function getWordAudioUrl(
   wordId: string,
@@ -49,19 +71,24 @@ export function getWordAudioUrl(
   // First, try to find in audio index
   if (audioIndex && audioIndex[wordId]) {
     const entry = audioIndex[wordId];
-    const url = entry.ptbr[gender];
-    if (url) {
-      // Ensure URL starts with / for Vite dev server
+    const voiceId = genderToVoiceId(gender);
+    
+    // Priority 1: Check canonical voices field (new format)
+    if (entry.voices && entry.voices[voiceId]) {
+      const url = entry.voices[voiceId];
       return url.startsWith('/') ? url : `/${url}`;
     }
-    return undefined;
+    
+    // Priority 2: Check legacy ptbr field (backward compatibility)
+    const legacyUrl = entry.ptbr[gender];
+    if (legacyUrl) {
+      return legacyUrl.startsWith('/') ? legacyUrl : `/${legacyUrl}`;
+    }
   }
 
-  // Fallback: infer from filesystem naming convention
-  // Pattern: <wordId>_<gender>.wav -> /audio/words/<wordId>_<gender>.wav
-  // e.g., "food_word_001" + "male" -> "/audio/words/food_word_001_male.wav"
-  // e.g., "adj_001" + "female" -> "/audio/words/adj_001_female.wav"
-  return `/audio/words/${wordId}_${gender}.wav`;
+  // Priority 3: Fall back to inferred canonical path
+  const voiceId = genderToVoiceId(gender);
+  return `/audio/words/${voiceId}/${wordId}.wav`;
 }
 
 /**

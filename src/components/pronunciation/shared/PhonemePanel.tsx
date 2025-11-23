@@ -1,5 +1,5 @@
 import type { NormalizedWordFeedback } from './types';
-import { getPhonemeMetadata } from '@/lib/phonemeMetadata';
+import { getPhonemeById } from '@/lib/phonemeMetadata';
 
 interface PhonemePanelProps {
   word?: NormalizedWordFeedback | null;
@@ -94,17 +94,21 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
           <div className="flex flex-wrap gap-2">
             {word.phonemes.map((phoneme, index) => {
               const colors = getPhonemeColors(phoneme.score);
-              const metadata = getPhonemeMetadata(phoneme.symbol);
+              const metadata = getPhonemeById(phoneme.symbol);
               
               // Build enriched tooltip
+              const desc = metadata?.englishApprox || metadata?.articulation || '';
+              const ptEx = metadata?.exampleWords?.map(w => w.pt).join(', ') || '';
+              const enEx = metadata?.exampleWords?.map(w => w.english).join(', ') || '';
+              
               let tooltipText = `${phoneme.symbol} • ${phoneme.score}/100`;
               if (metadata) {
-                tooltipText += ` • ${metadata.description}`;
-                if (metadata.portugueseExamples.length > 0) {
-                  tooltipText += ` • PT: ${metadata.portugueseExamples[0]}`;
+                tooltipText += ` • ${desc}`;
+                if (ptEx) {
+                  tooltipText += ` • PT: ${ptEx}`;
                 }
-                if (metadata.englishExamples.length > 0) {
-                  tooltipText += ` • EN: ${metadata.englishExamples[0]}`;
+                if (enEx) {
+                  tooltipText += ` • EN: ${enEx}`;
                 }
               } else if (phoneme.tip) {
                 tooltipText += ` • ${phoneme.tip}`;
@@ -138,9 +142,14 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
           </h4>
           <div className="space-y-3">
             {word.phonemes.map((phoneme, index) => {
-              const metadata = getPhonemeMetadata(phoneme.symbol);
+              const metadata = getPhonemeById(phoneme.symbol);
               
               if (metadata) {
+                const desc = metadata.englishApprox || metadata.articulation || '';
+                const tip = metadata.teachingTips?.[0] || '';
+                const ptEx = metadata.exampleWords?.map(w => w.pt).join(', ') || '';
+                const enEx = metadata.exampleWords?.map(w => w.english).join(', ') || '';
+
                 return (
                   <div
                     key={index}
@@ -152,17 +161,22 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
                       </span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
-                          <strong>How to say it:</strong> {metadata.description}
+                          <strong>How to say it:</strong> {desc}
                         </p>
+                        {tip && (
+                          <p className="text-xs text-blue-600 dark:text-blue-400 mb-2">
+                            💡 {tip}
+                          </p>
+                        )}
                         <div className="flex flex-wrap gap-3 text-xs text-gray-600 dark:text-gray-400">
-                          {metadata.portugueseExamples.length > 0 && (
+                          {ptEx && (
                             <span>
-                              <strong>PT:</strong> <em>{metadata.portugueseExamples.join(', ')}</em>
+                              <strong>PT:</strong> <em>{ptEx}</em>
                             </span>
                           )}
-                          {metadata.englishExamples.length > 0 && (
+                          {enEx && (
                             <span>
-                              <strong>EN:</strong> <em>{metadata.englishExamples.join(', ')}</em>
+                              <strong>EN:</strong> <em>{enEx}</em>
                             </span>
                           )}
                         </div>
@@ -213,7 +227,10 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
           </h4>
           <ul className="space-y-2">
             {problemPhonemes.map((phoneme, index) => {
-              const metadata = getPhonemeMetadata(phoneme.symbol);
+              const metadata = getPhonemeById(phoneme.symbol);
+              const desc = metadata?.englishApprox || metadata?.articulation || '';
+              const tip = phoneme.tip || metadata?.teachingTips?.[0] || desc || `Score: ${phoneme.score}/100 - needs practice`;
+              
               return (
                 <li
                   key={index}
@@ -222,7 +239,7 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
                   <span className="text-rose-500 dark:text-rose-400 mt-0.5">•</span>
                   <span>
                     <strong className="font-medium">{phoneme.symbol}:</strong>{' '}
-                    {phoneme.tip || metadata?.description || `Score: ${phoneme.score}/100 - needs practice`}
+                    {tip}
                   </span>
                 </li>
               );
@@ -241,4 +258,3 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
     </div>
   );
 }
-

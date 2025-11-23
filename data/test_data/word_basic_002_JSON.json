@@ -1,0 +1,38 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 700000,
+  "Duration": 8000000,
+  "DisplayText": "Bom dia.",
+  "SNR": 40.849537,
+  "NBest": [
+    {
+      "Confidence": 0.94713694,
+      "Lexical": "bom dia",
+      "ITN": "bom dia",
+      "MaskedITN": "bom dia",
+      "Display": "Bom dia.",
+      "AccuracyScore": 100,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 100,
+      "Words": [
+        {
+          "Word": "bom",
+          "Offset": 700000,
+          "Duration": 3800000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "dia",
+          "Offset": 4600000,
+          "Duration": 4100000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

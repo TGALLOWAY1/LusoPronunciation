@@ -14,6 +14,9 @@
     "audio:words:male": "tsx scripts/generateWordAudio.ts --voice=male",
     "audio:words:female": "tsx scripts/generateWordAudio.ts --voice=female",
     "generation:pipeline": "tsx scripts/generationPipeline.ts --stage=all",
+    "generate:gemini:sentences": "python3 scripts/generateGeminiSentences.py --output data/raw/gemini_sentences.csv",
+    "generate:normalize:sentences": "tsx scripts/normalizeGeminiSentences.ts",
+    "generate:sentences:stage0": "npm run generate:gemini:sentences && npm run generate:normalize:sentences",
     "dev:test-enrichment": "tsx scripts/devTestEnrichment.ts",
     "test": "vitest",
     "test:watch": "vitest --watch"

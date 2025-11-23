@@ -73,6 +73,13 @@ export interface WordsData {
 
 /**
  * Audio index entry structure from audio_index.json
+ * 
+ * Canonical path scheme:
+ * - Sentences: /audio/sentences/<voiceId>/<id>.wav
+ * - Words: /audio/words/<voiceId>/<id>.wav
+ * 
+ * The `ptbr` field maintains backward compatibility with legacy paths.
+ * The `voices` field provides canonical URLs per voice.
  */
 export interface AudioIndexEntry {
   type: 'sentence' | 'word';
@@ -80,8 +87,12 @@ export interface AudioIndexEntry {
   textPt: string;
   textEn: string;
   ptbr: {
-    male: string;                 // Path like "audio/ptbr/male/food_001.wav"
-    female: string;               // Path like "audio/ptbr/female/food_001.wav"
+    male: string;                 // Legacy path (e.g., "audio/ptbr/male/food_001.wav")
+    female: string;               // Legacy path (e.g., "audio/ptbr/female/food_001.wav")
+  };
+  // Canonical voice URLs (new format)
+  voices?: {
+    [voiceId: string]: string;    // Canonical URL (e.g., "/audio/sentences/ptbr_male/food_001.wav")
   };
 }
 

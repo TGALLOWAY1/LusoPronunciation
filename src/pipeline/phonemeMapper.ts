@@ -4,21 +4,16 @@
  * Maps Portuguese words to IPA transcriptions and phoneme sequences.
  * Uses heuristic-based rules to identify difficult sounds for English speakers.
  * 
- * This is a rule-based implementation that can be refined later with
+ * This is a minimal rule-based implementation that can be refined later with
  * more sophisticated phoneme analysis or external pronunciation APIs.
  */
 
-// TODO: Import phoneme metadata utilities when implementing full grapheme-to-phoneme mapping
-// import { getAllPhonemes, getPhonemeMetadata } from '../lib/phonemeMetadata';
+import { getPhonemeById } from '../lib/phonemeMetadata';
 
 /**
  * Gets phonemes and IPA for a token.
  * 
- * This is a simplified heuristic-based implementation. A full implementation
- * would use grapheme-to-phoneme conversion rules or an external API.
- * 
- * For now, returns empty arrays and undefined IPA, but provides the structure
- * for future enhancement.
+ * This is a minimal grapheme-to-phoneme implementation using simple rules.
  * 
  * @param token - The token (word) to analyze
  * @returns Object with phonemes array and optional IPA string
@@ -28,16 +23,12 @@ export function getPhonemesForToken(token: string): { phonemes: string[]; ipa?: 
     return { phonemes: [] };
   }
 
-  // TODO: Implement full grapheme-to-phoneme mapping
-  // For now, return empty phonemes array
-  // Future: Use phonemeMetadata to map Portuguese graphemes to ARPABET/IPA symbols
-  
-  // Placeholder: could analyze token and return some basic phonemes
-  // This is a stub that can be enhanced later
-  const phonemes: string[] = [];
-  const ipa: string | undefined = undefined;
-
-  return { phonemes, ipa };
+  // Use mapWordToPhonemes for the actual mapping
+  const result = mapWordToPhonemes(token);
+  return {
+    phonemes: result.phonemes || [],
+    ipa: result.ipa,
+  };
 }
 
 /**
@@ -65,58 +56,309 @@ export function isHardForEnglish(phonemes: string[]): boolean {
 }
 
 /**
- * Maps a Portuguese word to phonemes and IPA, and determines if it's hard for English speakers.
+ * Maps a Portuguese word to phonemes using minimal grapheme-to-phoneme rules.
  * 
- * Heuristic-based approach:
- * - Identifies nasal vowels (ã, õ, ão) and difficult digraphs (lh, nh, rr, word-initial r)
- * - Returns undefined for IPA/phonemes for now (TODO: implement grapheme-to-phoneme mapping)
+ * Simple mapping rules:
+ * - Direct consonant mapping (p,b,m,n,t,d,k,g,f,v,s,z,l,r,ch,j,lh,nh)
+ * - Basic vowel mapping (a,e,i,o,u)
+ * - Simple nasalization (final m/n → nasal vowel)
+ * 
+ * All mapped phoneme IDs are verified against phoneme_metadata.json.
+ * Unknown cases return empty array with TODO comments.
  * 
  * @param word - The Portuguese word to analyze
- * @returns Object with IPA, phonemes (optional), and difficulty flag
+ * @returns Object with phonemes array (verified against metadata) and optional IPA
  */
-export function mapWordToPhonemes(
-  word: string
-): {
+export function mapWordToPhonemes(word: string): {
+  phonemes: string[];
   ipa?: string;
-  phonemes?: string[];
-  isHardForEnglishSpeakers: boolean;
 } {
   if (!word || word.trim().length === 0) {
-    return {
-      isHardForEnglishSpeakers: false,
-    };
+    return { phonemes: [] };
   }
 
   const normalized = word.toLowerCase().trim();
-  let isHard = false;
+  const phonemes: string[] = [];
+  let i = 0;
 
-  // Check for nasal vowels (common difficulty for English speakers)
-  if (normalized.includes('ã') || normalized.includes('õ') || normalized.includes('ão')) {
-    isHard = true;
+  while (i < normalized.length) {
+    const char = normalized[i];
+    const nextChar = i + 1 < normalized.length ? normalized[i + 1] : '';
+    const twoChars = char + nextChar;
+
+    // Handle digraphs first (longer sequences take priority)
+    if (twoChars === 'lh') {
+      const phonemeId = 'LH';
+      if (getPhonemeById(phonemeId)) {
+        phonemes.push(phonemeId);
+        i += 2;
+        continue;
+      }
+      // TODO: Handle unknown 'lh' case
+      i += 2;
+      continue;
+    }
+
+    if (twoChars === 'nh') {
+      const phonemeId = 'NH';
+      if (getPhonemeById(phonemeId)) {
+        phonemes.push(phonemeId);
+        i += 2;
+        continue;
+      }
+      // TODO: Handle unknown 'nh' case
+      i += 2;
+      continue;
+    }
+
+    if (twoChars === 'ch') {
+      const phonemeId = 'CH';
+      if (getPhonemeById(phonemeId)) {
+        phonemes.push(phonemeId);
+        i += 2;
+        continue;
+      }
+      // TODO: Handle unknown 'ch' case
+      i += 2;
+      continue;
+    }
+
+    if (twoChars === 'rr') {
+      const phonemeId = 'R_TAP';
+      if (getPhonemeById(phonemeId)) {
+        phonemes.push(phonemeId);
+        i += 2;
+        continue;
+      }
+      // TODO: Handle unknown 'rr' case
+      i += 2;
+      continue;
+    }
+
+    // Handle single consonants
+    if (char === 'p') {
+      if (getPhonemeById('P')) {
+        phonemes.push('P');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'b') {
+      if (getPhonemeById('B')) {
+        phonemes.push('B');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'm') {
+      // Check if final m (nasalization)
+      if (i === normalized.length - 1) {
+        // TODO: Map to nasal vowel based on preceding vowel
+        // For now, just use M
+        if (getPhonemeById('M')) {
+          phonemes.push('M');
+        }
+      } else {
+        if (getPhonemeById('M')) {
+          phonemes.push('M');
+        }
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'n') {
+      // Check if final n (nasalization)
+      if (i === normalized.length - 1) {
+        // TODO: Map to nasal vowel based on preceding vowel
+        // For now, just use N
+        if (getPhonemeById('N')) {
+          phonemes.push('N');
+        }
+      } else {
+        if (getPhonemeById('N')) {
+          phonemes.push('N');
+        }
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 't') {
+      if (getPhonemeById('T')) {
+        phonemes.push('T');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'd') {
+      if (getPhonemeById('D')) {
+        phonemes.push('D');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'k' || char === 'c' && (nextChar === 'a' || nextChar === 'o' || nextChar === 'u')) {
+      if (getPhonemeById('K')) {
+        phonemes.push('K');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'g') {
+      if (getPhonemeById('G')) {
+        phonemes.push('G');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'f') {
+      if (getPhonemeById('F')) {
+        phonemes.push('F');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'v') {
+      if (getPhonemeById('V')) {
+        phonemes.push('V');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 's') {
+      if (getPhonemeById('S')) {
+        phonemes.push('S');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'z') {
+      if (getPhonemeById('Z')) {
+        phonemes.push('Z');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'l') {
+      if (getPhonemeById('L')) {
+        phonemes.push('L');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'r') {
+      // Word-initial r or rr (already handled above)
+      if (i === 0 || normalized[i - 1] === ' ') {
+        if (getPhonemeById('R_TAP')) {
+          phonemes.push('R_TAP');
+        }
+      } else {
+        if (getPhonemeById('R_TAP')) {
+          phonemes.push('R_TAP');
+        }
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'j') {
+      if (getPhonemeById('JH')) {
+        phonemes.push('JH');
+      }
+      i++;
+      continue;
+    }
+
+    // Handle vowels
+    if (char === 'a') {
+      // Simple rule: use AA for most cases, AH for final unstressed
+      if (i === normalized.length - 1) {
+        if (getPhonemeById('AH')) {
+          phonemes.push('AH');
+        }
+      } else {
+        if (getPhonemeById('AA')) {
+          phonemes.push('AA');
+        }
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'e') {
+      if (getPhonemeById('EH')) {
+        phonemes.push('EH');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'i') {
+      if (getPhonemeById('IY')) {
+        phonemes.push('IY');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'o') {
+      if (getPhonemeById('OW')) {
+        phonemes.push('OW');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'u') {
+      if (getPhonemeById('UW')) {
+        phonemes.push('UW');
+      }
+      i++;
+      continue;
+    }
+
+    // Handle nasal vowels (ã, õ, ão)
+    if (char === 'ã') {
+      if (getPhonemeById('AN_NASAL')) {
+        phonemes.push('AN_NASAL');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'õ') {
+      if (getPhonemeById('ON_NASAL')) {
+        phonemes.push('ON_NASAL');
+      }
+      i++;
+      continue;
+    }
+
+    if (twoChars === 'ão') {
+      if (getPhonemeById('AN_NASAL')) {
+        phonemes.push('AN_NASAL');
+      }
+      i += 2;
+      continue;
+    }
+
+    // Unknown character - skip with TODO
+    // TODO: Handle unknown character: ${char}
+    i++;
   }
 
-  // Check for difficult digraphs
-  if (normalized.includes('lh') || normalized.includes('nh')) {
-    isHard = true;
-  }
-
-  // Check for double 'r' (guttural R sound)
-  if (normalized.includes('rr')) {
-    isHard = true;
-  }
-
-  // Check for word-initial 'r' (also guttural in Portuguese)
-  if (normalized.startsWith('r')) {
-    isHard = true;
-  }
-
-  // Get phonemes using the helper function
-  const { phonemes, ipa } = getPhonemesForToken(word);
-
-  return {
-    ipa,
-    phonemes: phonemes.length > 0 ? phonemes : undefined,
-    isHardForEnglishSpeakers: isHard,
-  };
+  return { phonemes };
 }
 

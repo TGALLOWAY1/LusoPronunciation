@@ -10,6 +10,7 @@ import SentenceFeedback from './SentenceFeedback';
 import { useSettingsStore } from '@/state/settingsStore';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
+import { PhonemePanel } from './PhonemePanel';
 
 interface WordCardProps {
   word: Word;
@@ -250,6 +251,11 @@ function WordCard({ word, sessionId, onKnowIt, onReviewLater }: WordCardProps) {
           <p className="text-blue-800 dark:text-blue-300">{word.pronunciationNotes}</p>
         </div>
       )}
+
+      {/* Phoneme Panel (Metadata/Tips) */}
+      <div className="mb-4">
+        <PhonemePanel word={word} />
+      </div>
 
       {/* Audio playback controls - uses global voice setting */}
       <div className="mb-4 flex gap-2">

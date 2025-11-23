@@ -8,7 +8,7 @@
 
 import type { WordFeedback } from '@/types/pronunciationFixtures';
 import type { WordScore } from '@/types/pronunciation';
-import type { Sentence } from '@/lib/types';
+import type { Sentence, Word } from '@/lib/types';
 import type { NormalizedWordFeedback, NormalizedWordAudioVariant } from './types';
 import { getAudioUrlForWordSync } from '@/utils/audioRouting';
 
@@ -18,7 +18,8 @@ import { getAudioUrlForWordSync } from '@/utils/audioRouting';
 function normalizeWordToken(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[.,!?;:]/g, '')
+    .replace(/[.,!?;:'"()¿¡«»]/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
@@ -66,26 +67,17 @@ function extractPhonemesFromAzureResponse(
   const bestHypothesis = rawAzure?.NBest?.[0];
   const words = bestHypothesis?.Words || [];
   
-  // Normalize word text for matching
-  const normalizedWordText = normalizeWordToken(wordText);
-  
-  // First, try to find by exact text match (case-insensitive, punctuation-agnostic)
-  let wordData = words.find((w: any) => {
-    const azureWord = w.Word || '';
-    const normalizedAzureWord = normalizeWordToken(azureWord);
-    return normalizedAzureWord === normalizedWordText;
-  });
-  
-  // If no text match found, fall back to index matching
-  if (!wordData && wordIndex < words.length) {
-    wordData = words[wordIndex];
-    // Verify the word at this index matches
-    const azureWord = wordData?.Word || '';
-    const normalizedAzureWord = normalizeWordToken(azureWord);
-    if (normalizedAzureWord !== normalizedWordText) {
-      // Index doesn't match, don't use it
-      wordData = undefined;
-    }
+  // Prefer index lookup as wordScores are derived directly from this array.
+  // Fallback to text match if index is out of bounds (unlikely).
+  let wordData = words[wordIndex];
+
+  if (!wordData) {
+    // Fallback to text matching if index failed
+    const normalizedWordText = normalizeWordToken(wordText);
+    wordData = words.find((w: any) => {
+      const azureWord = w.Word || '';
+      return normalizeWordToken(azureWord) === normalizedWordText;
+    });
   }
   
   if (!wordData) {
@@ -199,5 +191,85 @@ export function buildWordAudioVariantsForSentence(
   }
   
   return variants;
+}
+
+/**
+ * Augments normalized words with canonical metadata from masterWords when Azure phoneme data is missing.
+ */
+export function enrichWordsWithCanonicalData(
+  sentence: Sentence | undefined,
+  words: NormalizedWordFeedback[],
+  canonicalWordMap?: Map<string, Word> | null
+): NormalizedWordFeedback[] {
+  if (!canonicalWordMap || words.length === 0) {
+    return words;
+  }
+
+  const wordRefsByIndex = new Map<number, Word>();
+  sentence?.wordRefs?.forEach(ref => {
+    const canonicalWord = canonicalWordMap.get(ref.wordId);
+    if (canonicalWord) {
+      wordRefsByIndex.set(ref.tokenIndex, canonicalWord);
+    }
+  });
+
+  const canonicalByNormalizedText = new Map<string, Word>();
+  canonicalWordMap.forEach(word => {
+    const normalized = normalizeWordToken(word.textPt);
+    if (!canonicalByNormalizedText.has(normalized)) {
+      canonicalByNormalizedText.set(normalized, word);
+    }
+  });
+
+  return words.map(word => {
+    // If Azure already supplied phoneme data, keep it but ensure wordId is set when possible.
+    if (word.phonemes && word.phonemes.length > 0) {
+      if (word.wordId) {
+        return word;
+      }
+      const canonicalFromRefs =
+        (word.index !== undefined && wordRefsByIndex.get(word.index)) ||
+        canonicalByNormalizedText.get(normalizeWordToken(word.text));
+      return canonicalFromRefs
+        ? { ...word, wordId: canonicalFromRefs.id }
+        : word;
+    }
+
+    let canonicalWord: Word | undefined;
+
+    if (word.wordId) {
+      canonicalWord = canonicalWordMap.get(word.wordId);
+    }
+
+    if (!canonicalWord && word.index !== undefined) {
+      canonicalWord = wordRefsByIndex.get(word.index);
+    }
+
+    if (!canonicalWord) {
+      canonicalWord = canonicalByNormalizedText.get(normalizeWordToken(word.text));
+    }
+
+    if (!canonicalWord) {
+      return word;
+    }
+
+    const canonicalPhonemes = canonicalWord.phonemes;
+    if (!canonicalPhonemes || canonicalPhonemes.length === 0) {
+      return {
+        ...word,
+        wordId: canonicalWord.id,
+      };
+    }
+
+    return {
+      ...word,
+      wordId: canonicalWord.id,
+      phonemes: canonicalPhonemes.map(symbol => ({
+        symbol,
+        score: word.accuracyScore,
+        isProblem: word.accuracyScore < 80,
+      })),
+    };
+  });
 }
 

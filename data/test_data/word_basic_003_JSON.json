@@ -1,0 +1,38 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 700000,
+  "Duration": 10800000,
+  "DisplayText": "Boa tarde.",
+  "SNR": 38.548477,
+  "NBest": [
+    {
+      "Confidence": 0.8702989,
+      "Lexical": "boa tarde",
+      "ITN": "boa tarde",
+      "MaskedITN": "boa tarde",
+      "Display": "Boa tarde.",
+      "AccuracyScore": 96,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 97.6,
+      "Words": [
+        {
+          "Word": "boa",
+          "Offset": 700000,
+          "Duration": 4500000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "tarde",
+          "Offset": 5300000,
+          "Duration": 6200000,
+          "Confidence": 0,
+          "AccuracyScore": 91,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

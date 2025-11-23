@@ -7,8 +7,10 @@ import type { PronunciationFeedbackPanelProps } from '@/components/pronunciation
 import {
   adaptWordScoresToNormalized,
   buildWordAudioVariantsForSentence,
+  enrichWordsWithCanonicalData,
 } from '@/components/pronunciation/shared';
 import { useSettingsStore } from '@/state/settingsStore';
+import { useCanonicalWordMap } from '@/hooks/useCanonicalWordMap';
 
 export interface SentenceFeedbackProps {
   /** Sentence data for context (text, translation, audio, etc.) - required for sentence practice */
@@ -69,6 +71,7 @@ function SentenceFeedback({
   fallbackDifficulty,
 }: SentenceFeedbackProps) {
   const { selectedVoice } = useSettingsStore();
+  const canonicalWordMap = useCanonicalWordMap();
 
   // Derive current attempt if not provided but attempts array is available
   const currentAttempt = useMemo(() => {
@@ -89,6 +92,13 @@ function SentenceFeedback({
     }
     return [];
   }, [currentAttempt, rawAzureResponse]);
+
+  const enrichedWords = useMemo(() => {
+    if (normalizedWords.length === 0) {
+      return normalizedWords;
+    }
+    return enrichWordsWithCanonicalData(sentence, normalizedWords, canonicalWordMap);
+  }, [sentence, normalizedWords, canonicalWordMap]);
 
   // Build sentence audio variants (only if sentence is provided)
   const sentenceAudio = useMemo(() => {
@@ -124,11 +134,11 @@ function SentenceFeedback({
     difficulty: difficulty,
     sentenceAudio: undefined, // Never pass sentenceAudio in Practice - SentenceCard handles audio playback
     wordAudios: wordAudios.length > 0 ? wordAudios : undefined,
-    words: normalizedWords.length > 0 ? normalizedWords : undefined,
+    words: enrichedWords.length > 0 ? enrichedWords : undefined,
     title: undefined, // No title for practice page
     showDevControls: false,
     hideHeaderContent: true, // Hide sentence text/translation/difficulty/audio since SentenceCard shows them above
-  }), [attempts, currentAttempt, sentenceText, translationText, difficulty, wordAudios, normalizedWords]);
+  }), [attempts, currentAttempt, sentenceText, translationText, difficulty, wordAudios, enrichedWords]);
 
   // Always render the panel - it will handle empty state internally
   // No card wrapper needed - SentenceCard already provides the card container

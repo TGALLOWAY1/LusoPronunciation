@@ -1,777 +1,3076 @@
 {
-    "language_pair": "en-pt-BR",
-    "version": "1.0",
-    "categories": [
-      {
-        "id": "food",
-        "label_en": "Food & Eating",
-        "label_pt": "Comida e Refeições",
-        "sentences": [
-          {
-            "id": "food_001",
-            "en": "I'm hungry, what do you want to eat?",
-            "pt": "Estou com fome, o que você quer comer?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘Estou’ has nasalized 'om'; stress in ‘você’ is on 'cê'."
-          },
-          {
-            "id": "food_002",
-            "en": "Is there anything vegan on the menu?",
-            "pt": "Tem alguma coisa vegana no cardápio?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘nh’ sound in ‘alguma’ is soft; ‘cardápio’ stress on 'dá'."
-          },
-          {
-            "id": "food_003",
-            "en": "I don't eat meat, only fish and vegetables.",
-            "pt": "Eu não como carne, só peixe e legumes.",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘ão’ in ‘não’; ‘peixe’ sounds like ‘PAY-shee’."
-          },
-          {
-            "id": "food_004",
-            "en": "Can I see the menu, please?",
-            "pt": "Posso ver o cardápio, por favor?",
-            "difficulty": 1,
-            "pronunciation_notes": "‘Posso’ stress on first syllable; ‘por favor’ with open 'o' in ‘por’."
-          },
-          {
-            "id": "food_005",
-            "en": "The food is delicious, thank you.",
-            "pt": "A comida está deliciosa, obrigado.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘deliciosa’ stress on 'o'; say ‘bri’ in ‘obrigado’ like ‘bree’."
-          },
-          {
-            "id": "food_006",
-            "en": "I'd like a glass of water without ice.",
-            "pt": "Eu gostaria de um copo de água sem gelo.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘água’ has stressed ‘á’; ‘gelo’ sounds like ‘zhe-lo’."
-          },
-          {
-            "id": "food_007",
-            "en": "Can you bring the bill, please?",
-            "pt": "Você pode trazer a conta, por favor?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘conta’ with nasal ‘on’; ‘trazer’ with soft ‘z’ sound."
-          },
-          {
-            "id": "food_008",
-            "en": "Do you have any snacks or something small to eat?",
-            "pt": "Você tem algum lanche ou alguma coisa pequena para comer?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘lanche’ sounds like ‘lãn-shee’; nasal in first syllable."
-          },
-          {
-            "id": "food_009",
-            "en": "I usually skip breakfast.",
-            "pt": "Eu geralmente pulo o café da manhã.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘geralmente’ with soft ‘g’ (like ‘j’); nasal ‘ã’ in ‘manhã’."
-          },
-          {
-            "id": "food_010",
-            "en": "This is too spicy for me.",
-            "pt": "Isso é muito apimentado para mim.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Isso’ like ‘EE-su’; ‘apimentado’ stress on 'ta'."
-          }
-        ]
-      },
-      {
-        "id": "travel",
-        "label_en": "Travel",
-        "label_pt": "Viagem",
-        "sentences": [
-          {
-            "id": "travel_001",
-            "en": "Where is the bus station?",
-            "pt": "Onde fica a rodoviária?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Onde’ with nasal ‘on’; ‘rodoviária’ stress on 'á'."
-          },
-          {
-            "id": "travel_002",
-            "en": "What time does the train leave?",
-            "pt": "Que horas o trem sai?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘trem’ has nasal ‘em’; ‘horas’ with silent ‘h’."
-          },
-          {
-            "id": "travel_003",
-            "en": "I need to go to the airport.",
-            "pt": "Eu preciso ir para o aeroporto.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘preciso’ stress on 'si'; ‘aeroporto’ said as ‘a-eh-ro-por-to’."
-          },
-          {
-            "id": "travel_004",
-            "en": "Is it safe to walk around here at night?",
-            "pt": "É seguro andar por aqui à noite?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘seguro’ stress on 'gu'; ‘noite’ like ‘NOY-chee’."
-          },
-          {
-            "id": "travel_005",
-            "en": "How long does the trip take?",
-            "pt": "Quanto tempo demora a viagem?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Quanto’ with nasal ‘an’; ‘viagem’ ends with soft ‘zhẽ’."
-          },
-          {
-            "id": "travel_006",
-            "en": "I have a reservation at this hotel.",
-            "pt": "Eu tenho uma reserva neste hotel.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘tenho’ has ‘nh’ sound; ‘hotel’ stress on 'tel'."
-          },
-          {
-            "id": "travel_007",
-            "en": "Can you recommend a cool place to visit?",
-            "pt": "Você pode recomendar um lugar legal para visitar?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘recomendar’ with guttural ‘r’ at the end; ‘legal’ like ‘leh-GAL’."
-          },
-          {
-            "id": "travel_008",
-            "en": "I think I'm on the wrong bus.",
-            "pt": "Acho que estou no ônibus errado.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Acho’ like ‘AH-shoo’; ‘ônibus’ stress on 'ô'."
-          },
-          {
-            "id": "travel_009",
-            "en": "Is it far from here?",
-            "pt": "É longe daqui?",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘on’ in ‘longe’; final ‘ge’ like ‘zhee’."
-          },
-          {
-            "id": "travel_010",
-            "en": "I love traveling by train.",
-            "pt": "Eu adoro viajar de trem.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘adoro’ stress on second syllable; ‘viajar’ ends with guttural ‘r’."
-          }
-        ]
-      },
-      {
-        "id": "family_friends",
-        "label_en": "Family & Friends",
-        "label_pt": "Família e Amigos",
-        "sentences": [
-          {
-            "id": "fam_001",
-            "en": "My family is very important to me.",
-            "pt": "Minha família é muito importante para mim.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘nh’ in ‘minha’; nasal ‘im’ in ‘importante’ and ‘mim’."
-          },
-          {
-            "id": "fam_002",
-            "en": "I have two sisters and one brother.",
-            "pt": "Eu tenho duas irmãs e um irmão.",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘ão’ in ‘irmão’; plural ‘irmãs’ has open 'ã'."
-          },
-          {
-            "id": "fam_003",
-            "en": "Are you close with your parents?",
-            "pt": "Você é próximo dos seus pais?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘próximo’ stress on 'pró'; ‘pais’ like ‘pa-is’."
-          },
-          {
-            "id": "fam_004",
-            "en": "My best friend lives in another city.",
-            "pt": "Meu melhor amigo mora em outra cidade.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘melhor’ with ‘lh’ sound; ‘mora’ stress on 'mo'."
-          },
-          {
-            "id": "fam_005",
-            "en": "I'm meeting my friends for dinner tonight.",
-            "pt": "Vou encontrar meus amigos para jantar hoje à noite.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘encontrar’ has nasal ‘en’; ‘jantar’ with guttural final ‘r’."
-          },
-          {
-            "id": "fam_006",
-            "en": "Do you have any siblings?",
-            "pt": "Você tem irmãos?",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘ãos’ in ‘irmãos’ (plural of ‘irmão’)."
-          },
-          {
-            "id": "fam_007",
-            "en": "I miss my family a lot.",
-            "pt": "Sinto muita saudade da minha família.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘saudade’ stress on 'da'; ‘minha’ with ‘nh’ sound."
-          },
-          {
-            "id": "fam_008",
-            "en": "My parents are divorced.",
-            "pt": "Meus pais são divorciados.",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘ão’ in ‘são’; ‘divorciados’ with soft ‘c’ (like ‘s’)."
-          },
-          {
-            "id": "fam_009",
-            "en": "We like to spend Sundays together.",
-            "pt": "A gente gosta de passar os domingos juntos.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘gosta’ stress on 'gos'; ‘domingos’ with nasal ‘in’."
-          },
-          {
-            "id": "fam_010",
-            "en": "I get along really well with my sister.",
-            "pt": "Eu me dou muito bem com a minha irmã.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘irmã’ with nasal ‘ã’; ‘dou’ like ‘doh’."
-          }
-        ]
-      },
-      {
-        "id": "daily_routine",
-        "label_en": "Daily Routine",
-        "label_pt": "Rotina Diária",
-        "sentences": [
-          {
-            "id": "daily_001",
-            "en": "I usually wake up around seven.",
-            "pt": "Eu geralmente acordo por volta das sete.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘geralmente’ soft ‘g’ (like ‘j’); ‘acordo’ stress on 'cor'."
-          },
-          {
-            "id": "daily_002",
-            "en": "I drink coffee before starting work.",
-            "pt": "Eu tomo café antes de começar a trabalhar.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘café’ stress on 'fé'; infinitive ‘trabalhar’ with ‘lh’."
-          },
-          {
-            "id": "daily_003",
-            "en": "I take a shower after the gym.",
-            "pt": "Eu tomo banho depois da academia.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘banho’ has ‘nh’ sound; ‘academia’ stress on 'mi'."
-          },
-          {
-            "id": "daily_004",
-            "en": "I work from home most days.",
-            "pt": "Eu trabalho de casa na maioria dos dias.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘trabalho’ with ‘lh’; ‘maioria’ stress on 'ri'."
-          },
-          {
-            "id": "daily_005",
-            "en": "At night I like to read or watch series.",
-            "pt": "À noite eu gosto de ler ou assistir séries.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘noite’ like ‘NOY-chee’; plural ‘séries’ with open 'é'."
-          },
-          {
-            "id": "daily_006",
-            "en": "I need to clean the house this weekend.",
-            "pt": "Eu preciso limpar a casa neste fim de semana.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘limpar’ final guttural ‘r’; nasal ‘im’ in ‘fim’."
-          },
-          {
-            "id": "daily_007",
-            "en": "Sometimes I work late.",
-            "pt": "Às vezes eu trabalho até tarde.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘vezes’ like ‘VE-zes’; ‘tarde’ final ‘de’ like ‘jee’."
-          },
-          {
-            "id": "daily_008",
-            "en": "I try to go running three times a week.",
-            "pt": "Eu tento correr três vezes por semana.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘correr’ with strong ‘rr’; ‘três’ has closed ‘ê’."
-          },
-          {
-            "id": "daily_009",
-            "en": "I usually cook at home.",
-            "pt": "Eu geralmente cozinho em casa.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘cozinho’ with ‘nh’; nasal ‘em’ in ‘em casa’."
-          },
-          {
-            "id": "daily_010",
-            "en": "I go to bed very late.",
-            "pt": "Eu vou dormir muito tarde.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘dormir’ final ‘r’ is guttural; ‘muito’ like ‘MOOY-to’."
-          }
-        ]
-      },
-      {
-        "id": "feelings",
-        "label_en": "Feelings & Emotions",
-        "label_pt": "Sentimentos e Emoções",
-        "sentences": [
-          {
-            "id": "feel_001",
-            "en": "I'm really tired today.",
-            "pt": "Eu estou muito cansado hoje.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘cansado’ stress on 'sa'; ‘hoje’ like ‘ô-zhee’."
-          },
-          {
-            "id": "feel_002",
-            "en": "I'm very happy to be here.",
-            "pt": "Eu estou muito feliz de estar aqui.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘feliz’ stress on 'liz'; final ‘z’ is ‘s’ sound."
-          },
-          {
-            "id": "feel_003",
-            "en": "I'm a little anxious about tomorrow.",
-            "pt": "Eu estou um pouco ansioso com o amanhã.",
-            "difficulty": 4,
-            "pronunciation_notes": "Nasal ‘ã’ in ‘amanhã’; ‘ansioso’ stress on 'o'."
-          },
-          {
-            "id": "feel_004",
-            "en": "I'm frustrated because I don't understand.",
-            "pt": "Estou frustrado porque eu não entendo.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘frustrado’ stress on 'tra'; nasal ‘ão’ in ‘não’."
-          },
-          {
-            "id": "feel_005",
-            "en": "I'm feeling much better now.",
-            "pt": "Estou me sentindo bem melhor agora.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘sentindo’ with nasal ‘in’; ‘melhor’ has ‘lh’."
-          },
-          {
-            "id": "feel_006",
-            "en": "I get nervous when I speak in Portuguese.",
-            "pt": "Eu fico nervoso quando falo em português.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘português’ closed ‘ês’; stress on last syllable."
-          },
-          {
-            "id": "feel_007",
-            "en": "Sometimes I feel a bit insecure.",
-            "pt": "Às vezes eu me sinto um pouco inseguro.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘inseguro’ stress on 'gu'; nasal ‘um’ in ‘um pouco’."
-          },
-          {
-            "id": "feel_008",
-            "en": "I'm grateful for your help.",
-            "pt": "Eu sou grato pela sua ajuda.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘grato’ stress on 'gra'; ‘ajuda’ like ‘a-ZHU-da’."
-          },
-          {
-            "id": "feel_009",
-            "en": "I'm a bit embarrassed.",
-            "pt": "Estou um pouco envergonhado.",
-            "difficulty": 4,
-            "pronunciation_notes": "Nasal ‘ão’ in related forms; ‘envergonhado’ has ‘nh’ and guttural ‘r’."
-          },
-          {
-            "id": "feel_010",
-            "en": "I'm excited about this trip.",
-            "pt": "Estou empolgado com essa viagem.",
-            "difficulty": 4,
-            "pronunciation_notes": "Nasal ‘em’ in ‘estou em-’; ‘viagem’ ends with nasal ‘ẽ’."
-          }
-        ]
-      },
-      {
-        "id": "questions_help",
-        "label_en": "Questions & Asking for Help",
-        "label_pt": "Perguntas e Pedidos de Ajuda",
-        "sentences": [
-          {
-            "id": "help_001",
-            "en": "Can you help me, please?",
-            "pt": "Você pode me ajudar, por favor?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘ajudar’ like ‘a-zhu-DAR’; final 'r' guttural."
-          },
-          {
-            "id": "help_002",
-            "en": "Could you repeat that more slowly?",
-            "pt": "Você pode repetir mais devagar?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘repetir’ stress on last syllable; ‘devagar’ final 'gar' like ‘gar’ in ‘garage’."
-          },
-          {
-            "id": "help_003",
-            "en": "I didn't understand, can you explain again?",
-            "pt": "Eu não entendi, você pode explicar de novo?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘ão’ in ‘não’; ‘entendi’ stress on 'di'."
-          },
-          {
-            "id": "help_004",
-            "en": "How do you say this in Portuguese?",
-            "pt": "Como se fala isso em português?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘português’ closed ‘ês’; ‘fala’ stress on 'fa'."
-          },
-          {
-            "id": "help_005",
-            "en": "What does this word mean?",
-            "pt": "O que essa palavra quer dizer?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘palavra’ stress on 'la'; ‘quer’ sounds like ‘ker’."
-          },
-          {
-            "id": "help_006",
-            "en": "Can you write it down for me?",
-            "pt": "Você pode escrever para mim?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘escrever’: initial ‘es’ pronounced ‘is’; final 'ver' like ‘vehr’."
-          },
-          {
-            "id": "help_007",
-            "en": "Sorry, I didn't hear you.",
-            "pt": "Desculpa, eu não te ouvi.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Desculpa’ stress on 'cul'; ‘ouvi’ like ‘oh-VEE’."
-          },
-          {
-            "id": "help_008",
-            "en": "Is this correct?",
-            "pt": "Isso está certo?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘certo’ with soft 'c' (like ‘sér-to’)."
-          },
-          {
-            "id": "help_009",
-            "en": "What should I do now?",
-            "pt": "O que eu devo fazer agora?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘devo’ stress on 'de'; ‘fazer’ like ‘fa-ZER’."
-          },
-          {
-            "id": "help_010",
-            "en": "Can I ask you a question?",
-            "pt": "Posso te fazer uma pergunta?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘pergunta’ stress on 'gun'; nasal 'un'."
-          }
-        ]
-      },
-      {
-        "id": "shopping_money",
-        "label_en": "Shopping & Money",
-        "label_pt": "Compras e Dinheiro",
-        "sentences": [
-          {
-            "id": "shop_001",
-            "en": "How much does this cost?",
-            "pt": "Quanto custa isso?",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; ‘custa’ like ‘KUS-ta’."
-          },
-          {
-            "id": "shop_002",
-            "en": "Do you accept credit card?",
-            "pt": "Vocês aceitam cartão de crédito?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘cartão’ nasal ‘ão’; ‘crédito’ stress on 'cré'."
-          },
-          {
-            "id": "shop_003",
-            "en": "Can I pay in cash?",
-            "pt": "Posso pagar em dinheiro?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘em’; ‘dinheiro’ with ‘nh’ and ‘ei’ like ‘nay’."
-          },
-          {
-            "id": "shop_004",
-            "en": "Do you have this in another size?",
-            "pt": "Você tem isso em outro tamanho?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘tamanho’ with ‘nh’; stress on 'ma'."
-          },
-          {
-            "id": "shop_005",
-            "en": "I'm just looking, thank you.",
-            "pt": "Eu só estou dando uma olhada, obrigado.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘olhada’ with ‘lh’; ‘só’ open 'ó'."
-          },
-          {
-            "id": "shop_006",
-            "en": "Is there any discount in cash?",
-            "pt": "Tem algum desconto à vista?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘desconto’: nasal ‘on’; ‘vista’ like ‘VEES-ta’."
-          },
-          {
-            "id": "shop_007",
-            "en": "Where is the supermarket?",
-            "pt": "Onde fica o supermercado?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘on’ in ‘onde’; ‘supermercado’ stress on 'ca'."
-          },
-          {
-            "id": "shop_008",
-            "en": "I need to buy some groceries.",
-            "pt": "Eu preciso comprar algumas coisas no mercado.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘comprar’ final guttural ‘r’; ‘algumas’ nasal ‘un’. "
-          },
-          {
-            "id": "shop_009",
-            "en": "Can I return this if it doesn't work?",
-            "pt": "Posso trocar isso se não funcionar?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘trocar’ with final ‘r’; ‘funcionar’ with ‘ç’ like ‘s’."
-          },
-          {
-            "id": "shop_010",
-            "en": "It's too expensive for me.",
-            "pt": "É muito caro para mim.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘caro’ open 'a'; ‘mim’ nasal 'im'."
-          }
-        ]
-      },
-      {
-        "id": "directions_transport",
-        "label_en": "Directions & Transport",
-        "label_pt": "Direções e Transporte",
-        "sentences": [
-          {
-            "id": "dir_001",
-            "en": "Turn right at the next corner.",
-            "pt": "Vire à direita na próxima esquina.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘direita’ like ‘jee-RAY-ta’; ‘próxima’ stress on 'pró'."
-          },
-          {
-            "id": "dir_002",
-            "en": "Go straight and then turn left.",
-            "pt": "Siga em frente e depois vire à esquerda.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘esquerda’ with ‘sk’ sound; nasal ‘em’ in ‘em frente’."
-          },
-          {
-            "id": "dir_003",
-            "en": "Where is the nearest subway station?",
-            "pt": "Onde fica a estação de metrô mais próxima?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘estação’ nasal ‘ão’; ‘metrô’ stress on last syllable."
-          },
-          {
-            "id": "dir_004",
-            "en": "Can I walk there, or is it better to take a bus?",
-            "pt": "Dá para ir a pé ou é melhor pegar um ônibus?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘a pé’ with open ‘é’; ‘ônibus’ stress on 'ô'."
-          },
-          {
-            "id": "dir_005",
-            "en": "I'm a bit lost.",
-            "pt": "Eu estou um pouco perdido.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘perdido’ with guttural ‘r’; nasal 'um'."
-          },
-          {
-            "id": "dir_006",
-            "en": "Is there a bus stop close by?",
-            "pt": "Tem um ponto de ônibus perto daqui?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘ponto’ nasal ‘on’; ‘ônibus’ stress on 'ô'."
-          },
-          {
-            "id": "dir_007",
-            "en": "How long does it take by car?",
-            "pt": "Quanto tempo leva de carro?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; ‘carro’ with strong ‘rr’."
-          },
-          {
-            "id": "dir_008",
-            "en": "Is there a lot of traffic now?",
-            "pt": "Tem muito trânsito agora?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘trânsito’ nasal ‘ãn’; ‘agora’ stress on 'go'."
-          },
-          {
-            "id": "dir_009",
-            "en": "I missed my bus.",
-            "pt": "Eu perdi o meu ônibus.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘perdi’ stress on 'di'; ‘ônibus’ with closed 'ô'."
-          },
-          {
-            "id": "dir_010",
-            "en": "Can you show me on the map?",
-            "pt": "Você pode me mostrar no mapa?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘mostrar’ final ‘r’; ‘mapa’ stress on 'ma'."
-          }
-        ]
-      },
-      {
-        "id": "work_study",
-        "label_en": "Work & Study",
-        "label_pt": "Trabalho e Estudos",
-        "sentences": [
-          {
-            "id": "work_001",
-            "en": "I work from nine to five.",
-            "pt": "Eu trabalho das nove às cinco.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘trabalho’ with ‘lh’; ‘cinco’ like ‘SEEN-co’."
-          },
-          {
-            "id": "work_002",
-            "en": "I have a meeting in the morning.",
-            "pt": "Eu tenho uma reunião de manhã.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘reunião’ nasal ‘ão’; ‘manhã’ nasal ‘ã’."
-          },
-          {
-            "id": "work_003",
-            "en": "I study Portuguese every day.",
-            "pt": "Eu estudo português todos os dias.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘português’ closed ‘ês’; stress on last syllable."
-          },
-          {
-            "id": "work_004",
-            "en": "I need to finish this project today.",
-            "pt": "Eu preciso terminar este projeto hoje.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘terminar’ final ‘r’; ‘projeto’ like ‘pro-ZHE-to’."
-          },
-          {
-            "id": "work_005",
-            "en": "Where do you work?",
-            "pt": "Você trabalha onde?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘trabalha’ with ‘lh’; stress on 'ba'."
-          },
-          {
-            "id": "work_006",
-            "en": "I'm looking for a new job.",
-            "pt": "Estou procurando um trabalho novo.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘procurando’ stress on 'ran'; nasal 'um'."
-          },
-          {
-            "id": "work_007",
-            "en": "I have an exam next week.",
-            "pt": "Eu tenho uma prova na semana que vem.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘prova’ stress on 'pro'; ‘semana’ stress on 'ma'."
-          },
-          {
-            "id": "work_008",
-            "en": "I work remotely most of the time.",
-            "pt": "Eu trabalho remotamente na maior parte do tempo.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘remotamente’ stress on 'men'; ‘trabalho’ with ‘lh’."
-          },
-          {
-            "id": "work_009",
-            "en": "I'm taking an online course.",
-            "pt": "Eu estou fazendo um curso online.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘curso’ like ‘KOOR-so’; ‘online’ often pronounced close to English."
-          },
-          {
-            "id": "work_010",
-            "en": "I need a break.",
-            "pt": "Eu preciso de uma pausa.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘pausa’ like ‘PAW-za’; z like ‘z’."
-          }
-        ]
-      },
-      {
-        "id": "small_talk_social",
-        "label_en": "Small Talk & Social",
-        "label_pt": "Conversas Informais",
-        "sentences": [
-          {
-            "id": "social_001",
-            "en": "Hi, how are you?",
-            "pt": "Oi, tudo bem?",
-            "difficulty": 1,
-            "pronunciation_notes": "‘Oi’ like ‘oy’; ‘bem’ nasal 'ẽ'."
-          },
-          {
-            "id": "social_002",
-            "en": "Nice to meet you.",
-            "pt": "Prazer em te conhecer.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Prazer’ stress on 'zer'; ‘conhecer’ with ‘nh’."
-          },
-          {
-            "id": "social_003",
-            "en": "Where are you from?",
-            "pt": "De onde você é?",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal 'on' in ‘onde’; ‘você’ stress on 'cê'."
-          },
-          {
-            "id": "social_004",
-            "en": "How long have you lived here?",
-            "pt": "Há quanto tempo você mora aqui?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; 'mora' stress on 'mo'."
-          },
-          {
-            "id": "social_005",
-            "en": "What do you like to do for fun?",
-            "pt": "O que você gosta de fazer para se divertir?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘divertir’ final ‘tir’ like ‘cheer’; stress on last syllable."
-          },
-          {
-            "id": "social_006",
-            "en": "I really like this city.",
-            "pt": "Eu gosto muito desta cidade.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘cidade’ like ‘see-DA-djee’."
-          },
-          {
-            "id": "social_007",
-            "en": "Do you have any plans for the weekend?",
-            "pt": "Você tem planos para o fim de semana?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘planos’ stress on 'pla'; nasal ‘im’ in ‘fim’."
-          },
-          {
-            "id": "social_008",
-            "en": "It was great talking to you.",
-            "pt": "Foi muito bom conversar com você.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘conversar’ final ‘sar’; nasal ‘ão’ in related forms."
-          },
-          {
-            "id": "social_009",
-            "en": "Let's keep in touch.",
-            "pt": "Vamos manter contato.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘manter’ final ‘ter’ like ‘tehr’; ‘contato’ stress on 'ta'."
-          },
-          {
-            "id": "social_010",
-            "en": "Have a good weekend!",
-            "pt": "Bom fim de semana!",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘om’ in ‘bom’; ‘fim’ nasal 'im'."
-          }
-        ]
-      }
-    ]
-  }
-  
+  "language_pair": "en-pt-BR",
+  "version": "1.0",
+  "categories": [
+    {
+      "id": "food",
+      "label_en": "Food & Eating",
+      "label_pt": "Comida e Refeições",
+      "sentences": [
+        {
+          "id": "gemini_food_001",
+          "pt": "Estou com fome.",
+          "en": "I'm hungry.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_002",
+          "pt": "O que tem para o jantar?",
+          "en": "What's for dinner?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_003",
+          "pt": "A conta, por favor.",
+          "en": "The check, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_004",
+          "pt": "Essa comida está uma delícia.",
+          "en": "This food is delicious.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_food_005",
+          "pt": "Você aceita um café?",
+          "en": "Would you like some coffee?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_006",
+          "pt": "Pode me passar o sal, por favor?",
+          "en": "Can you pass me the salt, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_007",
+          "pt": "Eu sou vegetariano.",
+          "en": "I am a vegetarian.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_008",
+          "pt": "Vamos almoçar juntos amanhã?",
+          "en": "Shall we have lunch together tomorrow?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_009",
+          "pt": "Qual é o prato do dia?",
+          "en": "What is the dish of the day?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_010",
+          "pt": "Tô morrendo de sede.",
+          "en": "I'm dying of thirst.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_011",
+          "pt": "Eu adoro comida brasileira.",
+          "en": "I love Brazilian food.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_012",
+          "pt": "Tem mesa para duas pessoas?",
+          "en": "Do you have a table for two?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_013",
+          "pt": "Vou querer uma água com gás.",
+          "en": "I'll have a sparkling water.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_014",
+          "pt": "Você gosta de comida apimentada?",
+          "en": "Do you like spicy food?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_015",
+          "pt": "O que você vai querer beber?",
+          "en": "What are you going to want to drink?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_016",
+          "pt": "Bom apetite!",
+          "en": "Enjoy your meal!",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_017",
+          "pt": "Eu já comi, obrigado.",
+          "en": "I've already eaten, thank you.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_018",
+          "pt": "Preciso ir ao supermercado.",
+          "en": "I need to go to the supermarket.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_food_019",
+          "pt": "A comida está muito salgada.",
+          "en": "The food is too salty.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_food_020",
+          "pt": "Quer mais um pouco?",
+          "en": "Do you want a little more?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_021",
+          "pt": "Não, obrigado, estou satisfeito.",
+          "en": "No, thank you, I'm full.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_022",
+          "pt": "Vamos pedir uma pizza hoje?",
+          "en": "Shall we order a pizza today?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_023",
+          "pt": "Eu tenho alergia a camarão.",
+          "en": "I'm allergic to shrimp.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_food_024",
+          "pt": "O garçom já vem.",
+          "en": "The waiter is coming.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_025",
+          "pt": "O que você me recomenda?",
+          "en": "What do you recommend?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_026",
+          "pt": "Já tomou café da manhã?",
+          "en": "Have you had breakfast yet?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_027",
+          "pt": "Isso aqui tá muito bom!",
+          "en": "This is really good!",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_food_028",
+          "pt": "A janta está quase pronta.",
+          "en": "Dinner is almost ready.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_food_029",
+          "pt": "Eu prefiro suco natural.",
+          "en": "I prefer natural juice.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_030",
+          "pt": "Quem vai lavar a louça?",
+          "en": "Who is going to do the dishes?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_031",
+          "pt": "Esse bolo parece gostoso.",
+          "en": "This cake looks tasty.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_032",
+          "pt": "Cuidado, o prato está quente.",
+          "en": "Be careful, the plate is hot.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_033",
+          "pt": "Podemos ver o cardápio?",
+          "en": "Can we see the menu?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_034",
+          "pt": "Vou querer o bife bem passado.",
+          "en": "I'll have the steak well-done.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_035",
+          "pt": "Essa sopa está fria.",
+          "en": "This soup is cold.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_036",
+          "pt": "A gente sempre come feijão com arroz.",
+          "en": "We always eat rice and beans.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_037",
+          "pt": "Você sabe fazer brigadeiro?",
+          "en": "Do you know how to make brigadeiro?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_038",
+          "pt": "Falta comprar pão e leite.",
+          "en": "We still need to buy bread and milk.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_039",
+          "pt": "Tem alguma opção sem glúten?",
+          "en": "Is there a gluten-free option?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_040",
+          "pt": "Vamos dividir a sobremesa?",
+          "en": "Shall we share the dessert?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_041",
+          "pt": "O peixe está fresco?",
+          "en": "Is the fish fresh?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_042",
+          "pt": "Eu como de tudo.",
+          "en": "I eat everything.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_043",
+          "pt": "Gostaria de fazer um pedido.",
+          "en": "I would like to place an order.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_food_044",
+          "pt": "O meu suco é de laranja.",
+          "en": "My juice is orange juice.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_food_045",
+          "pt": "Coloca a mesa, por favor.",
+          "en": "Set the table, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_046",
+          "pt": "Eu estou de dieta.",
+          "en": "I'm on a diet.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_food_047",
+          "pt": "Aquele restaurante é muito caro.",
+          "en": "That restaurant is very expensive.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_048",
+          "pt": "O que vamos comer de sobremesa?",
+          "en": "What are we having for dessert?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_049",
+          "pt": "Você pode trazer mais guardanapos?",
+          "en": "Can you bring more napkins?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_food_050",
+          "pt": "A feijoada de sábado é tradição.",
+          "en": "Saturday's feijoada is a tradition.",
+          "difficulty": 2
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "label_en": "Travel",
+      "label_pt": "Viagem",
+      "sentences": [
+        {
+          "id": "gemini_travel_001",
+          "pt": "Eu gostaria de fazer uma reserva.",
+          "en": "I would like to make a reservation.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_002",
+          "pt": "Quanto custa a passagem de avião?",
+          "en": "How much is the plane ticket?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_003",
+          "pt": "O voo está no horário?",
+          "en": "Is the flight on time?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_004",
+          "pt": "Onde eu posso pegar minha bagagem?",
+          "en": "Where can I get my luggage?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_005",
+          "pt": "Você pode chamar um táxi pra mim, por favor?",
+          "en": "Can you call a taxi for me, please?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_travel_006",
+          "pt": "Tenho uma reserva em nome de...",
+          "en": "I have a reservation under the name of...",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_007",
+          "pt": "A que horas é o check-out?",
+          "en": "What time is check-out?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_008",
+          "pt": "O café da manhã está incluído?",
+          "en": "Is breakfast included?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_009",
+          "pt": "Com licença, onde fica a estação de metrô mais próxima?",
+          "en": "Excuse me, where is the nearest subway station?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_travel_010",
+          "pt": "Como eu chego no centro da cidade?",
+          "en": "How do I get to the city center?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_011",
+          "pt": "Você pode me mostrar no mapa?",
+          "en": "Can you show me on the map?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_012",
+          "pt": "Fica longe daqui?",
+          "en": "Is it far from here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_013",
+          "pt": "Que horas abre o museu?",
+          "en": "What time does the museum open?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_014",
+          "pt": "Eu queria comprar dois ingressos, por favor.",
+          "en": "I'd like to buy two tickets, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_015",
+          "pt": "Qual é o ponto turístico mais famoso daqui?",
+          "en": "What is the most famous tourist spot here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_016",
+          "pt": "Podemos tirar uma foto aqui?",
+          "en": "Can we take a picture here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_017",
+          "pt": "O cardápio, por favor.",
+          "en": "The menu, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_018",
+          "pt": "O que você me recomenda?",
+          "en": "What do you recommend?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_019",
+          "pt": "A conta, por favor.",
+          "en": "The bill, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_020",
+          "pt": "Posso pagar com cartão de crédito?",
+          "en": "Can I pay with a credit card?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_021",
+          "pt": "Quanto custa isso?",
+          "en": "How much does this cost?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_022",
+          "pt": "Estou só olhando, obrigado.",
+          "en": "I'm just looking, thank you.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_023",
+          "pt": "Você pode me ajudar, por favor?",
+          "en": "Can you help me, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_024",
+          "pt": "Eu não falo português muito bem.",
+          "en": "I don't speak Portuguese very well.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_travel_025",
+          "pt": "Você fala inglês?",
+          "en": "Do you speak English?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_026",
+          "pt": "Onde tem um caixa eletrônico?",
+          "en": "Where is an ATM?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_027",
+          "pt": "Qual é a senha do Wi-Fi?",
+          "en": "What is the Wi-Fi password?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_028",
+          "pt": "Eu preciso ir pro aeroporto.",
+          "en": "I need to go to the airport.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_travel_029",
+          "pt": "Este ônibus vai pra praia?",
+          "en": "Does this bus go to the beach?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_030",
+          "pt": "Perdi meu passaporte.",
+          "en": "I lost my passport.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_travel_031",
+          "pt": "Preciso de um médico.",
+          "en": "I need a doctor.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_travel_032",
+          "pt": "É seguro andar por aqui à noite?",
+          "en": "Is it safe to walk around here at night?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_033",
+          "pt": "Eu gostaria de alugar um carro.",
+          "en": "I would like to rent a car.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_034",
+          "pt": "A viagem foi ótima!",
+          "en": "The trip was great!",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_travel_035",
+          "pt": "Adorei conhecer o Brasil.",
+          "en": "I loved visiting Brazil.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_travel_036",
+          "pt": "Onde eu posso comprar um chip de celular?",
+          "en": "Where can I buy a SIM card?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_037",
+          "pt": "Tem algum restaurante bom por aqui?",
+          "en": "Are there any good restaurants around here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_038",
+          "pt": "Vou querer um suco de laranja, por favor.",
+          "en": "I'll have an orange juice, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_039",
+          "pt": "A gorjeta está incluída no serviço?",
+          "en": "Is the tip included in the service?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_040",
+          "pt": "Meu portão de embarque é o 15.",
+          "en": "My boarding gate is 15.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_041",
+          "pt": "Eu preciso despachar uma mala.",
+          "en": "I need to check one bag.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_travel_042",
+          "pt": "Esta é minha bagagem de mão.",
+          "en": "This is my carry-on luggage.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_travel_043",
+          "pt": "Você pode me dar um desconto?",
+          "en": "Can you give me a discount?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_044",
+          "pt": "Vocês aceitam dinheiro?",
+          "en": "Do you guys take cash?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_045",
+          "pt": "Com licença, tem um banheiro por aqui?",
+          "en": "Excuse me, is there a bathroom around here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_046",
+          "pt": "Estou procurando um presente pra minha família.",
+          "en": "I'm looking for a gift for my family.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_047",
+          "pt": "Que lugar bonito!",
+          "en": "What a beautiful place!",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_travel_048",
+          "pt": "O tempo está maravilhoso hoje.",
+          "en": "The weather is wonderful today.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_travel_049",
+          "pt": "Você tem um mapa da cidade?",
+          "en": "Do you have a city map?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_travel_050",
+          "pt": "Nós vamos ficar por uma semana.",
+          "en": "We are going to stay for a week.",
+          "difficulty": 3
+        }
+      ]
+    },
+    {
+      "id": "family_friends",
+      "label_en": "Family & Friends",
+      "label_pt": "Família e Amigos",
+      "sentences": [
+        {
+          "id": "gemini_family_friends_001",
+          "pt": "Minha mãe se chama Ana.",
+          "en": "My mother's name is Ana.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_family_friends_002",
+          "pt": "Você tem irmãos?",
+          "en": "Do you have siblings?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_003",
+          "pt": "Meu melhor amigo mora perto da minha casa.",
+          "en": "My best friend lives near my house.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_004",
+          "pt": "Vamos fazer um churrasco no domingo?",
+          "en": "Are we going to have a barbecue on Sunday?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_005",
+          "pt": "Como estão seus pais?",
+          "en": "How are your parents?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_006",
+          "pt": "Eu tenho uma irmã mais nova e um irmão mais velho.",
+          "en": "I have a younger sister and an older brother.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_007",
+          "pt": "A gente se conhece desde a escola.",
+          "en": "We've known each other since school.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_008",
+          "pt": "Manda um abraço para sua família.",
+          "en": "Send a hug to your family.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_family_friends_009",
+          "pt": "Meus avós vêm nos visitar no próximo mês.",
+          "en": "My grandparents are coming to visit us next month.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_010",
+          "pt": "Ele é casado e tem dois filhos.",
+          "en": "He is married and has two children.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_011",
+          "pt": "Sinto saudades de conversar com você.",
+          "en": "I miss talking to you.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_family_friends_012",
+          "pt": "Minha família é muito unida.",
+          "en": "My family is very close-knit.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_family_friends_013",
+          "pt": "Que tal a gente ir ao cinema no sábado?",
+          "en": "How about we go to the movies on Saturday?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_014",
+          "pt": "Ela é minha prima por parte de mãe.",
+          "en": "She is my cousin on my mother's side.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_015",
+          "pt": "Meus amigos são como uma segunda família para mim.",
+          "en": "My friends are like a second family to me.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_016",
+          "pt": "O aniversário da minha sobrinha é amanhã.",
+          "en": "My niece's birthday is tomorrow.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_family_friends_017",
+          "pt": "Faz tempo que não vejo meus tios.",
+          "en": "It's been a while since I've seen my aunt and uncle.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_018",
+          "pt": "A gente precisa marcar de se encontrar.",
+          "en": "We need to schedule a get-together.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_019",
+          "pt": "Você se dá bem com seus sogros?",
+          "en": "Do you get along with your in-laws?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_020",
+          "pt": "Meu pai adora pescar nos fins de semana.",
+          "en": "My father loves to go fishing on the weekends.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_021",
+          "pt": "Fui visitar uma amiga que estava doente.",
+          "en": "I went to visit a friend who was sick.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_022",
+          "pt": "Toda a minha família se reúne no Natal.",
+          "en": "My whole family gets together at Christmas.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_023",
+          "pt": "Pode contar comigo para o que der e vier.",
+          "en": "You can count on me for whatever happens.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_024",
+          "pt": "Vou ser padrinho de casamento do meu irmão.",
+          "en": "I'm going to be the best man at my brother's wedding.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_025",
+          "pt": "Minha filha se parece muito comigo.",
+          "en": "My daughter looks a lot like me.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_026",
+          "pt": "E aí, alguma novidade?",
+          "en": "Hey, any news?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_027",
+          "pt": "Estamos planejando uma viagem com amigos.",
+          "en": "We are planning a trip with friends.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_028",
+          "pt": "A festa foi ótima, todo mundo se divertiu.",
+          "en": "The party was great, everyone had fun.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_029",
+          "pt": "Minha avó faz o melhor bolo de chocolate do mundo.",
+          "en": "My grandmother makes the best chocolate cake in the world.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_030",
+          "pt": "Vamos almoçar juntos na semana que vem?",
+          "en": "Shall we have lunch together next week?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_031",
+          "pt": "Ele é amigo de infância do meu marido.",
+          "en": "He is a childhood friend of my husband.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_032",
+          "pt": "Meus pais me apoiam em todas as minhas decisões.",
+          "en": "My parents support me in all my decisions.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_033",
+          "pt": "Estou com saudades da comida da minha mãe.",
+          "en": "I miss my mom's cooking.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_034",
+          "pt": "O que você acha de chamar nossos amigos para jantar?",
+          "en": "What do you think about inviting our friends over for dinner?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_035",
+          "pt": "Meu sobrinho acabou de aprender a andar.",
+          "en": "My nephew just learned how to walk.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_036",
+          "pt": "Ela sempre me dá ótimos conselhos.",
+          "en": "She always gives me great advice.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_family_friends_037",
+          "pt": "A gente ri muito quando estamos juntos.",
+          "en": "We laugh a lot when we're together.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_038",
+          "pt": "Você vai passar o feriado com a sua família?",
+          "en": "Are you going to spend the holiday with your family?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_039",
+          "pt": "Eu considero você parte da família.",
+          "en": "I consider you part of the family.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_040",
+          "pt": "Meu cunhado é muito gente boa.",
+          "en": "My brother-in-law is a really nice guy.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_041",
+          "pt": "Preciso ligar para os meus pais hoje à noite.",
+          "en": "I need to call my parents tonight.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_042",
+          "pt": "Vamos nos encontrar lá na casa da Julia.",
+          "en": "Let's meet over at Julia's house.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_043",
+          "pt": "A amizade de vocês é muito bonita.",
+          "en": "Your friendship is very beautiful.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_family_friends_044",
+          "pt": "Minha irmã está grávida de uma menina.",
+          "en": "My sister is pregnant with a girl.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_045",
+          "pt": "O filho do meu amigo nasceu ontem.",
+          "en": "My friend's son was born yesterday.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_046",
+          "pt": "É sempre bom ter amigos com quem podemos contar.",
+          "en": "It's always good to have friends we can count on.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_047",
+          "pt": "Vamos tirar uma foto de todo mundo junto?",
+          "en": "Should we take a picture of everyone together?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_family_friends_048",
+          "pt": "Minha madrinha mora em outra cidade.",
+          "en": "My godmother lives in another city.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_family_friends_049",
+          "pt": "Ele me apresentou para o seu grupo de amigos.",
+          "en": "He introduced me to his group of friends.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_family_friends_050",
+          "pt": "O almoço de domingo na casa da minha avó é uma tradição.",
+          "en": "Sunday lunch at my grandma's house is a tradition.",
+          "difficulty": 4
+        }
+      ]
+    },
+    {
+      "id": "daily_routine",
+      "label_en": "Daily Routine",
+      "label_pt": "Rotina Diária",
+      "sentences": [
+        {
+          "id": "gemini_daily_routine_001",
+          "pt": "Eu acordo às sete horas todos os dias.",
+          "en": "I wake up at seven o'clock every day.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_002",
+          "pt": "A primeira coisa que eu faço é olhar o celular.",
+          "en": "The first thing I do is look at my phone.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_003",
+          "pt": "Eu preciso levantar e começar o dia.",
+          "en": "I need to get up and start the day.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_004",
+          "pt": "Vou tomar um banho rápido para despertar.",
+          "en": "I'm going to take a quick shower to wake up.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_005",
+          "pt": "Eu escovo os dentes depois do café da manhã.",
+          "en": "I brush my teeth after breakfast.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_006",
+          "pt": "O que você geralmente come no café da manhã?",
+          "en": "What do you usually eat for breakfast?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_007",
+          "pt": "Eu sempre tomo uma xícara de café preto.",
+          "en": "I always have a cup of black coffee.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_008",
+          "pt": "Depois eu me visto para ir trabalhar.",
+          "en": "Then I get dressed to go to work.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_009",
+          "pt": "Tenho que sair de casa em dez minutos.",
+          "en": "I have to leave the house in ten minutes.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_010",
+          "pt": "Eu pego o ônibus para o trabalho.",
+          "en": "I take the bus to work.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_011",
+          "pt": "Eu levo meus filhos para a escola de manhã.",
+          "en": "I take my kids to school in the morning.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_012",
+          "pt": "O trânsito hoje está terrível.",
+          "en": "The traffic today is terrible.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_013",
+          "pt": "Eu começo a trabalhar às nove da manhã.",
+          "en": "I start working at nine in the morning.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_014",
+          "pt": "A primeira coisa que faço no escritório é ler meus e-mails.",
+          "en": "The first thing I do at the office is read my emails.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_015",
+          "pt": "Eu tenho muitas reuniões hoje.",
+          "en": "I have a lot of meetings today.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_016",
+          "pt": "Vou fazer uma pausa para o café.",
+          "en": "I'm going to take a coffee break.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_017",
+          "pt": "Eu costumo almoçar ao meio-dia.",
+          "en": "I usually have lunch at noon.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_018",
+          "pt": "Eu trago marmita de casa para o almoço.",
+          "en": "I bring a packed lunch from home for lunch.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_019",
+          "pt": "Meu dia de trabalho é sempre muito corrido.",
+          "en": "My workday is always very busy.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_020",
+          "pt": "Eu saio do trabalho às seis da tarde.",
+          "en": "I leave work at six in the evening.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_021",
+          "pt": "Hoje eu vou direto para a academia depois do expediente.",
+          "en": "Today I'm going straight to the gym after work.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_022",
+          "pt": "Estou voltando para casa agora.",
+          "en": "I'm heading home now.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_023",
+          "pt": "Eu chego em casa cansado todos os dias.",
+          "en": "I get home tired every day.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_024",
+          "pt": "Eu tiro os sapatos assim que chego em casa.",
+          "en": "I take off my shoes as soon as I get home.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_025",
+          "pt": "O que vamos fazer para o jantar?",
+          "en": "What are we going to make for dinner?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_026",
+          "pt": "Eu preciso cozinhar o jantar.",
+          "en": "I need to cook dinner.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_027",
+          "pt": "Nós sempre jantamos em família.",
+          "en": "We always have dinner as a family.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_028",
+          "pt": "Depois de jantar, eu lavo a louça.",
+          "en": "After dinner, I do the dishes.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_029",
+          "pt": "Eu gosto de assistir a um seriado na TV à noite.",
+          "en": "I like to watch a TV series at night.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_030",
+          "pt": "Eu leio um pouco antes de dormir.",
+          "en": "I read a little before sleeping.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_031",
+          "pt": "Vou dar uma olhada nas redes sociais.",
+          "en": "I'm going to check social media.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_032",
+          "pt": "Eu ajudo meu filho com a lição de casa.",
+          "en": "I help my son with his homework.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_033",
+          "pt": "Eu converso com minha esposa sobre como foi o dia.",
+          "en": "I talk to my wife about how the day was.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_034",
+          "pt": "Preciso colocar a roupa para lavar.",
+          "en": "I need to put the clothes in to wash.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_035",
+          "pt": "Eu levo o cachorro para passear à noite.",
+          "en": "I take the dog for a walk at night.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_036",
+          "pt": "Estou com muito sono, vou para a cama.",
+          "en": "I'm very sleepy, I'm going to bed.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_037",
+          "pt": "Já está na minha hora de dormir.",
+          "en": "It's my bedtime.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_038",
+          "pt": "Eu sempre escovo os dentes antes de deitar.",
+          "en": "I always brush my teeth before lying down.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_039",
+          "pt": "Não se esqueça de colocar o despertador para amanhã.",
+          "en": "Don't forget to set the alarm for tomorrow.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_040",
+          "pt": "Eu coloco meu celular para carregar.",
+          "en": "I put my phone to charge.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_041",
+          "pt": "Eu costumo dormir por volta das onze da noite.",
+          "en": "I usually go to sleep around eleven at night.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_042",
+          "pt": "Boa noite e bons sonhos.",
+          "en": "Good night and sweet dreams.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_043",
+          "pt": "Nos fins de semana, eu gosto de acordar mais tarde.",
+          "en": "On weekends, I like to wake up later.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_044",
+          "pt": "Eu preciso ir ao supermercado depois do trabalho.",
+          "en": "I need to go to the supermarket after work.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_045",
+          "pt": "Aos sábados, eu faço a limpeza da casa.",
+          "en": "On Saturdays, I do the house cleaning.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_046",
+          "pt": "Eu preparo minhas roupas para o dia seguinte.",
+          "en": "I prepare my clothes for the next day.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_047",
+          "pt": "Eu tento beber bastante água durante o dia.",
+          "en": "I try to drink a lot of water during the day.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_daily_routine_048",
+          "pt": "Eu faço uma pequena caminhada pela manhã.",
+          "en": "I take a short walk in the morning.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_daily_routine_049",
+          "pt": "Eu ouço música enquanto trabalho.",
+          "en": "I listen to music while I work.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_daily_routine_050",
+          "pt": "Eu organizo minha agenda para a semana.",
+          "en": "I organize my schedule for the week.",
+          "difficulty": 3
+        }
+      ]
+    },
+    {
+      "id": "feelings",
+      "label_en": "Feelings & Emotions",
+      "label_pt": "Sentimentos e Emoções",
+      "sentences": [
+        {
+          "id": "gemini_feelings_001",
+          "pt": "Estou muito feliz hoje.",
+          "en": "I'm very happy today.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_002",
+          "pt": "Que alegria te ver!",
+          "en": "What a joy to see you!",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_003",
+          "pt": "Ele ficou muito animado com a notícia.",
+          "en": "He got very excited about the news.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_004",
+          "pt": "Eu me sinto ótimo.",
+          "en": "I feel great.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_005",
+          "pt": "A gente se divertiu muito ontem.",
+          "en": "We had a lot of fun yesterday.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_006",
+          "pt": "Estou de bom humor.",
+          "en": "I'm in a good mood.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_007",
+          "pt": "Isso me deixa muito contente.",
+          "en": "This makes me very pleased.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_008",
+          "pt": "Ela está radiante de felicidade.",
+          "en": "She is beaming with happiness.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_009",
+          "pt": "Sinto-me um pouco triste.",
+          "en": "I feel a little sad.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_010",
+          "pt": "Ele ficou chateado com você.",
+          "en": "He got upset with you.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_011",
+          "pt": "Que pena que você não pode vir.",
+          "en": "What a shame you couldn't come.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_012",
+          "pt": "Fiquei desapontado com o filme.",
+          "en": "I was disappointed with the movie.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_013",
+          "pt": "Sinto muito pelo que aconteceu.",
+          "en": "I'm very sorry for what happened.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_014",
+          "pt": "Ela está se sentindo para baixo.",
+          "en": "She is feeling down.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_015",
+          "pt": "Estou com o coração partido.",
+          "en": "I'm heartbroken.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_016",
+          "pt": "Não fique assim, vai passar.",
+          "en": "Don't be like that, it will pass.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_017",
+          "pt": "Estou com muita raiva.",
+          "en": "I'm very angry.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_018",
+          "pt": "Isso me irrita profundamente.",
+          "en": "This deeply irritates me.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_019",
+          "pt": "Ele perdeu a paciência.",
+          "en": "He lost his patience.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_020",
+          "pt": "Não acredito que você fez isso, que raiva!",
+          "en": "I can't believe you did that, I'm so angry!",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_feelings_021",
+          "pt": "Ela está furiosa com a situação.",
+          "en": "She is furious with the situation.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_022",
+          "pt": "Que saco! Perdi o ônibus.",
+          "en": "How annoying! I missed the bus.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_023",
+          "pt": "Estou frustrado com meu progresso.",
+          "en": "I'm frustrated with my progress.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_024",
+          "pt": "Estou com medo.",
+          "en": "I'm scared.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_025",
+          "pt": "Ela tem pavor de altura.",
+          "en": "She has a dread of heights.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_026",
+          "pt": "Fiquei assustado com o barulho.",
+          "en": "I got scared by the noise.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_027",
+          "pt": "Estou preocupado com você.",
+          "en": "I'm worried about you.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_028",
+          "pt": "Eu fico ansioso antes de apresentações.",
+          "en": "I get anxious before presentations.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_029",
+          "pt": "Isso me dá um frio na barriga.",
+          "en": "This gives me butterflies in my stomach.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_030",
+          "pt": "Não se preocupe, vai dar tudo certo.",
+          "en": "Don't worry, everything will be alright.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_031",
+          "pt": "Que surpresa boa!",
+          "en": "What a nice surprise!",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_032",
+          "pt": "Fiquei chocado com a notícia.",
+          "en": "I was shocked by the news.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_033",
+          "pt": "Nossa, eu não esperava por isso.",
+          "en": "Wow, I wasn't expecting that.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_034",
+          "pt": "Estou impressionada com seu talento.",
+          "en": "I'm impressed with your talent.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_035",
+          "pt": "Isso é incrível!",
+          "en": "This is incredible!",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_036",
+          "pt": "Eu te amo.",
+          "en": "I love you.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_037",
+          "pt": "Estou com saudade da minha família.",
+          "en": "I miss my family.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_038",
+          "pt": "Sinto muito a sua falta.",
+          "en": "I miss you a lot.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_039",
+          "pt": "Ela está apaixonada.",
+          "en": "She is in love.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_040",
+          "pt": "Tenho muito carinho por ele.",
+          "en": "I'm very fond of him.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_041",
+          "pt": "Que alívio!",
+          "en": "What a relief!",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_042",
+          "pt": "Sinto-me mais calmo agora.",
+          "en": "I feel calmer now.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_043",
+          "pt": "Fiquei com muita vergonha.",
+          "en": "I was very embarrassed.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_044",
+          "pt": "Estou confuso com as instruções.",
+          "en": "I'm confused by the instructions.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_045",
+          "pt": "Estou orgulhoso do que você fez.",
+          "en": "I'm proud of what you did.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_046",
+          "pt": "Ele está com ciúmes.",
+          "en": "He is jealous.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_feelings_047",
+          "pt": "Sinto-me culpada por não ter ligado.",
+          "en": "I feel guilty for not having called.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_048",
+          "pt": "Estou exausto e sem paciência.",
+          "en": "I'm exhausted and out of patience.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_feelings_049",
+          "pt": "Eu me senti ofendido com o comentário.",
+          "en": "I felt offended by the comment.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_feelings_050",
+          "pt": "Hoje estou me sentindo otimista.",
+          "en": "Today I'm feeling optimistic.",
+          "difficulty": 2
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "label_en": "Questions & Asking for Help",
+      "label_pt": "Perguntas e Pedir Ajuda",
+      "sentences": [
+        {
+          "id": "gemini_questions_001",
+          "pt": "O que é isso?",
+          "en": "What is this?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_002",
+          "pt": "Você pode me ajudar?",
+          "en": "Can you help me?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_003",
+          "pt": "Onde fica o banheiro, por favor?",
+          "en": "Where is the bathroom, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_004",
+          "pt": "Quanto custa?",
+          "en": "How much does it cost?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_005",
+          "pt": "Que horas são?",
+          "en": "What time is it?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_006",
+          "pt": "Desculpe, eu não entendi.",
+          "en": "Sorry, I didn't understand.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_007",
+          "pt": "Pode repetir, por favor?",
+          "en": "Can you repeat, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_008",
+          "pt": "Pode falar mais devagar?",
+          "en": "Can you speak more slowly?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_009",
+          "pt": "Como eu chego lá?",
+          "en": "How do I get there?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_010",
+          "pt": "Preciso de ajuda com isto.",
+          "en": "I need help with this.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_questions_011",
+          "pt": "Com licença, você tem um minuto?",
+          "en": "Excuse me, do you have a minute?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_012",
+          "pt": "O que significa essa palavra?",
+          "en": "What does this word mean?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_013",
+          "pt": "Você sabe onde eu posso encontrar um táxi?",
+          "en": "Do you know where I can find a taxi?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_questions_014",
+          "pt": "Me dá uma ajuda aqui, por favor?",
+          "en": "Give me a hand here, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_015",
+          "pt": "Qual é a senha do Wi-Fi?",
+          "en": "What is the Wi-Fi password?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_016",
+          "pt": "Poderia me informar onde é a saída?",
+          "en": "Could you tell me where the exit is?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_017",
+          "pt": "Como assim?",
+          "en": "What do you mean?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_018",
+          "pt": "Eu estou perdido.",
+          "en": "I'm lost.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_questions_019",
+          "pt": "Você se importaria de me mostrar o caminho?",
+          "en": "Would you mind showing me the way?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_020",
+          "pt": "Posso te fazer uma pergunta?",
+          "en": "Can I ask you a question?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_021",
+          "pt": "Alguém pode me dar uma mãozinha?",
+          "en": "Can someone give me a little hand?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_022",
+          "pt": "Tem algum problema se eu usar isto?",
+          "en": "Is there any problem if I use this?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_023",
+          "pt": "Será que você poderia me ajudar?",
+          "en": "I wonder if you could help me?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_024",
+          "pt": "Eu não sei como fazer isso.",
+          "en": "I don't know how to do this.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_025",
+          "pt": "Qual você recomenda?",
+          "en": "Which one do you recommend?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_026",
+          "pt": "A que horas o museu fecha?",
+          "en": "What time does the museum close?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_027",
+          "pt": "Poderia me dar um exemplo?",
+          "en": "Could you give me an example?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_028",
+          "pt": "Desculpe o incômodo, mas preciso de ajuda.",
+          "en": "Sorry for the trouble, but I need help.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_029",
+          "pt": "Você entendeu o que eu disse?",
+          "en": "Did you understand what I said?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_030",
+          "pt": "Ficou alguma dúvida?",
+          "en": "Are there any questions left?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_031",
+          "pt": "Pode me trazer a conta, por favor?",
+          "en": "Can you bring me the bill, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_032",
+          "pt": "Tem alguém aqui que fala inglês?",
+          "en": "Is there anyone here who speaks English?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_033",
+          "pt": "Como se escreve o seu nome?",
+          "en": "How do you spell your name?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_034",
+          "pt": "Eu não estou conseguindo conectar.",
+          "en": "I'm not managing to connect.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_questions_035",
+          "pt": "Onde é o ponto de ônibus mais próximo?",
+          "en": "Where is the nearest bus stop?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_036",
+          "pt": "Você aceita cartão?",
+          "en": "Do you take card?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_037",
+          "pt": "Isto está certo?",
+          "en": "Is this correct?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_038",
+          "pt": "O que você acha que eu devo fazer?",
+          "en": "What do you think I should do?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_039",
+          "pt": "Pode me dar uma informação, por favor?",
+          "en": "Can you give me some information, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_040",
+          "pt": "Eu preciso de um favor.",
+          "en": "I need a favor.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_questions_041",
+          "pt": "Por que isso não está funcionando?",
+          "en": "Why isn't this working?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_042",
+          "pt": "Você pode me explicar de novo?",
+          "en": "Can you explain it to me again?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_043",
+          "pt": "Para onde vai este trem?",
+          "en": "Where does this train go?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_044",
+          "pt": "Poderia me emprestar seu carregador?",
+          "en": "Could you lend me your charger?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_045",
+          "pt": "O que aconteceu aqui?",
+          "en": "What happened here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_046",
+          "pt": "Tem certeza disso?",
+          "en": "Are you sure about that?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_047",
+          "pt": "Teria como você verificar para mim?",
+          "en": "Would there be a way for you to check for me?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_questions_048",
+          "pt": "Onde eu posso comprar um bilhete?",
+          "en": "Where can I buy a ticket?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_049",
+          "pt": "Me desculpe, eu não ouvi direito.",
+          "en": "I'm sorry, I didn't hear you correctly.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_questions_050",
+          "pt": "Você sabe como consertar isso?",
+          "en": "Do you know how to fix this?",
+          "difficulty": 3
+        }
+      ]
+    },
+    {
+      "id": "shopping",
+      "label_en": "Shopping & Money",
+      "label_pt": "Compras e Dinheiro",
+      "sentences": [
+        {
+          "id": "gemini_shopping_001",
+          "pt": "Quanto custa?",
+          "en": "How much does it cost?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_002",
+          "pt": "Você pode me ajudar, por favor?",
+          "en": "Can you help me, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_003",
+          "pt": "Estou só olhando, obrigado.",
+          "en": "I'm just looking, thank you.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_004",
+          "pt": "Onde fica o caixa?",
+          "en": "Where is the cashier?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_005",
+          "pt": "Vocês aceitam cartão de crédito?",
+          "en": "Do you accept credit cards?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_006",
+          "pt": "Vou pagar em dinheiro.",
+          "en": "I'll pay in cash.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_shopping_007",
+          "pt": "Posso provar esta roupa?",
+          "en": "Can I try this piece of clothing on?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_008",
+          "pt": "Tem um tamanho maior?",
+          "en": "Do you have a larger size?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_009",
+          "pt": "Qual é o preço disso?",
+          "en": "What is the price of this?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_010",
+          "pt": "Tem algum desconto?",
+          "en": "Is there any discount?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_011",
+          "pt": "Isso é para presente.",
+          "en": "This is for a gift.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_shopping_012",
+          "pt": "Você pode embrulhar?",
+          "en": "Can you gift wrap it?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_013",
+          "pt": "Onde tem um caixa eletrônico por aqui?",
+          "en": "Where is an ATM around here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_014",
+          "pt": "Preciso sacar dinheiro.",
+          "en": "I need to withdraw money.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_shopping_015",
+          "pt": "A conta, por favor.",
+          "en": "The bill, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_016",
+          "pt": "Vou pagar no débito.",
+          "en": "I'll pay with a debit card.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_shopping_017",
+          "pt": "Pode parcelar a compra?",
+          "en": "Can I pay for the purchase in installments?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_018",
+          "pt": "Em quantas vezes sem juros?",
+          "en": "In how many interest-free installments?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_019",
+          "pt": "Você tem troco para cem reais?",
+          "en": "Do you have change for a hundred reais?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_020",
+          "pt": "CPF na nota?",
+          "en": "Do you want to add your ID number to the receipt?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_021",
+          "pt": "Eu gostaria de trocar este produto.",
+          "en": "I would like to exchange this product.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_022",
+          "pt": "Qual é a política de devolução?",
+          "en": "What is the return policy?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_023",
+          "pt": "Onde ficam os provadores?",
+          "en": "Where are the fitting rooms?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_024",
+          "pt": "Vou levar este.",
+          "en": "I'll take this one.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_shopping_025",
+          "pt": "Está muito caro.",
+          "en": "It's too expensive.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_shopping_026",
+          "pt": "A loja está em promoção.",
+          "en": "The store is having a sale.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_shopping_027",
+          "pt": "Você tem isso em outra cor?",
+          "en": "Do you have this in another color?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_028",
+          "pt": "Precisa de sacola?",
+          "en": "Do you need a bag?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_029",
+          "pt": "A senha, por favor.",
+          "en": "The PIN, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_030",
+          "pt": "Pagamento por aproximação.",
+          "en": "Contactless payment.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_shopping_031",
+          "pt": "A máquina de cartão não está funcionando.",
+          "en": "The card machine isn't working.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_shopping_032",
+          "pt": "Pode me dar a nota fiscal?",
+          "en": "Can you give me the receipt?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_033",
+          "pt": "Eu perdi o recibo.",
+          "en": "I lost the receipt.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_shopping_034",
+          "pt": "O produto veio com defeito.",
+          "en": "The product came with a defect.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_shopping_035",
+          "pt": "Onde eu encontro a seção de sapatos?",
+          "en": "Where can I find the shoe section?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_036",
+          "pt": "Este preço é negociável?",
+          "en": "Is this price negotiable?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_037",
+          "pt": "Tem desconto para pagamento à vista?",
+          "en": "Is there a discount for paying upfront in cash?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_038",
+          "pt": "Só isso, obrigado.",
+          "en": "That's all, thank you.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_039",
+          "pt": "Quanto eu devo?",
+          "en": "How much do I owe?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_040",
+          "pt": "Eu gostaria de fazer uma devolução.",
+          "en": "I'd like to make a return.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_shopping_041",
+          "pt": "Onde posso pagar?",
+          "en": "Where can I pay?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_042",
+          "pt": "Essa calça está na liquidação.",
+          "en": "These pants are on clearance.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_shopping_043",
+          "pt": "Aceita Pix?",
+          "en": "Do you accept Pix?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_044",
+          "pt": "A sua via, por favor.",
+          "en": "Your copy, please.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_045",
+          "pt": "Me vê duzentos gramas de queijo.",
+          "en": "Give me two hundred grams of cheese.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_046",
+          "pt": "O valor total deu oitenta reais.",
+          "en": "The total amount came to eighty reais.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_047",
+          "pt": "Posso experimentar este tênis?",
+          "en": "Can I try on this sneaker?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_048",
+          "pt": "Qual o seu número?",
+          "en": "What's your size?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_shopping_049",
+          "pt": "Eu calço quarenta.",
+          "en": "I wear size forty.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_shopping_050",
+          "pt": "A que horas a loja fecha?",
+          "en": "What time does the store close?",
+          "difficulty": 3
+        }
+      ]
+    },
+    {
+      "id": "directions",
+      "label_en": "Directions & Transport",
+      "label_pt": "Direções e Transporte",
+      "sentences": [
+        {
+          "id": "gemini_directions_001",
+          "pt": "Com licença, onde fica a estação de metrô mais próxima?",
+          "en": "Excuse me, where is the nearest subway station?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_directions_002",
+          "pt": "Como eu chego no museu, por favor?",
+          "en": "How do I get to the museum, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_003",
+          "pt": "Você pode me ajudar? Estou perdido.",
+          "en": "Can you help me? I'm lost.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_004",
+          "pt": "Onde eu pego o ônibus para Copacabana?",
+          "en": "Where do I catch the bus to Copacabana?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_005",
+          "pt": "Esse ônibus vai para o centro?",
+          "en": "Does this bus go downtown?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_006",
+          "pt": "Qual é o caminho para o aeroporto?",
+          "en": "What is the way to the airport?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_007",
+          "pt": "É muito longe daqui?",
+          "en": "Is it very far from here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_008",
+          "pt": "Dá pra ir a pé?",
+          "en": "Is it possible to go on foot?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_009",
+          "pt": "Poderia me mostrar no mapa?",
+          "en": "Could you show me on the map?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_010",
+          "pt": "Estou procurando este endereço.",
+          "en": "I'm looking for this address.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_directions_011",
+          "pt": "Siga reto por dois quarteirões.",
+          "en": "Go straight for two blocks.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_directions_012",
+          "pt": "Vire à direita na próxima esquina.",
+          "en": "Turn right at the next corner.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_directions_013",
+          "pt": "Vire à esquerda no semáforo.",
+          "en": "Turn left at the traffic light.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_014",
+          "pt": "Atravesse a rua na faixa de pedestres.",
+          "en": "Cross the street at the crosswalk.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_015",
+          "pt": "Fica logo ali na esquina.",
+          "en": "It's right there on the corner.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_directions_016",
+          "pt": "É do outro lado da avenida.",
+          "en": "It's on the other side of the avenue.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_017",
+          "pt": "Você vai ver um prédio grande à sua direita.",
+          "en": "You will see a big building on your right.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_directions_018",
+          "pt": "Passe o banco e continue reto.",
+          "en": "Go past the bank and keep going straight.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_019",
+          "pt": "É a terceira rua à esquerda.",
+          "en": "It's the third street on the left.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_020",
+          "pt": "Não tem erro.",
+          "en": "You can't miss it.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_directions_021",
+          "pt": "Qual é a próxima parada?",
+          "en": "What is the next stop?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_022",
+          "pt": "Eu preciso descer no próximo ponto.",
+          "en": "I need to get off at the next stop.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_023",
+          "pt": "Onde eu posso comprar um bilhete de metrô?",
+          "en": "Where can I buy a subway ticket?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_024",
+          "pt": "Este trem para na estação Central?",
+          "en": "Does this train stop at Central station?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_025",
+          "pt": "Quanto custa a passagem de ônibus?",
+          "en": "How much is the bus fare?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_026",
+          "pt": "Qual linha de metrô eu pego pra ir ao Maracanã?",
+          "en": "Which subway line do I take to go to Maracanã?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_directions_027",
+          "pt": "O metrô já fechou?",
+          "en": "Has the subway already closed?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_028",
+          "pt": "De quanto em quanto tempo o ônibus passa?",
+          "en": "How often does the bus run?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_029",
+          "pt": "Preciso fazer baldeação?",
+          "en": "Do I need to transfer?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_030",
+          "pt": "Onde fica o ponto de ônibus mais perto?",
+          "en": "Where is the nearest bus stop?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_031",
+          "pt": "Pode me levar para este endereço, por favor?",
+          "en": "Can you take me to this address, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_032",
+          "pt": "Quanto fica a corrida até o hotel?",
+          "en": "How much is the fare to the hotel?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_033",
+          "pt": "Você aceita cartão de crédito?",
+          "en": "Do you accept credit card?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_034",
+          "pt": "Pode chamar um Uber pra mim, por favor?",
+          "en": "Can you call an Uber for me, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_035",
+          "pt": "Onde é o ponto de táxi?",
+          "en": "Where is the taxi stand?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_036",
+          "pt": "Pode parar aqui, por favor.",
+          "en": "Can you stop here, please?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_037",
+          "pt": "Eu pedi um carro pelo aplicativo.",
+          "en": "I ordered a car through the app.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_038",
+          "pt": "Quanto tempo demora pra chegar?",
+          "en": "How long does it take to get there?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_039",
+          "pt": "O trânsito tá muito ruim?",
+          "en": "Is the traffic very bad?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_040",
+          "pt": "Onde tem um posto de gasolina por aqui?",
+          "en": "Where is there a gas station around here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_041",
+          "pt": "Preciso encher o tanque.",
+          "en": "I need to fill up the tank.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_042",
+          "pt": "Onde eu posso estacionar o carro?",
+          "en": "Where can I park the car?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_043",
+          "pt": "Tem algum estacionamento por perto?",
+          "en": "Is there any parking lot nearby?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_044",
+          "pt": "Qual é o limite de velocidade nesta rua?",
+          "en": "What is the speed limit on this street?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_045",
+          "pt": "A gente tá indo na direção certa?",
+          "en": "Are we going in the right direction?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_046",
+          "pt": "Quanto tempo leva para chegar lá de carro?",
+          "en": "How long does it take to get there by car?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_directions_047",
+          "pt": "Fica a uns dez minutos a pé.",
+          "en": "It's about a ten-minute walk.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_directions_048",
+          "pt": "O aeroporto fica longe do centro da cidade?",
+          "en": "Is the airport far from the city center?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_049",
+          "pt": "A rodoviária é perto daqui?",
+          "en": "Is the bus station near here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_directions_050",
+          "pt": "Por favor, me avise quando for a minha parada.",
+          "en": "Please, let me know when it's my stop.",
+          "difficulty": 4
+        }
+      ]
+    },
+    {
+      "id": "work_study",
+      "label_en": "Work & Study",
+      "label_pt": "Trabalho e Estudo",
+      "sentences": [
+        {
+          "id": "gemini_work_study_001",
+          "pt": "Preciso responder uns e-mails agora.",
+          "en": "I need to answer some emails now.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_work_study_002",
+          "pt": "Tenho uma reunião importante às dez horas.",
+          "en": "I have an important meeting at ten o'clock.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_003",
+          "pt": "Estou trabalhando em um novo projeto.",
+          "en": "I'm working on a new project.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_work_study_004",
+          "pt": "Qual é o prazo para entregar o relatório?",
+          "en": "What is the deadline to turn in the report?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_005",
+          "pt": "Hoje o dia no trabalho foi muito corrido.",
+          "en": "Today was a very busy day at work.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_006",
+          "pt": "Vou tirar uma pausa para o café.",
+          "en": "I'm going to take a coffee break.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_007",
+          "pt": "Você pode me ajudar com esta tarefa?",
+          "en": "Can you help me with this task?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_008",
+          "pt": "Trabalho em home office a maior parte da semana.",
+          "en": "I work from home most of the week.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_009",
+          "pt": "Estou procurando um novo emprego.",
+          "en": "I'm looking for a new job.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_work_study_010",
+          "pt": "Mandei meu currículo para aquela vaga.",
+          "en": "I sent my resume for that position.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_011",
+          "pt": "Tenho uma entrevista de emprego amanhã de manhã.",
+          "en": "I have a job interview tomorrow morning.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_012",
+          "pt": "Meu chefe é bem exigente.",
+          "en": "My boss is very demanding.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_work_study_013",
+          "pt": "Vamos almoçar juntos hoje?",
+          "en": "Shall we have lunch together today?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_014",
+          "pt": "A que horas você sai do trabalho?",
+          "en": "What time do you get off work?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_015",
+          "pt": "A impressora quebrou de novo.",
+          "en": "The printer broke again.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_016",
+          "pt": "Preciso terminar isso antes de ir embora.",
+          "en": "I need to finish this before I leave.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_017",
+          "pt": "A reunião foi adiada para a próxima semana.",
+          "en": "The meeting was postponed to next week.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_018",
+          "pt": "Amanhã tenho prova de história.",
+          "en": "I have a history test tomorrow.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_work_study_019",
+          "pt": "Preciso estudar para o exame final.",
+          "en": "I need to study for the final exam.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_020",
+          "pt": "Você fez a lição de casa?",
+          "en": "Did you do the homework?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_021",
+          "pt": "O professor explicou a matéria muito bem.",
+          "en": "The teacher explained the subject matter very well.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_022",
+          "pt": "Vou estudar na biblioteca com uns amigos.",
+          "en": "I'm going to study at the library with some friends.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_023",
+          "pt": "Qual é a sua matéria preferida?",
+          "en": "What is your favorite subject?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_024",
+          "pt": "Eu faço faculdade de Administração.",
+          "en": "I'm studying Business Administration in college.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_work_study_025",
+          "pt": "Em que semestre da faculdade você está?",
+          "en": "What semester of college are you in?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_026",
+          "pt": "Faltei na aula de ontem porque estava doente.",
+          "en": "I missed yesterday's class because I was sick.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_027",
+          "pt": "Tenho que entregar meu TCC no mês que vem.",
+          "en": "I have to submit my final paper next month.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_028",
+          "pt": "As aulas voltam em agosto.",
+          "en": "Classes start back in August.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_work_study_029",
+          "pt": "Estou no último ano do ensino médio.",
+          "en": "I'm in the last year of high school.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_030",
+          "pt": "As notas da prova já saíram?",
+          "en": "Are the test grades out yet?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_031",
+          "pt": "É difícil conciliar o trabalho com os estudos.",
+          "en": "It's difficult to balance work with studies.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_032",
+          "pt": "Estou fazendo um curso online de marketing digital.",
+          "en": "I'm taking an online course in digital marketing.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_033",
+          "pt": "Consegui um estágio na minha área.",
+          "en": "I got an internship in my field.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_034",
+          "pt": "Preciso aprender a usar esse novo software.",
+          "en": "I need to learn how to use this new software.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_035",
+          "pt": "Tenho que fazer uma apresentação para a equipe.",
+          "en": "I have to give a presentation to the team.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_036",
+          "pt": "Meu computador travou no meio do trabalho.",
+          "en": "My computer froze in the middle of my work.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_037",
+          "pt": "O trânsito para o trabalho estava horrível hoje.",
+          "en": "The traffic to work was horrible today.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_038",
+          "pt": "Você trabalha ou estuda?",
+          "en": "Do you work or study?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_039",
+          "pt": "Preciso focar mais nos meus estudos.",
+          "en": "I need to focus more on my studies.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_040",
+          "pt": "O prazo do projeto está muito apertado.",
+          "en": "The project's deadline is very tight.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_041",
+          "pt": "Vou me formar no final do ano.",
+          "en": "I'm going to graduate at the end of the year.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_042",
+          "pt": "Que horas começa a sua aula?",
+          "en": "What time does your class start?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_043",
+          "pt": "Vou tirar uns dias de folga na semana que vem.",
+          "en": "I'm going to take a few days off next week.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_044",
+          "pt": "Preciso organizar minha agenda para não me perder.",
+          "en": "I need to organize my schedule so I don't get lost.",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_work_study_045",
+          "pt": "Estou de férias da faculdade este mês.",
+          "en": "I'm on break from college this month.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_046",
+          "pt": "O ambiente de trabalho aqui é muito bom.",
+          "en": "The work environment here is very good.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_047",
+          "pt": "Onde você trabalha?",
+          "en": "Where do you work?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_048",
+          "pt": "Passei na prova com uma nota boa.",
+          "en": "I passed the test with a good grade.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_049",
+          "pt": "A carga horária é de oito horas por dia.",
+          "en": "The workload is eight hours per day.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_work_study_050",
+          "pt": "Temos que trabalhar em equipe para terminar a tempo.",
+          "en": "We have to work as a team to finish on time.",
+          "difficulty": 4
+        }
+      ]
+    },
+    {
+      "id": "small_talk",
+      "label_en": "Small Talk & Social",
+      "label_pt": "Conversa e Social",
+      "sentences": [
+        {
+          "id": "gemini_small_talk_001",
+          "pt": "Oi, tudo bem?",
+          "en": "Hi, how are you?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_002",
+          "pt": "E aí, beleza?",
+          "en": "Hey, what's up?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_003",
+          "pt": "Como você tá?",
+          "en": "How are you doing?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_004",
+          "pt": "Prazer em te conhecer.",
+          "en": "Nice to meet you.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_small_talk_005",
+          "pt": "Faz tempo que a gente não se vê, hein?",
+          "en": "It's been a while since we've seen each other, huh?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_small_talk_006",
+          "pt": "Como foi o seu dia?",
+          "en": "How was your day?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_007",
+          "pt": "Alguma novidade?",
+          "en": "Any news?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_008",
+          "pt": "A semana tá muito corrida?",
+          "en": "Is the week very busy?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_009",
+          "pt": "Tudo tranquilo por aí?",
+          "en": "Is everything cool over there?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_010",
+          "pt": "Que calor, né?",
+          "en": "It's so hot, isn't it?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_011",
+          "pt": "Nossa, tá um frio hoje!",
+          "en": "Wow, it's so cold today!",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_012",
+          "pt": "Parece que vai chover mais tarde.",
+          "en": "It looks like it's going to rain later.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_013",
+          "pt": "O tempo melhorou bastante.",
+          "en": "The weather has improved a lot.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_small_talk_014",
+          "pt": "Você é daqui?",
+          "en": "Are you from around here?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_015",
+          "pt": "Eu moro aqui perto.",
+          "en": "I live nearby.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_small_talk_016",
+          "pt": "Você trabalha com o quê?",
+          "en": "What do you do for a living?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_017",
+          "pt": "Como estão as coisas no trabalho?",
+          "en": "How are things at work?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_018",
+          "pt": "Você gosta do que faz?",
+          "en": "Do you like what you do?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_019",
+          "pt": "O que você vai fazer no fim de semana?",
+          "en": "What are you going to do on the weekend?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_small_talk_020",
+          "pt": "Tem algum plano pra hoje à noite?",
+          "en": "Do you have any plans for tonight?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_021",
+          "pt": "Como foi seu feriado?",
+          "en": "How was your holiday?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_022",
+          "pt": "Vamos marcar de tomar um café qualquer dia.",
+          "en": "Let's plan to have a coffee sometime.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_023",
+          "pt": "O que você gosta de fazer no seu tempo livre?",
+          "en": "What do you like to do in your free time?",
+          "difficulty": 4
+        },
+        {
+          "id": "gemini_small_talk_024",
+          "pt": "Você já assistiu aquela série nova?",
+          "en": "Have you watched that new series?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_025",
+          "pt": "Pode me recomendar um bom filme?",
+          "en": "Can you recommend a good movie?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_026",
+          "pt": "Que tipo de música você curte?",
+          "en": "What kind of music are you into?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_027",
+          "pt": "Você torce pra que time?",
+          "en": "Which team do you root for?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_028",
+          "pt": "A comida aqui é muito boa.",
+          "en": "The food here is very good.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_small_talk_029",
+          "pt": "Você já veio aqui antes?",
+          "en": "Have you been here before?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_030",
+          "pt": "Quer uma bebida?",
+          "en": "Do you want a drink?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_031",
+          "pt": "Esse lugar é bem legal.",
+          "en": "This place is really nice.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_small_talk_032",
+          "pt": "O trânsito estava horrível hoje.",
+          "en": "The traffic was horrible today.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_small_talk_033",
+          "pt": "Demorei um pouco pra chegar.",
+          "en": "It took me a while to get here.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_034",
+          "pt": "E a sua família, tudo bem?",
+          "en": "And your family, is everyone okay?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_035",
+          "pt": "Manda um abraço pra todo mundo.",
+          "en": "Send a hug to everyone.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_small_talk_036",
+          "pt": "Gostei muito da sua camisa.",
+          "en": "I really liked your shirt.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_small_talk_037",
+          "pt": "Que legal isso que você falou.",
+          "en": "That's really cool, what you said.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_038",
+          "pt": "Sério? Não sabia disso.",
+          "en": "Really? I didn't know that.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_039",
+          "pt": "Pois é, né?",
+          "en": "Yeah, right?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_040",
+          "pt": "Com certeza.",
+          "en": "For sure.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_small_talk_041",
+          "pt": "Entendi.",
+          "en": "I see.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_small_talk_042",
+          "pt": "Falando nisso, você viu o jogo ontem?",
+          "en": "Speaking of which, did you see the game yesterday?",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_043",
+          "pt": "Bom, eu preciso ir agora.",
+          "en": "Well, I need to go now.",
+          "difficulty": 3
+        },
+        {
+          "id": "gemini_small_talk_044",
+          "pt": "Foi bom te ver!",
+          "en": "It was good to see you!",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_small_talk_045",
+          "pt": "A gente se fala.",
+          "en": "We'll talk later.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_small_talk_046",
+          "pt": "Até mais!",
+          "en": "See you later!",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_small_talk_047",
+          "pt": "Se cuida!",
+          "en": "Take care!",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_small_talk_048",
+          "pt": "Tenha uma boa noite.",
+          "en": "Have a good night.",
+          "difficulty": 1
+        },
+        {
+          "id": "gemini_small_talk_049",
+          "pt": "Bom trabalho pra você.",
+          "en": "Have a good day at work.",
+          "difficulty": 2
+        },
+        {
+          "id": "gemini_small_talk_050",
+          "pt": "Até a próxima!",
+          "en": "Until next time!",
+          "difficulty": 1
+        }
+      ]
+    }
+  ]
+}
