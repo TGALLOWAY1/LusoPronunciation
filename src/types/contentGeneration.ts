@@ -124,39 +124,50 @@ export interface GenerationPathsConfig {
 /**
  * Canonical word record with all enrichment data.
  * This is the enriched word structure used throughout the generation pipeline.
+ * 
+ * Includes all fields needed by the UI to avoid data loss when switching from legacy to pipeline data.
  */
 export interface EnrichedWord {
   id: string;
-  text: string;                   // Portuguese text
-  normalizedText: string;         // Normalized version for matching
-  baseForm?: string;              // Optional base/infinitive form
-  category: string;               // Category ID
-  partOfSpeech: string;            // Part of speech
-  englishDifficultyFlag?: boolean; // Whether this word is difficult for English speakers
-  phonemes: string[];             // ARPABET or similar phoneme codes
-  ipa?: string;                   // IPA representation
-  tags?: string[];                // Additional tags
-  cefr?: string;                  // CEFR level (A1, A2, B1, B2, C1, C2)
-  difficultyScore?: number;       // Numeric difficulty score
+  text: string;                   // Portuguese text (pt)
+  normalizedText: string;            // Normalized version for matching
+  en: string;                        // English translation (required for UI)
+  baseForm?: string;                 // Optional base/infinitive form
+  category: string;                  // Category ID
+  partOfSpeech: string;              // Part of speech
+  difficulty: 1 | 2 | 3 | 4 | 5;    // Difficulty level (1-5 scale, required for UI)
+  difficultForEnglish: boolean;      // Whether this word is difficult for English speakers
+  pronunciationNotes?: string;       // Pronunciation guidance notes (optional)
+  englishDifficultyFlag?: boolean;   // Alias for difficultForEnglish (kept for backward compatibility)
+  phonemes: string[];                // ARPABET or similar phoneme codes
+  ipa?: string;                      // IPA representation
+  tags?: string[];                   // Additional tags
+  cefr?: string;                     // CEFR level (A1, A2, B1, B2, C1, C2)
+  difficultyScore?: number;          // Numeric difficulty score (0-100, optional)
 }
 
 /**
  * Canonical sentence record with all enrichment data.
  * This is the enriched sentence structure used throughout the generation pipeline.
+ * 
+ * Includes all fields needed by the UI to avoid data loss when switching from legacy to pipeline data.
  */
 export interface EnrichedSentence {
   id: string;
-  text: string;                   // Portuguese text
-  normalizedText: string;         // Normalized version for matching
-  category: string;               // Category ID
-  tags?: string[];                // Additional tags
-  hardForEnglish?: boolean;       // Whether this sentence is hard for English speakers
-  wordRefs?: {                    // References to words in this sentence
+  text: string;                    // Portuguese text (pt)
+  normalizedText: string;          // Normalized version for matching
+  en: string;                      // English translation (required for UI)
+  category: string;                 // Category ID
+  difficulty: 1 | 2 | 3 | 4 | 5;   // Difficulty level (1-5 scale, required for UI)
+  pronunciationNotes?: string;     // Pronunciation guidance notes (optional)
+  tags?: string[];                 // Additional tags
+  hardForEnglish?: boolean;        // Whether this sentence is hard for English speakers
+  wordRefs?: {                     // References to words in this sentence
     wordId: string;
     tokenIndex: number;
   }[];
-  cefr?: string;                  // CEFR level (A1, A2, B1, B2, C1, C2)
-  difficultyScore?: number;       // Numeric difficulty score
+  cefr?: string;                   // CEFR level (A1, A2, B1, B2, C1, C2)
+  difficultyScore?: number;        // Numeric difficulty score (0-100, optional)
 }
 
 // ============================================================================
@@ -182,9 +193,10 @@ export interface TTSAudioVariant {
 export interface AudioIndexEntryExtended extends AudioIndexEntry {
   id: string;                     // Item ID (word or sentence)
   type: "word" | "sentence";
-  voice: string;                  // Voice identifier
-  path: string;                   // Audio file path
+  voice: string;                  // Voice identifier (e.g., "ptbr_male")
+  path: string;                   // Physical file path (e.g., "public/audio/words/ptbr_male/word_001.wav")
   text: string;                   // Portuguese text
+  voices?: Record<string, string>; // Canonical URLs per voice (e.g., { "ptbr_male": "/audio/words/ptbr_male/word_001.wav" })
   metadata?: {                    // Optional additional metadata
     [key: string]: unknown;
   };

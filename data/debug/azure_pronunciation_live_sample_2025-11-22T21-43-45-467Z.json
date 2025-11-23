@@ -1,0 +1,46 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 12200000,
+  "Duration": 13000000,
+  "DisplayText": "Oi, tudo bem?",
+  "SNR": 25.13013,
+  "NBest": [
+    {
+      "Confidence": 0.9465572,
+      "Lexical": "Oi tudo bem",
+      "ITN": "Oi tudo bem",
+      "MaskedITN": "oi tudo bem",
+      "Display": "Oi, tudo bem?",
+      "AccuracyScore": 98,
+      "FluencyScore": 98,
+      "CompletenessScore": 100,
+      "PronScore": 98.4,
+      "Words": [
+        {
+          "Word": "Oi",
+          "Offset": 12200000,
+          "Duration": 5500000,
+          "Confidence": 0,
+          "AccuracyScore": 94,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "tudo",
+          "Offset": 18100000,
+          "Duration": 2700000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "bem",
+          "Offset": 20900000,
+          "Duration": 4300000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

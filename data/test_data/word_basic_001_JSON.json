@@ -1,0 +1,30 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 600000,
+  "Duration": 7500000,
+  "DisplayText": "Olá.",
+  "SNR": 38.633587,
+  "NBest": [
+    {
+      "Confidence": 0.9185895,
+      "Lexical": "olá",
+      "ITN": "olá",
+      "MaskedITN": "olá",
+      "Display": "Olá.",
+      "AccuracyScore": 96,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 97.6,
+      "Words": [
+        {
+          "Word": "olá",
+          "Offset": 600000,
+          "Duration": 7500000,
+          "Confidence": 0,
+          "AccuracyScore": 96,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

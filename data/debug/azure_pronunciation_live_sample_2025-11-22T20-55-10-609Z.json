@@ -1,0 +1,62 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 6100000,
+  "Duration": 20300000,
+  "DisplayText": "Que horas o trem sai?",
+  "SNR": 37.510094,
+  "NBest": [
+    {
+      "Confidence": 0.93302745,
+      "Lexical": "Que horas o trem sai",
+      "ITN": "Que horas o trem sai",
+      "MaskedITN": "que horas o trem sai",
+      "Display": "Que horas o trem sai?",
+      "AccuracyScore": 81,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 88.6,
+      "Words": [
+        {
+          "Word": "Que",
+          "Offset": 6100000,
+          "Duration": 2700000,
+          "Confidence": 0,
+          "AccuracyScore": 97,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "horas",
+          "Offset": 8900000,
+          "Duration": 5900000,
+          "Confidence": 0,
+          "AccuracyScore": 85,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "o",
+          "Offset": 14900000,
+          "Duration": 1500000,
+          "Confidence": 0,
+          "AccuracyScore": 91,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "trem",
+          "Offset": 16500000,
+          "Duration": 4100000,
+          "Confidence": 0,
+          "AccuracyScore": 68,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "sai",
+          "Offset": 20700000,
+          "Duration": 5700000,
+          "Confidence": 0,
+          "AccuracyScore": 66,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

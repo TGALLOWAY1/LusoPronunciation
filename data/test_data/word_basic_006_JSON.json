@@ -1,0 +1,30 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 700000,
+  "Duration": 8400000,
+  "DisplayText": "Obrigada.",
+  "SNR": 39.077827,
+  "NBest": [
+    {
+      "Confidence": 0.97068167,
+      "Lexical": "obrigada",
+      "ITN": "obrigada",
+      "MaskedITN": "obrigada",
+      "Display": "Obrigada.",
+      "AccuracyScore": 92,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 95.2,
+      "Words": [
+        {
+          "Word": "obrigada",
+          "Offset": 700000,
+          "Duration": 8400000,
+          "Confidence": 0,
+          "AccuracyScore": 92,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

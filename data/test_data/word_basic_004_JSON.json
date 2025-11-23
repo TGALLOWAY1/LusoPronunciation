@@ -1,0 +1,38 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 600000,
+  "Duration": 9000000,
+  "DisplayText": "Boa noite.",
+  "SNR": 40.144638,
+  "NBest": [
+    {
+      "Confidence": 0.96554655,
+      "Lexical": "boa noite",
+      "ITN": "boa noite",
+      "MaskedITN": "boa noite",
+      "Display": "Boa noite.",
+      "AccuracyScore": 100,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 100,
+      "Words": [
+        {
+          "Word": "boa",
+          "Offset": 600000,
+          "Duration": 3900000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "noite",
+          "Offset": 4600000,
+          "Duration": 5000000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

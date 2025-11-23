@@ -25,11 +25,13 @@ export interface TTSJob {
 /**
  * Plans TTS jobs for words and sentences.
  * 
- * File naming conventions:
+ * Canonical file naming scheme:
  * - Words: {audioBaseDir}/words/{voiceId}/{wordId}.wav
+ *   → URL: /audio/words/{voiceId}/{wordId}.wav
  * - Sentences: {audioBaseDir}/sentences/{voiceId}/{sentenceId}.wav
+ *   → URL: /audio/sentences/{voiceId}/{sentenceId}.wav
  * 
- * This ensures paths are consistent with what data/audio_index.json will contain later.
+ * This ensures paths are consistent with what data/audio_index.json will contain.
  * 
  * @param words - Array of enriched words
  * @param sentences - Array of enriched sentences
@@ -47,7 +49,8 @@ export function planTTSJobs(
   // Generate jobs for words
   for (const word of words) {
     for (const voice of config.voices) {
-      // Build output path: {audioBaseDir}/words/{voiceId}/{wordId}.wav
+      // Build canonical output path: {audioBaseDir}/words/{voiceId}/{wordId}.wav
+      // This maps to URL: /audio/words/{voiceId}/{wordId}.wav
       const outputPath = path.join(
         audioBaseDir,
         'words',
@@ -70,7 +73,8 @@ export function planTTSJobs(
   // Generate jobs for sentences
   for (const sentence of sentences) {
     for (const voice of config.voices) {
-      // Build output path: {audioBaseDir}/sentences/{voiceId}/{sentenceId}.wav
+      // Build canonical output path: {audioBaseDir}/sentences/{voiceId}/{sentenceId}.wav
+      // This maps to URL: /audio/sentences/{voiceId}/{sentenceId}.wav
       const outputPath = path.join(
         audioBaseDir,
         'sentences',

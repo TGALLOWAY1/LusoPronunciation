@@ -16,7 +16,7 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import type { EnrichedWord, EnrichedSentence, AudioIndexEntryExtended, ValidationReport } from '../types/contentGeneration';
 import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
-import { getPhonemeMetadata } from '../lib/phonemeMetadata';
+import { getPhonemeById } from '../lib/phonemeMetadata';
 
 /**
  * Validates generated data against expectations and consistency checks.
@@ -94,17 +94,19 @@ export function validateGeneratedData(params: {
     if (!word.phonemes || word.phonemes.length === 0) {
       report.missingPhonemeIds.push(word.id);
     } else {
-      // Check if phoneme IDs exist in phoneme_metadata
+      // Check if phoneme IDs exist in phoneme_metadata.json (canonical source)
+      // NOTE: Currently non-blocking (warnings only). Strict validation will be enabled later.
       for (const phonemeId of word.phonemes) {
-        const phonemeMetadata = getPhonemeMetadata(phonemeId);
+        const phonemeMetadata = getPhonemeById(phonemeId);
         if (!phonemeMetadata) {
-          // This is a missing phoneme ID (not a missing word)
-          // We'll track it separately in otherErrors
+          // Missing phoneme ID in canonical metadata - log as warning (non-critical)
+          // TODO: Enable strict validation in future pipeline runs
           if (!report.otherErrors) {
             report.otherErrors = [];
           }
-          if (!report.otherErrors.includes(`Phoneme ID "${phonemeId}" not found in phoneme_metadata (word: ${word.id})`)) {
-            report.otherErrors.push(`Phoneme ID "${phonemeId}" not found in phoneme_metadata (word: ${word.id})`);
+          const warningMsg = `WARNING: Phoneme ID "${phonemeId}" not found in phoneme_metadata.json (word: ${word.id})`;
+          if (!report.otherErrors.includes(warningMsg)) {
+            report.otherErrors.push(warningMsg);
           }
         }
       }
@@ -148,7 +150,8 @@ export function validateGeneratedData(params: {
  * Non-critical (warnings):
  * - Missing IPA (nice to have but not required)
  * - Count mismatches (informational)
- * - Missing phoneme IDs in metadata (data quality issue but not blocking)
+ * - Missing phoneme IDs in phoneme_metadata.json (data quality issue but not blocking)
+ *   NOTE: Currently non-blocking. Strict validation will be enabled in future pipeline runs.
  * 
  * @param report - Validation report
  * @returns true if there are critical errors

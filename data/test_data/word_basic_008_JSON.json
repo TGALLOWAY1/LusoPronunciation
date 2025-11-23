@@ -1,0 +1,38 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 1400000,
+  "Duration": 10200000,
+  "DisplayText": "Com licença?",
+  "SNR": 43.859634,
+  "NBest": [
+    {
+      "Confidence": 0.9249144,
+      "Lexical": "com licença",
+      "ITN": "com licença",
+      "MaskedITN": "com licença",
+      "Display": "Com licença?",
+      "AccuracyScore": 96,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 97.6,
+      "Words": [
+        {
+          "Word": "com",
+          "Offset": 1400000,
+          "Duration": 2000000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "licença",
+          "Offset": 3500000,
+          "Duration": 8100000,
+          "Confidence": 0,
+          "AccuracyScore": 91,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

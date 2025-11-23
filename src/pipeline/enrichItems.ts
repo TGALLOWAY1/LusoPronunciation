@@ -9,7 +9,7 @@
 import type { RawWord, RawSentence } from '../lib/types';
 import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
 import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
-import { getPhonemesForToken } from './phonemeMapper';
+import { mapWordToPhonemes } from './phonemeMapper';
 import { applyWordTags, applySentenceTags, inferCategory } from './tagging';
 import { computeSentenceWordRefs } from './sentenceWordRefs';
 
@@ -45,18 +45,22 @@ export function enrichWords(
     const text = raw.pt.trim();
     const normalizedText = normalizeText(text);
     
-    // Get phonemes and IPA
-    const { phonemes, ipa } = getPhonemesForToken(text);
+    // Get phonemes using G2P mapper
+    const { phonemes, ipa } = mapWordToPhonemes(text);
     
-    // Create base enriched word
+    // Create base enriched word - preserve all fields from raw data
     const enrichedWord: EnrichedWord = {
       id: raw.id,
       text,
       normalizedText,
+      en: raw.en.trim(), // Preserve English translation
       category: inferCategory(undefined, text), // Could extract from raw data if available
       partOfSpeech: raw.pos,
-      englishDifficultyFlag: raw.difficult_for_english,
-      phonemes: phonemes.length > 0 ? phonemes : [], // Ensure array is never undefined
+      difficulty: raw.difficulty, // Preserve difficulty (1-5 scale)
+      difficultForEnglish: raw.difficult_for_english,
+      pronunciationNotes: raw.pronunciation_notes, // Preserve pronunciation notes
+      englishDifficultyFlag: raw.difficult_for_english, // Alias for backward compatibility
+      phonemes: phonemes || [], // Ensure array is never undefined
       ipa,
     };
     
@@ -87,7 +91,7 @@ export function enrichSentences(
   words: EnrichedWord[],
   _config: GenerationPipelineConfig
 ): EnrichedSentence[] {
-  // First, create base enriched sentences
+  // First, create base enriched sentences - preserve all fields from raw data
   const baseEnriched: EnrichedSentence[] = rawSentences.map(raw => {
     const text = raw.pt.trim();
     const normalizedText = normalizeText(text);
@@ -103,7 +107,10 @@ export function enrichSentences(
       id: raw.id,
       text,
       normalizedText,
+      en: raw.en.trim(), // Preserve English translation
       category: inferCategory(undefined, text), // Could extract from raw data if available
+      difficulty: raw.difficulty, // Preserve difficulty (1-5 scale)
+      pronunciationNotes: raw.pronunciation_notes, // Preserve pronunciation notes
       hardForEnglish,
     };
   });

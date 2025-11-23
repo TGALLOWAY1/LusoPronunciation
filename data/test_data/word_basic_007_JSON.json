@@ -1,0 +1,38 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 1000000,
+  "Duration": 10800000,
+  "DisplayText": "Por favor.",
+  "SNR": 36.92552,
+  "NBest": [
+    {
+      "Confidence": 0.91225123,
+      "Lexical": "por favor",
+      "ITN": "por favor",
+      "MaskedITN": "por favor",
+      "Display": "Por favor.",
+      "AccuracyScore": 73,
+      "FluencyScore": 100,
+      "CompletenessScore": 50,
+      "PronScore": 64.6,
+      "Words": [
+        {
+          "Word": "por",
+          "Offset": 1000000,
+          "Duration": 2300000,
+          "Confidence": 0,
+          "AccuracyScore": 97,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "favor",
+          "Offset": 3400000,
+          "Duration": 8400000,
+          "Confidence": 0,
+          "AccuracyScore": 49,
+          "ErrorType": "Mispronunciation"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 600000,
+  "Duration": 6400000,
+  "DisplayText": "Sim.",
+  "SNR": 39.373585,
+  "NBest": [
+    {
+      "Confidence": 0.8756726,
+      "Lexical": "sim",
+      "ITN": "sim",
+      "MaskedITN": "sim",
+      "Display": "Sim.",
+      "AccuracyScore": 90,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 94,
+      "Words": [
+        {
+          "Word": "sim",
+          "Offset": 600000,
+          "Duration": 6400000,
+          "Confidence": 0,
+          "AccuracyScore": 90,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}
