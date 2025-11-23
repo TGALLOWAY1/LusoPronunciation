@@ -26,6 +26,7 @@ export {
   adaptFixtureWordsToNormalized,
   adaptWordScoresToNormalized,
   buildWordAudioVariantsForSentence,
+  enrichWordsWithCanonicalData,
 } from './adapters';
 
 // Alias for backward compatibility

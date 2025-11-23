@@ -6,9 +6,11 @@ import { PronunciationFeedbackPanel, type PronunciationFeedbackPanelProps } from
 import {
   adaptWordScoresToNormalized,
   buildWordAudioVariantsForSentence,
+  enrichWordsWithCanonicalData,
   type NormalizedAudioVariant,
 } from '@/components/pronunciation/shared';
 import { useSettingsStore } from '@/state/settingsStore';
+import { useCanonicalWordMap } from '@/hooks/useCanonicalWordMap';
 
 export interface LivePracticeSectionProps {
   sentence: Sentence;
@@ -65,6 +67,7 @@ export default function LivePracticeSection({
   onRecordingUrlChange,
 }: LivePracticeSectionProps) {
   const { selectedVoice } = useSettingsStore();
+  const canonicalWordMap = useCanonicalWordMap();
   
   const {
     isRecording,
@@ -135,6 +138,13 @@ export default function LivePracticeSection({
     return [];
   }, [currentAttempt, rawAzureResponse]);
 
+  const enrichedWords = useMemo(() => {
+    if (normalizedWords.length === 0) {
+      return normalizedWords;
+    }
+    return enrichWordsWithCanonicalData(sentence, normalizedWords, canonicalWordMap);
+  }, [sentence, normalizedWords, canonicalWordMap]);
+
   // Build panel props
   const panelProps: PronunciationFeedbackPanelProps = useMemo(() => ({
     attempts: attempts ?? [],
@@ -144,11 +154,11 @@ export default function LivePracticeSection({
     difficulty: sentence.difficulty,
     sentenceAudio: sentenceAudio.length > 0 ? sentenceAudio : undefined,
     wordAudios: wordAudios.length > 0 ? wordAudios : undefined,
-    words: normalizedWords.length > 0 ? normalizedWords : undefined,
+    words: enrichedWords.length > 0 ? enrichedWords : undefined,
     title: undefined,
     showDevControls: false,
     hideHeaderContent: false, // Show sentence text, translation, difficulty, and audio
-  }), [attempts, currentAttempt, sentence, sentenceAudio, wordAudios, normalizedWords]);
+  }), [attempts, currentAttempt, sentence, sentenceAudio, wordAudios, enrichedWords]);
 
   const canSubmit = Boolean(audioUrl) && !submitting && !isRecording;
 

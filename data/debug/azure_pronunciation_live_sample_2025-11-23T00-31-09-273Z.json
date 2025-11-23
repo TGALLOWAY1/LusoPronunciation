@@ -1,0 +1,70 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 4900000,
+  "Duration": 28300000,
+  "DisplayText": "O que tem para o jantar?",
+  "SNR": 34.656517,
+  "NBest": [
+    {
+      "Confidence": 0.94187826,
+      "Lexical": "O que tem para o jantar",
+      "ITN": "O que tem para o jantar",
+      "MaskedITN": "o que tem para o jantar",
+      "Display": "O que tem para o jantar?",
+      "AccuracyScore": 84,
+      "FluencyScore": 97,
+      "CompletenessScore": 83,
+      "PronScore": 86,
+      "Words": [
+        {
+          "Word": "O",
+          "Offset": 4900000,
+          "Duration": 3700000,
+          "Confidence": 0,
+          "AccuracyScore": 70,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "que",
+          "Offset": 8700000,
+          "Duration": 3500000,
+          "Confidence": 0,
+          "AccuracyScore": 94,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "tem",
+          "Offset": 12300000,
+          "Duration": 5900000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "para",
+          "Offset": 19200000,
+          "Duration": 4200000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "o",
+          "Offset": 23500000,
+          "Duration": 1500000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "jantar",
+          "Offset": 25100000,
+          "Duration": 8100000,
+          "Confidence": 0,
+          "AccuracyScore": 43,
+          "ErrorType": "Mispronunciation"
+        }
+      ]
+    }
+  ]
+}

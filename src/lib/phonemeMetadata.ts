@@ -67,6 +67,11 @@ const PHONEME_ALIASES: Record<string, string> = {
   'AX': 'AH',   // Azure uses 'ax' for schwa, we use 'AH' (near-open central)
   'AE': 'EH',   // Azure uses 'ae' (near-open front), we map to 'EH' (open-mid front)
   'NG': 'N',    // Azure uses 'ng' (velar nasal), we map to 'N' (alveolar nasal) as approximation
+  'IH': 'IY',   // Azure uses 'ih' (near-close front), we map to 'IY' (close front)
+  'UH': 'UW',   // Azure uses 'uh' (near-close back), we map to 'UW' (close back)
+  'AY': 'AA',   // Azure uses 'ay' (diphthong), we map to 'AA' (open central)
+  'AW': 'AA',   // Azure uses 'aw' (diphthong), we map to 'AA' (open central)
+  'OY': 'AO',   // Azure uses 'oy' (diphthong), we map to 'AO' (open-mid back)
 };
 
 /**
