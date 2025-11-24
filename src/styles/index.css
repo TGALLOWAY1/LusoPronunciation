@@ -157,5 +157,21 @@
   .animate-in {
     animation: fade-in 0.2s ease-in-out;
   }
+
+  /* Premium button pulse ring animation */
+  @keyframes pulse-ring {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  .animate-pulse-ring {
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
 

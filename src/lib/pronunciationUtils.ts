@@ -39,6 +39,29 @@ export function mapAzurePronunciationResultToAttemptScore(
   
   const { pronunciationAssessment, words } = normalized.bestHypothesis;
 
+  // Debug logging in development to diagnose missing Prosody
+  if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+    console.log('[pronunciationUtils] Normalized pronunciation assessment:', {
+      accuracyScore: pronunciationAssessment.accuracyScore,
+      fluencyScore: pronunciationAssessment.fluencyScore,
+      completenessScore: pronunciationAssessment.completenessScore,
+      prosodyScore: pronunciationAssessment.prosodyScore,
+      pronScore: pronunciationAssessment.pronScore,
+      allKeys: Object.keys(pronunciationAssessment),
+    });
+    // Also log raw Azure response structure for ProsodyScore
+    const rawNBest = (Array.isArray(raw) ? raw[0] : raw)?.NBest?.[0];
+    if (rawNBest) {
+      console.log('[pronunciationUtils] Raw Azure NBest[0] keys:', Object.keys(rawNBest));
+      console.log('[pronunciationUtils] Raw Azure ProsodyScore check:', {
+        'NBest[0].ProsodyScore': rawNBest.ProsodyScore,
+        'NBest[0].prosodyScore': rawNBest.prosodyScore,
+        'NBest[0].PronunciationAssessment?.ProsodyScore': rawNBest.PronunciationAssessment?.ProsodyScore,
+        'NBest[0].PronunciationAssessment?.prosodyScore': rawNBest.PronunciationAssessment?.prosodyScore,
+      });
+    }
+  }
+
   // Map overall scores from normalized structure
   const overallAccuracy = pronunciationAssessment.accuracyScore ?? 0;
   const fluency = pronunciationAssessment.fluencyScore;

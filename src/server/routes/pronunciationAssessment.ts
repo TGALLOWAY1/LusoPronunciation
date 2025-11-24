@@ -245,7 +245,9 @@ function buildPronunciationAssessmentHeader(referenceText: string): string {
     Granularity: 'Word',
     Dimension: 'Comprehensive',
     EnableMiscue: 'True',
-    // EnableProsodyAssessment can be added later; REST doesn't fully support prosody yet.
+    // Note: ProsodyScore is only available for en-US locale.
+    // For pt-BR and other locales, Azure will not return ProsodyScore even with Comprehensive dimension.
+    // This is a limitation of Azure Speech Service, not our implementation.
   };
 
   const jsonString = JSON.stringify(paConfig);

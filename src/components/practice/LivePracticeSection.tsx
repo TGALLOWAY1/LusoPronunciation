@@ -11,6 +11,7 @@ import {
 } from '@/components/pronunciation/shared';
 import { useSettingsStore } from '@/state/settingsStore';
 import { useCanonicalWordMap } from '@/hooks/useCanonicalWordMap';
+import PremiumRecordButton from '@/components/common/PremiumRecordButton';
 
 export interface LivePracticeSectionProps {
   sentence: Sentence;
@@ -166,25 +167,13 @@ export default function LivePracticeSection({
     <div className="space-y-6">
       {/* Recording Controls */}
       <div className="space-y-4">
-        <div className="flex gap-3">
-          <button
+        <div className="flex items-center gap-4">
+          <PremiumRecordButton
+            isRecording={isRecording}
             onClick={isRecording ? stopRecording : startRecording}
             disabled={submitting}
-            className={`btn btn-md ${
-              isRecording
-                ? 'btn-danger'
-                : 'btn-primary'
-            }`}
-          >
-            {isRecording ? (
-              <>
-                <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-2 animate-pulse"></span>
-                Stop Recording
-              </>
-            ) : (
-              'Start Recording'
-            )}
-          </button>
+            size="md"
+          />
 
           <button
             onClick={handleSubmit}

@@ -11,6 +11,23 @@ type PronunciationAssessmentResponse = {
   attemptScore: AttemptScore;
 };
 
+const MAX_PERSISTED_AUDIO_BYTES = 1.5 * 1024 * 1024; // ~1.5MB safety cap for localStorage
+
+async function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject(new Error('Failed to convert blob to data URL'));
+      }
+    };
+    reader.onerror = () => reject(reader.error ?? new Error('Unknown FileReader error'));
+    reader.readAsDataURL(blob);
+  });
+}
+
 /**
  * Parameters for logging a sentence attempt
  * These are optional because the hook can be used without logging
@@ -259,8 +276,24 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
             ? Math.round((Date.now() - recordingStartTimeRef.current) / 1000)
             : logParams.recordingDurationSeconds;
 
+          // Convert audio blob to data URL for persisted playback if not too large
+          let recordingDataUrl: string | undefined;
+          if (audioBlob.size <= MAX_PERSISTED_AUDIO_BYTES) {
+            try {
+              recordingDataUrl = await blobToDataUrl(audioBlob);
+            } catch (conversionError) {
+              if (import.meta.env.DEV) {
+                console.warn('Failed to convert audio blob to data URL for history playback:', conversionError);
+              }
+            }
+          } else if (import.meta.env.DEV) {
+            console.warn(
+              `Skipping audio persistence for attempt ${attemptId}: blob size ${audioBlob.size} exceeds cap`
+            );
+          }
+
           // Get retry count for this sentence
-          const retriesInThisSession = logParams.retriesInThisSession ?? 
+          const retriesInThisSession = logParams.retriesInThisSession ??
             (retriesBySentenceRef.current.get(sentenceId) || 0);
 
           logSentenceAttempt({
@@ -282,6 +315,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
             wordScores: wordScores.length > 0 ? wordScores : undefined,
             latencyMs, // Include latency in practice log
             recordingUrl: audioUrl || undefined, // Include recording URL for playback (blob URL, may not persist across sessions)
+            recordingDataUrl,
           });
 
           // Increment retry count for this sentence

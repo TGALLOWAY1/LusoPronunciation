@@ -16,6 +16,7 @@ import LivePracticeSection from '@/components/practice/LivePracticeSection';
 import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import ScoreHistory from '@/components/practice/ScoreHistory';
 import AttemptHistory from '@/components/practice/AttemptHistory';
+import SentenceFeedback from '@/components/practice/SentenceFeedback';
 import FilterControls from '@/components/practice/FilterControls';
 import NavigationButtons from '@/components/practice/NavigationButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -198,7 +199,7 @@ export default function SentencePractice() {
         errorType: undefined, // SentencePracticeAttempt doesn't store errorType
       })) || [],
       createdAt: attempt.createdAt,
-      audioUrl: attempt.recordingUrl,
+      audioUrl: attempt.recordingDataUrl || attempt.recordingUrl || undefined,
       latencyMs: attempt.latencyMs,
     };
   }, []);
@@ -218,6 +219,10 @@ export default function SentencePractice() {
       ? convertAttemptToAttemptScore(sentenceAttempts[0])
       : livePracticeCurrentAttempt;
   }, [selectedAttemptId, sentenceAttempts, livePracticeCurrentAttempt, convertAttemptToAttemptScore]);
+
+  const selectedAttemptArray = useMemo(() => {
+    return selectedAttempt ? [selectedAttempt] : [];
+  }, [selectedAttempt]);
 
   // Get recording URL from selected attempt
   const selectedRecordingUrl = useMemo(() => {
@@ -391,6 +396,26 @@ export default function SentencePractice() {
                   />
                 ) : (
                   <div className="mt-4 space-y-4">
+                    {/* Word-by-word breakdown */}
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                          Word-by-word breakdown
+                        </h3>
+                        {selectedAttempt?.createdAt && (
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            {formatAttemptTimestamp(selectedAttempt.createdAt)}
+                          </span>
+                        )}
+                      </div>
+                      <SentenceFeedback
+                        sentence={currentSentence}
+                        attempts={selectedAttemptArray}
+                        currentAttempt={selectedAttempt}
+                        className="mt-0"
+                      />
+                    </div>
+
                     {/* Selected Attempt Recording */}
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
                       <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">

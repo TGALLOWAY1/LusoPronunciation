@@ -27,6 +27,8 @@ export interface SentenceFeedbackProps {
   fallbackTranslation?: string;
   /** Fallback difficulty if sentence is not provided */
   fallbackDifficulty?: number;
+  /** Optional className for outer wrapper */
+  className?: string;
 }
 
 
@@ -69,6 +71,7 @@ function SentenceFeedback({
   fallbackText,
   fallbackTranslation,
   fallbackDifficulty,
+  className,
 }: SentenceFeedbackProps) {
   const { selectedVoice } = useSettingsStore();
   const canonicalWordMap = useCanonicalWordMap();
@@ -142,8 +145,10 @@ function SentenceFeedback({
 
   // Always render the panel - it will handle empty state internally
   // No card wrapper needed - SentenceCard already provides the card container
+  const containerClassName = className ?? 'mt-6';
+
   return (
-    <div className="mt-6">
+    <div className={containerClassName}>
       <PronunciationFeedbackPanel {...panelProps} />
     </div>
   );

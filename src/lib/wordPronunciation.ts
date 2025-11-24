@@ -42,7 +42,7 @@ export async function scoreWordPronunciation(
   const { rawAzure, attemptScore } = await response.json();
 
   // Log rawAzure in development for debugging
-  if (import.meta.env.DEV) {
+  if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
     console.debug('Azure pronunciation assessment response (word):', rawAzure);
   }
 

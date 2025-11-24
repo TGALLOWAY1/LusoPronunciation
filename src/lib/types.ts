@@ -218,9 +218,9 @@ export interface SentencePracticeAttempt {
   listenedToNativeModelCount?: number;
   confidenceLabel?: "unknown" | "learning" | "review" | "known";
   latencyMs?: number; // round-trip time for the Azure API call (ms)
-  // Note: recordingUrl is a blob URL that may not persist across sessions.
-  // Older attempts may lose playback capability after page reload, but scores are preserved.
+  // recordingUrl is a blob URL scoped to the session. recordingDataUrl persists across reloads.
   recordingUrl?: string; // blob URL or stable recording reference for playback
+  recordingDataUrl?: string; // base64 data URL fallback for persisted history playback
   wordScores?: {
     wordId?: WordId;
     token: string;

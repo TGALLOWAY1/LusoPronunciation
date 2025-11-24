@@ -145,7 +145,7 @@ async function loadAzureJson(azureJsonFile: string): Promise<any | null> {
     const url = azureJsonFile.startsWith('/') ? azureJsonFile : `/${azureJsonFile}`;
     const response = await fetch(url);
     if (!response.ok) {
-      if (import.meta.env.DEV) {
+      if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
         console.warn(`[PronunciationFixtureAdapter] Failed to load Azure JSON: ${azureJsonFile}`);
       }
       return null;
@@ -153,7 +153,7 @@ async function loadAzureJson(azureJsonFile: string): Promise<any | null> {
     const data = await response.json();
     return Array.isArray(data) ? data[0] : data; // Azure JSON is often wrapped in an array
   } catch (error) {
-    if (import.meta.env.DEV) {
+    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
       console.warn(`[PronunciationFixtureAdapter] Error loading Azure JSON ${azureJsonFile}:`, error);
     }
     return null;
@@ -234,7 +234,7 @@ function extractPhonemesFromAzureJson(
   }
   
   if (!wordData) {
-    if (import.meta.env.DEV) {
+    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
       console.warn(
         `[PronunciationFixtureAdapter] Could not find Azure word data for "${wordText}" (index ${wordIndex}). ` +
         `Available words: ${words.map((w: any) => w.Word).join(', ')}`
@@ -281,7 +281,7 @@ async function generateWordFeedback(
   const wordMatches = await Promise.all(
     words.map(word => {
       const match = findMatchingWord(word);
-      if (import.meta.env.DEV) {
+      if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
         match.then(m => {
           if (m) {
             console.log(`[PronunciationFixtureAdapter] Matched word "${word}" to wordId "${m.id}"`);
@@ -394,7 +394,7 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
     }
   } else {
     // Log warning in dev mode
-    if (import.meta.env.DEV) {
+    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
       console.warn(
         `[PronunciationFixtureAdapter] No matching sentence found for fixture "${fixture.id}" with text "${fixture.text}". Native audio will not be available.`
       );
@@ -473,12 +473,12 @@ export async function fixtureToPracticePhrase(fixture: PronunciationFixture): Pr
             url: femaleUrl,
           });
         }
-      } else if (import.meta.env.DEV) {
+      } else if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
         console.warn(
           `[PronunciationFixtureAdapter] Word at index ${index} ("${word.text}") has no wordId and no match found in cached words (${cachedWords.length} words available)`
         );
       }
-    } else if (import.meta.env.DEV) {
+    } else if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
       console.warn(
         `[PronunciationFixtureAdapter] Word at index ${index} ("${word.text}") has no wordId and cachedWords is empty - word audio will not be available`
       );
