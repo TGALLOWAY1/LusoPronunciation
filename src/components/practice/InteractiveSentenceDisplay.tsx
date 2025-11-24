@@ -1,4 +1,3 @@
-import { Eye, EyeOff } from 'lucide-react';
 import { getScoreColor } from '@/components/pronunciation/ScoringPanel';
 
 interface WordScore {
@@ -11,16 +10,12 @@ interface InteractiveSentenceDisplayProps {
   sentenceText: string;
   wordScores: WordScore[];
   onWordClick: (wordData: WordScore, index: number) => void;
-  onToggleTranslation: () => void;
-  isTranslationVisible: boolean;
 }
 
 export default function InteractiveSentenceDisplay({
   sentenceText,
   wordScores,
   onWordClick,
-  onToggleTranslation,
-  isTranslationVisible,
 }: InteractiveSentenceDisplayProps) {
   const tokens = sentenceText.trim().split(/\s+/);
 
@@ -46,16 +41,6 @@ export default function InteractiveSentenceDisplay({
           </button>
         );
       })}
-
-      <button
-        type="button"
-        onClick={onToggleTranslation}
-        className="inline-flex items-center gap-1 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600"
-        aria-pressed={isTranslationVisible}
-      >
-        {isTranslationVisible ? <EyeOff size={18} /> : <Eye size={18} />}
-        <span>{isTranslationVisible ? 'Hide' : 'Show'} translation</span>
-      </button>
     </div>
   );
 }

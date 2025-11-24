@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
 import InteractiveSentenceDisplay from '@/components/practice/InteractiveSentenceDisplay';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
   SentenceAudioControls,
   PhonemePanel,
@@ -235,19 +236,31 @@ export default function PronunciationFeedbackPanel({
               </div>
             )}
 
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex flex-wrap items-center justify-center gap-3 w-full">
-                <InteractiveSentenceDisplay
-                  sentenceText={sentenceText}
-                  wordScores={tokenWordScores}
-                  onWordClick={handleInteractiveWordClick}
-                  onToggleTranslation={() => translationText && setShowEnglish((prev) => !prev)}
-                  isTranslationVisible={showEnglish}
-                />
-              </div>
+            <div className="flex flex-col items-center gap-y-2">
+              <InteractiveSentenceDisplay
+                sentenceText={sentenceText}
+                wordScores={tokenWordScores}
+                onWordClick={handleInteractiveWordClick}
+              />
+
+              {translationText && (
+                <button
+                  type="button"
+                  onClick={() => setShowEnglish((prev) => !prev)}
+                  className="text-gray-300 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 cursor-pointer transition-colors"
+                  aria-pressed={showEnglish}
+                  aria-label={showEnglish ? 'Hide translation' : 'Show translation'}
+                >
+                  {showEnglish ? (
+                    <ChevronUp size={20} className="w-5 h-5" />
+                  ) : (
+                    <ChevronDown size={20} className="w-5 h-5" />
+                  )}
+                </button>
+              )}
 
               {translationText && showEnglish && (
-                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 italic mt-1 text-center">
+                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 italic text-center">
                   {translationText}
                 </p>
               )}
