@@ -7,6 +7,8 @@ This app focuses on practical, real-world Portuguese (Brazilian Portuguese optio
 📌 Why This Project Exists
 I want to become conversationally fluent in Portuguese with a tool optimized specifically for the pronunciation problems English speakers face. Generic apps don't give real feedback — LusoPronounce does.
 
+<img width="1289" height="1274" alt="image" src="https://github.com/user-attachments/assets/1e215439-95df-4c7f-8685-a114a2a772ca" />
+
 
 ✨ Features (MVP)
 🎤 Pronunciation Practice
