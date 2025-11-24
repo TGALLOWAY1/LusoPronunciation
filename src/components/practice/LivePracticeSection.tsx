@@ -22,25 +22,21 @@ export interface LivePracticeSectionProps {
 
 /**
  * Builds normalized audio variants from sentence audio URLs, including user recording.
+ * Only includes the native audio variant that matches the selected voice preference.
  */
 function buildSentenceAudioVariants(
   sentence: Sentence,
-  userAudioUrl: string | null
+  userAudioUrl: string | null,
+  selectedVoice: 'male' | 'female'
 ): NormalizedAudioVariant[] {
   const variants: NormalizedAudioVariant[] = [];
   
-  // Add native audio variants
-  if (sentence.audioMaleUrl) {
+  // Add native audio variant based on selected voice preference
+  const nativeAudioUrl = selectedVoice === 'male' ? sentence.audioMaleUrl : sentence.audioFemaleUrl;
+  if (nativeAudioUrl) {
     variants.push({
       type: 'native',
-      url: sentence.audioMaleUrl,
-    });
-  }
-  
-  if (sentence.audioFemaleUrl && sentence.audioFemaleUrl !== sentence.audioMaleUrl) {
-    variants.push({
-      type: 'native',
-      url: sentence.audioFemaleUrl,
+      url: nativeAudioUrl,
     });
   }
 
@@ -123,8 +119,8 @@ export default function LivePracticeSection({
 
   // Build sentence audio variants (native + user recording)
   const sentenceAudio = useMemo(() => {
-    return buildSentenceAudioVariants(sentence, audioUrl);
-  }, [sentence, audioUrl]);
+    return buildSentenceAudioVariants(sentence, audioUrl, selectedVoice);
+  }, [sentence, audioUrl, selectedVoice]);
 
   // Build word audio variants from sentence wordRefs
   const wordAudios = useMemo(() => {
