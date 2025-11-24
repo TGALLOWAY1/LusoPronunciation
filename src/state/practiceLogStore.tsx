@@ -307,6 +307,36 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
     [state.userId]
   );
 
+  /**
+   * Logs a word practice attempt.
+   * 
+   * Practice mode field usage:
+   * 
+   * - Pronunciation mode (WordCard.tsx):
+   *   - practiceMode: 'pronunciation'
+   *   - practiceDirection: undefined (not relevant)
+   *   - isCorrect, latencyMs: undefined (not used)
+   * 
+   * - Text MCQ mode (future implementation):
+   *   - practiceMode: 'text-mcq'
+   *   - practiceDirection: 'pt-to-en' | 'en-to-pt'
+   *   - isCorrect: boolean (whether user selected correct answer)
+   *   - latencyMs: number (response time in milliseconds)
+   * 
+   * - Listening MCQ mode (future implementation):
+   *   - practiceMode: 'listening-mcq'
+   *   - practiceDirection: 'pt-to-en' | 'en-to-pt'
+   *   - isCorrect: boolean
+   *   - latencyMs: number
+   * 
+   * - Self-rating mode (WordCard "Know it" / "Review later" actions):
+   *   - practiceMode: 'self-rating'
+   *   - selfRating: 'know' | 'dont_know'
+   *   - practiceDirection: undefined (not relevant)
+   *   - isCorrect, latencyMs: undefined (not used)
+   * 
+   * All new fields are optional for backward compatibility with existing logs.
+   */
   const logWordAttempt = useCallback(
     (attempt: Omit<WordPracticeAttempt, 'attemptId' | 'userId' | 'createdAt'>): WordPracticeAttempt => {
       const fullAttempt: WordPracticeAttempt = {

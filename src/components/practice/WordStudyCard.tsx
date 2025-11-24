@@ -1,9 +1,11 @@
 import { memo } from 'react';
 import type { Word } from '@/lib/types';
 import WordAudioButton from './WordAudioButton';
+import WordStatusBar from './WordStatusBar';
 
 interface WordStudyCardProps {
   word: Word;
+  status?: 'new' | 'learning' | 'review' | 'known';
 }
 
 /**
@@ -11,7 +13,7 @@ interface WordStudyCardProps {
  * Shows word, translation, and a play button using the selected voice from settings.
  * No recording, no assessment, no "Know it" button.
  */
-function WordStudyCard({ word }: WordStudyCardProps) {
+function WordStudyCard({ word, status }: WordStudyCardProps) {
   const difficultyColors = {
     1: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
     2: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
@@ -29,12 +31,15 @@ function WordStudyCard({ word }: WordStudyCardProps) {
   };
 
   return (
-    <div className="card card-hover card-compact">
-      {/* Header with category and difficulty */}
+    <div className="card card-hover card-compact relative">
+      {/* Header with status, category and difficulty */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
-        <span className="badge badge-secondary">
-          {word.categoryLabelEn}
-        </span>
+        <div className="flex items-center gap-2 flex-wrap">
+          {status && <WordStatusBar status={status} />}
+          <span className="badge badge-secondary">
+            {word.categoryLabelEn}
+          </span>
+        </div>
         <div className="flex flex-wrap items-center gap-2">
           {word.difficultForEnglish && (
             <span className="badge badge-warning">

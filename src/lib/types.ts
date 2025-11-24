@@ -261,6 +261,12 @@ export interface WordPracticeAttempt {
     phonemeId: PhonemeId;
     overallScore: number;
   }[];
+  // New fields for vocabulary recall and self-rating modes (all optional for backward compatibility)
+  practiceDirection?: 'pt-to-en' | 'en-to-pt';
+  practiceMode?: 'pronunciation' | 'text-mcq' | 'listening-mcq' | 'self-rating';
+  isCorrect?: boolean; // For MCQ modes: whether the user selected the correct answer
+  latencyMs?: number; // Response time in milliseconds (for MCQ modes)
+  selfRating?: 'know' | 'dont_know'; // For self-rating mode
 }
 
 /**
@@ -303,6 +309,7 @@ export interface WordProgress {
   status: "new" | "learning" | "review" | "known";
   difficulty: DifficultyLevel;
   category: ContentCategory;
+  weaknessScore: number; // 0-100, higher = weaker (computed from attempts)
 }
 
 /**

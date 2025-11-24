@@ -27,13 +27,36 @@ import type {
 /**
  * Determines the status of a sentence/word based on practice history.
  * Simple heuristic: known if best score >= 85, learning if >= 60, review if < 60, new if no attempts.
+ * 
+ * Can optionally consider weaknessScore to adjust status:
+ * - Very low weaknessScore + strong scores → more often "known"
+ * - High weaknessScore → more often "learning" or "review"
  */
 function determineStatus(
   attempts: number,
-  bestScore?: number
+  bestScore?: number,
+  weaknessScore?: number
 ): 'new' | 'learning' | 'review' | 'known' {
   if (attempts === 0) return 'new';
   if (bestScore === undefined) return 'new';
+  
+  // Adjust thresholds based on weaknessScore if provided
+  if (weaknessScore !== undefined) {
+    // High weakness (>= 50) makes it harder to reach "known" status
+    if (weaknessScore >= 50) {
+      if (bestScore >= 90) return 'known'; // Higher bar for "known"
+      if (bestScore >= 65) return 'learning';
+      return 'review';
+    }
+    // Low weakness (< 30) makes it easier to reach "known" status
+    if (weaknessScore < 30) {
+      if (bestScore >= 80) return 'known'; // Lower bar for "known"
+      if (bestScore >= 55) return 'learning';
+      return 'review';
+    }
+  }
+  
+  // Default logic (unchanged for backward compatibility)
   if (bestScore >= 85) return 'known';
   if (bestScore >= 60) return 'learning';
   return 'review';
@@ -189,6 +212,51 @@ export function buildWordProgress(
     const avgAccuracyScore =
       accuracyScores.reduce((sum, s) => sum + s, 0) / accuracyScores.length;
 
+    // Compute weaknessScore
+    let weaknessScore = 0;
+    
+    // If avgOverallScore < 70 → +30
+    if (avgOverallScore < 70) {
+      weaknessScore += 30;
+    }
+    
+    // If best overallScore < 80 → +10
+    if (bestOverallScore < 80) {
+      weaknessScore += 10;
+    }
+    
+    // Add +10 for each incorrect MCQ attempt (isCorrect === false)
+    const incorrectMCQAttempts = attempts.filter(
+      (a) => a.practiceMode === 'text-mcq' || a.practiceMode === 'listening-mcq'
+        ? a.isCorrect === false
+        : false
+    ).length;
+    weaknessScore += incorrectMCQAttempts * 10;
+    
+    // Add +10 if there is at least one selfRating of 'dont_know'
+    const hasDontKnowRating = attempts.some(
+      (a) => a.practiceMode === 'self-rating' && a.selfRating === 'dont_know'
+    );
+    if (hasDontKnowRating) {
+      weaknessScore += 10;
+    }
+    
+    // Add +10 if avg overallScore for pronunciation attempts < 70
+    const pronunciationAttempts = attempts.filter(
+      (a) => a.practiceMode === 'pronunciation' || a.practiceMode === undefined
+    );
+    if (pronunciationAttempts.length > 0) {
+      const pronunciationScores = pronunciationAttempts.map((a) => a.overallScore);
+      const avgPronunciationScore =
+        pronunciationScores.reduce((sum, s) => sum + s, 0) / pronunciationScores.length;
+      if (avgPronunciationScore < 70) {
+        weaknessScore += 10;
+      }
+    }
+    
+    // Clamp to 0-100
+    weaknessScore = Math.max(0, Math.min(100, weaknessScore));
+
     perWord[wordId] = {
       userId: firstAttempt.userId,
       wordId,
@@ -199,9 +267,10 @@ export function buildWordProgress(
       bestOverallScore,
       avgOverallScore,
       avgAccuracyScore,
-      status: determineStatus(attempts.length, bestOverallScore),
+      status: determineStatus(attempts.length, bestOverallScore, weaknessScore),
       difficulty: firstAttempt.difficulty,
       category: firstAttempt.category,
+      weaknessScore,
     };
   }
 
@@ -220,6 +289,24 @@ export function buildWordProgress(
   }
 
   return { perWord, globalCounts };
+}
+
+/**
+ * Gets word IDs that are considered "weak" based on weaknessScore.
+ * 
+ * Used by the Practice Words UI to implement "Weak words only" filter mode.
+ * 
+ * @param wordProgress - Record of word progress by wordId
+ * @param weaknessThreshold - Minimum weaknessScore to be considered weak (default: 50)
+ * @returns Array of wordIds that have weaknessScore >= threshold
+ */
+export function getWeakWordIds(
+  wordProgress: Record<WordId, WordProgress>,
+  weaknessThreshold: number = 50
+): WordId[] {
+  return Object.values(wordProgress)
+    .filter(wp => wp.weaknessScore >= weaknessThreshold)
+    .map(wp => wp.wordId);
 }
 
 /**
