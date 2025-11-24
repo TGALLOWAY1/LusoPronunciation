@@ -6,6 +6,12 @@ interface ScoringPanelProps {
   variant?: 'card' | 'banner';
 }
 
+export interface ScoreTheme {
+  bg: string;
+  text: string;
+  border: string;
+}
+
 /**
  * Metric descriptions for tooltips.
  */
@@ -248,14 +254,39 @@ function AllMetricsInfoIcon({ prosodyAvailable = false }: { prosodyAvailable?: b
 }
 
 /**
- * Gets the color class for a score.
- * Uses green accent color for high scores to make it look rewarding.
+ * Gets the color theme for a score.
+ * Provides background, text, and border classes for consistent styling.
  */
-function getScoreColor(score: number): string {
-  if (score >= 90) return 'bg-emerald-500 dark:bg-emerald-600';
-  if (score >= 80) return 'bg-sky-500 dark:bg-sky-600';
-  if (score >= 70) return 'bg-amber-500 dark:bg-amber-600';
-  return 'bg-rose-500 dark:bg-rose-600';
+export function getScoreColor(score: number): ScoreTheme {
+  if (score >= 90) {
+    return {
+      bg: 'bg-emerald-500 dark:bg-emerald-600',
+      text: 'text-emerald-800 dark:text-emerald-100',
+      border: 'border-emerald-300 dark:border-emerald-700',
+    };
+  }
+
+  if (score >= 80) {
+    return {
+      bg: 'bg-sky-500 dark:bg-sky-600',
+      text: 'text-sky-800 dark:text-sky-100',
+      border: 'border-sky-300 dark:border-sky-700',
+    };
+  }
+
+  if (score >= 70) {
+    return {
+      bg: 'bg-amber-500 dark:bg-amber-600',
+      text: 'text-amber-800 dark:text-amber-100',
+      border: 'border-amber-300 dark:border-amber-700',
+    };
+  }
+
+  return {
+    bg: 'bg-rose-500 dark:bg-rose-600',
+    text: 'text-rose-800 dark:text-rose-100',
+    border: 'border-rose-300 dark:border-rose-700',
+  };
 }
 
 /**
@@ -284,6 +315,12 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
   const completeness = currentAttempt.completeness !== undefined && currentAttempt.completeness !== null ? Math.round(currentAttempt.completeness) : null;
   const prosody = currentAttempt.prosody !== undefined && currentAttempt.prosody !== null ? Math.round(currentAttempt.prosody) : null;
 
+  const overallTheme = getScoreColor(overall);
+  const accuracyTheme = getScoreColor(accuracy);
+  const fluencyTheme = fluency !== null ? getScoreColor(fluency) : null;
+  const completenessTheme = completeness !== null ? getScoreColor(completeness) : null;
+  const prosodyTheme = prosody !== null ? getScoreColor(prosody) : null;
+
   // Render horizontal banner variant
   if (variant === 'banner') {
     return (
@@ -300,7 +337,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden border-2 border-gray-400 dark:border-gray-500 shadow-sm">
               <div
-                className={`h-full transition-all duration-500 ${getScoreColor(overall)}`}
+                className={`h-full transition-all duration-500 ${overallTheme.bg}`}
                 style={{ width: `${overall}%` }}
               />
             </div>
@@ -314,7 +351,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
               <div
-                className={`h-full transition-all duration-500 ${getScoreColor(accuracy)}`}
+                className={`h-full transition-all duration-500 ${accuracyTheme.bg}`}
                 style={{ width: `${accuracy}%` }}
               />
             </div>
@@ -329,7 +366,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                 <div
-                  className={`h-full transition-all duration-500 ${getScoreColor(fluency)}`}
+                  className={`h-full transition-all duration-500 ${fluencyTheme?.bg ?? ''}`}
                   style={{ width: `${fluency}%` }}
                 />
               </div>
@@ -353,7 +390,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                 <div
-                  className={`h-full transition-all duration-500 ${getScoreColor(completeness)}`}
+                  className={`h-full transition-all duration-500 ${completenessTheme?.bg ?? ''}`}
                   style={{ width: `${completeness}%` }}
                 />
               </div>
@@ -408,7 +445,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
           <div
-            className={`h-full transition-all duration-500 ${getScoreColor(overall)}`}
+            className={`h-full transition-all duration-500 ${overallTheme.bg}`}
             style={{ width: `${overall}%` }}
           />
         </div>
@@ -426,7 +463,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
             <div
-              className={`h-full transition-all duration-500 ${getScoreColor(accuracy)}`}
+              className={`h-full transition-all duration-500 ${accuracyTheme.bg}`}
               style={{ width: `${accuracy}%` }}
             />
           </div>
@@ -443,7 +480,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${getScoreColor(fluency)}`}
+                className={`h-full transition-all duration-500 ${fluencyTheme?.bg ?? ''}`}
                 style={{ width: `${fluency}%` }}
               />
             </div>
@@ -461,7 +498,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${getScoreColor(completeness)}`}
+                className={`h-full transition-all duration-500 ${completenessTheme?.bg ?? ''}`}
                 style={{ width: `${completeness}%` }}
               />
             </div>
@@ -479,7 +516,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${getScoreColor(prosody)}`}
+                className={`h-full transition-all duration-500 ${prosodyTheme?.bg ?? ''}`}
                 style={{ width: `${prosody}%` }}
               />
             </div>

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
+import InteractiveSentenceDisplay from '@/components/practice/InteractiveSentenceDisplay';
 import {
   SentenceAudioControls,
-  InteractiveWordStrip,
   PhonemePanel,
   type NormalizedWordFeedback,
   type NormalizedAudioVariant,
@@ -178,11 +178,40 @@ export default function PronunciationFeedbackPanel({
     setActiveWordType(null);
   };
 
+  const handleInteractiveWordClick = (wordData: any, index: number) => {
+    const normalizedWord: NormalizedWordFeedback | undefined =
+      wordData?.normalizedWord ?? words?.[index];
+
+    if (normalizedWord) {
+      handleWordSelected(normalizedWord);
+    }
+  };
+
   // Note: Practice word handler removed - practice functionality will be on
   // dedicated Practice Words page. See BACKLOG.md for future implementation.
 
   // Check if we have attempts
   const hasAttempts = attempts && attempts.length > 0 && currentAttempt !== null;
+
+  const tokenWordScores = useMemo(() => {
+    const tokens = sentenceText.trim().split(/\s+/);
+    return tokens.map((token, index) => {
+      const normalizedWord =
+        words?.find((w) => {
+          if (w.index !== undefined) {
+            return w.index === index;
+          }
+          const parsedIndex = Number.isFinite(Number(w.id)) ? Number(w.id) : undefined;
+          return parsedIndex === index;
+        }) ?? (words ? words[index] : undefined);
+
+      return {
+        word: token,
+        overallScore: normalizedWord?.score ?? normalizedWord?.accuracyScore ?? null,
+        normalizedWord,
+      };
+    });
+  }, [sentenceText, words]);
 
   return (
     <div className="space-y-6">
@@ -205,24 +234,20 @@ export default function PronunciationFeedbackPanel({
                 </span>
               </div>
             )}
-            
-            {/* Hero Portuguese sentence - large, bold, centered, clickable */}
-            <div className="text-center">
-              <p
-                onClick={() => translationText && setShowEnglish(!showEnglish)}
-                className={`text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 ${
-                  translationText 
-                    ? 'cursor-pointer hover:opacity-80 transition-opacity border-b-2 border-dashed border-gray-300 dark:border-gray-600 pb-2' 
-                    : ''
-                }`}
-                aria-label={translationText ? (showEnglish ? 'Hide English translation' : 'Show English translation') : undefined}
-              >
-                {sentenceText}
-              </p>
-              
-              {/* English translation - shown below when toggled */}
+
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-wrap items-center justify-center gap-3 w-full">
+                <InteractiveSentenceDisplay
+                  sentenceText={sentenceText}
+                  wordScores={tokenWordScores}
+                  onWordClick={handleInteractiveWordClick}
+                  onToggleTranslation={() => translationText && setShowEnglish((prev) => !prev)}
+                  isTranslationVisible={showEnglish}
+                />
+              </div>
+
               {translationText && showEnglish && (
-                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 italic mt-3">
+                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 italic mt-1 text-center">
                   {translationText}
                 </p>
               )}
@@ -249,20 +274,6 @@ export default function PronunciationFeedbackPanel({
             Record this sentence to see your pronunciation scores and word-by-word breakdown.
           </p>
         </div>
-      )}
-
-      {/* Interactive word strip - show whenever we have word data */}
-      {words && words.length > 0 && (
-        <InteractiveWordStrip
-          words={words}
-          wordAudios={wordAudios}
-          activeWordIndex={activeWordIndex}
-          activeWordType={activeWordType}
-          audioRef={wordAudioRef}
-          onWordSelected={handleWordSelected}
-          onWordStart={handleWordStart}
-          onWordStop={handleWordStop}
-        />
       )}
 
       {/* Sound Details / Phoneme panel - always shown with empty state when no word selected */}
