@@ -93,10 +93,6 @@ export default function SentenceAudioControls({
 
   return (
     <div className="space-y-3">
-      <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-        Compare Pronunciations
-      </h3>
-      
       <div className="flex gap-3">
         {nativeAudio ? (
           <button

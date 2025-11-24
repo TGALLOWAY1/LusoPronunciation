@@ -375,7 +375,7 @@ export default function InteractiveWordStrip({
                     : `Click to see details for "${word.text}"`
                 }
               >
-                <WordScoreChip word={word} />
+                <WordScoreChip word={{ ...word, score: word.score ?? 0 }} />
               </button>
               
               {/* Audio control buttons - only show native audio button if available */}

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
+    "lucide-react": "^0.554.0",
     "microsoft-cognitiveservices-speech-sdk": "^1.47.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

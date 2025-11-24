@@ -1,5 +1,13 @@
 import { ReactNode } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import {
+  LayoutDashboard,
+  AlignLeft,
+  CaseSensitive,
+  Layers,
+  History as HistoryIcon,
+  BarChart3,
+} from 'lucide-react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
@@ -36,7 +44,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 location.pathname === '/' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
               }`}
             >
-              📊 Dashboard
+              <span className="flex items-center gap-2">
+                <LayoutDashboard size={18} />
+                Dashboard
+              </span>
             </Link>
             <Link
               to="/practice/sentence"
@@ -44,7 +55,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 location.pathname === '/practice/sentence' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
               }`}
             >
-              💬 Sentences
+              <span className="flex items-center gap-2">
+                <AlignLeft size={18} />
+                Sentences
+              </span>
             </Link>
             <Link
               to="/practice/word"
@@ -52,7 +66,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 location.pathname === '/practice/word' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
               }`}
             >
-              📝 Words
+              <span className="flex items-center gap-2">
+                <CaseSensitive size={18} />
+                Words
+              </span>
             </Link>
             <Link
               to="/review"
@@ -60,7 +77,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 location.pathname === '/review' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
               }`}
             >
-              🔄 Review
+              <span className="flex items-center gap-2">
+                <Layers size={18} />
+                Review
+              </span>
             </Link>
             <Link
               to="/sessions"
@@ -68,7 +88,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 location.pathname === '/sessions' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
               }`}
             >
-              📅 Sessions
+              <span className="flex items-center gap-2">
+                <HistoryIcon size={18} />
+                History
+              </span>
             </Link>
             {/* Dev-only navigation items */}
             {isDevMode && (
@@ -78,7 +101,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
                   location.pathname === '/dev/analytics' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
                 }`}
               >
-                📈 Dev Analytics
+                <span className="flex items-center gap-2">
+                  <BarChart3 size={18} />
+                  Dev Analytics
+                </span>
               </Link>
             )}
           </div>

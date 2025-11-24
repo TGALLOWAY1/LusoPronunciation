@@ -1,196 +1,122 @@
-# Feature 6: Pronunciation Lab Enhancements and Word Practice Dataset
+# Feat 17: UI Fixes and Layout Redesign
 
-**Single-line summary:** Implements synthetic word-level practice dataset generation, responsive chart improvements, phoneme metadata integration, keyboard navigation, and enhanced Pronunciation Lab UX for the development exploration page.
+## Overview
+This PR implements a comprehensive redesign of the Sentence Practice page layout and UI components, focusing on improved visual hierarchy, better user experience, and a more modern, premium aesthetic.
 
-## 🎯 Overview
+## Major Changes
 
-This PR implements comprehensive enhancements to the Pronunciation Lab development page, transforming it from a basic fixture exploration tool into a fully-featured pronunciation practice interface. The changes include synthetic word-level practice dataset generation, significant UX improvements, phoneme metadata integration, and enhanced interactivity.
+### 1. Layout Restructure
+- **Converted from two-column grid to single centered column**
+  - Changed from `grid grid-cols-3` to `max-w-6xl mx-auto` single column layout
+  - Content now stacks vertically with proper spacing
+  - Sidebar content (Current Score, Score History) moved into main column below sentence area
+  - Increased container width from `max-w-4xl` to `max-w-6xl` for better use of horizontal space
 
-## ✨ Key Features
+### 2. Premium Audio Buttons
+- **Created new premium circular button components**
+  - `PremiumPlayButton`: Circular play/pause button with blue gradient, shadows, and micro-interactions
+  - `PremiumRecordButton`: Circular record button with red gradient and pulsing ring animation when recording
+  - Both buttons feature:
+    - Soft, layered box-shadows for depth
+    - Hover: scale up and brighten
+    - Active: scale down effect
+    - Proper icon sizing and centering
+  - Replaced all existing play/record buttons across the app
 
-### 📊 Synthetic Word-Level Practice Dataset
+### 3. Horizontal Score Banner
+- **Redesigned score display as horizontal banner**
+  - Appears above sentence after submission
+  - Four progress bars in a row: Overall, Accuracy, Fluency, Completeness
+  - Overall score uses prominent styling (thicker border, larger height, shadow)
+  - Info icon moved to banner (top-right) with click-to-toggle tooltip
+  - Removed duplicate vertical card panel
+  - All metrics use consistent progress bar design
 
-**New Script: `buildSyntheticWordPracticeData.ts`**
-- Generates unified word-level practice dataset by combining:
-  - Sentence text and metadata from `sentences.json`
-  - Word difficulty and dictionary entries from `words.json`
-  - Azure pronunciation assessment data from `phrase_*_JSON.json` files
-- Extracts word-level timing information (start/end times in milliseconds)
-- Maps pronunciation scores and error types per word
-- Creates normalized word matching for dictionary lookup
+### 4. Hero Sentence Display
+- **Large, prominent Portuguese sentence**
+  - Increased to `text-4xl md:text-5xl`, bold, centered
+  - Subtle dashed underline indicates clickability
+  - **Click-to-reveal translation**: Removed "Show English" button, sentence itself toggles translation
+  - English translation appears below in smaller, lighter font when toggled
+  - Difficulty badge positioned above sentence, centered
 
-**Generated Dataset: `word_practice_synthetic.json`**
-- 59 word entries across 10 test phrases
-- Each entry includes:
-  - Phrase context (sentence text, English translation)
-  - Word-level timing data
-  - Pronunciation scores (accuracy, overall)
-  - Error types from Azure assessment
-  - Dictionary matches with difficulty ratings
+### 5. Dynamic Recording Interface
+- **Replaced separate Mic/Submit/Reset buttons with multi-state interface**
+  - **State 1 (Ready)**: Single large red circular mic button
+  - **State 2 (Recording)**: Same button with stop icon and pulsing animation
+  - **State 3 (Review)**: Two buttons side-by-side
+    - Left: Grey reset button with trash icon
+    - Right: Large green submit button with checkmark icon and "Submit" text
+  - Smooth transitions between states
 
-**New Types & Loader:**
-- `src/types/wordPractice.ts` - TypeScript interfaces for word practice data
-- `src/mock/wordPracticeSynthetic.ts` - Data loader with helper functions
+### 6. Audio Playback Controls Redesign
+- **Visual hierarchy for Native vs User audio**
+  - **Native Sentence**: Primary blue button with larger icon, prominent styling
+  - **Your Recording**: Secondary outline style button, less prominent
+  - Both show pause icon when playing with darkened background
+  - Improved hover and active states
 
-### 🎨 Pronunciation Lab UX Enhancements
+### 7. Filters Section Updates
+- **Sentence counter moved to Filters section**
+  - Inline with "Filters" heading, right-aligned
+  - Shows "X of Y" format
+  - Better integration with filter controls
 
-**Responsive Chart Improvements:**
-- Made "Performance by Difficulty" chart fully responsive using SVG `viewBox`
-- Chart now expands to fill available horizontal width (`w-full`)
-- Fixed axis labels to stay within chart boundaries
-- Improved hover interactions (no cursor flashing)
-- Enhanced click targets for phrase selection from chart
+### 8. Score History Visibility
+- **Moved Score History to History tab only**
+  - No longer visible on Practice tab
+  - Appears below attempt history in History tab
 
-**Keyboard Navigation:**
-- Added Arrow Up/Down key navigation for phrase selection
-- Only activates when a phrase is already selected
-- Prevents navigation when focus is in text inputs/textarea
-- No wrapping behavior (stops at first/last phrase)
+### 9. History Page Fixes
+- **Audio persistence**
+  - Recordings now persist using Base64 data URLs in localStorage
+  - Audio playback works after page refresh
+  - Word-by-word breakdown displays for selected attempts
+  - Selected attempt recording playback works correctly
 
-**UI Cleanup:**
-- Removed "How to use this lab" instructional section
-- Streamlined interface for cleaner, more focused experience
+### 10. Scoring Panel Improvements
+- **Consolidated info icons**
+  - Single info icon at top-right of banner
+  - Click-to-toggle tooltip that stays open for reading
+  - Viewport-aware positioning (above/below, left/right)
+  - Prosody availability note for pt-BR locale
+  - Improved sizing and text wrapping
 
-**Chart Components:**
-- `PhraseDifficultyPerformancePlot` - Scatter plot of phrases by difficulty vs score
-- `DifficultyScoreBarChart` - Average scores by difficulty level
-- `PhraseTrendSparkline` - Progress trend visualization (simulated)
+### 11. Bug Fixes
+- Fixed `import.meta.env` usage in server-side code (safe checks for CommonJS)
+- Fixed Prosody metric display (now shows 0 scores correctly)
+- Enabled `EnableProsodyAssessment` in Azure config
+- Removed latency display element
 
-### 🔤 Phoneme Metadata Integration
+## Technical Details
 
-**New Metadata File: `data/phoneme_metadata.json`**
-- Comprehensive metadata for common Brazilian Portuguese phonemes
-- Includes IPA symbols, descriptions, Portuguese examples, and English equivalents
-- Covers consonants and vowels with pronunciation guidance
+### New Components
+- `src/components/common/PremiumPlayButton.tsx`
+- `src/components/common/PremiumRecordButton.tsx`
 
-**Enhanced PhonemePanel:**
-- Enriched tooltips with phonetic descriptions
-- Added "How to pronounce these sounds" section with detailed examples
-- Displays Portuguese and English example words for each phoneme
-- Graceful fallback for phonemes without metadata
+### Modified Components
+- `src/components/practice/LivePracticeSection.tsx` - Dynamic recording interface
+- `src/components/practice/FilterControls.tsx` - Added sentence counter
+- `src/components/pronunciation/ScoringPanel.tsx` - Banner variant, info icon
+- `src/components/pronunciation/PronunciationFeedbackPanel.tsx` - Hero sentence display
+- `src/components/pronunciation/SentenceAudioControls.tsx` - Visual hierarchy
+- `src/pages/SentencePractice.tsx` - Layout restructure
+- `src/hooks/useLivePronunciationPractice.ts` - Audio persistence
+- `src/lib/types.ts` - Added `recordingDataUrl` field
+- `src/styles/index.css` - Added pulse-ring animation
 
-**New Utility: `src/lib/phonemeMetadata.ts`**
-- Loader for phoneme metadata with Unicode normalization
-- Helper function for metadata lookup
+## Testing Notes
+- Test recording workflow: Ready → Recording → Review states
+- Verify audio playback works in History tab after page refresh
+- Check score banner appears after submission
+- Test click-to-reveal translation on Portuguese sentence
+- Verify info icon tooltip positioning on different screen sizes
+- Confirm Score History only appears in History tab
 
-### 🎛️ Interactive Components
-
-**SentenceAudioControls:**
-- Native vs user audio playback comparison
-- Visual feedback for active playback state
-- Handles missing native audio gracefully
-
-**InteractiveWordStrip:**
-- Word-by-word audio playback (native and user)
-- Click to select words for detailed phoneme analysis
-- Coordinated audio playback (only one source plays at a time)
-
-**PhonemePanel:**
-- Detailed phoneme analysis for selected words
-- Color-coded phoneme chips by score
-- Problem phoneme highlighting
-- Pronunciation tips and metadata display
-
-**PhraseScoreOverview:**
-- Overall pronunciation score display
-- Metric breakdown (Accuracy, Fluency, Completeness, Prosody)
-- Hover tooltips explaining each metric
-- Progress trend visualization
-
-## 🛠️ Technical Improvements
-
-### Build & Dependencies
-- Added `tsx` dependency for TypeScript script execution
-- New npm script: `generate:word-practice` for dataset generation
-
-### Code Quality
-- All TypeScript compilation passes
-- Zero linting errors
-- Proper cleanup of event listeners
-- Memoized callbacks with `useCallback` for performance
-
-### Architecture
-- Centralized audio state management in `PronunciationFeedbackPanel`
-- Coordinated playback prevents overlapping audio
-- Proper React hooks usage with dependency arrays
-- Type-safe interfaces throughout
-
-## 📝 Documentation
-
-**Updated Files:**
-- `BACKLOG.md` - Added future work items:
-  - Practice Words page requirements
-  - Phoneme metadata review tasks
-  - Word-by-word data generation notes
-  - Multiple native voice support planning
-
-## 🧪 Testing & Validation
-
-### Dataset Generation
-- ✅ All 10 Azure JSON files processed successfully
-- ✅ 59 word entries generated with complete data
-- ✅ 100% of entries have timing information
-- ✅ 5 entries matched to words.json dictionary
-- ✅ All entries have pronunciation scores
-
-### UI Functionality
-- ✅ Chart displays correctly at all screen sizes
-- ✅ Keyboard navigation works with proper input protection
-- ✅ Audio playback coordination prevents overlapping
-- ✅ Phoneme metadata displays correctly
-- ✅ All interactive elements respond as expected
-
-### Browser Compatibility
-- ✅ Responsive design works on mobile and desktop
-- ✅ Dark mode support throughout
-- ✅ Accessible keyboard navigation
-- ✅ Proper ARIA labels and roles
-
-## 📦 Files Changed
-
-### New Files
-- `scripts/buildSyntheticWordPracticeData.ts` - Dataset generation script
-- `data/word_practice_synthetic.json` - Generated word practice dataset
-- `data/phoneme_metadata.json` - Phoneme metadata definitions
-- `src/types/wordPractice.ts` - Word practice type definitions
-- `src/lib/phonemeMetadata.ts` - Phoneme metadata loader
-- `src/mock/wordPracticeSynthetic.ts` - Dataset loader module
-
-### Modified Files
-- `src/components/pronunciation/PhraseDifficultyPerformancePlot.tsx` - Responsive chart
-- `src/components/pronunciation/PhonemePanel.tsx` - Metadata integration
-- `src/components/pronunciation/PronunciationFeedbackPanel.tsx` - UI cleanup
-- `src/pages/dev/pronunciation-fixtures.tsx` - Keyboard navigation
-- `package.json` - Added tsx dependency and script
-- `BACKLOG.md` - Future work documentation
-
-## 🚀 Next Steps
-
-This PR establishes the foundation for:
-1. **Practice Words Page** - Dedicated page for word-by-word practice using the synthetic dataset
-2. **Real-time Pronunciation Assessment** - Integration with Azure Speech API using the established data structures
-3. **Multi-attempt Tracking** - Extending the trend visualization with real user data
-4. **Phoneme Metadata Expansion** - Review and extend metadata to cover all Azure phoneme symbols
-
-## 🔗 Related Issues
-
-- Implements word-by-word pronunciation assessment UI/UX
-- Establishes data pipeline for word-level practice
-- Enhances Pronunciation Lab development page
-
-## ✅ Checklist
-
-- [x] All TypeScript compilation passes
-- [x] All linting checks pass
-- [x] Dataset generation script works correctly
-- [x] UI components render properly
-- [x] Keyboard navigation functions correctly
-- [x] Audio playback coordination works
-- [x] Responsive design verified
-- [x] Dark mode support verified
-- [x] Documentation updated
-
----
-
-**Note:** This PR focuses on the development/exploration page (`/dev/pronunciation-fixtures`). The components and data structures created here will be integrated into the main practice pages in future PRs.
-
+## Visual Improvements
+- More modern, premium aesthetic
+- Better visual hierarchy
+- Improved spacing and alignment
+- Consistent design language
+- Enhanced micro-interactions
+- Better use of screen real estate

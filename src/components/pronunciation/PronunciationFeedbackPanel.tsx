@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
+import InteractiveSentenceDisplay from '@/components/practice/InteractiveSentenceDisplay';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
   SentenceAudioControls,
-  InteractiveWordStrip,
   PhonemePanel,
   type NormalizedWordFeedback,
   type NormalizedAudioVariant,
@@ -49,6 +50,7 @@ export interface PronunciationFeedbackPanelProps {
   title?: string; // e.g. "Pronunciation Lab" vs "Practice Feedback"
   showDevControls?: boolean; // raw JSON, extra toggles, etc.
   hideHeaderContent?: boolean; // If true, hide sentence text, translation, difficulty, and sentence audio (for use in Practice where these are shown above)
+  showDifficultyBadge?: boolean;
 }
 
 /**
@@ -72,6 +74,7 @@ export default function PronunciationFeedbackPanel({
   title,
   showDevControls = false,
   hideHeaderContent = false,
+  showDifficultyBadge = true,
 }: PronunciationFeedbackPanelProps) {
   const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback | null>(null);
   const [showEnglish, setShowEnglish] = useState(false);
@@ -176,11 +179,40 @@ export default function PronunciationFeedbackPanel({
     setActiveWordType(null);
   };
 
+  const handleInteractiveWordClick = (wordData: any, index: number) => {
+    const normalizedWord: NormalizedWordFeedback | undefined =
+      wordData?.normalizedWord ?? words?.[index];
+
+    if (normalizedWord) {
+      handleWordSelected(normalizedWord);
+    }
+  };
+
   // Note: Practice word handler removed - practice functionality will be on
   // dedicated Practice Words page. See BACKLOG.md for future implementation.
 
   // Check if we have attempts
   const hasAttempts = attempts && attempts.length > 0 && currentAttempt !== null;
+
+  const tokenWordScores = useMemo(() => {
+    const tokens = sentenceText.trim().split(/\s+/);
+    return tokens.map((token, index) => {
+      const normalizedWord =
+        words?.find((w) => {
+          if (w.index !== undefined) {
+            return w.index === index;
+          }
+          const parsedIndex = Number.isFinite(Number(w.id)) ? Number(w.id) : undefined;
+          return parsedIndex === index;
+        }) ?? (words ? words[index] : undefined);
+
+      return {
+        word: token,
+        overallScore: normalizedWord?.score ?? normalizedWord?.accuracyScore ?? null,
+        normalizedWord,
+      };
+    });
+  }, [sentenceText, words]);
 
   return (
     <div className="space-y-6">
@@ -196,31 +228,39 @@ export default function PronunciationFeedbackPanel({
         <>
           <div className="mb-6">
             {/* Difficulty badge - positioned above sentence */}
-            {difficulty !== undefined && (
+            {showDifficultyBadge && difficulty !== undefined && (
               <div className="mb-4 flex justify-center">
                 <span className={`badge ${getDifficultyColor(difficulty)}`}>
                   Difficulty {difficulty}
                 </span>
               </div>
             )}
-            
-            {/* Hero Portuguese sentence - large, bold, centered, clickable */}
-            <div className="text-center">
-              <p
-                onClick={() => translationText && setShowEnglish(!showEnglish)}
-                className={`text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 ${
-                  translationText 
-                    ? 'cursor-pointer hover:opacity-80 transition-opacity border-b-2 border-dashed border-gray-300 dark:border-gray-600 pb-2' 
-                    : ''
-                }`}
-                aria-label={translationText ? (showEnglish ? 'Hide English translation' : 'Show English translation') : undefined}
-              >
-                {sentenceText}
-              </p>
-              
-              {/* English translation - shown below when toggled */}
+
+            <div className="flex flex-col items-center gap-y-2">
+              <InteractiveSentenceDisplay
+                sentenceText={sentenceText}
+                wordScores={tokenWordScores}
+                onWordClick={handleInteractiveWordClick}
+              />
+
+              {translationText && (
+                <button
+                  type="button"
+                  onClick={() => setShowEnglish((prev) => !prev)}
+                  className="text-gray-300 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 cursor-pointer transition-colors"
+                  aria-pressed={showEnglish}
+                  aria-label={showEnglish ? 'Hide translation' : 'Show translation'}
+                >
+                  {showEnglish ? (
+                    <ChevronUp size={20} className="w-5 h-5" />
+                  ) : (
+                    <ChevronDown size={20} className="w-5 h-5" />
+                  )}
+                </button>
+              )}
+
               {translationText && showEnglish && (
-                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 italic mt-3">
+                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 italic text-center">
                   {translationText}
                 </p>
               )}
@@ -247,20 +287,6 @@ export default function PronunciationFeedbackPanel({
             Record this sentence to see your pronunciation scores and word-by-word breakdown.
           </p>
         </div>
-      )}
-
-      {/* Interactive word strip - show whenever we have word data */}
-      {words && words.length > 0 && (
-        <InteractiveWordStrip
-          words={words}
-          wordAudios={wordAudios}
-          activeWordIndex={activeWordIndex}
-          activeWordType={activeWordType}
-          audioRef={wordAudioRef}
-          onWordSelected={handleWordSelected}
-          onWordStart={handleWordStart}
-          onWordStop={handleWordStop}
-        />
       )}
 
       {/* Sound Details / Phoneme panel - always shown with empty state when no word selected */}

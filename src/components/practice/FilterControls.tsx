@@ -59,7 +59,7 @@ function FilterControls({
         </h3>
         {currentIndex !== undefined && totalCount !== undefined && (
           <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            {currentIndex + 1} of {totalCount}
+            Sentence {currentIndex + 1} of {totalCount}
           </span>
         )}
       </div>
