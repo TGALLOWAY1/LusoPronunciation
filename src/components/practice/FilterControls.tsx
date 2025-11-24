@@ -9,6 +9,8 @@ interface FilterControlsProps {
   selectedDifficulties: Difficulty[];
   onCategoryChange: (categoryIds: string[]) => void;
   onDifficultyChange: (difficulties: Difficulty[]) => void;
+  currentIndex?: number;
+  totalCount?: number;
 }
 
 /**
@@ -27,6 +29,8 @@ function FilterControls({
   selectedDifficulties,
   onCategoryChange,
   onDifficultyChange,
+  currentIndex,
+  totalCount,
 }: FilterControlsProps) {
   const difficulties = getDifficultyOptions();
 
@@ -49,10 +53,15 @@ function FilterControls({
   return (
     <div className="card card-compact mb-6 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
       {/* Filters section header */}
-      <div className="mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
+      <div className="mb-4 pb-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
         <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
           Filters
         </h3>
+        {currentIndex !== undefined && totalCount !== undefined && (
+          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            {currentIndex + 1} of {totalCount}
+          </span>
+        )}
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">

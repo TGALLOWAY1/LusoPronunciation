@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSettingsStore } from '@/state/settingsStore';
 import { getAudioUrlForWordSync } from '@/utils/audioRouting';
+import PremiumPlayButton from '@/components/common/PremiumPlayButton';
 
 interface WordAudioButtonProps {
   wordId: string;
@@ -106,37 +107,30 @@ export default function WordAudioButton({
     }
   };
 
-  const icon = isPlaying ? '⏸' : '▶';
   const displayLabel = label || 'Play';
 
   if (compact) {
     return (
-      <button
+      <PremiumPlayButton
+        isPlaying={isPlaying}
         onClick={handlePlay}
-        className={`w-8 h-8 rounded-full flex items-center justify-center text-xs transition-all ${
-          isPlaying
-            ? 'bg-primary-500 text-white shadow-lg animate-pulse'
-            : 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-900/50'
-        } ${className}`}
-        title={`Play pronunciation`}
-        aria-label={`Play pronunciation of word`}
-      >
-        {icon}
-      </button>
+        size="sm"
+        className={className}
+      />
     );
   }
 
   return (
-    <button
-      onClick={handlePlay}
-      className={`btn btn-sm ${
-        isPlaying ? 'btn-primary' : 'btn-outline-primary'
-      } ${className}`}
-      title={`Play pronunciation`}
-    >
-      <span className="mr-2">{icon}</span>
-      {displayLabel}
-    </button>
+    <div className={`flex items-center gap-3 ${className}`}>
+      <PremiumPlayButton
+        isPlaying={isPlaying}
+        onClick={handlePlay}
+        size="md"
+      />
+      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        {displayLabel}
+      </span>
+    </div>
   );
 }
 

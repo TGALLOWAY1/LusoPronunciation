@@ -142,6 +142,22 @@ export function normalizeAzurePronunciationResponse(
     pronunciationAssessmentObj.pronScore ??
     bestHypothesis.PronScore ?? 
     bestHypothesis.pronScore;
+
+  // Debug logging in development to diagnose missing ProsodyScore
+  if (typeof import.meta !== 'undefined' && import.meta.env?.DEV && overallProsody === undefined) {
+    console.warn('[azurePronunciationNormalizer] ProsodyScore not found in Azure response:', {
+      'pronunciationAssessmentObj keys': Object.keys(pronunciationAssessmentObj),
+      'bestHypothesis keys': Object.keys(bestHypothesis),
+      'pronunciationAssessmentObj.ProsodyScore': pronunciationAssessmentObj.ProsodyScore,
+      'pronunciationAssessmentObj.prosodyScore': pronunciationAssessmentObj.prosodyScore,
+      'bestHypothesis.ProsodyScore': bestHypothesis.ProsodyScore,
+      'bestHypothesis.prosodyScore': bestHypothesis.prosodyScore,
+      'bestHypothesis.PronScore': bestHypothesis.PronScore,
+      'bestHypothesis.AccuracyScore': bestHypothesis.AccuracyScore,
+      'bestHypothesis.FluencyScore': bestHypothesis.FluencyScore,
+      'bestHypothesis.CompletenessScore': bestHypothesis.CompletenessScore,
+    });
+  }
   
   // Extract word-level scores
   const words = bestHypothesis.Words || bestHypothesis.words || [];

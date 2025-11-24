@@ -11,6 +11,7 @@ import { useSettingsStore } from '@/state/settingsStore';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import { PhonemePanel } from './PhonemePanel';
+import PremiumRecordButton from '@/components/common/PremiumRecordButton';
 
 interface WordCardProps {
   word: Word;
@@ -281,24 +282,19 @@ function WordCard({ word, sessionId, onKnowIt, onReviewLater }: WordCardProps) {
 
       {/* Recording controls */}
       <div className="mb-4">
-        <button
-          onClick={handleRecordToggle}
-          disabled={isSubmitting}
-          className={`btn btn-md ${
-            isRecording
-              ? 'btn-danger'
-              : 'btn-primary'
-          } w-full`}
-        >
-          {isRecording ? (
-            <>
-              <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-2 animate-pulse"></span>
-              Stop & Score
-            </>
-          ) : (
-            'Record Pronunciation'
+        <div className="flex items-center gap-4">
+          <PremiumRecordButton
+            isRecording={isRecording}
+            onClick={handleRecordToggle}
+            disabled={isSubmitting}
+            size="md"
+          />
+          {isRecording && (
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Recording...
+            </span>
           )}
-        </button>
+        </div>
         {recorderError && (
           <p className="mt-2 text-sm text-red-600 dark:text-red-400">{recorderError}</p>
         )}
