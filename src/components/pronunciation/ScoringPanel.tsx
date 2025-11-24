@@ -3,6 +3,7 @@ import type { AttemptScore } from '@/types/pronunciation';
 
 interface ScoringPanelProps {
   currentAttempt: AttemptScore | null;
+  variant?: 'card' | 'banner';
 }
 
 /**
@@ -248,20 +249,26 @@ function AllMetricsInfoIcon({ prosodyAvailable = false }: { prosodyAvailable?: b
 
 /**
  * Gets the color class for a score.
+ * Uses green accent color for high scores to make it look rewarding.
  */
 function getScoreColor(score: number): string {
-  if (score >= 90) return 'bg-emerald-500';
-  if (score >= 80) return 'bg-sky-500';
-  if (score >= 70) return 'bg-amber-500';
-  return 'bg-rose-500';
+  if (score >= 90) return 'bg-emerald-500 dark:bg-emerald-600';
+  if (score >= 80) return 'bg-sky-500 dark:bg-sky-600';
+  if (score >= 70) return 'bg-amber-500 dark:bg-amber-600';
+  return 'bg-rose-500 dark:bg-rose-600';
 }
 
 /**
  * Scoring panel component that displays pronunciation metrics.
  * Shows Overall Pronunciation Score, Accuracy, Fluency, Completeness, and Prosody.
+ * 
+ * @param variant - 'card' for vertical card layout (default), 'banner' for horizontal banner layout
  */
-export default function ScoringPanel({ currentAttempt }: ScoringPanelProps) {
+export default function ScoringPanel({ currentAttempt, variant = 'card' }: ScoringPanelProps) {
   if (!currentAttempt) {
+    if (variant === 'banner') {
+      return null; // Don't render banner if no attempt
+    }
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
         <div className="text-center py-8 text-gray-500 dark:text-gray-400">
@@ -276,6 +283,94 @@ export default function ScoringPanel({ currentAttempt }: ScoringPanelProps) {
   const fluency = currentAttempt.fluency !== undefined && currentAttempt.fluency !== null ? Math.round(currentAttempt.fluency) : null;
   const completeness = currentAttempt.completeness !== undefined && currentAttempt.completeness !== null ? Math.round(currentAttempt.completeness) : null;
   const prosody = currentAttempt.prosody !== undefined && currentAttempt.prosody !== null ? Math.round(currentAttempt.prosody) : null;
+
+  // Render horizontal banner variant
+  if (variant === 'banner') {
+    return (
+      <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <div className="flex items-center justify-end mb-4">
+          <AllMetricsInfoIcon prosodyAvailable={prosody !== null} />
+        </div>
+        <div className="grid grid-cols-4 gap-6 items-end">
+          {/* Section 1: Overall Score - Prominent progress bar */}
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">Overall</span>
+              <span className="text-lg font-bold text-gray-900 dark:text-gray-100">{overall}</span>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden border-2 border-gray-400 dark:border-gray-500 shadow-sm">
+              <div
+                className={`h-full transition-all duration-500 ${getScoreColor(overall)}`}
+                style={{ width: `${overall}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Section 2: Accuracy */}
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Accuracy</span>
+              <span className="text-lg font-bold text-gray-900 dark:text-gray-100">{accuracy}</span>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+              <div
+                className={`h-full transition-all duration-500 ${getScoreColor(accuracy)}`}
+                style={{ width: `${accuracy}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Section 3: Fluency */}
+          {fluency !== null ? (
+            <div className="flex flex-col">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Fluency</span>
+                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">{fluency}</span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-500 ${getScoreColor(fluency)}`}
+                  style={{ width: `${fluency}%` }}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col opacity-50">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-500">Fluency</span>
+                <span className="text-lg font-bold text-gray-400 dark:text-gray-600">—</span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3" />
+            </div>
+          )}
+
+          {/* Section 4: Completeness */}
+          {completeness !== null ? (
+            <div className="flex flex-col">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Completeness</span>
+                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">{completeness}</span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-500 ${getScoreColor(completeness)}`}
+                  style={{ width: `${completeness}%` }}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col opacity-50">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-500">Completeness</span>
+                <span className="text-lg font-bold text-gray-400 dark:text-gray-600">—</span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3" />
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   // Debug logging in development to diagnose missing Prosody
   // Note: ProsodyScore is only available for en-US locale in Azure Speech Service.

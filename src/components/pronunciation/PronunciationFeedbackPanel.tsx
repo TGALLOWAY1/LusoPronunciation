@@ -194,34 +194,35 @@ export default function PronunciationFeedbackPanel({
       {/* Phrase text, translation, difficulty badge, and sentence audio - hide if hideHeaderContent is true */}
       {!hideHeaderContent && (
         <>
-          <div>
-            <div className="flex items-start justify-between gap-4 mb-2">
-              <div className="flex-1">
-                <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                  {sentenceText}
-                </p>
-                {/* English translation toggle and display */}
-                {translationText && (
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => setShowEnglish(!showEnglish)}
-                      className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors flex items-center gap-1"
-                      aria-label={showEnglish ? 'Hide English translation' : 'Show English translation'}
-                    >
-                      {showEnglish ? '▼' : '▶'} {showEnglish ? 'Hide English' : 'Show English'}
-                    </button>
-                    {showEnglish && (
-                      <p className="text-lg text-gray-600 dark:text-gray-400 italic">
-                        {translationText}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-              {difficulty !== undefined && (
-                <span className={`badge ${getDifficultyColor(difficulty)} flex-shrink-0`}>
+          <div className="mb-6">
+            {/* Difficulty badge - positioned above sentence */}
+            {difficulty !== undefined && (
+              <div className="mb-4 flex justify-center">
+                <span className={`badge ${getDifficultyColor(difficulty)}`}>
                   Difficulty {difficulty}
                 </span>
+              </div>
+            )}
+            
+            {/* Hero Portuguese sentence - large, bold, centered, clickable */}
+            <div className="text-center">
+              <p
+                onClick={() => translationText && setShowEnglish(!showEnglish)}
+                className={`text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 ${
+                  translationText 
+                    ? 'cursor-pointer hover:opacity-80 transition-opacity border-b-2 border-dashed border-gray-300 dark:border-gray-600 pb-2' 
+                    : ''
+                }`}
+                aria-label={translationText ? (showEnglish ? 'Hide English translation' : 'Show English translation') : undefined}
+              >
+                {sentenceText}
+              </p>
+              
+              {/* English translation - shown below when toggled */}
+              {translationText && showEnglish && (
+                <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 italic mt-3">
+                  {translationText}
+                </p>
               )}
             </div>
           </div>
