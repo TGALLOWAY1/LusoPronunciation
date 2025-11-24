@@ -34,21 +34,20 @@ export interface SentenceFeedbackProps {
 
 /**
  * Builds normalized audio variants from sentence audio URLs.
+ * Only includes the native audio variant that matches the selected voice preference.
  */
-function buildSentenceAudioVariants(sentence: Sentence): NormalizedAudioVariant[] {
+function buildSentenceAudioVariants(
+  sentence: Sentence,
+  selectedVoice: 'male' | 'female'
+): NormalizedAudioVariant[] {
   const variants: NormalizedAudioVariant[] = [];
   
-  if (sentence.audioMaleUrl) {
+  // Add native audio variant based on selected voice preference
+  const nativeAudioUrl = selectedVoice === 'male' ? sentence.audioMaleUrl : sentence.audioFemaleUrl;
+  if (nativeAudioUrl) {
     variants.push({
       type: 'native',
-      url: sentence.audioMaleUrl,
-    });
-  }
-  
-  if (sentence.audioFemaleUrl && sentence.audioFemaleUrl !== sentence.audioMaleUrl) {
-    variants.push({
-      type: 'native',
-      url: sentence.audioFemaleUrl,
+      url: nativeAudioUrl,
     });
   }
   
@@ -106,10 +105,10 @@ function SentenceFeedback({
   // Build sentence audio variants (only if sentence is provided)
   const sentenceAudio = useMemo(() => {
     if (sentence) {
-      return buildSentenceAudioVariants(sentence);
+      return buildSentenceAudioVariants(sentence, selectedVoice);
     }
     return [];
-  }, [sentence]);
+  }, [sentence, selectedVoice]);
 
   // Build word audio variants from sentence wordRefs
   // Returns empty array if no sentence or wordRefs (not undefined)
