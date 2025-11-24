@@ -11,6 +11,8 @@ interface FilterControlsProps {
   onDifficultyChange: (difficulties: Difficulty[]) => void;
   currentIndex?: number;
   totalCount?: number;
+  directionMode?: 'pt-to-en' | 'en-to-pt' | 'mixed';
+  onDirectionModeChange?: (mode: 'pt-to-en' | 'en-to-pt' | 'mixed') => void;
 }
 
 /**
@@ -31,6 +33,8 @@ function FilterControls({
   onDifficultyChange,
   currentIndex,
   totalCount,
+  directionMode,
+  onDirectionModeChange,
 }: FilterControlsProps) {
   const difficulties = getDifficultyOptions();
 
@@ -53,15 +57,55 @@ function FilterControls({
   return (
     <div className="card card-compact mb-6 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
       {/* Filters section header */}
-      <div className="mb-4 pb-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+      <div className="mb-4 pb-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between gap-4">
         <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
           Filters
         </h3>
-        {currentIndex !== undefined && totalCount !== undefined && (
-          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            Sentence {currentIndex + 1} of {totalCount}
-          </span>
-        )}
+        <div className="flex items-center gap-4">
+          {/* Direction Mode Selector (only for Multiple Choice modes) */}
+          {directionMode && onDirectionModeChange && (
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">Direction:</label>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => onDirectionModeChange('pt-to-en')}
+                  className={`btn btn-sm ${
+                    directionMode === 'pt-to-en' 
+                      ? 'btn-primary' 
+                      : 'btn-outline'
+                  }`}
+                >
+                  PT → EN
+                </button>
+                <button
+                  onClick={() => onDirectionModeChange('en-to-pt')}
+                  className={`btn btn-sm ${
+                    directionMode === 'en-to-pt' 
+                      ? 'btn-primary' 
+                      : 'btn-outline'
+                  }`}
+                >
+                  EN → PT
+                </button>
+                <button
+                  onClick={() => onDirectionModeChange('mixed')}
+                  className={`btn btn-sm ${
+                    directionMode === 'mixed' 
+                      ? 'btn-primary' 
+                      : 'btn-outline'
+                  }`}
+                >
+                  Mixed
+                </button>
+              </div>
+            </div>
+          )}
+          {currentIndex !== undefined && totalCount !== undefined && (
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Sentence {currentIndex + 1} of {totalCount}
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
