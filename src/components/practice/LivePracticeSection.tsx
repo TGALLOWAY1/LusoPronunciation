@@ -159,6 +159,7 @@ export default function LivePracticeSection({
     title: undefined,
     showDevControls: false,
     hideHeaderContent: false, // Show sentence text, translation, difficulty, and audio
+    showDifficultyBadge: false,
   }), [attempts, currentAttempt, sentence, sentenceAudio, wordAudios, enrichedWords]);
 
   const canSubmit = Boolean(audioUrl) && !submitting && !isRecording;

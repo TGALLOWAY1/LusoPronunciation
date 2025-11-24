@@ -49,6 +49,7 @@ export interface PronunciationFeedbackPanelProps {
   title?: string; // e.g. "Pronunciation Lab" vs "Practice Feedback"
   showDevControls?: boolean; // raw JSON, extra toggles, etc.
   hideHeaderContent?: boolean; // If true, hide sentence text, translation, difficulty, and sentence audio (for use in Practice where these are shown above)
+  showDifficultyBadge?: boolean;
 }
 
 /**
@@ -72,6 +73,7 @@ export default function PronunciationFeedbackPanel({
   title,
   showDevControls = false,
   hideHeaderContent = false,
+  showDifficultyBadge = true,
 }: PronunciationFeedbackPanelProps) {
   const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback | null>(null);
   const [showEnglish, setShowEnglish] = useState(false);
@@ -196,7 +198,7 @@ export default function PronunciationFeedbackPanel({
         <>
           <div className="mb-6">
             {/* Difficulty badge - positioned above sentence */}
-            {difficulty !== undefined && (
+            {showDifficultyBadge && difficulty !== undefined && (
               <div className="mb-4 flex justify-center">
                 <span className={`badge ${getDifficultyColor(difficulty)}`}>
                   Difficulty {difficulty}

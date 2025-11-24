@@ -39,7 +39,15 @@ export default function SentencePractice() {
   const [latestRecordingUrlForCurrentSentence, setLatestRecordingUrlForCurrentSentence] = useState<string | null>(null);
   // selectedAttemptId determines which attempt's scoring + recording are shown
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
-  // Active tab in main panel: 'practice' or 'history'
+const difficultyBadgeClasses: Record<Difficulty, string> = {
+  1: 'badge-success',
+  2: 'badge-primary',
+  3: 'badge-warning',
+  4: 'badge-danger',
+  5: 'badge-danger',
+};
+
+// Active tab in main panel: 'practice' or 'history'
   const [activeTab, setActiveTab] = useState<'practice' | 'history'>('practice');
 
   useEffect(() => {
@@ -343,15 +351,6 @@ export default function SentencePractice() {
         />
         </div>
 
-        {/* Current filters summary header */}
-        <div className="mb-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Category: <span className="font-medium text-gray-900 dark:text-gray-200">{currentFilterSummary.categoryLabel}</span>
-            {' · '}
-            Difficulty: <span className="font-medium text-gray-900 dark:text-gray-200">{currentFilterSummary.difficultyLabel}</span>
-          </p>
-        </div>
-
         {/* Main content area - Single column layout */}
         {currentSentence ? (
           <div className="max-w-6xl mx-auto space-y-6 mb-6">
@@ -362,7 +361,12 @@ export default function SentencePractice() {
 
             {/* Main sentence practice area */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="mb-4 flex items-center justify-end">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <span className={`badge ${difficultyBadgeClasses[currentSentence.difficulty as Difficulty]}`}>
+                    Difficulty {currentSentence.difficulty}
+                  </span>
+                </div>
                 {/* Tabs */}
                 <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
                   <button

@@ -1,22 +1,31 @@
 import { Link, useLocation } from 'react-router-dom';
+import {
+  LayoutDashboard,
+  AlignLeft,
+  CaseSensitive,
+  Layers,
+  History as HistoryIcon,
+  BarChart3,
+} from 'lucide-react';
+import type { ComponentType } from 'react';
 
 interface NavItem {
   path: string;
   label: string;
-  icon: string;
+  icon: ComponentType<{ size?: number; className?: string }>;
 }
 
 const navItems: NavItem[] = [
-  { path: '/', label: 'Dashboard', icon: '📊' },
-  { path: '/practice/sentence', label: 'Practice Sentences', icon: '💬' },
-  { path: '/practice/word', label: 'Practice Words', icon: '📝' },
-  { path: '/review', label: 'Review Queue', icon: '🔄' },
-  { path: '/sessions', label: 'Recent Sessions', icon: '📅' },
+  { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/practice/sentence', label: 'Practice Sentences', icon: AlignLeft },
+  { path: '/practice/word', label: 'Practice Words', icon: CaseSensitive },
+  { path: '/review', label: 'Review Queue', icon: Layers },
+  { path: '/sessions', label: 'History', icon: HistoryIcon },
 ];
 
 // Dev-only navigation items
 const devNavItems: NavItem[] = [
-  { path: '/dev/analytics', label: 'Dev Analytics', icon: '📈' },
+  { path: '/dev/analytics', label: 'Dev Analytics', icon: BarChart3 },
 ];
 
 // Check if dev features should be enabled
@@ -30,6 +39,7 @@ export default function Sidebar() {
       <nav className="space-y-2">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
+          const Icon = item.icon;
           return (
             <Link
               key={item.path}
@@ -38,7 +48,7 @@ export default function Sidebar() {
                 isActive ? 'nav-link-active' : 'nav-link-inactive text-gray-300'
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <Icon size={20} className="mr-2" />
               <span className="text-sm sm:text-base">{item.label}</span>
             </Link>
           );
@@ -53,6 +63,7 @@ export default function Sidebar() {
               </p>
               {devNavItems.map((item) => {
                 const isActive = location.pathname === item.path;
+                const Icon = item.icon;
                 return (
                   <Link
                     key={item.path}
@@ -61,7 +72,7 @@ export default function Sidebar() {
                       isActive ? 'nav-link-active' : 'nav-link-inactive text-gray-300'
                     }`}
                   >
-                    <span className="text-xl">{item.icon}</span>
+                    <Icon size={20} className="mr-2" />
                     <span className="text-sm sm:text-base">{item.label}</span>
                   </Link>
                 );
