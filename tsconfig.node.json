@@ -8,8 +8,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["node", "vite/client"]
   },
-  "include": ["vite.config.ts", "src/server/**/*.ts", "src/lib/pronunciationUtils.ts"]
+  "include": ["vite.config.ts", "src/server/**/*.ts", "src/shared/**/*.ts", "src/lib/pronunciationUtils.ts", "src/lib/azurePronunciationNormalizer.ts", "src/lib/types.ts", "src/types/pronunciation.ts", "src/vite-env.d.ts"]
 }
 

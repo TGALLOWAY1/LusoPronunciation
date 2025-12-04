@@ -4,11 +4,13 @@ import { SettingsStoreProvider } from '../state/settingsStore';
 import { PracticeLogStoreProvider } from '../state/practiceLogStore';
 import AppLayout from '../components/layout/AppLayout';
 import { ErrorBoundary } from '../components/common/ErrorBoundary';
+import LocalStorageMigrator from '../features/migration/LocalStorageMigrator';
 import UserDashboardPage from '../pages/UserDashboardPage';
 import SentencePractice from '../pages/SentencePractice';
 import WordPractice from '../pages/WordPractice';
 import Review from '../pages/Review';
 import RecentSessions from '../pages/RecentSessions';
+import AuthPage from '../pages/AuthPage';
 import PronunciationFixtures from '../pages/dev/pronunciation-fixtures';
 import DevAnalyticsPage from '../pages/dev/DevAnalyticsPage';
 
@@ -18,6 +20,7 @@ function AppRoutes() {
       <AppLayout>
         <Routes>
           <Route path="/" element={<UserDashboardPage />} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route path="/practice/sentence" element={<SentencePractice />} />
           <Route path="/practice/word" element={<WordPractice />} />
           <Route path="/review" element={<Review />} />
@@ -36,6 +39,7 @@ function App() {
       <SettingsStoreProvider>
         <ProgressStoreProvider>
           <PracticeLogStoreProvider>
+            <LocalStorageMigrator />
             <AppRoutes />
           </PracticeLogStoreProvider>
         </ProgressStoreProvider>

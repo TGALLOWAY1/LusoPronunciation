@@ -169,8 +169,21 @@ export interface Category {
 // Practice Logging and Progress Analytics Types
 // ============================================================================
 
+// Re-export shared types for use in new code
+export type {
+  PronunciationAttempt,
+  PracticeContentRef,
+  ContentType,
+  PracticeSessionMode,
+} from '../shared/types';
+
 /**
  * A practice session represents a continuous period of practice activity.
+ * 
+ * Note: For new backend code, consider using the shared PracticeSession type
+ * from '../shared/types' which has a cleaner structure (id instead of sessionId,
+ * optional endedAt, etc.). This interface is maintained for backward compatibility
+ * with existing frontend code.
  */
 export interface PracticeSession {
   sessionId: string;

@@ -56,13 +56,22 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
 
   // Start practice session when component mounts
   useEffect(() => {
-    const sessionId = startSession('sentences');
-    sessionIdRef.current = sessionId;
+    let mounted = true;
+    
+    (async () => {
+      const sessionId = await startSession('sentences');
+      if (mounted) {
+        sessionIdRef.current = sessionId;
+      }
+    })();
 
     // End session when component unmounts
     return () => {
+      mounted = false;
       if (sessionIdRef.current) {
-        endSession(sessionIdRef.current);
+        endSession(sessionIdRef.current).catch((error) => {
+          console.warn('Failed to end session:', error);
+        });
         sessionIdRef.current = null;
       }
     };

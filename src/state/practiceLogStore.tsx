@@ -4,6 +4,13 @@
  * Manages and persists pronunciation attempt history for sentences and words.
  * All sentence attempts are persisted to localStorage and can be viewed in Practice Sentences.
  * Attempts are automatically saved on every log and restored on app load.
+ * 
+ * DUAL-WRITE: When user is authenticated, also persists to backend API.
+ * 
+ * TODO: Gradually shift to server data as source of truth:
+ *   - Load attempts from /api/pronunciation-attempts for authenticated users
+ *   - Fall back to localStorage for unauthenticated users
+ *   - Consider deprecating localStorage once migration is complete
  */
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import type {
@@ -11,18 +18,27 @@ import type {
   SentencePracticeAttempt,
   WordPracticeAttempt,
 } from '@/lib/types';
+import { isAuthenticated } from '@/api/auth';
+import {
+  createPracticeSession as createServerSession,
+  completePracticeSession as completeServerSession,
+  logPronunciationAttempt as logServerAttempt,
+} from '@/api/practice';
+import { ensureFlashcard, reviewFlashcard, scoreToOutcome } from '@/api/flashcards';
 
 interface PracticeLogStoreState {
   userId: string;
   sessions: PracticeSession[];
   sentenceAttempts: SentencePracticeAttempt[];
   wordAttempts: WordPracticeAttempt[];
+  // Map of local sessionId -> server sessionId (for authenticated users)
+  serverSessionIds: Record<string, string>;
 }
 
 interface PracticeLogStore extends PracticeLogStoreState {
   storageError: boolean;
-  startSession: (mode: PracticeSession['mode']) => string;
-  endSession: (sessionId: string) => void;
+  startSession: (mode: PracticeSession['mode']) => Promise<string>;
+  endSession: (sessionId: string) => Promise<void>;
   logSentenceAttempt: (
     attempt: Omit<SentencePracticeAttempt, 'attemptId' | 'userId' | 'createdAt'>
   ) => SentencePracticeAttempt;
@@ -81,6 +97,7 @@ function loadPracticeLogFromStorage(): PracticeLogStoreState {
           ? parsed.sentenceAttempts
           : [],
         wordAttempts: Array.isArray(parsed.wordAttempts) ? parsed.wordAttempts : [],
+        serverSessionIds: parsed.serverSessionIds || {},
       };
     }
   } catch (error) {
@@ -91,6 +108,7 @@ function loadPracticeLogFromStorage(): PracticeLogStoreState {
     sessions: [],
     sentenceAttempts: [],
     wordAttempts: [],
+    serverSessionIds: {},
   };
 }
 
@@ -210,7 +228,7 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
   }, [state]);
 
   const startSession = useCallback(
-    (mode: PracticeSession['mode']): string => {
+    async (mode: PracticeSession['mode']): Promise<string> => {
       const sessionId = generateSessionId();
       const now = new Date().toISOString();
 
@@ -226,9 +244,24 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
         wordAttempts: 0,
       };
 
+      // Dual-write: Create session on server if authenticated
+      let serverSessionId: string | undefined;
+      if (isAuthenticated()) {
+        try {
+          const serverSession = await createServerSession(mode);
+          serverSessionId = serverSession.id;
+        } catch (error) {
+          // Log error but don't block local session creation
+          console.warn('[PracticeLogStore] Failed to create server session:', error);
+        }
+      }
+
       setState((prev) => ({
         ...prev,
         sessions: [...prev.sessions, newSession],
+        serverSessionIds: serverSessionId
+          ? { ...prev.serverSessionIds, [sessionId]: serverSessionId }
+          : prev.serverSessionIds,
       }));
 
       return sessionId;
@@ -236,7 +269,7 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
     [state.userId]
   );
 
-  const endSession = useCallback((sessionId: string) => {
+  const endSession = useCallback(async (sessionId: string) => {
     setState((prev) => {
       const session = prev.sessions.find((s) => s.sessionId === sessionId);
       if (!session) {
@@ -272,6 +305,15 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
         ...averages,
       };
 
+      // Dual-write: Complete session on server if authenticated
+      const serverSessionId = prev.serverSessionIds[sessionId];
+      if (isAuthenticated() && serverSessionId) {
+        completeServerSession(serverSessionId).catch((error) => {
+          // Log error but don't block local session completion
+          console.warn('[PracticeLogStore] Failed to complete server session:', error);
+        });
+      }
+
       return {
         ...prev,
         sessions: prev.sessions.map((s) =>
@@ -302,9 +344,79 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
         sentenceAttempts: [...prev.sentenceAttempts, fullAttempt],
       }));
 
+      // Dual-write: Log attempt on server if authenticated
+      if (isAuthenticated()) {
+        const serverSessionId = state.serverSessionIds[attempt.sessionId];
+        // Note: textPt should ideally be passed in, but for now we'll use a placeholder
+        // The backend requires textPt, so we'll use the sentenceId as a fallback identifier
+        // TODO: Update logSentenceAttempt interface to accept textPt and textEn
+        logServerAttempt({
+          sessionId: serverSessionId,
+          content: {
+            contentId: attempt.sentenceId,
+            contentType: 'sentence',
+            textPt: attempt.sentenceId, // Temporary: use sentenceId as placeholder until we pass textPt
+            textEn: undefined,
+          },
+          engine: 'azure_speech',
+          scores: {
+            overall: attempt.overallScore,
+            accuracy: attempt.accuracyScore,
+            fluency: attempt.fluencyScore,
+            completeness: attempt.completenessScore,
+            prosody: attempt.prosodyScore,
+          },
+          wordScores: attempt.wordScores?.map((ws) => ({
+            token: ws.token,
+            overallScore: ws.overallScore,
+            accuracyScore: ws.accuracyScore,
+            fluencyScore: ws.fluencyScore,
+            errorType: ws.errorType,
+            phonemeScores: ws.phonemeScores,
+          })),
+          recordingUrl: attempt.recordingUrl,
+          recordingDataUrl: attempt.recordingDataUrl,
+          recordingDurationSeconds: attempt.recordingDurationSeconds,
+          latencyMs: attempt.latencyMs,
+          passed: attempt.passed,
+          targetOverallThreshold: attempt.targetOverallThreshold,
+          targetAccuracyThreshold: attempt.targetAccuracyThreshold,
+          retriesInThisSession: attempt.retriesInThisSession,
+          usedHint: attempt.usedHint,
+          slowedAudioPlayback: attempt.slowedAudioPlayback,
+          listenedToNativeModelCount: attempt.listenedToNativeModelCount,
+          confidenceLabel: attempt.confidenceLabel,
+        })
+          .then(async (serverAttempt) => {
+            // Auto-create and update flashcard based on attempt score
+            try {
+              // Ensure flashcard exists
+              const flashcard = await ensureFlashcard(attempt.sentenceId, 'sentence');
+              
+              // Auto-grade based on score
+              const outcome = scoreToOutcome(attempt.overallScore);
+              
+              // Update flashcard with review
+              await reviewFlashcard({
+                cardId: flashcard.id,
+                grade: outcome,
+                attemptId: serverAttempt.id,
+                score: attempt.overallScore,
+              });
+            } catch (flashcardError) {
+              // Log error but don't block attempt logging
+              console.warn('[PracticeLogStore] Failed to update flashcard:', flashcardError);
+            }
+          })
+          .catch((error) => {
+            // Log error but don't block local attempt logging
+            console.warn('[PracticeLogStore] Failed to log server attempt:', error);
+          });
+      }
+
       return fullAttempt;
     },
-    [state.userId]
+    [state.userId, state.serverSessionIds]
   );
 
   /**
@@ -351,9 +463,74 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
         wordAttempts: [...prev.wordAttempts, fullAttempt],
       }));
 
+      // Dual-write: Log attempt on server if authenticated
+      if (isAuthenticated()) {
+        const serverSessionId = state.serverSessionIds[attempt.sessionId];
+        // Note: textPt should ideally be passed in, but for now we'll use a placeholder
+        // The backend requires textPt, so we'll use the wordId as a fallback identifier
+        // TODO: Update logWordAttempt interface to accept textPt and textEn
+        logServerAttempt({
+          sessionId: serverSessionId,
+          content: {
+            contentId: attempt.wordId,
+            contentType: 'word',
+            textPt: attempt.wordId, // Temporary: use wordId as placeholder until we pass textPt
+            textEn: undefined,
+          },
+          engine: 'azure_speech',
+          scores: {
+            overall: attempt.overallScore,
+            accuracy: attempt.accuracyScore,
+            fluency: attempt.fluencyScore,
+            completeness: attempt.completenessScore,
+            prosody: attempt.prosodyScore,
+          },
+          wordScores: undefined, // Word attempts don't have word-level scores
+          recordingUrl: undefined, // Word attempts may not have recording URLs
+          recordingDataUrl: undefined,
+          recordingDurationSeconds: attempt.recordingDurationSeconds,
+          latencyMs: attempt.latencyMs,
+          passed: attempt.passed,
+          targetOverallThreshold: attempt.targetOverallThreshold,
+          retriesInThisSession: attempt.retriesInThisSession,
+          usedHint: attempt.usedHint,
+          slowedAudioPlayback: attempt.slowedAudioPlayback,
+          listenedToNativeModelCount: attempt.listenedToNativeModelCount,
+          practiceDirection: attempt.practiceDirection,
+          practiceMode: attempt.practiceMode,
+          isCorrect: attempt.isCorrect,
+          selfRating: attempt.selfRating,
+        })
+          .then(async (serverAttempt) => {
+            // Auto-create and update flashcard based on attempt score
+            try {
+              // Ensure flashcard exists
+              const flashcard = await ensureFlashcard(attempt.wordId, 'word');
+              
+              // Auto-grade based on score
+              const outcome = scoreToOutcome(attempt.overallScore);
+              
+              // Update flashcard with review
+              await reviewFlashcard({
+                cardId: flashcard.id,
+                grade: outcome,
+                attemptId: serverAttempt.id,
+                score: attempt.overallScore,
+              });
+            } catch (flashcardError) {
+              // Log error but don't block attempt logging
+              console.warn('[PracticeLogStore] Failed to update flashcard:', flashcardError);
+            }
+          })
+          .catch((error) => {
+            // Log error but don't block local attempt logging
+            console.warn('[PracticeLogStore] Failed to log server attempt:', error);
+          });
+      }
+
       return fullAttempt;
     },
-    [state.userId]
+    [state.userId, state.serverSessionIds]
   );
 
   // Selectors

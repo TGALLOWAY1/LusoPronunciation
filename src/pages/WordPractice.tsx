@@ -84,13 +84,22 @@ export default function WordPractice() {
 
   // Start practice session when component mounts
   useEffect(() => {
-    const sessionId = startSession('words');
-    sessionIdRef.current = sessionId;
+    let mounted = true;
+    
+    (async () => {
+      const sessionId = await startSession('words');
+      if (mounted) {
+        sessionIdRef.current = sessionId;
+      }
+    })();
 
     // End session when component unmounts
     return () => {
+      mounted = false;
       if (sessionIdRef.current) {
-        endSession(sessionIdRef.current);
+        endSession(sessionIdRef.current).catch((error) => {
+          console.warn('Failed to end session:', error);
+        });
         sessionIdRef.current = null;
       }
     };
