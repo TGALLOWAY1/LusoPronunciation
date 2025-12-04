@@ -6,6 +6,7 @@ import healthRouter from './routes/health';
 import pronunciationRouter from './routes/pronunciationAssessment';
 import authRouter from './routes/auth';
 import practiceRouter from './routes/practice';
+import migrationRouter from './routes/migration';
 
 // Load environment variables
 config();
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api', practiceRouter);
+app.use('/api/migrate', migrationRouter);
 app.use('/api/pronunciation', pronunciationRouter);
 
 // Root route

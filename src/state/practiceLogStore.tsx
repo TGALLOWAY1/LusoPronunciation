@@ -6,6 +6,11 @@
  * Attempts are automatically saved on every log and restored on app load.
  * 
  * DUAL-WRITE: When user is authenticated, also persists to backend API.
+ * 
+ * TODO: Gradually shift to server data as source of truth:
+ *   - Load attempts from /api/pronunciation-attempts for authenticated users
+ *   - Fall back to localStorage for unauthenticated users
+ *   - Consider deprecating localStorage once migration is complete
  */
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import type {

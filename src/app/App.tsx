@@ -4,6 +4,7 @@ import { SettingsStoreProvider } from '../state/settingsStore';
 import { PracticeLogStoreProvider } from '../state/practiceLogStore';
 import AppLayout from '../components/layout/AppLayout';
 import { ErrorBoundary } from '../components/common/ErrorBoundary';
+import LocalStorageMigrator from '../features/migration/LocalStorageMigrator';
 import UserDashboardPage from '../pages/UserDashboardPage';
 import SentencePractice from '../pages/SentencePractice';
 import WordPractice from '../pages/WordPractice';
@@ -38,6 +39,7 @@ function App() {
       <SettingsStoreProvider>
         <ProgressStoreProvider>
           <PracticeLogStoreProvider>
+            <LocalStorageMigrator />
             <AppRoutes />
           </PracticeLogStoreProvider>
         </ProgressStoreProvider>
