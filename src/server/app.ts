@@ -7,6 +7,7 @@ import pronunciationRouter from './routes/pronunciationAssessment';
 import authRouter from './routes/auth';
 import practiceRouter from './routes/practice';
 import migrationRouter from './routes/migration';
+import flashcardsRouter from './routes/flashcards';
 
 // Load environment variables
 config();
@@ -23,6 +24,7 @@ app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api', practiceRouter);
 app.use('/api/migrate', migrationRouter);
+app.use('/api/flashcards', flashcardsRouter);
 app.use('/api/pronunciation', pronunciationRouter);
 
 // Root route

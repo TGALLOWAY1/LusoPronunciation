@@ -24,6 +24,7 @@ import {
   completePracticeSession as completeServerSession,
   logPronunciationAttempt as logServerAttempt,
 } from '@/api/practice';
+import { ensureFlashcard, reviewFlashcard, scoreToOutcome } from '@/api/flashcards';
 
 interface PracticeLogStoreState {
   userId: string;
@@ -385,10 +386,32 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
           slowedAudioPlayback: attempt.slowedAudioPlayback,
           listenedToNativeModelCount: attempt.listenedToNativeModelCount,
           confidenceLabel: attempt.confidenceLabel,
-        }).catch((error) => {
-          // Log error but don't block local attempt logging
-          console.warn('[PracticeLogStore] Failed to log server attempt:', error);
-        });
+        })
+          .then(async (serverAttempt) => {
+            // Auto-create and update flashcard based on attempt score
+            try {
+              // Ensure flashcard exists
+              const flashcard = await ensureFlashcard(attempt.sentenceId, 'sentence');
+              
+              // Auto-grade based on score
+              const outcome = scoreToOutcome(attempt.overallScore);
+              
+              // Update flashcard with review
+              await reviewFlashcard({
+                cardId: flashcard.id,
+                grade: outcome,
+                attemptId: serverAttempt.id,
+                score: attempt.overallScore,
+              });
+            } catch (flashcardError) {
+              // Log error but don't block attempt logging
+              console.warn('[PracticeLogStore] Failed to update flashcard:', flashcardError);
+            }
+          })
+          .catch((error) => {
+            // Log error but don't block local attempt logging
+            console.warn('[PracticeLogStore] Failed to log server attempt:', error);
+          });
       }
 
       return fullAttempt;
@@ -477,10 +500,32 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
           practiceMode: attempt.practiceMode,
           isCorrect: attempt.isCorrect,
           selfRating: attempt.selfRating,
-        }).catch((error) => {
-          // Log error but don't block local attempt logging
-          console.warn('[PracticeLogStore] Failed to log server attempt:', error);
-        });
+        })
+          .then(async (serverAttempt) => {
+            // Auto-create and update flashcard based on attempt score
+            try {
+              // Ensure flashcard exists
+              const flashcard = await ensureFlashcard(attempt.wordId, 'word');
+              
+              // Auto-grade based on score
+              const outcome = scoreToOutcome(attempt.overallScore);
+              
+              // Update flashcard with review
+              await reviewFlashcard({
+                cardId: flashcard.id,
+                grade: outcome,
+                attemptId: serverAttempt.id,
+                score: attempt.overallScore,
+              });
+            } catch (flashcardError) {
+              // Log error but don't block attempt logging
+              console.warn('[PracticeLogStore] Failed to update flashcard:', flashcardError);
+            }
+          })
+          .catch((error) => {
+            // Log error but don't block local attempt logging
+            console.warn('[PracticeLogStore] Failed to log server attempt:', error);
+          });
       }
 
       return fullAttempt;
