@@ -5,6 +5,7 @@ import { connectMongo } from './db/mongoClient';
 import healthRouter from './routes/health';
 import pronunciationRouter from './routes/pronunciationAssessment';
 import authRouter from './routes/auth';
+import practiceRouter from './routes/practice';
 
 // Load environment variables
 config();
@@ -19,6 +20,7 @@ app.use(express.json());
 // Routes
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
+app.use('/api', practiceRouter);
 app.use('/api/pronunciation', pronunciationRouter);
 
 // Root route
