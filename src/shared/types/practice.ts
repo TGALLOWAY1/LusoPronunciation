@@ -40,7 +40,14 @@ export interface WordScore {
   overallScore: number; // 0-100
   accuracyScore?: number; // 0-100
   fluencyScore?: number; // 0-100
-  errorType?: 'none' | 'mispronounced' | 'omitted' | 'extra';
+  errorType?:
+    | 'none'
+    | 'mispronounced'
+    | 'omitted'
+    | 'extra'
+    | 'unexpected_break'
+    | 'missing_break'
+    | 'monotone';
   phonemeScores?: {
     phonemeId: string;
     overallScore: number;
@@ -183,4 +190,3 @@ export interface WordPracticeAttempt {
   latencyMs?: number;
   selfRating?: 'know' | 'dont_know';
 }
-

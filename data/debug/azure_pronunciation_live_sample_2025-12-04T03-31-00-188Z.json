@@ -1,0 +1,46 @@
+{
+  "RecognitionStatus": "Success",
+  "Offset": 6100000,
+  "Duration": 14600000,
+  "DisplayText": "Estou com fome.",
+  "SNR": 34.130764,
+  "NBest": [
+    {
+      "Confidence": 0.9346128,
+      "Lexical": "Estou com fome",
+      "ITN": "Estou com fome",
+      "MaskedITN": "estou com fome",
+      "Display": "Estou com fome.",
+      "AccuracyScore": 97,
+      "FluencyScore": 100,
+      "CompletenessScore": 100,
+      "PronScore": 98.2,
+      "Words": [
+        {
+          "Word": "Estou",
+          "Offset": 6100000,
+          "Duration": 5100000,
+          "Confidence": 0,
+          "AccuracyScore": 91,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "com",
+          "Offset": 11300000,
+          "Duration": 2200000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "fome",
+          "Offset": 13600000,
+          "Duration": 7100000,
+          "Confidence": 0,
+          "AccuracyScore": 100,
+          "ErrorType": "None"
+        }
+      ]
+    }
+  ]
+}

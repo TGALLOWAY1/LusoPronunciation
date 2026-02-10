@@ -25,7 +25,7 @@ export interface IPronunciationAttemptDocument extends Document {
     overallScore: number;
     accuracyScore?: number;
     fluencyScore?: number;
-    errorType?: 'none' | 'mispronounced' | 'omitted' | 'extra';
+    errorType?: 'none' | 'mispronounced' | 'omitted' | 'extra' | 'unexpected_break' | 'missing_break' | 'monotone';
     phonemeScores?: Array<{
       phonemeId: string;
       overallScore: number;
@@ -142,7 +142,7 @@ const PronunciationAttemptSchema = new Schema<IPronunciationAttemptDocument>(
         },
         errorType: {
           type: String,
-          enum: ['none', 'mispronounced', 'omitted', 'extra'],
+          enum: ['none', 'mispronounced', 'omitted', 'extra', 'unexpected_break', 'missing_break', 'monotone'],
         },
         phonemeScores: [
           {
@@ -207,4 +207,3 @@ export const PronunciationAttemptModel: Model<IPronunciationAttemptDocument> =
     'PronunciationAttempt',
     PronunciationAttemptSchema
   );
-

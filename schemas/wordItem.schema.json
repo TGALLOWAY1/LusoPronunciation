@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "wordItem.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "locale",
+    "text",
+    "normalizedText",
+    "en",
+    "category",
+    "partOfSpeech",
+    "difficulty",
+    "phonemes",
+    "azureAssessmentConfigId"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "locale": { "type": "string", "const": "pt-BR" },
+    "text": { "type": "string", "minLength": 1 },
+    "normalizedText": { "type": "string", "minLength": 1 },
+    "en": { "type": "string", "minLength": 1 },
+    "category": { "type": "string", "minLength": 1 },
+    "partOfSpeech": { "type": "string", "minLength": 1 },
+    "difficulty": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "phonemes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "azureAssessmentConfigId": { "type": "string", "minLength": 1 }
+  }
+}

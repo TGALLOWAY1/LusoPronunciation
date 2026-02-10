@@ -129,6 +129,7 @@ export interface GenerationPathsConfig {
  */
 export interface EnrichedWord {
   id: string;
+  locale?: 'pt-BR';
   text: string;                   // Portuguese text (pt)
   normalizedText: string;            // Normalized version for matching
   en: string;                        // English translation (required for UI)
@@ -144,6 +145,9 @@ export interface EnrichedWord {
   tags?: string[];                   // Additional tags
   cefr?: string;                     // CEFR level (A1, A2, B1, B2, C1, C2)
   difficultyScore?: number;          // Numeric difficulty score (0-100, optional)
+  azureAssessmentConfigId?: string;  // Prompt-level assessment config binding
+  confidenceScore?: number;          // Option B confidence score (0-1)
+  sourceModel?: string;              // Optional source marker for generated content
 }
 
 /**
@@ -154,6 +158,7 @@ export interface EnrichedWord {
  */
 export interface EnrichedSentence {
   id: string;
+  locale?: 'pt-BR';
   text: string;                    // Portuguese text (pt)
   normalizedText: string;          // Normalized version for matching
   en: string;                      // English translation (required for UI)
@@ -168,6 +173,9 @@ export interface EnrichedSentence {
   }[];
   cefr?: string;                   // CEFR level (A1, A2, B1, B2, C1, C2)
   difficultyScore?: number;        // Numeric difficulty score (0-100, optional)
+  azureAssessmentConfigId?: string; // Prompt-level assessment config binding
+  confidenceScore?: number;         // Option B confidence score (0-1)
+  sourceModel?: string;             // Optional source marker for generated content
 }
 
 // ============================================================================
@@ -219,4 +227,3 @@ export interface ValidationReport {
   invalidWordRefs: string[];      // Sentence IDs with invalid word references
   otherErrors?: string[];         // Other validation errors
 }
-

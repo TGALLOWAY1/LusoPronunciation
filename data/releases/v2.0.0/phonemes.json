@@ -1,0 +1,2233 @@
+[
+  {
+    "id": "AA",
+    "ipa": "a",
+    "type": "vowel",
+    "category": "open vowel",
+    "difficulty": 1,
+    "englishApprox": "Similar to 'f'a'ther'",
+    "articulation": "Jaw is fully open, tongue lies flat at the bottom of the mouth.",
+    "acousticDescription": "Bright, open sound.",
+    "commonMistakes": [
+      "Reducing it to a schwa in stressed positions."
+    ],
+    "teachingTips": [
+      "Open your mouth wide like you are at the dentist.",
+      "Keep the tongue flat."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "pala",
+          "pela"
+        ],
+        "contrast": "/a/ vs /ɛ/"
+      },
+      {
+        "pair": [
+          "falo",
+          "fale"
+        ],
+        "contrast": "/a/ vs /e/"
+      },
+      {
+        "pair": [
+          "masa",
+          "mesa"
+        ],
+        "contrast": "/a/ vs /e/"
+      },
+      {
+        "pair": [
+          "lata",
+          "luta"
+        ],
+        "contrast": "/a/ vs /u/"
+      },
+      {
+        "pair": [
+          "caca",
+          "coco"
+        ],
+        "contrast": "/a/ vs /o/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "pato",
+        "ipa": "ˈpa.tu",
+        "stressPattern": "ˈpa.tu",
+        "english": "duck"
+      },
+      {
+        "pt": "sapo",
+        "ipa": "ˈsa.pu",
+        "stressPattern": "ˈsa.pu",
+        "english": "frog"
+      },
+      {
+        "pt": "lago",
+        "ipa": "ˈla.gu",
+        "stressPattern": "ˈla.gu",
+        "english": "lake"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "AH",
+    "ipa": "ɐ",
+    "type": "vowel",
+    "category": "near-open central vowel",
+    "difficulty": 2,
+    "englishApprox": "Similar to 'sof'a' or the 'u' in 'cup'",
+    "articulation": "Mouth is slightly less open than for /a/, muscles are relaxed.",
+    "acousticDescription": "Duller and shorter than the open /a/.",
+    "commonMistakes": [
+      "Pronouncing it as a full open /a/ at the end of words.",
+      "Pronouncing it like 'ay'."
+    ],
+    "teachingTips": [
+      "Relax your jaw completely.",
+      "This is the sound of the 'a' at the end of almost every Portuguese word ending in 'a'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "para",
+          "paro"
+        ],
+        "contrast": "/ɐ/ vs /u/ (final)"
+      },
+      {
+        "pair": [
+          "cama",
+          "cama"
+        ],
+        "contrast": "No contrast, allophonic in nasal context, but distinct in stress: par'a' vs p'a'ra"
+      },
+      {
+        "pair": [
+          "tapa",
+          "tape"
+        ],
+        "contrast": "/ɐ/ vs /i/ or /e/ (final)"
+      },
+      {
+        "pair": [
+          "boba",
+          "bobo"
+        ],
+        "contrast": "/ɐ/ vs /u/"
+      },
+      {
+        "pair": [
+          "faca",
+          "foco"
+        ],
+        "contrast": "final vowel /ɐ/ vs /u/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "casa",
+        "ipa": "ˈka.zɐ",
+        "stressPattern": "ˈka.zɐ",
+        "english": "house"
+      },
+      {
+        "pt": "mesa",
+        "ipa": "ˈme.zɐ",
+        "stressPattern": "ˈme.zɐ",
+        "english": "table"
+      },
+      {
+        "pt": "amiga",
+        "ipa": "a.ˈmi.gɐ",
+        "stressPattern": "a.ˈmi.gɐ",
+        "english": "friend (female)"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "EY",
+    "ipa": "e",
+    "type": "vowel",
+    "category": "close-mid front vowel",
+    "difficulty": 3,
+    "englishApprox": "Similar to 'hey', but without the glide at the end",
+    "articulation": "Tongue is raised high and forward, lips are spread but not tight.",
+    "acousticDescription": "Sharp and tense compared to /ɛ/.",
+    "commonMistakes": [
+      "Adding a 'y' glide at the end (making it a diphthong like in 'day').",
+      "Confusing with open /ɛ/."
+    ],
+    "teachingTips": [
+      "Smile slightly and hold the sound steady.",
+      "Do not move your jaw while saying it.",
+      "Think of the French 'é'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "avô",
+          "avó"
+        ],
+        "contrast": "/o/ vs /ɔ/ (parallel distinction)"
+      },
+      {
+        "pair": [
+          "vê",
+          "fé"
+        ],
+        "contrast": "/e/ vs /ɛ/"
+      },
+      {
+        "pair": [
+          "sede",
+          "sede"
+        ],
+        "contrast": "/e/ (thirst) vs /ɛ/ (headquarters)"
+      },
+      {
+        "pair": [
+          "pelo",
+          "pelo"
+        ],
+        "contrast": "/e/ (hair) vs /ɛ/ (by the - contraction)"
+      },
+      {
+        "pair": [
+          "esse",
+          "essa"
+        ],
+        "contrast": "final /i/ vs /ɐ/ (contextual)"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "você",
+        "ipa": "vo.ˈse",
+        "stressPattern": "vo.ˈse",
+        "english": "you"
+      },
+      {
+        "pt": "bebê",
+        "ipa": "be.ˈbe",
+        "stressPattern": "be.ˈbe",
+        "english": "baby"
+      },
+      {
+        "pt": "mesmo",
+        "ipa": "ˈmez.mu",
+        "stressPattern": "ˈmez.mu",
+        "english": "same"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "EH",
+    "ipa": "ɛ",
+    "type": "vowel",
+    "category": "open-mid front vowel",
+    "difficulty": 3,
+    "englishApprox": "Like 'b'e't'",
+    "articulation": "Tongue is mid-height and forward, jaw drops lower than for /e/.",
+    "acousticDescription": "More open and relaxed than /e/.",
+    "commonMistakes": [
+      "Pronouncing it as /e/ (close-mid).",
+      "Diphthongizing it."
+    ],
+    "teachingTips": [
+      "Drop your jaw more than you think you need to.",
+      "Keep the sound short and flat."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "avó",
+          "avô"
+        ],
+        "contrast": "Parallel vowel height contrast"
+      },
+      {
+        "pair": [
+          "esta",
+          "está"
+        ],
+        "contrast": "/e/ vs /a/ (stress shift often changes vowel quality)"
+      },
+      {
+        "pair": [
+          "meta",
+          "metá"
+        ],
+        "contrast": "Stress and vowel quality"
+      },
+      {
+        "pair": [
+          "pé",
+          "pê"
+        ],
+        "contrast": "/ɛ/ vs /e/"
+      },
+      {
+        "pair": [
+          "café",
+          "café"
+        ],
+        "contrast": "N/A (Consistency check)"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "pé",
+        "ipa": "ˈpɛ",
+        "stressPattern": "ˈpɛ",
+        "english": "foot"
+      },
+      {
+        "pt": "café",
+        "ipa": "ka.ˈfɛ",
+        "stressPattern": "ka.ˈfɛ",
+        "english": "coffee"
+      },
+      {
+        "pt": "mulher",
+        "ipa": "mu.ˈʎɛh",
+        "stressPattern": "mu.ˈʎɛh",
+        "english": "woman"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "IY",
+    "ipa": "i",
+    "type": "vowel",
+    "category": "close front vowel",
+    "difficulty": 1,
+    "englishApprox": "Like 's'ee'",
+    "articulation": "Tongue is very high and forward, almost touching the roof of the mouth.",
+    "acousticDescription": "High pitch, bright.",
+    "commonMistakes": [
+      "Making it too short like 'sit' (should be tenser)."
+    ],
+    "teachingTips": [
+      "Stretch your lips into a wide smile.",
+      "It's the 'ee' sound in 'cheese'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "li",
+          "lê"
+        ],
+        "contrast": "/i/ vs /e/"
+      },
+      {
+        "pair": [
+          "li",
+          "lá"
+        ],
+        "contrast": "/i/ vs /a/"
+      },
+      {
+        "pair": [
+          "fita",
+          "feta"
+        ],
+        "contrast": "/i/ vs /ɛ/"
+      },
+      {
+        "pair": [
+          "quilo",
+          "calou"
+        ],
+        "contrast": "/i/ vs /a/"
+      },
+      {
+        "pair": [
+          "bico",
+          "beco"
+        ],
+        "contrast": "/i/ vs /e/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "ilha",
+        "ipa": "ˈi.ʎɐ",
+        "stressPattern": "ˈi.ʎɐ",
+        "english": "island"
+      },
+      {
+        "pt": "livro",
+        "ipa": "ˈli.vɾu",
+        "stressPattern": "ˈli.vɾu",
+        "english": "book"
+      },
+      {
+        "pt": "aqui",
+        "ipa": "a.ˈki",
+        "stressPattern": "a.ˈki",
+        "english": "here"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "OW",
+    "ipa": "o",
+    "type": "vowel",
+    "category": "close-mid back vowel",
+    "difficulty": 3,
+    "englishApprox": "Like 'o'ld', but without the 'w' glide",
+    "articulation": "Lips are rounded, tongue is back and mid-high.",
+    "acousticDescription": "Round, enclosed sound.",
+    "commonMistakes": [
+      "Adding a 'w' glide at the end.",
+      "Confusing with open /ɔ/."
+    ],
+    "teachingTips": [
+      "Round your lips into a small 'o' shape.",
+      "Freeze your jaw; do not let it close as you finish the sound."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "avô",
+          "avó"
+        ],
+        "contrast": "/o/ vs /ɔ/"
+      },
+      {
+        "pair": [
+          "olho",
+          "óleo"
+        ],
+        "contrast": "/o/ vs /ɔ/"
+      },
+      {
+        "pair": [
+          "cor",
+          "cor"
+        ],
+        "contrast": "Context dependent (open/closed)"
+      },
+      {
+        "pair": [
+          "bodo",
+          "bode"
+        ],
+        "contrast": "/o/ vs /ɔ/ or /i/"
+      },
+      {
+        "pair": [
+          "tomo",
+          "tomo"
+        ],
+        "contrast": "/o/ (verb) vs /ɔ/ (noun - tone varies)"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "avô",
+        "ipa": "a.ˈvo",
+        "stressPattern": "a.ˈvo",
+        "english": "grandfather"
+      },
+      {
+        "pt": "todo",
+        "ipa": "ˈto.du",
+        "stressPattern": "ˈto.du",
+        "english": "all/whole"
+      },
+      {
+        "pt": "novo",
+        "ipa": "ˈno.vu",
+        "stressPattern": "ˈno.vu",
+        "english": "new"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "AO",
+    "ipa": "ɔ",
+    "type": "vowel",
+    "category": "open-mid back vowel",
+    "difficulty": 3,
+    "englishApprox": "Like 'th'ou'ght' (in some dialects) or 'h'o't'",
+    "articulation": "Lips are rounded but jaw is more open than for /o/.",
+    "acousticDescription": "Open, deep sound.",
+    "commonMistakes": [
+      "Pronouncing as close /o/.",
+      "Not rounding the lips enough."
+    ],
+    "teachingTips": [
+      "Drop your jaw while keeping lips rounded.",
+      "Ideally, put a finger between your teeth to ensure openness."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "avó",
+          "avô"
+        ],
+        "contrast": "/ɔ/ vs /o/"
+      },
+      {
+        "pair": [
+          "só",
+          "sou"
+        ],
+        "contrast": "/ɔ/ vs /o/"
+      },
+      {
+        "pair": [
+          "bola",
+          "bolo"
+        ],
+        "contrast": "/ɔ/ vs /o/"
+      },
+      {
+        "pair": [
+          "mola",
+          "mula"
+        ],
+        "contrast": "/ɔ/ vs /u/"
+      },
+      {
+        "pair": [
+          "costa",
+          "costa"
+        ],
+        "contrast": "N/A"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "avó",
+        "ipa": "a.ˈvɔ",
+        "stressPattern": "a.ˈvɔ",
+        "english": "grandmother"
+      },
+      {
+        "pt": "sol",
+        "ipa": "ˈsɔw",
+        "stressPattern": "ˈsɔw",
+        "english": "sun"
+      },
+      {
+        "pt": "bola",
+        "ipa": "ˈbɔ.lɐ",
+        "stressPattern": "ˈbɔ.lɐ",
+        "english": "ball"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "UW",
+    "ipa": "u",
+    "type": "vowel",
+    "category": "close back vowel",
+    "difficulty": 1,
+    "englishApprox": "Like 'm'oo'n'",
+    "articulation": "Lips are very rounded and tight, tongue is high back.",
+    "acousticDescription": "Deep, resonant back vowel.",
+    "commonMistakes": [
+      "Relaxing lips too much (making it sound like 'book')."
+    ],
+    "teachingTips": [
+      "Make a 'kissing' face.",
+      "Push your lips forward."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "luva",
+          "lava"
+        ],
+        "contrast": "/u/ vs /a/"
+      },
+      {
+        "pair": [
+          "furo",
+          "foro"
+        ],
+        "contrast": "/u/ vs /ɔ/"
+      },
+      {
+        "pair": [
+          "uva",
+          "ova"
+        ],
+        "contrast": "/u/ vs /ɔ/"
+      },
+      {
+        "pair": [
+          "mula",
+          "mala"
+        ],
+        "contrast": "/u/ vs /a/"
+      },
+      {
+        "pair": [
+          "tudo",
+          "todo"
+        ],
+        "contrast": "/u/ vs /o/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "uva",
+        "ipa": "ˈu.vɐ",
+        "stressPattern": "ˈu.vɐ",
+        "english": "grape"
+      },
+      {
+        "pt": "lua",
+        "ipa": "ˈlu.ɐ",
+        "stressPattern": "ˈlu.ɐ",
+        "english": "moon"
+      },
+      {
+        "pt": "mundo",
+        "ipa": "ˈmũ.du",
+        "stressPattern": "ˈmũ.du",
+        "english": "world"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "AN_NASAL",
+    "ipa": "ɐ̃",
+    "type": "vowel",
+    "category": "nasal vowel",
+    "difficulty": 5,
+    "englishApprox": "No exact equivalent; try grunting 'huh' through your nose",
+    "articulation": "Jaw relaxed, air flows through nose and mouth simultaneously. Tongue is low-mid.",
+    "acousticDescription": "Muffled, nasal quality.",
+    "commonMistakes": [
+      "Pronouncing the 'n' or 'm' consonant fully (e.g., saying 'ban-da' instead of 'bã-da').",
+      "Not engaging the nose."
+    ],
+    "teachingTips": [
+      "Touch your nose; you should feel vibration.",
+      "Do not let your tongue touch the roof of your mouth for the 'n'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "lã",
+          "lá"
+        ],
+        "contrast": "nasal /ɐ̃/ vs oral /a/"
+      },
+      {
+        "pair": [
+          "fã",
+          "fá"
+        ],
+        "contrast": "nasal /ɐ̃/ vs oral /a/"
+      },
+      {
+        "pair": [
+          "canto",
+          "catou"
+        ],
+        "contrast": "/ɐ̃/ vs /a/"
+      },
+      {
+        "pair": [
+          "mando",
+          "mado"
+        ],
+        "contrast": "/ɐ̃/ vs /a/"
+      },
+      {
+        "pair": [
+          "santo",
+          "salto"
+        ],
+        "contrast": "/ɐ̃/ vs /a/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "irmã",
+        "ipa": "ih.ˈmɐ̃",
+        "stressPattern": "ih.ˈmɐ̃",
+        "english": "sister"
+      },
+      {
+        "pt": "manhã",
+        "ipa": "mɐ.ˈɲɐ̃",
+        "stressPattern": "mɐ.ˈɲɐ̃",
+        "english": "morning"
+      },
+      {
+        "pt": "cama",
+        "ipa": "ˈkɐ̃.mɐ",
+        "stressPattern": "ˈkɐ̃.mɐ",
+        "english": "bed"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "EN_NASAL",
+    "ipa": "ẽ",
+    "type": "vowel",
+    "category": "nasal vowel",
+    "difficulty": 5,
+    "englishApprox": "Like 'pain' but stop before the 'n' touches",
+    "articulation": "Lips spread, tongue high-mid, air through nose.",
+    "acousticDescription": "Nasalized /e/.",
+    "commonMistakes": [
+      "Pronouncing the 'm' or 'n' clearly.",
+      "Too open (sounding like 'eh')."
+    ],
+    "teachingTips": [
+      "Start to say 'aim' but pinch your nose shut halfway through.",
+      "Keep the tongue flat."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "sento",
+          "seto"
+        ],
+        "contrast": "nasal /ẽ/ vs oral /ɛ/ or /e/"
+      },
+      {
+        "pair": [
+          "lente",
+          "leite"
+        ],
+        "contrast": "/ẽ/ vs /ej/"
+      },
+      {
+        "pair": [
+          "bento",
+          "beto"
+        ],
+        "contrast": "nasal /ẽ/ vs oral /ɛ/"
+      },
+      {
+        "pair": [
+          "venda",
+          "veda"
+        ],
+        "contrast": "nasal /ẽ/ vs oral /e/"
+      },
+      {
+        "pair": [
+          "tenda",
+          "teda"
+        ],
+        "contrast": "nasal /ẽ/ vs oral /ɛ/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "tempo",
+        "ipa": "ˈtẽ.pu",
+        "stressPattern": "ˈtẽ.pu",
+        "english": "time/weather"
+      },
+      {
+        "pt": "dente",
+        "ipa": "ˈdẽ.tʃi",
+        "stressPattern": "ˈdẽ.tʃi",
+        "english": "tooth"
+      },
+      {
+        "pt": "sempre",
+        "ipa": "ˈsẽ.pɾi",
+        "stressPattern": "ˈsẽ.pɾi",
+        "english": "always"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "IN_NASAL",
+    "ipa": "ĩ",
+    "type": "vowel",
+    "category": "nasal vowel",
+    "difficulty": 5,
+    "englishApprox": "Like 'seen' but stop before the 'n'",
+    "articulation": "High front tongue position, air through nose.",
+    "acousticDescription": "High pitched nasal buzz.",
+    "commonMistakes": [
+      "Pronouncing the 'm' or 'n' at the end.",
+      "Not enough nasality."
+    ],
+    "teachingTips": [
+      "Smile wide and buzz the sound in your nose.",
+      "It's like a mosquito buzzing 'iii'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "sim",
+          "si"
+        ],
+        "contrast": "nasal /ĩ/ vs oral /i/"
+      },
+      {
+        "pair": [
+          "fim",
+          "fi"
+        ],
+        "contrast": "nasal /ĩ/ vs oral /i/"
+      },
+      {
+        "pair": [
+          "lindo",
+          "lido"
+        ],
+        "contrast": "nasal /ĩ/ vs oral /i/"
+      },
+      {
+        "pair": [
+          "cinto",
+          "cito"
+        ],
+        "contrast": "nasal /ĩ/ vs oral /i/"
+      },
+      {
+        "pair": [
+          "finta",
+          "fita"
+        ],
+        "contrast": "nasal /ĩ/ vs oral /i/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "sim",
+        "ipa": "ˈsĩ",
+        "stressPattern": "ˈsĩ",
+        "english": "yes"
+      },
+      {
+        "pt": "tinta",
+        "ipa": "ˈtʃĩ.tɐ",
+        "stressPattern": "ˈtʃĩ.tɐ",
+        "english": "paint"
+      },
+      {
+        "pt": "limpo",
+        "ipa": "ˈlĩ.pu",
+        "stressPattern": "ˈlĩ.pu",
+        "english": "clean"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "ON_NASAL",
+    "ipa": "õ",
+    "type": "vowel",
+    "category": "nasal vowel",
+    "difficulty": 5,
+    "englishApprox": "Like 'own' but stop before the 'n'",
+    "articulation": "Rounded lips, back tongue, air through nose.",
+    "acousticDescription": "Deep, resonant nasal sound.",
+    "commonMistakes": [
+      "Pronouncing 'own' fully.",
+      "Not rounding lips enough."
+    ],
+    "teachingTips": [
+      "Round lips tightly.",
+      "Imagine the sound resonating in your forehead."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "som",
+          "só"
+        ],
+        "contrast": "nasal /õ/ vs oral /ɔ/"
+      },
+      {
+        "pair": [
+          "bom",
+          "boa"
+        ],
+        "contrast": "nasal /õ/ vs oral diphthong"
+      },
+      {
+        "pair": [
+          "tom",
+          "to"
+        ],
+        "contrast": "nasal /õ/ vs oral /o/ or /u/"
+      },
+      {
+        "pair": [
+          "monte",
+          "mote"
+        ],
+        "contrast": "nasal /õ/ vs oral /ɔ/"
+      },
+      {
+        "pair": [
+          "onda",
+          "oda"
+        ],
+        "contrast": "nasal /õ/ vs oral /ɔ/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "bom",
+        "ipa": "ˈbõ",
+        "stressPattern": "ˈbõ",
+        "english": "good"
+      },
+      {
+        "pt": "onde",
+        "ipa": "ˈõ.dʒi",
+        "stressPattern": "ˈõ.dʒi",
+        "english": "where"
+      },
+      {
+        "pt": "compra",
+        "ipa": "ˈkõ.pɾɐ",
+        "stressPattern": "ˈkõ.pɾɐ",
+        "english": "purchase"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "UN_NASAL",
+    "ipa": "ũ",
+    "type": "vowel",
+    "category": "nasal vowel",
+    "difficulty": 5,
+    "englishApprox": "Like 'room' but without the 'r' or 'm'",
+    "articulation": "Very rounded lips, high back tongue, air through nose.",
+    "acousticDescription": "Deep, muted nasal.",
+    "commonMistakes": [
+      "Pronouncing the 'm'.",
+      "Not rounding lips."
+    ],
+    "teachingTips": [
+      "Make a fish face and grunt through your nose."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "um",
+          "u"
+        ],
+        "contrast": "nasal /ũ/ vs oral /u/"
+      },
+      {
+        "pair": [
+          "atrum",
+          "atro"
+        ],
+        "contrast": "nasal /ũ/ vs oral /u/"
+      },
+      {
+        "pair": [
+          "mundo",
+          "mudo"
+        ],
+        "contrast": "nasal /ũ/ vs oral /u/"
+      },
+      {
+        "pair": [
+          "fundo",
+          "fado"
+        ],
+        "contrast": "nasal /ũ/ vs oral /a/"
+      },
+      {
+        "pair": [
+          "junto",
+          "jato"
+        ],
+        "contrast": "nasal /ũ/ vs oral /a/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "um",
+        "ipa": "ˈũ",
+        "stressPattern": "ˈũ",
+        "english": "one"
+      },
+      {
+        "pt": "mundo",
+        "ipa": "ˈmũ.du",
+        "stressPattern": "ˈmũ.du",
+        "english": "world"
+      },
+      {
+        "pt": "junto",
+        "ipa": "ˈʒũ.tu",
+        "stressPattern": "ˈʒũ.tu",
+        "english": "together"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "P",
+    "ipa": "p",
+    "type": "consonant",
+    "category": "plosive",
+    "difficulty": 1,
+    "englishApprox": "Same as 'p' in 'spit' (unaspirated)",
+    "articulation": "Lips close and burst open.",
+    "acousticDescription": "Soft burst.",
+    "commonMistakes": [
+      "Too much aspiration (puff of air) like in 'pin'."
+    ],
+    "teachingTips": [
+      "Hold a piece of paper in front of your mouth; it should NOT move when you say 'pão'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "pato",
+          "bato"
+        ],
+        "contrast": "/p/ vs /b/"
+      },
+      {
+        "pair": [
+          "pala",
+          "fala"
+        ],
+        "contrast": "/p/ vs /f/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "pão",
+        "ipa": "ˈpɐ̃w",
+        "stressPattern": "ˈpɐ̃w",
+        "english": "bread"
+      },
+      {
+        "pt": "pai",
+        "ipa": "ˈpaj",
+        "stressPattern": "ˈpaj",
+        "english": "father"
+      },
+      {
+        "pt": "copo",
+        "ipa": "ˈkɔ.pu",
+        "stressPattern": "ˈkɔ.pu",
+        "english": "cup"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "B",
+    "ipa": "b",
+    "type": "consonant",
+    "category": "plosive",
+    "difficulty": 1,
+    "englishApprox": "Same as 'b' in 'boy'",
+    "articulation": "Lips close and burst open with vocal cord vibration.",
+    "acousticDescription": "Voiced burst.",
+    "commonMistakes": [
+      "None usually."
+    ],
+    "teachingTips": [
+      "Fully voice the sound from the throat."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "bato",
+          "pato"
+        ],
+        "contrast": "/b/ vs /p/"
+      },
+      {
+        "pair": [
+          "bela",
+          "vela"
+        ],
+        "contrast": "/b/ vs /v/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "bola",
+        "ipa": "ˈbɔ.lɐ",
+        "stressPattern": "ˈbɔ.lɐ",
+        "english": "ball"
+      },
+      {
+        "pt": "boca",
+        "ipa": "ˈbo.kɐ",
+        "stressPattern": "ˈbo.kɐ",
+        "english": "mouth"
+      },
+      {
+        "pt": "bom",
+        "ipa": "ˈbõ",
+        "stressPattern": "ˈbõ",
+        "english": "good"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "T",
+    "ipa": "t",
+    "type": "consonant",
+    "category": "plosive",
+    "difficulty": 2,
+    "englishApprox": "Softer than English 't'; tongue touches teeth",
+    "articulation": "Tip of tongue touches the BACK of the upper TEETH (dental), not the gum ridge.",
+    "acousticDescription": "Crisp, dental sound.",
+    "commonMistakes": [
+      "Aspirating it (puff of air).",
+      "Touching the gum ridge (alveolar) like in English."
+    ],
+    "teachingTips": [
+      "Touch your tongue to your teeth, not the roof of your mouth.",
+      "No puff of air."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "tia",
+          "dia"
+        ],
+        "contrast": "/tʃ/ vs /dʒ/ (in this context)"
+      },
+      {
+        "pair": [
+          "teto",
+          "dedo"
+        ],
+        "contrast": "/t/ vs /d/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "tudo",
+        "ipa": "ˈtu.du",
+        "stressPattern": "ˈtu.du",
+        "english": "everything"
+      },
+      {
+        "pt": "tatu",
+        "ipa": "ta.ˈtu",
+        "stressPattern": "ta.ˈtu",
+        "english": "armadillo"
+      },
+      {
+        "pt": "tempo",
+        "ipa": "ˈtẽ.pu",
+        "stressPattern": "ˈtẽ.pu",
+        "english": "time"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "D",
+    "ipa": "d",
+    "type": "consonant",
+    "category": "plosive",
+    "difficulty": 2,
+    "englishApprox": "Like 'd' but dental",
+    "articulation": "Tip of tongue touches the BACK of the upper TEETH.",
+    "acousticDescription": "Voiced dental stop.",
+    "commonMistakes": [
+      "Touching the gum ridge instead of teeth."
+    ],
+    "teachingTips": [
+      "Push tongue against teeth."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "dia",
+          "tia"
+        ],
+        "contrast": "/dʒ/ vs /tʃ/"
+      },
+      {
+        "pair": [
+          "dado",
+          "tato"
+        ],
+        "contrast": "/d/ vs /t/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "dia",
+        "ipa": "ˈdʒi.ɐ",
+        "stressPattern": "ˈdʒi.ɐ",
+        "english": "day"
+      },
+      {
+        "pt": "dado",
+        "ipa": "ˈda.du",
+        "stressPattern": "ˈda.du",
+        "english": "dice"
+      },
+      {
+        "pt": "dedo",
+        "ipa": "ˈde.du",
+        "stressPattern": "ˈde.du",
+        "english": "finger"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "K",
+    "ipa": "k",
+    "type": "consonant",
+    "category": "plosive",
+    "difficulty": 1,
+    "englishApprox": "Like 'k' in 'skate' (unaspirated)",
+    "articulation": "Back of tongue touches soft palate.",
+    "acousticDescription": "Hard click.",
+    "commonMistakes": [
+      "Adding a puff of air."
+    ],
+    "teachingTips": [
+      "Keep it dry and short.",
+      "No explosion of air."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "cola",
+          "gola"
+        ],
+        "contrast": "/k/ vs /g/"
+      },
+      {
+        "pair": [
+          "calou",
+          "galou"
+        ],
+        "contrast": "/k/ vs /g/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "casa",
+        "ipa": "ˈka.zɐ",
+        "stressPattern": "ˈka.zɐ",
+        "english": "house"
+      },
+      {
+        "pt": "aqui",
+        "ipa": "a.ˈki",
+        "stressPattern": "a.ˈki",
+        "english": "here"
+      },
+      {
+        "pt": "coisa",
+        "ipa": "ˈkoj.zɐ",
+        "stressPattern": "ˈkoj.zɐ",
+        "english": "thing"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "G",
+    "ipa": "g",
+    "type": "consonant",
+    "category": "plosive",
+    "difficulty": 1,
+    "englishApprox": "Like 'g' in 'go'",
+    "articulation": "Back of tongue touches soft palate, voiced.",
+    "acousticDescription": "Voiced velar stop.",
+    "commonMistakes": [
+      "None usually."
+    ],
+    "teachingTips": [
+      "Vibrate vocal cords."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "gato",
+          "cato"
+        ],
+        "contrast": "/g/ vs /k/"
+      },
+      {
+        "pair": [
+          "gola",
+          "cola"
+        ],
+        "contrast": "/g/ vs /k/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "gato",
+        "ipa": "ˈga.tu",
+        "stressPattern": "ˈga.tu",
+        "english": "cat"
+      },
+      {
+        "pt": "agora",
+        "ipa": "a.ˈgɔ.ɾɐ",
+        "stressPattern": "a.ˈgɔ.ɾɐ",
+        "english": "now"
+      },
+      {
+        "pt": "fogo",
+        "ipa": "ˈfo.gu",
+        "stressPattern": "ˈfo.gu",
+        "english": "fire"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "CH",
+    "ipa": "tʃ",
+    "type": "consonant",
+    "category": "affricate",
+    "difficulty": 4,
+    "englishApprox": "Like 'ch' in 'cheese'",
+    "articulation": "Tongue blocks air then releases it with a hiss.",
+    "acousticDescription": "Sharp fricative release.",
+    "commonMistakes": [
+      "Using it when not appropriate (only used for 't' before 'i' or 'e' in many accents, or spelled 'ch' which is actually /ʃ/). Note: Spelled 'ch' is SH sound. This phoneme is usually T before I."
+    ],
+    "teachingTips": [
+      "In Brazil, when 't' is followed by an 'i' sound (like in 'leite'), it becomes 'chi'.",
+      "Think 'chee'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "tia",
+          "dia"
+        ],
+        "contrast": "/tʃ/ vs /dʒ/"
+      },
+      {
+        "pair": [
+          "leite",
+          "lady"
+        ],
+        "contrast": "Using English loanwords or approximations"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "tipo",
+        "ipa": "ˈtʃi.pu",
+        "stressPattern": "ˈtʃi.pu",
+        "english": "type"
+      },
+      {
+        "pt": "noite",
+        "ipa": "ˈnoj.tʃi",
+        "stressPattern": "ˈnoj.tʃi",
+        "english": "night"
+      },
+      {
+        "pt": "tchau",
+        "ipa": "ˈtʃaw",
+        "stressPattern": "ˈtʃaw",
+        "english": "bye"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "JH",
+    "ipa": "dʒ",
+    "type": "consonant",
+    "category": "affricate",
+    "difficulty": 4,
+    "englishApprox": "Like 'j' in 'jeep'",
+    "articulation": "Tongue blocks air then releases voiced hiss.",
+    "acousticDescription": "Voiced affricate.",
+    "commonMistakes": [
+      "Using hard 'd' before 'i'.",
+      "Using /ʒ/ (like measure) instead of the affricate."
+    ],
+    "teachingTips": [
+      "Whenever 'd' is followed by 'i' (or final 'e'), say 'j' like 'jeep'.",
+      "Cidade becomes 'Ci-da-jee'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "dia",
+          "tia"
+        ],
+        "contrast": "/dʒ/ vs /tʃ/"
+      },
+      {
+        "pair": [
+          "de",
+          "te"
+        ],
+        "contrast": "/dʒ/ vs /tʃ/ (before i/e)"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "dia",
+        "ipa": "ˈdʒi.ɐ",
+        "stressPattern": "ˈdʒi.ɐ",
+        "english": "day"
+      },
+      {
+        "pt": "cidade",
+        "ipa": "si.ˈda.dʒi",
+        "stressPattern": "si.ˈda.dʒi",
+        "english": "city"
+      },
+      {
+        "pt": "onde",
+        "ipa": "ˈõ.dʒi",
+        "stressPattern": "ˈõ.dʒi",
+        "english": "where"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "F",
+    "ipa": "f",
+    "type": "consonant",
+    "category": "fricative",
+    "difficulty": 1,
+    "englishApprox": "Like 'f' in 'fan'",
+    "articulation": "Top teeth touch bottom lip.",
+    "acousticDescription": "Air friction.",
+    "commonMistakes": [
+      "None."
+    ],
+    "teachingTips": [
+      "Same as English."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "faca",
+          "vaca"
+        ],
+        "contrast": "/f/ vs /v/"
+      },
+      {
+        "pair": [
+          "fela",
+          "vela"
+        ],
+        "contrast": "/f/ vs /v/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "faca",
+        "ipa": "ˈfa.kɐ",
+        "stressPattern": "ˈfa.kɐ",
+        "english": "knife"
+      },
+      {
+        "pt": "café",
+        "ipa": "ka.ˈfɛ",
+        "stressPattern": "ka.ˈfɛ",
+        "english": "coffee"
+      },
+      {
+        "pt": "falar",
+        "ipa": "fa.ˈlah",
+        "stressPattern": "fa.ˈlah",
+        "english": "to speak"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "V",
+    "ipa": "v",
+    "type": "consonant",
+    "category": "fricative",
+    "difficulty": 1,
+    "englishApprox": "Like 'v' in 'van'",
+    "articulation": "Top teeth touch bottom lip, voiced.",
+    "acousticDescription": "Voiced friction.",
+    "commonMistakes": [
+      "Confusing with /b/ (common in Spanish but not Portuguese)."
+    ],
+    "teachingTips": [
+      "Keep the teeth on the lip and buzz.",
+      "Do not close your lips fully like a 'b'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "vaca",
+          "faca"
+        ],
+        "contrast": "/v/ vs /f/"
+      },
+      {
+        "pair": [
+          "vinho",
+          "finho"
+        ],
+        "contrast": "/v/ vs /f/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "você",
+        "ipa": "vo.ˈse",
+        "stressPattern": "vo.ˈse",
+        "english": "you"
+      },
+      {
+        "pt": "vida",
+        "ipa": "ˈvi.dɐ",
+        "stressPattern": "ˈvi.dɐ",
+        "english": "life"
+      },
+      {
+        "pt": "livro",
+        "ipa": "ˈli.vɾu",
+        "stressPattern": "ˈli.vɾu",
+        "english": "book"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "S",
+    "ipa": "s",
+    "type": "consonant",
+    "category": "fricative",
+    "difficulty": 2,
+    "englishApprox": "Like 's' in 'sun'",
+    "articulation": "Tip of tongue near alveolar ridge, air hisses.",
+    "acousticDescription": "Hissing sibilant.",
+    "commonMistakes": [
+      "Pronouncing 's' between vowels as /s/ (it usually becomes /z/)."
+    ],
+    "teachingTips": [
+      "Standard 's' sound.",
+      "Remember: 'S' between two vowels sounds like 'Z' (Casa = Caza)."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "selo",
+          "zelo"
+        ],
+        "contrast": "/s/ vs /z/"
+      },
+      {
+        "pair": [
+          "caça",
+          "casa"
+        ],
+        "contrast": "/s/ vs /z/ (spelled ç vs s)"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "sapo",
+        "ipa": "ˈsa.pu",
+        "stressPattern": "ˈsa.pu",
+        "english": "frog"
+      },
+      {
+        "pt": "passo",
+        "ipa": "ˈpa.su",
+        "stressPattern": "ˈpa.su",
+        "english": "step"
+      },
+      {
+        "pt": "cabeça",
+        "ipa": "ka.ˈbe.sɐ",
+        "stressPattern": "ka.ˈbe.sɐ",
+        "english": "head"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "Z",
+    "ipa": "z",
+    "type": "consonant",
+    "category": "fricative",
+    "difficulty": 1,
+    "englishApprox": "Like 'z' in 'zoo'",
+    "articulation": "Same as /s/ but voiced.",
+    "acousticDescription": "Buzzing sibilant.",
+    "commonMistakes": [
+      "Devoicing at the end of words (though rare in BP)."
+    ],
+    "teachingTips": [
+      "Buzz like a bee.",
+      "Use this sound when a single 's' is between vowels."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "zelo",
+          "selo"
+        ],
+        "contrast": "/z/ vs /s/"
+      },
+      {
+        "pair": [
+          "casa",
+          "caça"
+        ],
+        "contrast": "/z/ vs /s/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "zebra",
+        "ipa": "ˈze.bɾɐ",
+        "stressPattern": "ˈze.bɾɐ",
+        "english": "zebra"
+      },
+      {
+        "pt": "casa",
+        "ipa": "ˈka.zɐ",
+        "stressPattern": "ˈka.zɐ",
+        "english": "house"
+      },
+      {
+        "pt": "mesa",
+        "ipa": "ˈme.zɐ",
+        "stressPattern": "ˈme.zɐ",
+        "english": "table"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "SH",
+    "ipa": "ʃ",
+    "type": "consonant",
+    "category": "fricative",
+    "difficulty": 2,
+    "englishApprox": "Like 'sh' in 'shoe'",
+    "articulation": "Blade of tongue rises towards hard palate.",
+    "acousticDescription": "Hushing sound.",
+    "commonMistakes": [
+      "None phonetically, but orthographically 'x' can be tricky."
+    ],
+    "teachingTips": [
+      "Round your lips slightly and hush.",
+      "In Portuguese, 'x' often makes this sound."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "chá",
+          "já"
+        ],
+        "contrast": "/ʃ/ vs /ʒ/"
+      },
+      {
+        "pair": [
+          "acho",
+          "haja"
+        ],
+        "contrast": "/ʃ/ vs /ʒ/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "chave",
+        "ipa": "ˈʃa.vi",
+        "stressPattern": "ˈʃa.vi",
+        "english": "key"
+      },
+      {
+        "pt": "lixo",
+        "ipa": "ˈli.ʃu",
+        "stressPattern": "ˈli.ʃu",
+        "english": "trash"
+      },
+      {
+        "pt": "peixe",
+        "ipa": "ˈpej.ʃi",
+        "stressPattern": "ˈpej.ʃi",
+        "english": "fish"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "ZH",
+    "ipa": "ʒ",
+    "type": "consonant",
+    "category": "fricative",
+    "difficulty": 3,
+    "englishApprox": "Like 's' in 'pleasure' or 'vision'",
+    "articulation": "Same as /ʃ/ but voiced.",
+    "acousticDescription": "Voiced hushing.",
+    "commonMistakes": [
+      "Using /dʒ/ (hard J) instead. English speakers want to say 'Jungle' but it should be soft 'Zhungle'."
+    ],
+    "teachingTips": [
+      "It is a soft sound, like a French 'J'.",
+      "Never touch your tongue to the roof of your mouth to stop the air."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "janela",
+          "chanela"
+        ],
+        "contrast": "/ʒ/ vs /ʃ/"
+      },
+      {
+        "pair": [
+          "gelo",
+          "selo"
+        ],
+        "contrast": "/ʒ/ vs /s/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "já",
+        "ipa": "ˈʒa",
+        "stressPattern": "ˈʒa",
+        "english": "already"
+      },
+      {
+        "pt": "gente",
+        "ipa": "ˈʒẽ.tʃi",
+        "stressPattern": "ˈʒẽ.tʃi",
+        "english": "people"
+      },
+      {
+        "pt": "ajuda",
+        "ipa": "a.ˈʒu.dɐ",
+        "stressPattern": "a.ˈʒu.dɐ",
+        "english": "help"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "HH",
+    "ipa": "h",
+    "type": "consonant",
+    "category": "fricative",
+    "difficulty": 4,
+    "englishApprox": "Like 'h' in 'house'",
+    "articulation": "Glottal or velar fricative.",
+    "acousticDescription": "Breathy aspiration.",
+    "commonMistakes": [
+      "Pronouncing 'R' at the start of words like an English 'R'.",
+      "Rolling the 'R' (Spanish style) - usually too strong for BP."
+    ],
+    "teachingTips": [
+      "If a word starts with 'R', pretend it is an 'H'.",
+      "Rio sounds like 'Hio'.",
+      "Double 'RR' is also an 'H'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "carro",
+          "caro"
+        ],
+        "contrast": "/h/ (strong) vs /ɾ/ (flap)"
+      },
+      {
+        "pair": [
+          "murro",
+          "muro"
+        ],
+        "contrast": "/h/ vs /ɾ/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "rato",
+        "ipa": "ˈha.tu",
+        "stressPattern": "ˈha.tu",
+        "english": "mouse"
+      },
+      {
+        "pt": "carro",
+        "ipa": "ˈka.hu",
+        "stressPattern": "ˈka.hu",
+        "english": "car"
+      },
+      {
+        "pt": "rio",
+        "ipa": "ˈhi.u",
+        "stressPattern": "ˈhi.u",
+        "english": "river"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "M",
+    "ipa": "m",
+    "type": "consonant",
+    "category": "nasal",
+    "difficulty": 1,
+    "englishApprox": "Like 'm' in 'mom'",
+    "articulation": "Lips closed, air through nose.",
+    "acousticDescription": "Nasal hum.",
+    "commonMistakes": [
+      "None at start of words.",
+      "At end of words, it indicates a nasal vowel, not a full 'm' sound."
+    ],
+    "teachingTips": [
+      "Lips together.",
+      "If at the end of a word (sim), don't close your lips fully, just make the vowel nasal."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "mala",
+          "fala"
+        ],
+        "contrast": "/m/ vs /f/"
+      },
+      {
+        "pair": [
+          "cama",
+          "cana"
+        ],
+        "contrast": "/m/ vs /n/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "mãe",
+        "ipa": "ˈmɐ̃j",
+        "stressPattern": "ˈmɐ̃j",
+        "english": "mother"
+      },
+      {
+        "pt": "amigo",
+        "ipa": "a.ˈmi.gu",
+        "stressPattern": "a.ˈmi.gu",
+        "english": "friend"
+      },
+      {
+        "pt": "mesa",
+        "ipa": "ˈme.zɐ",
+        "stressPattern": "ˈme.zɐ",
+        "english": "table"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "N",
+    "ipa": "n",
+    "type": "consonant",
+    "category": "nasal",
+    "difficulty": 1,
+    "englishApprox": "Like 'n' in 'no'",
+    "articulation": "Tip of tongue on alveolar ridge, air through nose.",
+    "acousticDescription": "Nasal hum.",
+    "commonMistakes": [
+      "None at start of syllables."
+    ],
+    "teachingTips": [
+      "Standard 'n' sound."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "nada",
+          "fada"
+        ],
+        "contrast": "/n/ vs /f/"
+      },
+      {
+        "pair": [
+          "cana",
+          "cama"
+        ],
+        "contrast": "/n/ vs /m/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "não",
+        "ipa": "ˈnɐ̃w",
+        "stressPattern": "ˈnɐ̃w",
+        "english": "no"
+      },
+      {
+        "pt": "nome",
+        "ipa": "ˈno.mi",
+        "stressPattern": "ˈno.mi",
+        "english": "name"
+      },
+      {
+        "pt": "menino",
+        "ipa": "me.ˈni.nu",
+        "stressPattern": "me.ˈni.nu",
+        "english": "boy"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "NH",
+    "ipa": "ɲ",
+    "type": "consonant",
+    "category": "nasal",
+    "difficulty": 5,
+    "englishApprox": "Like 'ny' in 'canyon' or 'onion'",
+    "articulation": "Middle of tongue presses against hard palate.",
+    "acousticDescription": "Palatal nasal.",
+    "commonMistakes": [
+      "Pronouncing as 'n' + 'i'.",
+      "Separating the sounds too much."
+    ],
+    "teachingTips": [
+      "Press the FLAT middle part of your tongue against the roof of your mouth.",
+      "It is one single sound, not two.",
+      "Think of the Spanish 'ñ'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "minha",
+          "mina"
+        ],
+        "contrast": "/ɲ/ vs /n/"
+      },
+      {
+        "pair": [
+          "sogro",
+          "sonho"
+        ],
+        "contrast": "Contextual contrast"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "minha",
+        "ipa": "ˈmi.ɲɐ",
+        "stressPattern": "ˈmi.ɲɐ",
+        "english": "mine (fem)"
+      },
+      {
+        "pt": "vinho",
+        "ipa": "ˈvi.ɲu",
+        "stressPattern": "ˈvi.ɲu",
+        "english": "wine"
+      },
+      {
+        "pt": "amanhã",
+        "ipa": "a.mɐ.ˈɲɐ̃",
+        "stressPattern": "a.mɐ.ˈɲɐ̃",
+        "english": "tomorrow"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "L",
+    "ipa": "l",
+    "type": "consonant",
+    "category": "lateral",
+    "difficulty": 2,
+    "englishApprox": "Like 'l' in 'love' (at start of syllable)",
+    "articulation": "Tip of tongue touches alveolar ridge, air flows sides.",
+    "acousticDescription": "Clear lateral.",
+    "commonMistakes": [
+      "Using the dark 'L' (from 'ball') at the start of words.",
+      "Note: At the END of words, L becomes 'W' (Brazil) -> 'Braziw'."
+    ],
+    "teachingTips": [
+      "At the start of a word, use a light, forward 'L'.",
+      "At the end of a word, turn it into a 'U' or 'W' sound."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "lado",
+          "fado"
+        ],
+        "contrast": "/l/ vs /f/"
+      },
+      {
+        "pair": [
+          "lua",
+          "rua"
+        ],
+        "contrast": "/l/ vs /h/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "lua",
+        "ipa": "ˈlu.ɐ",
+        "stressPattern": "ˈlu.ɐ",
+        "english": "moon"
+      },
+      {
+        "pt": "falar",
+        "ipa": "fa.ˈlah",
+        "stressPattern": "fa.ˈlah",
+        "english": "to speak"
+      },
+      {
+        "pt": "limão",
+        "ipa": "li.ˈmɐ̃w",
+        "stressPattern": "li.ˈmɐ̃w",
+        "english": "lemon"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "LH",
+    "ipa": "ʎ",
+    "type": "consonant",
+    "category": "lateral",
+    "difficulty": 5,
+    "englishApprox": "Like 'lli' in 'million'",
+    "articulation": "Middle of tongue presses against hard palate, air flows sides.",
+    "acousticDescription": "Palatal lateral.",
+    "commonMistakes": [
+      "Pronouncing as 'L' + 'Y'.",
+      "Pronouncing as a simple 'L'."
+    ],
+    "teachingTips": [
+      "Touch the middle of your tongue to the roof of your mouth.",
+      "It's the liquid version of 'NH'.",
+      "Say 'million' but freeze on the 'lli' part."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "falha",
+          "fala"
+        ],
+        "contrast": "/ʎ/ vs /l/"
+      },
+      {
+        "pair": [
+          "velha",
+          "vela"
+        ],
+        "contrast": "/ʎ/ vs /l/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "mulher",
+        "ipa": "mu.ˈʎɛh",
+        "stressPattern": "mu.ˈʎɛh",
+        "english": "woman"
+      },
+      {
+        "pt": "filho",
+        "ipa": "ˈfi.ʎu",
+        "stressPattern": "ˈfi.ʎu",
+        "english": "son"
+      },
+      {
+        "pt": "olho",
+        "ipa": "ˈo.ʎu",
+        "stressPattern": "ˈo.ʎu",
+        "english": "eye"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "R_TAP",
+    "ipa": "ɾ",
+    "type": "consonant",
+    "category": "tap",
+    "difficulty": 4,
+    "englishApprox": "Like the 'tt' in 'butter' (American English)",
+    "articulation": "Tongue quickly taps the alveolar ridge once.",
+    "acousticDescription": "Short flap.",
+    "commonMistakes": [
+      "Using the English retroflex 'R' (growling).",
+      "Using the 'H' sound (which is for double RR)."
+    ],
+    "teachingTips": [
+      "Don't roll it. Don't growl it.",
+      "Just a quick tap, exactly like American 'water' or 'better'."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "caro",
+          "carro"
+        ],
+        "contrast": "/ɾ/ vs /h/"
+      },
+      {
+        "pair": [
+          "muro",
+          "murro"
+        ],
+        "contrast": "/ɾ/ vs /h/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "caro",
+        "ipa": "ˈka.ɾu",
+        "stressPattern": "ˈka.ɾu",
+        "english": "expensive"
+      },
+      {
+        "pt": "para",
+        "ipa": "ˈpa.ɾɐ",
+        "stressPattern": "ˈpa.ɾɐ",
+        "english": "for/to"
+      },
+      {
+        "pt": "arara",
+        "ipa": "a.ˈɾa.ɾɐ",
+        "stressPattern": "a.ˈɾa.ɾɐ",
+        "english": "macaw"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "W",
+    "ipa": "w",
+    "type": "consonant",
+    "category": "approximant",
+    "difficulty": 2,
+    "englishApprox": "Like 'w' in 'water'",
+    "articulation": "Lips rounded, back tongue raised.",
+    "acousticDescription": "Glide.",
+    "commonMistakes": [
+      "None usually."
+    ],
+    "teachingTips": [
+      "Often appears at the end of words ending in 'L' (Brazil = Braziw) or 'O' diphthongs (Pão = Paw-ng)."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "mau",
+          "mal"
+        ],
+        "contrast": "Homophones in most dialects /maw/"
+      },
+      {
+        "pair": [
+          "pau",
+          "pai"
+        ],
+        "contrast": "/w/ vs /j/"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "água",
+        "ipa": "ˈa.gwɐ",
+        "stressPattern": "ˈa.gwɐ",
+        "english": "water"
+      },
+      {
+        "pt": "quando",
+        "ipa": "ˈkwɐ̃.du",
+        "stressPattern": "ˈkwɐ̃.du",
+        "english": "when"
+      },
+      {
+        "pt": "mau",
+        "ipa": "ˈmaw",
+        "stressPattern": "ˈmaw",
+        "english": "bad"
+      }
+    ],
+    "locale": "pt-BR"
+  },
+  {
+    "id": "Y",
+    "ipa": "j",
+    "type": "consonant",
+    "category": "approximant",
+    "difficulty": 1,
+    "englishApprox": "Like 'y' in 'yes'",
+    "articulation": "Front tongue raised high.",
+    "acousticDescription": "Glide.",
+    "commonMistakes": [
+      "None."
+    ],
+    "teachingTips": [
+      "Standard 'y' sound.",
+      "Used in diphthongs like 'pai' (father)."
+    ],
+    "minimalPairs": [
+      {
+        "pair": [
+          "pai",
+          "pau"
+        ],
+        "contrast": "/j/ vs /w/"
+      },
+      {
+        "pair": [
+          "reis",
+          "rês"
+        ],
+        "contrast": "/j/ diphthong vs pure vowel"
+      }
+    ],
+    "exampleWords": [
+      {
+        "pt": "pai",
+        "ipa": "ˈpaj",
+        "stressPattern": "ˈpaj",
+        "english": "father"
+      },
+      {
+        "pt": "jeito",
+        "ipa": "ˈʒej.tu",
+        "stressPattern": "ˈʒej.tu",
+        "english": "way/manner"
+      },
+      {
+        "pt": "mais",
+        "ipa": "ˈmajs",
+        "stressPattern": "ˈmajs",
+        "english": "more"
+      }
+    ],
+    "locale": "pt-BR"
+  }
+]

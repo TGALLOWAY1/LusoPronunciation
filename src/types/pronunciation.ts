@@ -1,4 +1,11 @@
-export type ErrorType = 'none' | 'mispronounced' | 'omitted' | 'extra';
+export type ErrorType =
+  | 'none'
+  | 'mispronounced'
+  | 'omitted'
+  | 'extra'
+  | 'unexpected_break'
+  | 'missing_break'
+  | 'monotone';
 
 export type WordScore = {
   word: string;
@@ -20,4 +27,3 @@ export type AttemptScore = {
   audioUrl?: string; // local blob URL for playback
   latencyMs?: number; // round-trip time for the Azure API call (ms)
 };
-

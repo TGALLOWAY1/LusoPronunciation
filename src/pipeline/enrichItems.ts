@@ -10,7 +10,7 @@ import type { RawWord, RawSentence } from '../lib/types';
 import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
 import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
 import { mapWordToPhonemes } from './phonemeMapper';
-import { applyWordTags, applySentenceTags, inferCategory } from './tagging';
+import { applyWordTags, applySentenceTags } from './tagging';
 import { computeSentenceWordRefs } from './sentenceWordRefs';
 
 /**
@@ -42,6 +42,10 @@ export function enrichWords(
   const enrichedWords: EnrichedWord[] = [];
 
   for (const raw of rawWords) {
+    if (!raw.categoryId || raw.categoryId.trim().length === 0) {
+      throw new Error(`Word ${raw.id} is missing categoryId. Source data must provide explicit categories.`);
+    }
+
     const text = raw.pt.trim();
     const normalizedText = normalizeText(text);
     
@@ -51,10 +55,11 @@ export function enrichWords(
     // Create base enriched word - preserve all fields from raw data
     const enrichedWord: EnrichedWord = {
       id: raw.id,
+      locale: 'pt-BR',
       text,
       normalizedText,
       en: raw.en.trim(), // Preserve English translation
-      category: inferCategory(undefined, text), // Could extract from raw data if available
+      category: raw.categoryId.trim(),
       partOfSpeech: raw.pos,
       difficulty: raw.difficulty, // Preserve difficulty (1-5 scale)
       difficultForEnglish: raw.difficult_for_english,
@@ -62,6 +67,7 @@ export function enrichWords(
       englishDifficultyFlag: raw.difficult_for_english, // Alias for backward compatibility
       phonemes: phonemes || [], // Ensure array is never undefined
       ipa,
+      azureAssessmentConfigId: 'ptbr_word_default',
     };
     
     // Apply tags and difficulty heuristics
@@ -93,6 +99,10 @@ export function enrichSentences(
 ): EnrichedSentence[] {
   // First, create base enriched sentences - preserve all fields from raw data
   const baseEnriched: EnrichedSentence[] = rawSentences.map(raw => {
+    if (!raw.categoryId || raw.categoryId.trim().length === 0) {
+      throw new Error(`Sentence ${raw.id} is missing categoryId. Source data must provide explicit categories.`);
+    }
+
     const text = raw.pt.trim();
     const normalizedText = normalizeText(text);
     
@@ -105,13 +115,15 @@ export function enrichSentences(
     
     return {
       id: raw.id,
+      locale: 'pt-BR',
       text,
       normalizedText,
       en: raw.en.trim(), // Preserve English translation
-      category: inferCategory(undefined, text), // Could extract from raw data if available
+      category: raw.categoryId.trim(),
       difficulty: raw.difficulty, // Preserve difficulty (1-5 scale)
       pronunciationNotes: raw.pronunciation_notes, // Preserve pronunciation notes
       hardForEnglish,
+      azureAssessmentConfigId: 'ptbr_sentence_default',
     };
   });
   
@@ -123,4 +135,3 @@ export function enrichSentences(
   
   return sentencesWithRefs;
 }
-

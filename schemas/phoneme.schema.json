@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phoneme.schema.json",
+  "type": "object",
+  "required": ["id", "locale", "ipa", "exampleWords"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "locale": { "type": "string", "const": "pt-BR" },
+    "ipa": { "type": "string", "minLength": 1 },
+    "type": { "type": "string" },
+    "category": { "type": "string" },
+    "difficulty": { "type": "number" },
+    "exampleWords": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  }
+}

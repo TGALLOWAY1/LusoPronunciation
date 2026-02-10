@@ -1,4 +1,6 @@
 import type { AudioIndex, AudioIndexEntry } from './types';
+import { CONTENT_SOURCE, getReleaseDataPath } from '@/config/appConfig';
+import { ensureDatasetBootstrap } from '@/pipeline/release/datasetBootstrap';
 
 /**
  * Audio URL inference and resolution utilities.
@@ -98,6 +100,19 @@ export function getWordAudioUrl(
  */
 export async function loadAudioIndex(): Promise<AudioIndex> {
   try {
+    if (CONTENT_SOURCE === 'pipeline') {
+      await ensureDatasetBootstrap();
+      const releasePath = getReleaseDataPath('audio_index.json');
+      const releaseResponse = await fetch(releasePath);
+      if (releaseResponse.ok) {
+        const releaseData = await releaseResponse.json();
+        if (releaseData && typeof releaseData === 'object') {
+          return releaseData;
+        }
+      }
+      throw new Error(`Failed to load release audio index from ${releasePath}`);
+    }
+
     const response = await fetch('/data/audio_index.json');
     if (!response.ok) {
       console.warn(`Failed to load audio_index.json: ${response.status} ${response.statusText}. Will use inferred paths.`);
@@ -125,4 +140,3 @@ export function getAudioEntry(
 ): AudioIndexEntry | null {
   return audioIndex[audioId] || null;
 }
-

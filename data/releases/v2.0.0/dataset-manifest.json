@@ -1,0 +1,62 @@
+{
+  "datasetVersion": "2.0.0",
+  "schemaVersion": "1.0.0",
+  "locale": "pt-BR",
+  "buildTimestamp": "2026-02-10T02:43:31.680Z",
+  "sourceFingerprint": "sha256:3d6a544e2a3aae3f27bdcbedafe08c7d3a8c1c0ee093249e1a455ca3aeac1d21",
+  "configFingerprint": "sha256:14bec0da2e6bfef9ec9a09e68f174971008e857a2413fc701f62e45d87ec9be6",
+  "artifacts": {
+    "categories": {
+      "path": "categories.json",
+      "count": 20,
+      "sha256": "sha256:b0e0fe193fe4a905b6e1b19def4a4cf745398fd7816043357d58998511d17a94"
+    },
+    "phonemes": {
+      "path": "phonemes.json",
+      "count": 36,
+      "sha256": "sha256:f548a69046682833e20a1950b929f384d5f66ee986318799d4981b355346106c"
+    },
+    "pronunciationTips": {
+      "path": "pronunciationTips.json",
+      "count": 68,
+      "sha256": "sha256:6781f0f7158ee2275e028a108cb44a10eca0809aadbec65f1e639d04bf32dc5b"
+    },
+    "words": {
+      "path": "words.json",
+      "count": 430,
+      "sha256": "sha256:aad31f340798608e39bf344d33ca8a94fec1157439c140744c792fcb9b6319fd"
+    },
+    "sentences": {
+      "path": "sentences.json",
+      "count": 492,
+      "sha256": "sha256:ae5cd35e1852da7cd4f9f33001b02f1342fd810ffacf9714cab76040ee43526e"
+    },
+    "lessons": {
+      "path": "lessons.json",
+      "count": 60,
+      "sha256": "sha256:836dcda2debc05fc960ed1c0aa298c36318e219e97a66e9043f75bef5135cd1b"
+    },
+    "audioIndex": {
+      "path": "audio_index.json",
+      "count": 925,
+      "sha256": "sha256:71a085493f48d815ed2c320fd67265f329ee49a4ab41c6834499a583362e2b98"
+    },
+    "azureAssessmentConfigs": {
+      "path": "azureAssessmentConfigs.json",
+      "count": 2,
+      "sha256": "sha256:56372926d3976b167543c6fd1fa1ace80175bb53b188a5a7fa84d30b5bb641b7"
+    }
+  },
+  "validation": {
+    "status": "passed",
+    "rulesetVersion": "1.0.0",
+    "reportPath": "validation-report.json"
+  },
+  "confidence": {
+    "modelA": "google-ai-studio",
+    "modelB": "openai",
+    "acceptThreshold": 0.85,
+    "reviewThreshold": 0.7,
+    "reportPath": "confidence-report.json"
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "ptbr_word_default",
+    "locale": "pt-BR",
+    "gradingSystem": "HundredMark",
+    "granularity": "Phoneme",
+    "dimension": "Comprehensive",
+    "enableMiscue": true,
+    "maxReferenceChars": 40,
+    "textNormalizationProfile": "ptbr_v1"
+  },
+  {
+    "id": "ptbr_sentence_default",
+    "locale": "pt-BR",
+    "gradingSystem": "HundredMark",
+    "granularity": "Word",
+    "dimension": "Comprehensive",
+    "enableMiscue": true,
+    "maxReferenceChars": 180,
+    "textNormalizationProfile": "ptbr_v1"
+  }
+]

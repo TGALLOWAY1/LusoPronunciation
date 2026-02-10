@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-02-10T02:43:29.295Z",
+  "accepted": 421,
+  "review": 68,
+  "rejected": 445,
+  "thresholds": {
+    "nearDuplicateSimilarity": 0.92,
+    "acceptConfidence": 0.85,
+    "reviewConfidence": 0.7
+  }
+}

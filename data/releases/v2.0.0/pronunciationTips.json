@@ -1,0 +1,1133 @@
+[
+  {
+    "id": "AA_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "AA",
+    "title": "Tip 1 for AA",
+    "instruction": "Open your mouth wide like you are at the dentist.",
+    "commonErrors": [
+      "Reducing it to a schwa in stressed positions."
+    ],
+    "drillTextIds": [
+      "basic_003",
+      "basic_004",
+      "basic_005",
+      "basic_006",
+      "basic_007"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "AA_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "AA",
+    "title": "Tip 2 for AA",
+    "instruction": "Keep the tongue flat.",
+    "commonErrors": [
+      "Reducing it to a schwa in stressed positions."
+    ],
+    "drillTextIds": [
+      "basic_003",
+      "basic_004",
+      "basic_005",
+      "basic_006",
+      "basic_007"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "AH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "AH",
+    "title": "Tip 1 for AH",
+    "instruction": "Relax your jaw completely.",
+    "commonErrors": [
+      "Pronouncing it as a full open /a/ at the end of words.",
+      "Pronouncing it like 'ay'."
+    ],
+    "drillTextIds": [
+      "basic_002",
+      "basic_006",
+      "basic_008",
+      "adj_002",
+      "time_004"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "AH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "AH",
+    "title": "Tip 2 for AH",
+    "instruction": "This is the sound of the 'a' at the end of almost every Portuguese word ending in 'a'.",
+    "commonErrors": [
+      "Pronouncing it as a full open /a/ at the end of words.",
+      "Pronouncing it like 'ay'."
+    ],
+    "drillTextIds": [
+      "basic_002",
+      "basic_006",
+      "basic_008",
+      "adj_002",
+      "time_004"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "EY_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "EY",
+    "title": "Tip 1 for EY",
+    "instruction": "Smile slightly and hold the sound steady.",
+    "commonErrors": [
+      "Adding a 'y' glide at the end (making it a diphthong like in 'day').",
+      "Confusing with open /ɛ/."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "EY_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "EY",
+    "title": "Tip 2 for EY",
+    "instruction": "Do not move your jaw while saying it.",
+    "commonErrors": [
+      "Adding a 'y' glide at the end (making it a diphthong like in 'day').",
+      "Confusing with open /ɛ/."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "EY_tip_003",
+    "locale": "pt-BR",
+    "phonemeId": "EY",
+    "title": "Tip 3 for EY",
+    "instruction": "Think of the French 'é'.",
+    "commonErrors": [
+      "Adding a 'y' glide at the end (making it a diphthong like in 'day').",
+      "Confusing with open /ɛ/."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "EH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "EH",
+    "title": "Tip 1 for EH",
+    "instruction": "Drop your jaw more than you think you need to.",
+    "commonErrors": [
+      "Pronouncing it as /e/ (close-mid).",
+      "Diphthongizing it."
+    ],
+    "drillTextIds": [
+      "basic_003",
+      "basic_004",
+      "basic_008",
+      "basic_009",
+      "basic_013"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "EH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "EH",
+    "title": "Tip 2 for EH",
+    "instruction": "Keep the sound short and flat.",
+    "commonErrors": [
+      "Pronouncing it as /e/ (close-mid).",
+      "Diphthongizing it."
+    ],
+    "drillTextIds": [
+      "basic_003",
+      "basic_004",
+      "basic_008",
+      "basic_009",
+      "basic_013"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "IY_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "IY",
+    "title": "Tip 1 for IY",
+    "instruction": "Stretch your lips into a wide smile.",
+    "commonErrors": [
+      "Making it too short like 'sit' (should be tenser)."
+    ],
+    "drillTextIds": [
+      "basic_002",
+      "basic_004",
+      "basic_005",
+      "basic_006",
+      "basic_008"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "IY_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "IY",
+    "title": "Tip 2 for IY",
+    "instruction": "It's the 'ee' sound in 'cheese'.",
+    "commonErrors": [
+      "Making it too short like 'sit' (should be tenser)."
+    ],
+    "drillTextIds": [
+      "basic_002",
+      "basic_004",
+      "basic_005",
+      "basic_006",
+      "basic_008"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "OW_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "OW",
+    "title": "Tip 1 for OW",
+    "instruction": "Round your lips into a small 'o' shape.",
+    "commonErrors": [
+      "Adding a 'w' glide at the end.",
+      "Confusing with open /ɔ/."
+    ],
+    "drillTextIds": [
+      "basic_001",
+      "basic_002",
+      "basic_003",
+      "basic_004",
+      "basic_005"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "OW_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "OW",
+    "title": "Tip 2 for OW",
+    "instruction": "Freeze your jaw; do not let it close as you finish the sound.",
+    "commonErrors": [
+      "Adding a 'w' glide at the end.",
+      "Confusing with open /ɔ/."
+    ],
+    "drillTextIds": [
+      "basic_001",
+      "basic_002",
+      "basic_003",
+      "basic_004",
+      "basic_005"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "AO_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "AO",
+    "title": "Tip 1 for AO",
+    "instruction": "Drop your jaw while keeping lips rounded.",
+    "commonErrors": [
+      "Pronouncing as close /o/.",
+      "Not rounding the lips enough."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "AO_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "AO",
+    "title": "Tip 2 for AO",
+    "instruction": "Ideally, put a finger between your teeth to ensure openness.",
+    "commonErrors": [
+      "Pronouncing as close /o/.",
+      "Not rounding the lips enough."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "UW_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "UW",
+    "title": "Tip 1 for UW",
+    "instruction": "Make a 'kissing' face.",
+    "commonErrors": [
+      "Relaxing lips too much (making it sound like 'book')."
+    ],
+    "drillTextIds": [
+      "basic_009",
+      "basic_012",
+      "basic_013",
+      "verb_007",
+      "adj_003"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "UW_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "UW",
+    "title": "Tip 2 for UW",
+    "instruction": "Push your lips forward.",
+    "commonErrors": [
+      "Relaxing lips too much (making it sound like 'book')."
+    ],
+    "drillTextIds": [
+      "basic_009",
+      "basic_012",
+      "basic_013",
+      "verb_007",
+      "adj_003"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "AN_NASAL_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "AN_NASAL",
+    "title": "Tip 1 for AN_NASAL",
+    "instruction": "Touch your nose; you should feel vibration.",
+    "commonErrors": [
+      "Pronouncing the 'n' or 'm' consonant fully (e.g., saying 'ban-da' instead of 'bã-da').",
+      "Not engaging the nose."
+    ],
+    "drillTextIds": [
+      "basic_011",
+      "time_002",
+      "food_word_003",
+      "food_word_004",
+      "food_word_017"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "AN_NASAL_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "AN_NASAL",
+    "title": "Tip 2 for AN_NASAL",
+    "instruction": "Do not let your tongue touch the roof of your mouth for the 'n'.",
+    "commonErrors": [
+      "Pronouncing the 'n' or 'm' consonant fully (e.g., saying 'ban-da' instead of 'bã-da').",
+      "Not engaging the nose."
+    ],
+    "drillTextIds": [
+      "basic_011",
+      "time_002",
+      "food_word_003",
+      "food_word_004",
+      "food_word_017"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "EN_NASAL_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "EN_NASAL",
+    "title": "Tip 1 for EN_NASAL",
+    "instruction": "Start to say 'aim' but pinch your nose shut halfway through.",
+    "commonErrors": [
+      "Pronouncing the 'm' or 'n' clearly.",
+      "Too open (sounding like 'eh')."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "EN_NASAL_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "EN_NASAL",
+    "title": "Tip 2 for EN_NASAL",
+    "instruction": "Keep the tongue flat.",
+    "commonErrors": [
+      "Pronouncing the 'm' or 'n' clearly.",
+      "Too open (sounding like 'eh')."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "IN_NASAL_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "IN_NASAL",
+    "title": "Tip 1 for IN_NASAL",
+    "instruction": "Smile wide and buzz the sound in your nose.",
+    "commonErrors": [
+      "Pronouncing the 'm' or 'n' at the end.",
+      "Not enough nasality."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "IN_NASAL_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "IN_NASAL",
+    "title": "Tip 2 for IN_NASAL",
+    "instruction": "It's like a mosquito buzzing 'iii'.",
+    "commonErrors": [
+      "Pronouncing the 'm' or 'n' at the end.",
+      "Not enough nasality."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "ON_NASAL_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "ON_NASAL",
+    "title": "Tip 1 for ON_NASAL",
+    "instruction": "Round lips tightly.",
+    "commonErrors": [
+      "Pronouncing 'own' fully.",
+      "Not rounding lips enough."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "ON_NASAL_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "ON_NASAL",
+    "title": "Tip 2 for ON_NASAL",
+    "instruction": "Imagine the sound resonating in your forehead.",
+    "commonErrors": [
+      "Pronouncing 'own' fully.",
+      "Not rounding lips enough."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "UN_NASAL_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "UN_NASAL",
+    "title": "Tip 1 for UN_NASAL",
+    "instruction": "Make a fish face and grunt through your nose.",
+    "commonErrors": [
+      "Pronouncing the 'm'.",
+      "Not rounding lips."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "P_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "P",
+    "title": "Tip 1 for P",
+    "instruction": "Hold a piece of paper in front of your mouth; it should NOT move when you say 'pão'.",
+    "commonErrors": [
+      "Too much aspiration (puff of air) like in 'pin'."
+    ],
+    "drillTextIds": [
+      "basic_007",
+      "basic_009",
+      "basic_014",
+      "verb_006",
+      "verb_015"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "B_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "B",
+    "title": "Tip 1 for B",
+    "instruction": "Fully voice the sound from the throat.",
+    "commonErrors": [
+      "None usually."
+    ],
+    "drillTextIds": [
+      "basic_002",
+      "basic_003",
+      "basic_004",
+      "basic_005",
+      "basic_006"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "T_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "T",
+    "title": "Tip 1 for T",
+    "instruction": "Touch your tongue to your teeth, not the roof of your mouth.",
+    "commonErrors": [
+      "Aspirating it (puff of air).",
+      "Touching the gum ridge (alveolar) like in English."
+    ],
+    "drillTextIds": [
+      "basic_003",
+      "basic_004",
+      "basic_012",
+      "basic_013",
+      "verb_002"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "T_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "T",
+    "title": "Tip 2 for T",
+    "instruction": "No puff of air.",
+    "commonErrors": [
+      "Aspirating it (puff of air).",
+      "Touching the gum ridge (alveolar) like in English."
+    ],
+    "drillTextIds": [
+      "basic_003",
+      "basic_004",
+      "basic_012",
+      "basic_013",
+      "verb_002"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "D_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "D",
+    "title": "Tip 1 for D",
+    "instruction": "Push tongue against teeth.",
+    "commonErrors": [
+      "Touching the gum ridge instead of teeth."
+    ],
+    "drillTextIds": [
+      "basic_002",
+      "basic_003",
+      "basic_005",
+      "basic_006",
+      "basic_009"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "K_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "K",
+    "title": "Tip 1 for K",
+    "instruction": "Keep it dry and short.",
+    "commonErrors": [
+      "Adding a puff of air."
+    ],
+    "drillTextIds": [
+      "basic_008",
+      "basic_009",
+      "basic_015",
+      "verb_012",
+      "verb_014"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "K_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "K",
+    "title": "Tip 2 for K",
+    "instruction": "No explosion of air.",
+    "commonErrors": [
+      "Adding a puff of air."
+    ],
+    "drillTextIds": [
+      "basic_008",
+      "basic_009",
+      "basic_015",
+      "verb_012",
+      "verb_014"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "G_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "G",
+    "title": "Tip 1 for G",
+    "instruction": "Vibrate vocal cords.",
+    "commonErrors": [
+      "None usually."
+    ],
+    "drillTextIds": [
+      "basic_005",
+      "basic_006",
+      "verb_016",
+      "adj_004",
+      "time_004"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "CH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "CH",
+    "title": "Tip 1 for CH",
+    "instruction": "In Brazil, when 't' is followed by an 'i' sound (like in 'leite'), it becomes 'chi'.",
+    "commonErrors": [
+      "Using it when not appropriate (only used for 't' before 'i' or 'e' in many accents, or spelled 'ch' which is actually /ʃ/). Note: Spelled 'ch' is SH sound. This phoneme is usually T before I."
+    ],
+    "drillTextIds": [
+      "basic_012",
+      "verb_016",
+      "verb_019",
+      "food_word_006",
+      "food_word_020"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "CH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "CH",
+    "title": "Tip 2 for CH",
+    "instruction": "Think 'chee'.",
+    "commonErrors": [
+      "Using it when not appropriate (only used for 't' before 'i' or 'e' in many accents, or spelled 'ch' which is actually /ʃ/). Note: Spelled 'ch' is SH sound. This phoneme is usually T before I."
+    ],
+    "drillTextIds": [
+      "basic_012",
+      "verb_016",
+      "verb_019",
+      "food_word_006",
+      "food_word_020"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "JH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "JH",
+    "title": "Tip 1 for JH",
+    "instruction": "Whenever 'd' is followed by 'i' (or final 'e'), say 'j' like 'jeep'.",
+    "commonErrors": [
+      "Using hard 'd' before 'i'.",
+      "Using /ʒ/ (like measure) instead of the affricate."
+    ],
+    "drillTextIds": [
+      "time_001",
+      "food_word_003",
+      "food_word_008",
+      "food_word_019",
+      "house_008"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "JH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "JH",
+    "title": "Tip 2 for JH",
+    "instruction": "Cidade becomes 'Ci-da-jee'.",
+    "commonErrors": [
+      "Using hard 'd' before 'i'.",
+      "Using /ʒ/ (like measure) instead of the affricate."
+    ],
+    "drillTextIds": [
+      "time_001",
+      "food_word_003",
+      "food_word_008",
+      "food_word_019",
+      "house_008"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "F_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "F",
+    "title": "Tip 1 for F",
+    "instruction": "Same as English.",
+    "commonErrors": [
+      "None."
+    ],
+    "drillTextIds": [
+      "basic_007",
+      "verb_005",
+      "verb_008",
+      "verb_014",
+      "adj_009"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "V_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "V",
+    "title": "Tip 1 for V",
+    "instruction": "Keep the teeth on the lip and buzz.",
+    "commonErrors": [
+      "Confusing with /b/ (common in Spanish but not Portuguese)."
+    ],
+    "drillTextIds": [
+      "basic_007",
+      "verb_009",
+      "verb_013",
+      "verb_017",
+      "adj_006"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "V_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "V",
+    "title": "Tip 2 for V",
+    "instruction": "Do not close your lips fully like a 'b'.",
+    "commonErrors": [
+      "Confusing with /b/ (common in Spanish but not Portuguese)."
+    ],
+    "drillTextIds": [
+      "basic_007",
+      "verb_009",
+      "verb_013",
+      "verb_017",
+      "adj_006"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "S_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "S",
+    "title": "Tip 1 for S",
+    "instruction": "Standard 's' sound.",
+    "commonErrors": [
+      "Pronouncing 's' between vowels as /s/ (it usually becomes /z/)."
+    ],
+    "drillTextIds": [
+      "basic_009",
+      "basic_010",
+      "basic_015",
+      "verb_001",
+      "verb_002"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "S_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "S",
+    "title": "Tip 2 for S",
+    "instruction": "Remember: 'S' between two vowels sounds like 'Z' (Casa = Caza).",
+    "commonErrors": [
+      "Pronouncing 's' between vowels as /s/ (it usually becomes /z/)."
+    ],
+    "drillTextIds": [
+      "basic_009",
+      "basic_010",
+      "basic_015",
+      "verb_001",
+      "verb_002"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "Z_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "Z",
+    "title": "Tip 1 for Z",
+    "instruction": "Buzz like a bee.",
+    "commonErrors": [
+      "Devoicing at the end of words (though rare in BP)."
+    ],
+    "drillTextIds": [
+      "basic_014",
+      "verb_005",
+      "adj_010",
+      "num_010",
+      "food_word_002"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "Z_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "Z",
+    "title": "Tip 2 for Z",
+    "instruction": "Use this sound when a single 's' is between vowels.",
+    "commonErrors": [
+      "Devoicing at the end of words (though rare in BP)."
+    ],
+    "drillTextIds": [
+      "basic_014",
+      "verb_005",
+      "adj_010",
+      "num_010",
+      "food_word_002"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "SH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "SH",
+    "title": "Tip 1 for SH",
+    "instruction": "Round your lips slightly and hush.",
+    "commonErrors": [
+      "None phonetically, but orthographically 'x' can be tricky."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "SH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "SH",
+    "title": "Tip 2 for SH",
+    "instruction": "In Portuguese, 'x' often makes this sound.",
+    "commonErrors": [
+      "None phonetically, but orthographically 'x' can be tricky."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "ZH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "ZH",
+    "title": "Tip 1 for ZH",
+    "instruction": "It is a soft sound, like a French 'J'.",
+    "commonErrors": [
+      "Using /dʒ/ (hard J) instead. English speakers want to say 'Jungle' but it should be soft 'Zhungle'."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "ZH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "ZH",
+    "title": "Tip 2 for ZH",
+    "instruction": "Never touch your tongue to the roof of your mouth to stop the air.",
+    "commonErrors": [
+      "Using /dʒ/ (hard J) instead. English speakers want to say 'Jungle' but it should be soft 'Zhungle'."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "HH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "HH",
+    "title": "Tip 1 for HH",
+    "instruction": "If a word starts with 'R', pretend it is an 'H'.",
+    "commonErrors": [
+      "Pronouncing 'R' at the start of words like an English 'R'.",
+      "Rolling the 'R' (Spanish style) - usually too strong for BP."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "HH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "HH",
+    "title": "Tip 2 for HH",
+    "instruction": "Rio sounds like 'Hio'.",
+    "commonErrors": [
+      "Pronouncing 'R' at the start of words like an English 'R'.",
+      "Rolling the 'R' (Spanish style) - usually too strong for BP."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "HH_tip_003",
+    "locale": "pt-BR",
+    "phonemeId": "HH",
+    "title": "Tip 3 for HH",
+    "instruction": "Double 'RR' is also an 'H'.",
+    "commonErrors": [
+      "Pronouncing 'R' at the start of words like an English 'R'.",
+      "Rolling the 'R' (Spanish style) - usually too strong for BP."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  },
+  {
+    "id": "M_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "M",
+    "title": "Tip 1 for M",
+    "instruction": "Lips together.",
+    "commonErrors": [
+      "None at start of words.",
+      "At end of words, it indicates a nasal vowel, not a full 'm' sound."
+    ],
+    "drillTextIds": [
+      "basic_002",
+      "basic_008",
+      "basic_010",
+      "basic_013",
+      "adj_001"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "M_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "M",
+    "title": "Tip 2 for M",
+    "instruction": "If at the end of a word (sim), don't close your lips fully, just make the vowel nasal.",
+    "commonErrors": [
+      "None at start of words.",
+      "At end of words, it indicates a nasal vowel, not a full 'm' sound."
+    ],
+    "drillTextIds": [
+      "basic_002",
+      "basic_008",
+      "basic_010",
+      "basic_013",
+      "adj_001"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "N_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "N",
+    "title": "Tip 1 for N",
+    "instruction": "Standard 'n' sound.",
+    "commonErrors": [
+      "None at start of syllables."
+    ],
+    "drillTextIds": [
+      "basic_004",
+      "basic_008",
+      "basic_011",
+      "verb_015",
+      "adj_004"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "NH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "NH",
+    "title": "Tip 1 for NH",
+    "instruction": "Press the FLAT middle part of your tongue against the roof of your mouth.",
+    "commonErrors": [
+      "Pronouncing as 'n' + 'i'.",
+      "Separating the sounds too much."
+    ],
+    "drillTextIds": [
+      "verb_012",
+      "time_002",
+      "food_word_009",
+      "food_word_017",
+      "travel_word_024"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "NH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "NH",
+    "title": "Tip 2 for NH",
+    "instruction": "It is one single sound, not two.",
+    "commonErrors": [
+      "Pronouncing as 'n' + 'i'.",
+      "Separating the sounds too much."
+    ],
+    "drillTextIds": [
+      "verb_012",
+      "time_002",
+      "food_word_009",
+      "food_word_017",
+      "travel_word_024"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "NH_tip_003",
+    "locale": "pt-BR",
+    "phonemeId": "NH",
+    "title": "Tip 3 for NH",
+    "instruction": "Think of the Spanish 'ñ'.",
+    "commonErrors": [
+      "Pronouncing as 'n' + 'i'.",
+      "Separating the sounds too much."
+    ],
+    "drillTextIds": [
+      "verb_012",
+      "time_002",
+      "food_word_009",
+      "food_word_017",
+      "travel_word_024"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "L_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "L",
+    "title": "Tip 1 for L",
+    "instruction": "At the start of a word, use a light, forward 'L'.",
+    "commonErrors": [
+      "Using the dark 'L' (from 'ball') at the start of words.",
+      "Note: At the END of words, L becomes 'W' (Brazil) -> 'Braziw'."
+    ],
+    "drillTextIds": [
+      "basic_001",
+      "basic_008",
+      "basic_009",
+      "verb_008",
+      "verb_020"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "L_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "L",
+    "title": "Tip 2 for L",
+    "instruction": "At the end of a word, turn it into a 'U' or 'W' sound.",
+    "commonErrors": [
+      "Using the dark 'L' (from 'ball') at the start of words.",
+      "Note: At the END of words, L becomes 'W' (Brazil) -> 'Braziw'."
+    ],
+    "drillTextIds": [
+      "basic_001",
+      "basic_008",
+      "basic_009",
+      "verb_008",
+      "verb_020"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "LH_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "LH",
+    "title": "Tip 1 for LH",
+    "instruction": "Touch the middle of your tongue to the roof of your mouth.",
+    "commonErrors": [
+      "Pronouncing as 'L' + 'Y'.",
+      "Pronouncing as a simple 'L'."
+    ],
+    "drillTextIds": [
+      "adj_007",
+      "food_word_024",
+      "travel_word_013",
+      "fam_word_006",
+      "fam_word_007"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "LH_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "LH",
+    "title": "Tip 2 for LH",
+    "instruction": "It's the liquid version of 'NH'.",
+    "commonErrors": [
+      "Pronouncing as 'L' + 'Y'.",
+      "Pronouncing as a simple 'L'."
+    ],
+    "drillTextIds": [
+      "adj_007",
+      "food_word_024",
+      "travel_word_013",
+      "fam_word_006",
+      "fam_word_007"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "LH_tip_003",
+    "locale": "pt-BR",
+    "phonemeId": "LH",
+    "title": "Tip 3 for LH",
+    "instruction": "Say 'million' but freeze on the 'lli' part.",
+    "commonErrors": [
+      "Pronouncing as 'L' + 'Y'.",
+      "Pronouncing as a simple 'L'."
+    ],
+    "drillTextIds": [
+      "adj_007",
+      "food_word_024",
+      "travel_word_013",
+      "fam_word_006",
+      "fam_word_007"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "R_TAP_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "R_TAP",
+    "title": "Tip 1 for R_TAP",
+    "instruction": "Don't roll it. Don't growl it.",
+    "commonErrors": [
+      "Using the English retroflex 'R' (growling).",
+      "Using the 'H' sound (which is for double RR)."
+    ],
+    "drillTextIds": [
+      "basic_003",
+      "basic_005",
+      "basic_006",
+      "basic_007",
+      "basic_014"
+    ],
+    "priority": 1
+  },
+  {
+    "id": "R_TAP_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "R_TAP",
+    "title": "Tip 2 for R_TAP",
+    "instruction": "Just a quick tap, exactly like American 'water' or 'better'.",
+    "commonErrors": [
+      "Using the English retroflex 'R' (growling).",
+      "Using the 'H' sound (which is for double RR)."
+    ],
+    "drillTextIds": [
+      "basic_003",
+      "basic_005",
+      "basic_006",
+      "basic_007",
+      "basic_014"
+    ],
+    "priority": 2
+  },
+  {
+    "id": "W_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "W",
+    "title": "Tip 1 for W",
+    "instruction": "Often appears at the end of words ending in 'L' (Brazil = Braziw) or 'O' diphthongs (Pão = Paw-ng).",
+    "commonErrors": [
+      "None usually."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "Y_tip_001",
+    "locale": "pt-BR",
+    "phonemeId": "Y",
+    "title": "Tip 1 for Y",
+    "instruction": "Standard 'y' sound.",
+    "commonErrors": [
+      "None."
+    ],
+    "drillTextIds": [],
+    "priority": 1
+  },
+  {
+    "id": "Y_tip_002",
+    "locale": "pt-BR",
+    "phonemeId": "Y",
+    "title": "Tip 2 for Y",
+    "instruction": "Used in diphthongs like 'pai' (father).",
+    "commonErrors": [
+      "None."
+    ],
+    "drillTextIds": [],
+    "priority": 2
+  }
+]

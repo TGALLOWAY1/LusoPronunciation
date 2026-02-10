@@ -1,0 +1,5614 @@
+{
+  "runId": "run_8940cca2dcb4",
+  "model": "openai",
+  "mode": "deterministic_verifier",
+  "generatedAt": "2026-02-10T02:43:28.712Z",
+  "wordChecks": [
+    {
+      "id": "basic_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "basic_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "verb_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "adj_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "num_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "time_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "time_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "time_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "time_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "time_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "time_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "food_word_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "travel_word_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "fam_word_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "daily_word_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "house_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "color_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "color_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "color_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "color_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "color_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "color_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "color_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "cloth_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "cloth_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "cloth_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "cloth_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "cloth_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "cloth_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "nat_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "nat_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "nat_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "nat_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "nat_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "body_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "body_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "body_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "body_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "body_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_051",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_052",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_053",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_054",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_055",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_056",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_057",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_058",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_059",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_060",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_061",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_062",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_063",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_064",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_065",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_066",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_067",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_068",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_069",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_070",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_071",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_072",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_073",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_074",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_075",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_076",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_077",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_078",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_079",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_080",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_081",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_082",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_083",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_084",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_085",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_086",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_087",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_088",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_089",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_090",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_091",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_092",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_093",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_094",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_095",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_096",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_097",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_098",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_099",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_100",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_101",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_102",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_103",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_104",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_105",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_106",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_107",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_108",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_109",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_110",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_111",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_112",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_113",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_114",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_115",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_116",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_117",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_118",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_119",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_120",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_121",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_122",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_123",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_124",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_125",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_126",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_127",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_128",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_129",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_130",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_131",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_132",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_133",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_134",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_135",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_136",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_137",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_138",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_139",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_140",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_141",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_142",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_143",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_144",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_145",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_146",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_147",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_148",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_149",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_150",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_151",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_152",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_153",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_154",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_155",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_156",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_157",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_158",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_159",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_160",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_161",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_162",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_163",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_164",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_165",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_166",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_167",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_168",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_169",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_170",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_171",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_172",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_173",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_174",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_175",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_176",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_177",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_178",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_179",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_180",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_181",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_182",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_183",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_184",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_185",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_186",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_187",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_188",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_189",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_190",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_191",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_192",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_193",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_194",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_195",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_196",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_197",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_198",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_199",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_200",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_201",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_202",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_203",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_204",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_205",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_206",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_207",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_208",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_209",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_210",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_211",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_212",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_213",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_214",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "misc_215",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    }
+  ],
+  "sentenceChecks": [
+    {
+      "id": "gemini_food_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_food_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_travel_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_family_friends_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_daily_routine_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_feelings_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_questions_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_shopping_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_directions_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_work_study_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_001",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_002",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_003",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_004",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_005",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_006",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_007",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_008",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_009",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_010",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_011",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_012",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_013",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_014",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_015",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_016",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_017",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_018",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_019",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_020",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_021",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_022",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_023",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_024",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_025",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_026",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_027",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_028",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_029",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_030",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_031",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_032",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_033",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_034",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_035",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_036",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_037",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_038",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_039",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_040",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_041",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_042",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_043",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_044",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_045",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_046",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_047",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_048",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_049",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    },
+    {
+      "id": "gemini_small_talk_050",
+      "translationNonEmpty": true,
+      "categoryNonEmpty": true,
+      "verdict": "pass"
+    }
+  ]
+}

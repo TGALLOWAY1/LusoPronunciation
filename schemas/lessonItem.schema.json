@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lessonItem.schema.json",
+  "type": "object",
+  "required": ["id", "locale", "categoryId", "title", "difficultyBand", "promptIds", "progressionOrder"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "locale": { "type": "string", "const": "pt-BR" },
+    "categoryId": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "difficultyBand": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] },
+    "targetPhonemeIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "promptIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "progressionOrder": { "type": "integer", "minimum": 0 }
+  }
+}

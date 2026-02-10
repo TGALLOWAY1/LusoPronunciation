@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-02-10T02:43:39.935Z",
+  "version": "2.0.0",
+  "summary": {
+    "errors": 0,
+    "warnings": 1,
+    "words": 430,
+    "sentences": 492,
+    "categories": 20,
+    "phonemes": 36,
+    "tips": 68,
+    "audioIndexEntries": 925
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "dedupe.sentence.near",
+      "itemId": "gemini_directions_023",
+      "message": "sentence \"gemini_directions_023\" is near-duplicate of \"gemini_questions_048\" (similarity 0.925)."
+    }
+  ]
+}

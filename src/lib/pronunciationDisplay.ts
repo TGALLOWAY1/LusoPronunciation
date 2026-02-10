@@ -55,6 +55,12 @@ export function getErrorTypeColor(errorType: ErrorType | string | undefined): st
       return 'bg-orange-100 text-orange-800 border-orange-500 dark:bg-orange-900 dark:text-orange-200';
     case 'extra':
       return 'bg-purple-100 text-purple-800 border-purple-500 dark:bg-purple-900 dark:text-purple-200';
+    case 'unexpected_break':
+      return 'bg-blue-100 text-blue-800 border-blue-500 dark:bg-blue-900 dark:text-blue-200';
+    case 'missing_break':
+      return 'bg-indigo-100 text-indigo-800 border-indigo-500 dark:bg-indigo-900 dark:text-indigo-200';
+    case 'monotone':
+      return 'bg-amber-100 text-amber-800 border-amber-500 dark:bg-amber-900 dark:text-amber-200';
     default:
       return 'bg-gray-100 text-gray-800 border-gray-500 dark:bg-gray-700 dark:text-gray-200';
   }
@@ -75,6 +81,12 @@ export function getErrorTypeLabel(errorType: ErrorType | string | undefined): st
       return 'Omitted';
     case 'extra':
       return 'Extra';
+    case 'unexpected_break':
+      return 'Unexpected Break';
+    case 'missing_break':
+      return 'Missing Break';
+    case 'monotone':
+      return 'Monotone';
     default:
       return errorType;
   }
@@ -95,6 +107,12 @@ export function getErrorTypeIcon(errorType: ErrorType | string | undefined): str
       return '⏭️';
     case 'extra':
       return '➕';
+    case 'unexpected_break':
+      return '⏸';
+    case 'missing_break':
+      return '↔';
+    case 'monotone':
+      return '〰';
     default:
       return '⚠️';
   }
@@ -123,4 +141,3 @@ export function getWordChipClasses(
 export function formatScore(score: number): string {
   return Math.round(score).toString();
 }
-

@@ -97,3 +97,27 @@ Browser speech capture
 Azure Speech / Web Speech API for scoring
 Static hosting (e.g., Vercel)
 
+## Data Pipeline (Option B)
+
+This repo now includes a generated-first data pipeline with release artifacts and runtime manifest checks.
+
+### Key commands
+
+```bash
+# Full build (Model A generation -> Model B verification -> normalization -> scoring -> release -> validation -> manifest)
+npm run data:build
+
+# Validate release gates
+npm run data:ci-gates
+
+# Optional Azure smoke test
+npm run data:azure-smoke
+```
+
+### Runtime env for pipeline mode
+
+```bash
+VITE_CONTENT_SOURCE=pipeline
+VITE_DATASET_VERSION=2.0.0
+VITE_REQUIRE_DATASET_BOOTSTRAP=true
+```

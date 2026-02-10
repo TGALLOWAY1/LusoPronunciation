@@ -7,7 +7,10 @@ export type PronunciationErrorType =
   | "omitted"
   | "substituted"
   | "inserted"
-  | "mispronounced";
+  | "mispronounced"
+  | "unexpected_break"
+  | "missing_break"
+  | "monotone";
 
 /**
  * Per-word scoring details returned by the pronouncer.
@@ -52,4 +55,3 @@ export interface SentenceProgress {
   firstAttemptAt?: string;
   lastAttemptAt?: string;
 }
-

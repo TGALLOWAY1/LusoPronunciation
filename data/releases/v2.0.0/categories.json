@@ -1,0 +1,142 @@
+[
+  {
+    "id": "basics_greetings",
+    "locale": "pt-BR",
+    "labelEn": "Basics & Greetings",
+    "labelPt": "Básico e Saudações",
+    "sortOrder": 0
+  },
+  {
+    "id": "body",
+    "locale": "pt-BR",
+    "labelEn": "Body",
+    "labelPt": "Corpo",
+    "sortOrder": 1
+  },
+  {
+    "id": "clothing",
+    "locale": "pt-BR",
+    "labelEn": "Clothing",
+    "labelPt": "Roupas",
+    "sortOrder": 2
+  },
+  {
+    "id": "colors",
+    "locale": "pt-BR",
+    "labelEn": "Colors",
+    "labelPt": "Cores",
+    "sortOrder": 3
+  },
+  {
+    "id": "common_adjectives",
+    "locale": "pt-BR",
+    "labelEn": "Common Adjectives",
+    "labelPt": "Adjetivos Comuns",
+    "sortOrder": 4
+  },
+  {
+    "id": "core_verbs",
+    "locale": "pt-BR",
+    "labelEn": "Core Verbs",
+    "labelPt": "Verbos Essenciais",
+    "sortOrder": 5
+  },
+  {
+    "id": "daily_routine",
+    "locale": "pt-BR",
+    "labelEn": "Daily Routine",
+    "labelPt": "Rotina Diária",
+    "sortOrder": 6
+  },
+  {
+    "id": "directions",
+    "locale": "pt-BR",
+    "labelEn": "Directions & Transport",
+    "labelPt": "Direções e Transporte",
+    "sortOrder": 7
+  },
+  {
+    "id": "family_friends",
+    "locale": "pt-BR",
+    "labelEn": "Family & Friends",
+    "labelPt": "Família e Amigos",
+    "sortOrder": 8
+  },
+  {
+    "id": "feelings",
+    "locale": "pt-BR",
+    "labelEn": "Feelings & Emotions",
+    "labelPt": "Sentimentos e Emoções",
+    "sortOrder": 9
+  },
+  {
+    "id": "food",
+    "locale": "pt-BR",
+    "labelEn": "Food & Eating",
+    "labelPt": "Comida e Refeições",
+    "sortOrder": 10
+  },
+  {
+    "id": "house_home",
+    "locale": "pt-BR",
+    "labelEn": "House & Home",
+    "labelPt": "Casa e Lar",
+    "sortOrder": 11
+  },
+  {
+    "id": "misc_common_words",
+    "locale": "pt-BR",
+    "labelEn": "Miscellaneous Common Words",
+    "labelPt": "Palavras Comuns Diversas",
+    "sortOrder": 12
+  },
+  {
+    "id": "nature",
+    "locale": "pt-BR",
+    "labelEn": "Nature & Weather",
+    "labelPt": "Natureza e Clima",
+    "sortOrder": 13
+  },
+  {
+    "id": "questions",
+    "locale": "pt-BR",
+    "labelEn": "Questions & Asking for Help",
+    "labelPt": "Perguntas e Pedir Ajuda",
+    "sortOrder": 14
+  },
+  {
+    "id": "shopping",
+    "locale": "pt-BR",
+    "labelEn": "Shopping & Money",
+    "labelPt": "Compras e Dinheiro",
+    "sortOrder": 15
+  },
+  {
+    "id": "small_talk",
+    "locale": "pt-BR",
+    "labelEn": "Small Talk & Social",
+    "labelPt": "Conversa e Social",
+    "sortOrder": 16
+  },
+  {
+    "id": "time_numbers",
+    "locale": "pt-BR",
+    "labelEn": "Time & Numbers",
+    "labelPt": "Tempo e Números",
+    "sortOrder": 17
+  },
+  {
+    "id": "travel",
+    "locale": "pt-BR",
+    "labelEn": "Travel",
+    "labelPt": "Viagem",
+    "sortOrder": 18
+  },
+  {
+    "id": "work_study",
+    "locale": "pt-BR",
+    "labelEn": "Work & Study",
+    "labelPt": "Trabalho e Estudo",
+    "sortOrder": 19
+  }
+]

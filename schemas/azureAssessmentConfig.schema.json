@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "azureAssessmentConfig.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "locale",
+    "gradingSystem",
+    "granularity",
+    "dimension",
+    "enableMiscue",
+    "maxReferenceChars",
+    "textNormalizationProfile"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "locale": { "type": "string", "const": "pt-BR" },
+    "gradingSystem": { "type": "string", "const": "HundredMark" },
+    "granularity": { "type": "string", "enum": ["Phoneme", "Word", "FullText"] },
+    "dimension": { "type": "string", "const": "Comprehensive" },
+    "enableMiscue": { "type": "boolean" },
+    "maxReferenceChars": { "type": "integer", "minimum": 1 },
+    "textNormalizationProfile": { "type": "string", "minLength": 1 }
+  }
+}

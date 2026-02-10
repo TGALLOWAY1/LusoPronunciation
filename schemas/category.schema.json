@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "category.schema.json",
+  "type": "object",
+  "required": ["id", "locale", "labelEn", "labelPt", "sortOrder"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "locale": { "type": "string", "const": "pt-BR" },
+    "labelEn": { "type": "string", "minLength": 1 },
+    "labelPt": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "sortOrder": { "type": "integer", "minimum": 0 }
+  }
+}

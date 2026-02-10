@@ -1,122 +1,169 @@
-# Feat 17: UI Fixes and Layout Redesign
+# Migrate to Better Storage: Backend API, Auth, and MongoDB Persistence
 
 ## Overview
-This PR implements a comprehensive redesign of the Sentence Practice page layout and UI components, focusing on improved visual hierarchy, better user experience, and a more modern, premium aesthetic.
 
-## Major Changes
+This PR introduces a complete backend infrastructure for LusoPronunciation, migrating from a localStorage-only approach to a MongoDB-backed system with authentication, while maintaining backward compatibility through dual-write patterns.
 
-### 1. Layout Restructure
-- **Converted from two-column grid to single centered column**
-  - Changed from `grid grid-cols-3` to `max-w-6xl mx-auto` single column layout
-  - Content now stacks vertically with proper spacing
-  - Sidebar content (Current Score, Score History) moved into main column below sentence area
-  - Increased container width from `max-w-4xl` to `max-w-6xl` for better use of horizontal space
+## What's Changed
 
-### 2. Premium Audio Buttons
-- **Created new premium circular button components**
-  - `PremiumPlayButton`: Circular play/pause button with blue gradient, shadows, and micro-interactions
-  - `PremiumRecordButton`: Circular record button with red gradient and pulsing ring animation when recording
-  - Both buttons feature:
-    - Soft, layered box-shadows for depth
-    - Hover: scale up and brighten
-    - Active: scale down effect
-    - Proper icon sizing and centering
-  - Replaced all existing play/record buttons across the app
+### 🏗️ Backend Infrastructure
 
-### 3. Horizontal Score Banner
-- **Redesigned score display as horizontal banner**
-  - Appears above sentence after submission
-  - Four progress bars in a row: Overall, Accuracy, Fluency, Completeness
-  - Overall score uses prominent styling (thicker border, larger height, shadow)
-  - Info icon moved to banner (top-right) with click-to-toggle tooltip
-  - Removed duplicate vertical card panel
-  - All metrics use consistent progress bar design
+- **Express App Shell** (`src/server/app.ts`)
+  - Full Express server with CORS and JSON body parsing
+  - MongoDB connection management with health checks
+  - Server starts only after successful DB connection
+  - Runs on port 4000 (configurable via `PORT` env var)
 
-### 4. Hero Sentence Display
-- **Large, prominent Portuguese sentence**
-  - Increased to `text-4xl md:text-5xl`, bold, centered
-  - Subtle dashed underline indicates clickability
-  - **Click-to-reveal translation**: Removed "Show English" button, sentence itself toggles translation
-  - English translation appears below in smaller, lighter font when toggled
-  - Difficulty badge positioned above sentence, centered
+- **MongoDB Client** (`src/server/db/mongoClient.ts`)
+  - Singleton connection manager using Mongoose
+  - Reads `MONGODB_URI` from environment
+  - Exposes `connectMongo()`, `getMongoStatus()`, and `disconnectMongo()`
+  - Health route reports MongoDB connection status
 
-### 5. Dynamic Recording Interface
-- **Replaced separate Mic/Submit/Reset buttons with multi-state interface**
-  - **State 1 (Ready)**: Single large red circular mic button
-  - **State 2 (Recording)**: Same button with stop icon and pulsing animation
-  - **State 3 (Review)**: Two buttons side-by-side
-    - Left: Grey reset button with trash icon
-    - Right: Large green submit button with checkmark icon and "Submit" text
-  - Smooth transitions between states
+### 🔐 Authentication System
 
-### 6. Audio Playback Controls Redesign
-- **Visual hierarchy for Native vs User audio**
-  - **Native Sentence**: Primary blue button with larger icon, prominent styling
-  - **Your Recording**: Secondary outline style button, less prominent
-  - Both show pause icon when playing with darkened background
-  - Improved hover and active states
+- **JWT-Based Auth** (`src/server/routes/auth.ts`, `src/server/middleware/auth.ts`)
+  - `POST /api/auth/register` - User registration with email/password
+  - `POST /api/auth/login` - User login with JWT token generation
+  - Auth middleware (`requireAuth`) for protecting routes
+  - Tokens expire after 7 days
+  - Password hashing with bcrypt (10 salt rounds)
 
-### 7. Filters Section Updates
-- **Sentence counter moved to Filters section**
-  - Inline with "Filters" heading, right-aligned
-  - Shows "X of Y" format
-  - Better integration with filter controls
+- **Frontend Auth Integration**
+  - Auth API client with token management (`src/api/auth.ts`)
+  - Login/Register UI (`src/pages/AuthPage.tsx`, `src/components/auth/AuthForm.tsx`)
+  - `authenticatedFetch()` helper for API requests with automatic auth headers
 
-### 8. Score History Visibility
-- **Moved Score History to History tab only**
-  - No longer visible on Practice tab
-  - Appears below attempt history in History tab
+### 📊 Data Models & Shared Types
 
-### 9. History Page Fixes
-- **Audio persistence**
-  - Recordings now persist using Base64 data URLs in localStorage
-  - Audio playback works after page refresh
-  - Word-by-word breakdown displays for selected attempts
-  - Selected attempt recording playback works correctly
+- **Shared Types** (`src/shared/types/`)
+  - `User`, `PracticeSession`, `PronunciationAttempt` types
+  - `ContentType`, `PracticeContentRef`, `PronunciationScores` utilities
+  - Used by both frontend and backend for type safety
 
-### 10. Scoring Panel Improvements
-- **Consolidated info icons**
-  - Single info icon at top-right of banner
-  - Click-to-toggle tooltip that stays open for reading
-  - Viewport-aware positioning (above/below, left/right)
-  - Prosody availability note for pt-BR locale
-  - Improved sizing and text wrapping
+- **MongoDB Models** (`src/server/models/`)
+  - `UserModel` - User accounts with email, passwordHash, settings
+  - `PracticeSessionModel` - Practice sessions with indexes on `{ userId, startedAt }`
+  - `PronunciationAttemptModel` - Pronunciation attempts with indexes on `{ userId, createdAt }` and `{ userId, contentId }`
+  - `FlashcardModel` - SRS flashcards with indexes on `{ userId, nextDueAt }`
 
-### 11. Bug Fixes
-- Fixed `import.meta.env` usage in server-side code (safe checks for CommonJS)
-- Fixed Prosody metric display (now shows 0 scores correctly)
-- Enabled `EnableProsodyAssessment` in Azure config
-- Removed latency display element
+- **Mappers** (`src/server/mappers/`)
+  - Convert MongoDB documents to DTOs
+  - Handle `_id` → `id` conversion and date formatting
+
+### 🎯 Practice Data Persistence
+
+- **Practice Routes** (`src/server/routes/practice.ts`)
+  - `POST /api/practice-sessions` - Create practice session
+  - `PATCH /api/practice-sessions/:id/complete` - Complete session
+  - `POST /api/pronunciation-attempts` - Log pronunciation attempt
+  - `GET /api/pronunciation-attempts` - Fetch attempts with pagination
+  - All routes require authentication and enforce user ownership
+
+- **Dual-Write Integration**
+  - `practiceLogStore.tsx` now writes to both localStorage (existing UX) and API (when authenticated)
+  - Tracks server session IDs mapped to local session IDs
+  - Graceful degradation: API failures don't block local storage
+  - Maintains instant local behavior while syncing to cloud
+
+### 🔄 Migration System
+
+- **Migration Endpoint** (`src/server/routes/migration.ts`)
+  - `POST /api/migrate/local-storage` - One-time migration from localStorage to MongoDB
+  - Idempotent: checks for duplicates before importing
+  - Maps legacy sessionIds to new Mongo _ids for attempt linking
+  - Returns summary: `{ importedSessions, importedAttempts, skippedSessions, skippedAttempts, errors }`
+
+- **Auto-Migration** (`src/features/migration/LocalStorageMigrator.tsx`)
+  - Runs automatically on app load for authenticated users
+  - Checks `localStorage.getItem('luso_cloud_migrated')` to avoid duplicate migrations
+  - Reads from `PracticeLogStore` and `ProgressStore`
+  - Sets migration flag on success
+
+### 📚 Spaced Repetition System (SRS)
+
+- **Flashcard Model** (`src/server/models/FlashcardModel.ts`)
+  - SRS fields: `nextDueAt`, `intervalDays`, `easeFactor`, `reps`, `lapses`, `lastScore`, `lastOutcome`
+  - `history` array linking to `PronunciationAttempt` IDs
+  - Indexes for efficient due queue queries
+
+- **Flashcard Routes** (`src/server/routes/flashcards.ts`)
+  - `GET /api/flashcards/due` - Fetch flashcards due for review
+  - `POST /api/flashcards/review` - Record review and update SRS state
+  - `POST /api/flashcards/ensure` - Ensure flashcard exists
+
+- **SRS Service** (`src/server/services/flashcardService.ts`)
+  - SM-2 algorithm implementation for interval calculation
+  - Auto-grading: maps pronunciation scores to review outcomes
+    - `< 50`: 'again' (immediate review)
+    - `< 70`: 'hard' (shorter interval)
+    - `< 90`: 'good' (normal interval)
+    - `>= 90`: 'easy' (longer interval)
+
+- **Auto-Integration**
+  - Flashcards automatically created when attempts are logged
+  - SRS state updated based on pronunciation scores
+  - Works for both sentence and word practice
 
 ## Technical Details
 
-### New Components
-- `src/components/common/PremiumPlayButton.tsx`
-- `src/components/common/PremiumRecordButton.tsx`
+### Environment Variables Required
 
-### Modified Components
-- `src/components/practice/LivePracticeSection.tsx` - Dynamic recording interface
-- `src/components/practice/FilterControls.tsx` - Added sentence counter
-- `src/components/pronunciation/ScoringPanel.tsx` - Banner variant, info icon
-- `src/components/pronunciation/PronunciationFeedbackPanel.tsx` - Hero sentence display
-- `src/components/pronunciation/SentenceAudioControls.tsx` - Visual hierarchy
-- `src/pages/SentencePractice.tsx` - Layout restructure
-- `src/hooks/useLivePronunciationPractice.ts` - Audio persistence
-- `src/lib/types.ts` - Added `recordingDataUrl` field
-- `src/styles/index.css` - Added pulse-ring animation
+```bash
+MONGODB_URI=mongodb://localhost:27017/lusopronunciation
+JWT_SECRET=your-secret-key-here
+AZURE_SPEECH_KEY=your-azure-key
+AZURE_SPEECH_REGION=your-azure-region
+PORT=4000  # Optional, defaults to 4000
+```
 
-## Testing Notes
-- Test recording workflow: Ready → Recording → Review states
-- Verify audio playback works in History tab after page refresh
-- Check score banner appears after submission
-- Test click-to-reveal translation on Portuguese sentence
-- Verify info icon tooltip positioning on different screen sizes
-- Confirm Score History only appears in History tab
+### API Endpoints
 
-## Visual Improvements
-- More modern, premium aesthetic
-- Better visual hierarchy
-- Improved spacing and alignment
-- Consistent design language
-- Enhanced micro-interactions
-- Better use of screen real estate
+**Public:**
+- `GET /api/health` - Health check with MongoDB status
+
+**Authenticated:**
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login and get JWT token
+- `POST /api/practice-sessions` - Create practice session
+- `PATCH /api/practice-sessions/:id/complete` - Complete session
+- `POST /api/pronunciation-attempts` - Log attempt
+- `GET /api/pronunciation-attempts` - Fetch attempts
+- `POST /api/migrate/local-storage` - Migrate localStorage data
+- `GET /api/flashcards/due` - Get due flashcards
+- `POST /api/flashcards/review` - Review flashcard
+- `POST /api/flashcards/ensure` - Ensure flashcard exists
+
+### Database Indexes
+
+- **Users**: `{ email: 1 }`
+- **Practice Sessions**: `{ userId: 1, startedAt: -1 }`
+- **Pronunciation Attempts**: `{ userId: 1, createdAt: -1 }`, `{ userId: 1, contentId: 1 }`
+- **Flashcards**: `{ userId: 1, nextDueAt: 1 }`, `{ userId: 1, contentId: 1, contentType: 1 }` (unique)
+
+## Backward Compatibility
+
+- ✅ Existing localStorage-based practice flow continues to work
+- ✅ Unauthenticated users can still use the app (localStorage only)
+- ✅ Authenticated users get dual-write (localStorage + API)
+- ✅ Migration runs automatically once per user
+- ✅ ProgressStore and weak items logic still functional (gradual transition planned)
+
+## Testing
+
+- All TypeScript type checks pass
+- No linter errors
+- Backend routes tested with proper auth middleware
+- Frontend integration maintains existing UX
+
+## Next Steps (Future Work)
+
+- [ ] Gradually shift to server data as source of truth for authenticated users
+- [ ] Add flashcard review UI mode
+- [ ] Enhance migration to include progress/weak items data
+- [ ] Add content text (textPt, textEn) to attempt logging
+- [ ] Consider deprecating localStorage once migration is complete
+
+## Breaking Changes
+
+None - this is fully backward compatible. All existing functionality continues to work.

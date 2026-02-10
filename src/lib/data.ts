@@ -24,7 +24,8 @@ import type { AudioIndex } from './types';
 import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
 import { sampleData } from '../data/sampleData';
 import { buildWordRefs } from '../pipeline/sentenceWordRefs';
-import { CONTENT_SOURCE } from '../config/appConfig';
+import { CONTENT_SOURCE, getReleaseDataPath } from '../config/appConfig';
+import { ensureDatasetBootstrap } from '../pipeline/release/datasetBootstrap';
 
 // Cache for loaded data
 let cachedSentences: Sentence[] | null = null;
@@ -191,6 +192,29 @@ function transformWord(
  */
 async function loadCategoryLabels(): Promise<Map<string, { labelEn: string; labelPt: string }>> {
   const categoryMap = new Map<string, { labelEn: string; labelPt: string }>();
+
+  if (CONTENT_SOURCE === 'pipeline') {
+    await ensureDatasetBootstrap();
+    const categoriesPath = getReleaseDataPath('categories.json');
+    const response = await fetch(categoriesPath);
+    if (!response.ok) {
+      throw new Error(`[CONTENT_SOURCE=pipeline] Failed to load categories from ${categoriesPath}`);
+    }
+    const categories = await response.json() as Array<{
+      id: string;
+      labelEn?: string;
+      labelPt?: string;
+      label_en?: string;
+      label_pt?: string;
+    }>;
+    for (const category of categories) {
+      categoryMap.set(category.id, {
+        labelEn: category.labelEn ?? category.label_en ?? category.id,
+        labelPt: category.labelPt ?? category.label_pt ?? category.id,
+      });
+    }
+    return categoryMap;
+  }
   
   try {
     // Try to load from sentences.json first
@@ -246,9 +270,11 @@ export async function loadAllSentences(): Promise<Sentence[]> {
   // Pipeline mode: Load from master dataset only, no fallback
   if (CONTENT_SOURCE === 'pipeline') {
     try {
-      const masterResponse = await fetch('/data/masterSentences.json');
+      await ensureDatasetBootstrap();
+      const releasePath = getReleaseDataPath('sentences.json');
+      const masterResponse = await fetch(releasePath);
       if (!masterResponse.ok) {
-        const errorMsg = `[CONTENT_SOURCE=pipeline] Failed to load masterSentences.json: ${masterResponse.status} ${masterResponse.statusText}. Master dataset is required when CONTENT_SOURCE=pipeline.`;
+        const errorMsg = `[CONTENT_SOURCE=pipeline] Failed to load ${releasePath}: ${masterResponse.status} ${masterResponse.statusText}. Release dataset is required when CONTENT_SOURCE=pipeline.`;
         console.error(errorMsg);
         throw new Error(errorMsg);
       }
@@ -257,7 +283,7 @@ export async function loadAllSentences(): Promise<Sentence[]> {
       
       // Check if we actually got data (not just empty array)
       if (enrichedSentences.length === 0) {
-        const errorMsg = `[CONTENT_SOURCE=pipeline] masterSentences.json is empty. Master dataset must contain data when CONTENT_SOURCE=pipeline.`;
+        const errorMsg = `[CONTENT_SOURCE=pipeline] ${releasePath} is empty. Release dataset must contain data when CONTENT_SOURCE=pipeline.`;
         console.error(errorMsg);
         throw new Error(errorMsg);
       }
@@ -273,7 +299,7 @@ export async function loadAllSentences(): Promise<Sentence[]> {
       });
       
       cachedSentences = sentences;
-      console.log(`[CONTENT_SOURCE=pipeline] Loaded ${sentences.length} sentences from master dataset`);
+      console.log(`[CONTENT_SOURCE=pipeline] Loaded ${sentences.length} sentences from release dataset`);
       return sentences;
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Unknown error';
@@ -424,9 +450,11 @@ export async function loadAllWords(): Promise<Word[]> {
   // Pipeline mode: Load from master dataset only, no fallback
   if (CONTENT_SOURCE === 'pipeline') {
     try {
-      const masterResponse = await fetch('/data/masterWords.json');
+      await ensureDatasetBootstrap();
+      const releasePath = getReleaseDataPath('words.json');
+      const masterResponse = await fetch(releasePath);
       if (!masterResponse.ok) {
-        const errorMsg = `[CONTENT_SOURCE=pipeline] Failed to load masterWords.json: ${masterResponse.status} ${masterResponse.statusText}. Master dataset is required when CONTENT_SOURCE=pipeline.`;
+        const errorMsg = `[CONTENT_SOURCE=pipeline] Failed to load ${releasePath}: ${masterResponse.status} ${masterResponse.statusText}. Release dataset is required when CONTENT_SOURCE=pipeline.`;
         console.error(errorMsg);
         throw new Error(errorMsg);
       }
@@ -435,7 +463,7 @@ export async function loadAllWords(): Promise<Word[]> {
       
       // Check if we actually got data (not just empty array)
       if (enrichedWords.length === 0) {
-        const errorMsg = `[CONTENT_SOURCE=pipeline] masterWords.json is empty. Master dataset must contain data when CONTENT_SOURCE=pipeline.`;
+        const errorMsg = `[CONTENT_SOURCE=pipeline] ${releasePath} is empty. Release dataset must contain data when CONTENT_SOURCE=pipeline.`;
         console.error(errorMsg);
         throw new Error(errorMsg);
       }
@@ -451,7 +479,7 @@ export async function loadAllWords(): Promise<Word[]> {
       });
       
       cachedWords = words;
-      console.log(`[CONTENT_SOURCE=pipeline] Loaded ${words.length} words from master dataset`);
+      console.log(`[CONTENT_SOURCE=pipeline] Loaded ${words.length} words from release dataset`);
       return words;
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Unknown error';
@@ -526,6 +554,29 @@ export async function loadAllWords(): Promise<Word[]> {
 export async function loadAllCategories(): Promise<Category[]> {
   if (cachedCategories) {
     return cachedCategories;
+  }
+
+  if (CONTENT_SOURCE === 'pipeline') {
+    await ensureDatasetBootstrap();
+    const categoriesPath = getReleaseDataPath('categories.json');
+    const response = await fetch(categoriesPath);
+    if (!response.ok) {
+      throw new Error(`[CONTENT_SOURCE=pipeline] Failed to load categories from ${categoriesPath}`);
+    }
+    const data = await response.json() as Array<{
+      id: string;
+      labelEn?: string;
+      labelPt?: string;
+      label_en?: string;
+      label_pt?: string;
+    }>;
+    const categories = data.map((cat) => ({
+      id: cat.id,
+      labelEn: cat.labelEn ?? cat.label_en ?? cat.id,
+      labelPt: cat.labelPt ?? cat.label_pt ?? cat.id,
+    }));
+    cachedCategories = categories;
+    return categories;
   }
 
   try {
@@ -651,4 +702,3 @@ export function clearDataCache(): void {
   cachedCategories = null;
   cachedAudioIndex = null;
 }
-

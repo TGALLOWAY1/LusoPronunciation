@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "datasetManifest.schema.json",
+  "type": "object",
+  "required": [
+    "datasetVersion",
+    "schemaVersion",
+    "locale",
+    "buildTimestamp",
+    "sourceFingerprint",
+    "configFingerprint",
+    "artifacts",
+    "validation"
+  ],
+  "properties": {
+    "datasetVersion": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "type": "string", "minLength": 1 },
+    "locale": { "type": "string", "const": "pt-BR" },
+    "buildTimestamp": { "type": "string", "minLength": 1 },
+    "sourceFingerprint": { "type": "string", "minLength": 1 },
+    "configFingerprint": { "type": "string", "minLength": 1 },
+    "artifacts": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "validation": {
+      "type": "object",
+      "required": ["status", "rulesetVersion", "reportPath"],
+      "properties": {
+        "status": { "type": "string", "enum": ["passed", "failed"] },
+        "rulesetVersion": { "type": "string", "minLength": 1 },
+        "reportPath": { "type": "string", "minLength": 1 }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "properties": {
+        "modelA": { "type": "string" },
+        "modelB": { "type": "string" },
+        "acceptThreshold": { "type": "number" },
+        "reviewThreshold": { "type": "number" },
+        "reportPath": { "type": "string" }
+      }
+    }
+  }
+}

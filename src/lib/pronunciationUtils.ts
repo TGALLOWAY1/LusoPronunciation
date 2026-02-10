@@ -12,6 +12,9 @@ function mapAzureErrorType(azureErrorType: string | undefined): ErrorType {
   if (normalized === 'mispronunciation' || normalized === 'mispronounced') return 'mispronounced';
   if (normalized === 'omission' || normalized === 'omitted') return 'omitted';
   if (normalized === 'insertion' || normalized === 'extra') return 'extra';
+  if (normalized === 'unexpectedbreak' || normalized === 'unexpected_break') return 'unexpected_break';
+  if (normalized === 'missingbreak' || normalized === 'missing_break') return 'missing_break';
+  if (normalized === 'monotone') return 'monotone';
   
   // Default to 'none' for unknown types
   return 'none';
@@ -93,4 +96,3 @@ export function mapAzurePronunciationResultToAttemptScore(
     audioUrl,
   };
 }
-

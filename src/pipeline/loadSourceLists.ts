@@ -54,6 +54,7 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
         id: word.id,
         pt: word.pt.trim(),
         en: word.en.trim(),
+        categoryId: category.id,
         pos: word.pos,
         difficulty: word.difficulty as 1 | 2 | 3 | 4 | 5,
         difficult_for_english: word.difficult_for_english,
@@ -111,6 +112,7 @@ export async function loadRawSentences(config: GenerationPipelineConfig): Promis
         id: sentence.id,
         pt: sentence.pt.trim(),
         en: sentence.en.trim(),
+        categoryId: category.id,
         difficulty: sentence.difficulty as 1 | 2 | 3 | 4 | 5,
         pronunciation_notes: sentence.pronunciation_notes,
       });
@@ -142,4 +144,3 @@ export async function loadRawSentences(config: GenerationPipelineConfig): Promis
   
   return limited;
 }
-

@@ -255,51 +255,13 @@ export function applySentenceTags(sentence: EnrichedSentence): EnrichedSentence 
  */
 export function inferCategory(
   rawCategory: string | undefined,
-  text: string
+  _text: string
 ): string {
   if (rawCategory && rawCategory.trim().length > 0) {
     return rawCategory.trim();
   }
 
-  // Simple keyword-based inference
-  const normalized = text.toLowerCase();
-
-  // Food-related keywords
-  if (
-    normalized.includes('comer') ||
-    normalized.includes('beber') ||
-    normalized.includes('comida') ||
-    normalized.includes('restaurante') ||
-    normalized.includes('café') ||
-    normalized.includes('água')
-  ) {
-    return 'food';
-  }
-
-  // Work-related keywords
-  if (
-    normalized.includes('trabalhar') ||
-    normalized.includes('trabalho') ||
-    normalized.includes('escritório') ||
-    normalized.includes('reunião')
-  ) {
-    return 'work';
-  }
-
-  // Travel-related keywords
-  if (
-    normalized.includes('viajar') ||
-    normalized.includes('viagem') ||
-    normalized.includes('hotel') ||
-    normalized.includes('aeroporto') ||
-    normalized.includes('ônibus') ||
-    normalized.includes('trem')
-  ) {
-    return 'travel';
-  }
-
-  // Default category
-  return 'general';
+  throw new Error('inferCategory requires an explicit rawCategory. Keyword-based fallback has been removed.');
 }
 
 /**
@@ -357,4 +319,3 @@ export function inferTagsForSentence(sentence: string): string[] {
 
   return tags;
 }
-
