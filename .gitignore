@@ -26,3 +26,7 @@ dist/
 # Speech debug / temp artifacts
 data/debug/
 data/temp-audio/
+
+# Playwright
+playwright-report/
+test-results/
