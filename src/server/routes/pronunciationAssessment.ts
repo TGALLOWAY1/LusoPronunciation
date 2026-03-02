@@ -88,14 +88,9 @@
  */
 
 import { randomUUID } from 'crypto';
+import { readFile, writeFile } from 'fs/promises';
 import { mapAzurePronunciationResultToAttemptScore } from '../../lib/pronunciationUtils';
 import type { AttemptScore } from '../../types/pronunciation';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import { tmpdir } from 'os';
-import { join } from 'path';
-import { writeFile, readFile, unlink } from 'fs/promises';
-import { existsSync } from 'fs';
 import {
   Router,
   Request as ExpressRequest,
@@ -108,13 +103,17 @@ import {
   speechLog,
   writeSpeechDebugDump,
 } from '../utils/speechDebug';
+import {
+  convertToWav,
+  ConvertFailedError,
+  ConvertTimeoutError,
+} from '../lib/audioConversion';
+import { createWorkspace, type TempWorkspace } from '../lib/tempWorkspace';
 
 // Web API Request/Response types (available in Node.js 18+)
 // Using global types - no import needed
 type WebRequest = Request;
 type WebResponse = Response;
-
-const execAsync = promisify(exec);
 
 const DEFAULT_MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 
@@ -214,82 +213,20 @@ function getAzureSpeechConfig() {
   return { key, region };
 }
 
-/**
- * Converts webm/opus audio buffer to PCM/WAV format required by Azure.
- * 
- * @param webmBuffer - Input webm/opus audio buffer
- * @returns Promise resolving to WAV buffer (16kHz, 16-bit, mono PCM)
- * @throws Error if conversion fails
- */
-async function convertWebmOpusToWav(webmBuffer: Buffer): Promise<Buffer> {
-  // Use ffmpeg-static if available, otherwise fall back to system ffmpeg
-  let ffmpegPath = 'ffmpeg';
-  try {
-    // Try to use ffmpeg-static (bundled binary)
-    // Dynamic import to avoid requiring it at module load time
-    // @ts-ignore - ffmpeg-static is optional dependency, may not be installed
-    const ffmpegStatic = await import('ffmpeg-static').catch(() => null);
-    if (ffmpegStatic) {
-      // ffmpeg-static exports the path as default or as the module itself
-      if (typeof ffmpegStatic === 'string') {
-        ffmpegPath = ffmpegStatic;
-      } else if (typeof (ffmpegStatic as any).default === 'string') {
-        ffmpegPath = (ffmpegStatic as any).default;
-      } else if (typeof (ffmpegStatic as any) === 'string') {
-        ffmpegPath = ffmpegStatic as any;
-      }
-    }
-  } catch {
-    // ffmpeg-static not installed, use system ffmpeg
-    speechLog('warn', 'ffmpeg-static not found, using system ffmpeg');
+const DEFAULT_AUDIO_CONVERT_TIMEOUT_MS = 10_000;
+
+function getAudioConvertTimeoutMs(): number {
+  const rawValue = process.env.AUDIO_CONVERT_TIMEOUT_MS;
+  if (!rawValue) {
+    return DEFAULT_AUDIO_CONVERT_TIMEOUT_MS;
   }
 
-  // Create temporary files for input and output
-  const tempDir = tmpdir();
-  const inputPath = join(tempDir, `input_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.webm`);
-  const outputPath = join(tempDir, `output_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.wav`);
-
-  try {
-    // Write input buffer to temp file
-    await writeFile(inputPath, webmBuffer);
-
-    // Convert using ffmpeg: webm/opus -> WAV (16kHz, 16-bit, mono PCM)
-    // -f wav: WAV format
-    // -ar 16000: 16kHz sample rate
-    // -ac 1: Mono channel
-    // -sample_fmt s16: 16-bit signed integer samples
-    // -y: Overwrite output file
-    // -loglevel error: Only show errors (reduce noise)
-    const { stderr } = await execAsync(
-      `"${ffmpegPath}" -i "${inputPath}" -f wav -ar 16000 -ac 1 -sample_fmt s16 -loglevel error -y "${outputPath}"`,
-      { timeout: 10000 } // 10 second timeout
-    );
-
-    // Read converted WAV file
-    if (!existsSync(outputPath)) {
-      throw new Error(`ffmpeg conversion failed: output file not created. stderr: ${stderr || 'none'}`);
-    }
-
-    const wavBuffer = await readFile(outputPath);
-
-    // Verify WAV header (basic sanity check)
-    if (wavBuffer.length < 12 || wavBuffer.toString('ascii', 0, 4) !== 'RIFF' || wavBuffer.toString('ascii', 8, 12) !== 'WAVE') {
-      throw new Error('Converted file does not appear to be a valid WAV file');
-    }
-
-    return wavBuffer;
-  } finally {
-    // Clean up temp files
-    try {
-      if (existsSync(inputPath)) await unlink(inputPath).catch(() => {});
-      if (existsSync(outputPath)) await unlink(outputPath).catch(() => {});
-    } catch (cleanupErr) {
-      // Ignore cleanup errors (non-critical)
-      speechLog('warn', 'Failed to clean up audio conversion temp files', {
-        error: cleanupErr instanceof Error ? cleanupErr.message : String(cleanupErr),
-      });
-    }
+  const parsed = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_AUDIO_CONVERT_TIMEOUT_MS;
   }
+
+  return parsed;
 }
 
 /**
@@ -322,17 +259,31 @@ interface AssessmentParams {
   language: string;
   requestId: string;
   audioMimeType?: string;
+  workspace: TempWorkspace;
+  convertTimeoutMs: number;
+  registerConversionKill?: (kill: (() => void) | null) => void;
 }
 
 interface AssessmentResult {
   rawAzure: any;
   attemptScore: AttemptScore;
+  fallbackUsed: boolean;
 }
 
 async function processPronunciationAssessment(
   params: AssessmentParams
 ): Promise<AssessmentResult> {
-  const { audioBuffer, sentenceId, referenceText, language, requestId, audioMimeType } = params;
+  const {
+    audioBuffer,
+    sentenceId,
+    referenceText,
+    language,
+    requestId,
+    audioMimeType,
+    workspace,
+    convertTimeoutMs,
+    registerConversionKill,
+  } = params;
 
   // Get Azure config
   const { key, region } = getAzureSpeechConfig();
@@ -346,13 +297,29 @@ async function processPronunciationAssessment(
     normalizedMimeType.includes('audio/x-wav') ||
     normalizedMimeType.includes('audio/wave');
   let contentType = isWavInput ? 'audio/wav' : 'audio/webm; codecs=opus';
+  let fallbackUsed = false;
 
   if (!isWavInput) {
     try {
-      wavBuffer = await convertWebmOpusToWav(audioBuffer);
+      await writeFile(workspace.inputPath, audioBuffer);
+      await convertToWav({
+        inputPath: workspace.inputPath,
+        outputPath: workspace.outputPath,
+        timeoutMs: convertTimeoutMs,
+        onKill: (kill) => registerConversionKill?.(kill),
+      });
+      wavBuffer = await readFile(workspace.outputPath);
+      if (
+        wavBuffer.length < 12 ||
+        wavBuffer.toString('ascii', 0, 4) !== 'RIFF' ||
+        wavBuffer.toString('ascii', 8, 12) !== 'WAVE'
+      ) {
+        throw new ConvertFailedError('Converted file does not appear to be a valid WAV file.');
+      }
       contentType = 'audio/wav';
     } catch (conversionError) {
       // Fall back to original format (may not work, but better than failing completely)
+      fallbackUsed = true;
       speechLog('warn', 'Audio conversion failed; using original upload format', { requestId });
       if (isSpeechDebugEnabled()) {
         speechLog(
@@ -362,6 +329,8 @@ async function processPronunciationAssessment(
           { allowSensitive: true }
         );
       }
+    } finally {
+      registerConversionKill?.(null);
     }
   } else {
     contentType = 'audio/wav';
@@ -454,6 +423,7 @@ async function processPronunciationAssessment(
   return {
     rawAzure,
     attemptScore,
+    fallbackUsed,
   };
 }
 
@@ -480,6 +450,8 @@ export async function handlePronunciationAssessment(
 ): Promise<WebResponse> {
   const requestId = request.headers.get('x-request-id') || randomUUID();
   const startedAt = Date.now();
+  const workspace = await createWorkspace('pronunciation', requestId);
+  const convertTimeoutMs = getAudioConvertTimeoutMs();
 
   try {
     // Parse multipart form data
@@ -569,6 +541,8 @@ export async function handlePronunciationAssessment(
       language,
       requestId,
       audioMimeType,
+      workspace,
+      convertTimeoutMs,
     });
 
     speechLog('info', 'Pronunciation request completed', {
@@ -615,6 +589,8 @@ export async function handlePronunciationAssessment(
         },
       }
     );
+  } finally {
+    await workspace.cleanup();
   }
 }
 
@@ -631,6 +607,21 @@ export const pronunciationUploadMiddleware = upload.single('audio');
 export async function handlePronunciationAssessmentExpress(req: ExpressRequest, res: ExpressResponse): Promise<void> {
   const requestId = (req.header('x-request-id') || randomUUID()).toString();
   const startedAt = Date.now();
+  const workspace = await createWorkspace('pronunciation', requestId);
+  const convertTimeoutMs = getAudioConvertTimeoutMs();
+  let clientDisconnected = false;
+  let killActiveConversion: (() => void) | null = null;
+
+  const markClientDisconnected = (): void => {
+    if (res.writableEnded) {
+      return;
+    }
+    clientDisconnected = true;
+    killActiveConversion?.();
+  };
+
+  req.on('aborted', markClientDisconnected);
+  req.on('close', markClientDisconnected);
 
   try {
     // Validate required fields
@@ -666,6 +657,14 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
       language,
       requestId,
       audioMimeType: req.file.mimetype,
+      workspace,
+      convertTimeoutMs,
+      registerConversionKill: (kill) => {
+        killActiveConversion = kill;
+        if (kill && clientDisconnected) {
+          kill();
+        }
+      },
     });
 
     speechLog('info', 'Pronunciation request completed', {
@@ -674,9 +673,17 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
       durationMs: Date.now() - startedAt,
     });
 
+    if (clientDisconnected || res.writableEnded) {
+      return;
+    }
+
     res.setHeader('X-Request-Id', requestId);
     res.json(result);
   } catch (error) {
+    if (clientDisconnected || res.writableEnded) {
+      return;
+    }
+
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     const statusCode = errorMessage.includes('Azure Speech API request failed') ? 502 : 500;
     speechLog('error', 'Pronunciation request failed', {
@@ -695,6 +702,11 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
 
     res.setHeader('X-Request-Id', requestId);
     res.status(statusCode).json(buildSafeErrorPayload(statusCode, requestId));
+  } finally {
+    req.off('aborted', markClientDisconnected);
+    req.off('close', markClientDisconnected);
+    killActiveConversion = null;
+    await workspace.cleanup();
   }
 }
 

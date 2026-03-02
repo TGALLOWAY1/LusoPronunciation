@@ -46,6 +46,8 @@ function createRequest(): ExpressRequest {
       language: 'pt-BR',
     },
     header: vi.fn().mockReturnValue(undefined),
+    on: vi.fn(),
+    off: vi.fn(),
   } as unknown as ExpressRequest;
 }
 
