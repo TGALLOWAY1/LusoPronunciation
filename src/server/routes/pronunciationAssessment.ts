@@ -394,6 +394,7 @@ interface AssessmentParams {
   workspace: TempWorkspace;
   convertTimeoutMs: number;
   registerConversionKill?: (kill: (() => void) | null) => void;
+  shouldAbort?: () => boolean;
 }
 
 interface AssessmentResult {
@@ -424,6 +425,7 @@ async function processPronunciationAssessment(
     workspace,
     convertTimeoutMs,
     registerConversionKill,
+    shouldAbort,
   } = params;
 
   // Get Azure config
@@ -497,6 +499,14 @@ async function processPronunciationAssessment(
     serverTimingsMs.convertMs = conversionStage.durationMs;
   } else {
     contentType = 'audio/wav';
+  }
+
+  if (shouldAbort?.()) {
+    throw new PronunciationRouteError(
+      499,
+      ERROR_CLASS.clientAbort,
+      'Client disconnected before pronunciation assessment completed.'
+    );
   }
 
   // Build Azure endpoint URL
@@ -884,6 +894,7 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
           kill();
         }
       },
+      shouldAbort: () => clientDisconnected,
     });
 
     speechLog('info', 'Pronunciation request completed', {
