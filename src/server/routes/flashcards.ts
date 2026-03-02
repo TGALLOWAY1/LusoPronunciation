@@ -2,7 +2,7 @@ import { Router, Response } from 'express';
 import mongoose from 'mongoose';
 import { requireAuth, type AuthenticatedRequest } from '../middleware/auth';
 import { FlashcardModel } from '../models/FlashcardModel';
-import { ensureFlashcard, updateFlashcardAfterReview, scoreToOutcome } from '../services/flashcardService';
+import { ensureFlashcard, updateFlashcardAfterReview } from '../services/flashcardService';
 import type { ReviewOutcome } from '../models/FlashcardModel';
 
 const router = Router();
@@ -249,4 +249,3 @@ router.post('/ensure', requireAuth, async (req: AuthenticatedRequest, res: Respo
 });
 
 export default router;
-

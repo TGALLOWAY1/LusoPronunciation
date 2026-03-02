@@ -1,7 +1,12 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useMicrophoneRecorder } from './useMicrophoneRecorder';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
+import type { Difficulty } from '@/lib/types';
 import type { AttemptScore, WordScore } from '@/types/pronunciation';
+import {
+  analyzeAudioBlob,
+  MIN_DURATION_MS,
+} from '@/lib/audioQuality';
 
 /**
  * Response type from the pronunciation assessment API
@@ -35,7 +40,7 @@ async function blobToDataUrl(blob: Blob): Promise<string> {
 export interface LogAttemptParams {
   sessionId: string;
   sentenceId: string;
-  difficulty: number;
+  difficulty: Difficulty;
   category: string;
   retriesInThisSession?: number;
   usedHint?: boolean;
@@ -43,6 +48,15 @@ export interface LogAttemptParams {
   listenedToNativeModelCount?: number;
   recordingDurationSeconds?: number;
 }
+
+export type AttemptLifecycleState =
+  | 'idle'
+  | 'recording'
+  | 'recorded'
+  | 'submitting'
+  | 'scored'
+  | 'error'
+  | 'canceled';
 
 /**
  * Result type for the useLivePronunciationPractice hook
@@ -58,6 +72,7 @@ export type UseLivePronunciationPracticeResult = {
   // Submission state
   submitting: boolean;
   error: string | null;
+  attemptState: AttemptLifecycleState;
 
   // Attempt state
   attempts: AttemptScore[];
@@ -71,6 +86,7 @@ export type UseLivePronunciationPracticeResult = {
     referenceText: string,
     logParams?: LogAttemptParams | null
   ) => Promise<void>;
+  cancelAnalysis: () => void;
 };
 
 /**
@@ -78,7 +94,7 @@ export type UseLivePronunciationPracticeResult = {
  * 
  * Encapsulates:
  * - Microphone recording (via useMicrophoneRecorder)
- * - Audio submission to /api/pronunciation-assessment
+ * - Audio submission to /api/pronunciation/assessment
  * - Round-trip latency measurement
  * - Attempt history management
  * - Optional practice log integration
@@ -100,11 +116,13 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [attemptState, setAttemptState] = useState<AttemptLifecycleState>('idle');
   const [attempts, setAttempts] = useState<AttemptScore[]>([]);
   const [allRawAzureResponses, setAllRawAzureResponses] = useState<Map<string, any>>(new Map());
 
   // AbortController for canceling in-flight requests
   const abortControllerRef = useRef<AbortController | null>(null);
+  const activeRequestIdRef = useRef<string | null>(null);
 
   // Track recording start time for duration calculation (optional, for logging)
   const recordingStartTimeRef = useRef<number | null>(null);
@@ -116,9 +134,22 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
   useEffect(() => {
     if (isRecording) {
       setError(null);
+      setAttemptState('recording');
       recordingStartTimeRef.current = Date.now();
     }
   }, [isRecording]);
+
+  useEffect(() => {
+    if (!isRecording && audioBlob && (attemptState === 'idle' || attemptState === 'recording')) {
+      setAttemptState('recorded');
+    }
+  }, [audioBlob, isRecording, attemptState]);
+
+  useEffect(() => {
+    if (recorderError) {
+      setAttemptState('error');
+    }
+  }, [recorderError]);
 
   // Cleanup abort controller on unmount
   useEffect(() => {
@@ -126,6 +157,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
+      activeRequestIdRef.current = null;
     };
   }, []);
 
@@ -135,8 +167,22 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
   const resetRecording = useCallback(() => {
     resetRecorder();
     setError(null);
+    setAttemptState('idle');
     recordingStartTimeRef.current = null;
   }, [resetRecorder]);
+
+  const cancelAnalysis = useCallback(() => {
+    if (!abortControllerRef.current) {
+      return;
+    }
+
+    abortControllerRef.current.abort();
+    abortControllerRef.current = null;
+    activeRequestIdRef.current = null;
+    setSubmitting(false);
+    setError(null);
+    setAttemptState('canceled');
+  }, []);
 
   /**
    * Submits the recorded audio to the pronunciation assessment API.
@@ -154,6 +200,31 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     // Guard against missing audio blob
     if (!audioBlob) {
       setError('No recording available. Please record audio first.');
+      setAttemptState('error');
+      return;
+    }
+
+    setError(null);
+
+    // Client-side audio quality gate: block very short or effectively silent submissions.
+    try {
+      const quality = await analyzeAudioBlob(audioBlob);
+      if (quality.isTooShort) {
+        setError(
+          `Too short - try speaking the whole sentence (at least ${(MIN_DURATION_MS / 1000).toFixed(1)}s).`
+        );
+        setAttemptState('error');
+        return;
+      }
+      if (quality.isSilent) {
+        setError('Too quiet - move closer to the mic and try again.');
+        setAttemptState('error');
+        return;
+      }
+    } catch (qualityError) {
+      console.error('Audio quality analysis failed:', qualityError);
+      setError('Could not analyze this recording. Please record again and speak clearly.');
+      setAttemptState('error');
       return;
     }
 
@@ -161,13 +232,16 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
+    activeRequestIdRef.current = null;
 
     // Create new AbortController for this request
     const abortController = new AbortController();
+    const requestId = `req_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
     abortControllerRef.current = abortController;
+    activeRequestIdRef.current = requestId;
 
     setSubmitting(true);
-    setError(null);
+    setAttemptState('submitting');
 
     try {
       // Build FormData
@@ -181,7 +255,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       const startedAt = performance.now();
 
       // POST to API endpoint
-      const response = await fetch('/api/pronunciation-assessment', {
+      const response = await fetch('/api/pronunciation/assessment', {
         method: 'POST',
         body: formData,
         signal: abortController.signal,
@@ -192,7 +266,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       const latencyMs = Math.round(finishedAt - startedAt);
 
       // Check if request was aborted
-      if (abortController.signal.aborted) {
+      if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         return; // Don't update state if component unmounted
       }
 
@@ -224,7 +298,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       }
 
       // Check if request was aborted after JSON parsing
-      if (abortController.signal.aborted) {
+      if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         return;
       }
 
@@ -333,9 +407,10 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       // 2. User starts a new recording (startRecording clears previous state)
       // 3. Sentence changes (handled by parent component)
       recordingStartTimeRef.current = null;
+      setAttemptState('scored');
     } catch (err) {
       // Check if request was aborted
-      if (abortController.signal.aborted) {
+      if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         return; // Don't update state if component unmounted
       }
 
@@ -353,14 +428,16 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
           errorMessage = 'Network error: Could not connect to the server. Please check your connection and ensure the API route is configured.';
         } else if (err.message.includes('404')) {
-          errorMessage = 'API endpoint not found. Please ensure the server is running and the /api/pronunciation-assessment route is configured.';
+          errorMessage = 'API endpoint not found. Please ensure the server is running and the /api/pronunciation/assessment route is configured.';
         } else if (err.message.includes('500')) {
           errorMessage = 'Server error: The pronunciation assessment service encountered an error. Please try again.';
         }
         
         setError(errorMessage);
+        setAttemptState('error');
       } else {
         setError('Failed to assess pronunciation. Please try again.');
+        setAttemptState('error');
       }
 
       console.error('Error submitting pronunciation assessment:', err);
@@ -372,12 +449,13 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         });
       }
     } finally {
-      // Only update submitting state if request wasn't aborted
-      if (!abortController.signal.aborted) {
+      if (activeRequestIdRef.current === requestId) {
+        activeRequestIdRef.current = null;
+        abortControllerRef.current = null;
         setSubmitting(false);
       }
     }
-  }, [audioBlob, audioUrl, resetRecorder, logSentenceAttempt]);
+  }, [audioBlob, audioUrl, logSentenceAttempt]);
 
   // Derive current attempt (most recent)
   const currentAttempt = attempts.length > 0 ? attempts[0] : null;
@@ -401,6 +479,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     // Submission state
     submitting,
     error: combinedError,
+    attemptState,
 
     // Attempt state
     attempts,
@@ -410,6 +489,6 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
 
     // Actions
     submitAttempt,
+    cancelAnalysis,
   };
 }
-

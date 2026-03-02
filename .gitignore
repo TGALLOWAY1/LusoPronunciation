@@ -22,3 +22,7 @@ Thumbs.db
 node_modules/
 dist/
 *.tsbuildinfo
+
+# Speech debug / temp artifacts
+data/debug/
+data/temp-audio/

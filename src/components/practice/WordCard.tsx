@@ -20,6 +20,7 @@ interface WordCardProps {
   sessionId: string | null;
   status?: 'new' | 'learning' | 'review' | 'known';
   showTranslation?: boolean;
+  onToggleTranslation?: () => void;
   onKnowIt: (wordId: string) => void;
   onReviewLater: (wordId: string) => void;
 }
@@ -447,4 +448,3 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
 }
 
 export default memo(WordCard);
-

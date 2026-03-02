@@ -74,10 +74,12 @@ export default function LivePracticeSection({
     resetRecording,
     submitting,
     error,
+    attemptState,
     attempts,
     currentAttempt,
     rawAzureResponse,
     submitAttempt,
+    cancelAnalysis,
   } = useLivePronunciationPractice();
 
   // Notify parent of current attempt changes
@@ -158,13 +160,19 @@ export default function LivePracticeSection({
     showDifficultyBadge: false,
   }), [attempts, currentAttempt, sentence, sentenceAudio, wordAudios, enrichedWords]);
 
-  const canSubmit = Boolean(audioUrl) && !submitting && !isRecording;
+  const canSubmit = Boolean(audioUrl) && attemptState !== 'submitting' && attemptState !== 'recording';
   const recordingFileExists = Boolean(audioUrl);
 
-  // Determine current state
-  const isReadyToRecord = !isRecording && !recordingFileExists;
-  const isRecordingInProgress = isRecording;
-  const isReviewState = !isRecording && recordingFileExists;
+  // UI rendering is driven from the centralized attempt lifecycle state.
+  const isReadyToRecord = attemptState === 'idle' || (!recordingFileExists && attemptState !== 'recording');
+  const isRecordingInProgress = attemptState === 'recording' || isRecording;
+  const isReviewState =
+    recordingFileExists &&
+    (attemptState === 'recorded' ||
+      attemptState === 'submitting' ||
+      attemptState === 'scored' ||
+      attemptState === 'error' ||
+      attemptState === 'canceled');
 
   return (
     <div className="space-y-6">
@@ -271,6 +279,17 @@ export default function LivePracticeSection({
           )}
         </div>
 
+        {submitting && (
+          <div className="flex justify-center">
+            <button
+              onClick={cancelAnalysis}
+              className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              Cancel analysis
+            </button>
+          </div>
+        )}
+
         {error && (
           <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-800 dark:text-red-200">
             {error}
@@ -283,4 +302,3 @@ export default function LivePracticeSection({
     </div>
   );
 }
-

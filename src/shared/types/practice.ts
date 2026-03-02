@@ -3,8 +3,6 @@
  * Used by both frontend and backend
  */
 
-import type { User } from './user';
-
 /**
  * Content type union
  */
@@ -183,4 +181,3 @@ export interface WordPracticeAttempt {
   latencyMs?: number;
   selfRating?: 'know' | 'dont_know';
 }
-

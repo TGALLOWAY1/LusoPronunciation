@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface PremiumRecordButtonProps {
   isRecording: boolean;
@@ -151,4 +151,3 @@ export default function PremiumRecordButton({
     </div>
   );
 }
-

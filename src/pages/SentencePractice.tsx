@@ -5,7 +5,6 @@ import {
   loadAllSentences,
   loadAllCategories,
   filterSentencesByCategory,
-  filterSentencesByDifficulty,
 } from '@/lib/data';
 import { preloadAudioIndex } from '@/utils/audioRouting';
 import type { Sentence, Category, Difficulty, SentencePracticeAttempt } from '@/lib/types';
@@ -18,7 +17,6 @@ import ScoreHistory from '@/components/practice/ScoreHistory';
 import AttemptHistory from '@/components/practice/AttemptHistory';
 import SentenceFeedback from '@/components/practice/SentenceFeedback';
 import FilterControls from '@/components/practice/FilterControls';
-import NavigationButtons from '@/components/practice/NavigationButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import PageTransition from '@/components/common/PageTransition';
 

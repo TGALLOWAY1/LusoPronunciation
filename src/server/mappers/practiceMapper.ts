@@ -14,9 +14,6 @@ export function mapPracticeSessionDocToDto(
 ): PracticeSession {
   const startedAt = doc.startedAt.toISOString();
   const endedAt = doc.endedAt?.toISOString();
-  const durationSeconds = endedAt
-    ? Math.floor((doc.endedAt.getTime() - doc.startedAt.getTime()) / 1000)
-    : undefined;
 
   return {
     id: doc._id.toString(),
@@ -115,4 +112,3 @@ export function mapPronunciationAttemptDocsToDtos(
 ): PronunciationAttempt[] {
   return docs.map(mapPronunciationAttemptDocToDto);
 }
-

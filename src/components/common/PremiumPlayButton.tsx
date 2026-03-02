@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface PremiumPlayButtonProps {
   isPlaying?: boolean;
@@ -103,4 +103,3 @@ export default function PremiumPlayButton({
     </button>
   );
 }
-

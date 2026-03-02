@@ -120,52 +120,6 @@ export default function InteractiveWordStrip({
     }
   }, [externalActiveWordIndex, internalActiveWordIndex]);
 
-  const handleAudioClick = (
-    e: React.MouseEvent,
-    word: NormalizedWordFeedback,
-    type: 'native' | 'user'
-  ) => {
-    e.stopPropagation();
-    
-    if (!audioRef.current) return;
-
-    const wordIdx = word.index ?? parseInt(word.id, 10);
-    // Find the audio variant
-    const audioVariant = wordAudios?.find(
-      a => a.type === type && a.wordIndex === wordIdx
-    );
-    
-    // Guard against missing audio URL
-    if (!audioVariant || !audioVariant.url) {
-      return;
-    }
-
-    // Stop any currently playing audio
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-
-    // Notify parent
-    if (onWordStart) {
-      onWordStart(wordIdx, type);
-    } else {
-      // Fallback to internal state if no parent callback
-      setInternalActiveWordIndex(wordIdx);
-      setInternalActiveWordType(type);
-    }
-
-    // Play the audio
-    audioRef.current.src = audioVariant.url;
-    audioRef.current.play().catch((error) => {
-      console.error(`Failed to play ${type} audio for word "${word.text}":`, error);
-      if (onWordStop) {
-        onWordStop();
-      } else {
-        setInternalActiveWordIndex(null);
-        setInternalActiveWordType(null);
-      }
-    });
-  };
-
   const handleAudioEnded = () => {
     if (onWordStop) {
       onWordStop();
@@ -332,10 +286,6 @@ export default function InteractiveWordStrip({
       <div className="flex flex-wrap gap-2">
         {words.map((word) => {
           const wordIdx = word.index ?? parseInt(word.id, 10);
-          const nativeAudio = wordAudios?.find(
-            a => a.type === 'native' && a.wordIndex === wordIdx
-          );
-          
           const isNativePlaying = activeWordIndex === wordIdx && activeWordType === 'native';
           const isTtsPlaying = activeTtsWordId === word.wordId;
           const isPlaying = isNativePlaying || isTtsPlaying;
@@ -407,4 +357,3 @@ export default function InteractiveWordStrip({
     </div>
   );
 }
-

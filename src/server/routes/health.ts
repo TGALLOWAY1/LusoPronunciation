@@ -8,7 +8,7 @@ const router = Router();
  * 
  * Returns health status of the API and MongoDB connection
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   try {
     const mongoStatus = await getMongoStatus();
 
@@ -30,4 +30,3 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 export default router;
-

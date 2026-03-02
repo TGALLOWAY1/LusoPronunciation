@@ -7,6 +7,7 @@
     "dev:server": "tsx src/server/app.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "lint": "echo \"lint not configured\"",
     "generate:audio": "node scripts/generate_audio.js",
     "generate:word-practice": "tsx scripts/buildSyntheticWordPracticeData.ts",
     "analyze:words": "tsx scripts/analyzeWordsAndSentences.ts",
@@ -20,6 +21,7 @@
     "generate:sentences:stage0": "npm run generate:gemini:sentences && npm run generate:normalize:sentences",
     "dev:test-enrichment": "tsx scripts/devTestEnrichment.ts",
     "test": "vitest",
+    "test:phase01": "vitest src/server/routes/pronunciationAssessment.contract.test.ts src/lib/audioQuality.test.ts src/hooks/useLivePronunciationPractice.test.tsx",
     "test:watch": "vitest --watch"
   },
   "dependencies": {

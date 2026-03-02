@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserModel } from '../models/UserModel';
 import { mapUserDocToDto } from '../mappers/userMapper';
-import type { User } from '../../shared/types';
 
 const router = Router();
 
@@ -184,4 +183,3 @@ router.post('/login', async (req: Request, res: Response) => {
 });
 
 export default router;
-
