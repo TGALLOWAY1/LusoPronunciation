@@ -7,7 +7,8 @@ The app provides sentence and word practice, pronunciation scoring feedback, att
 ## Main Screen
 
 ### Sentence Practice
-![Sentence Practice](docs/assets/readme/sentence-practice.png)
+<img width="1289" height="1274" alt="image" src="https://github.com/user-attachments/assets/eb5fcdd1-ab7e-41ff-a015-dd4f973b0e6f" />
+
 
 ## Core Features
 
