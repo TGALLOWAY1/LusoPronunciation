@@ -98,6 +98,11 @@ import { writeFile, readFile, unlink } from 'fs/promises';
 import { existsSync } from 'fs';
 import { Router, Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import multer from 'multer';
+import {
+  isSpeechDebugEnabled,
+  speechLog,
+  writeSpeechDebugDump,
+} from '../utils/speechDebug';
 
 // Web API Request/Response types (available in Node.js 18+)
 // Using global types - no import needed
@@ -105,6 +110,30 @@ type WebRequest = Request;
 type WebResponse = Response;
 
 const execAsync = promisify(exec);
+
+function getStatusClass(statusCode: number): `${number}xx` {
+  return `${Math.floor(statusCode / 100)}xx`;
+}
+
+function buildSafeErrorPayload(statusCode: number, requestId: string): {
+  error: string;
+  message: string;
+  requestId: string;
+} {
+  if (statusCode === 502) {
+    return {
+      error: 'Speech service unavailable',
+      message: 'Pronunciation assessment is temporarily unavailable. Please try again.',
+      requestId,
+    };
+  }
+
+  return {
+    error: 'Internal server error',
+    message: 'Failed to assess pronunciation. Please try again.',
+    requestId,
+  };
+}
 
 /**
  * TODO: Audio Conversion Implementation Summary
@@ -187,11 +216,9 @@ async function convertWebmOpusToWav(webmBuffer: Buffer): Promise<Buffer> {
         ffmpegPath = ffmpegStatic as any;
       }
     }
-  } catch (err) {
+  } catch {
     // ffmpeg-static not installed, use system ffmpeg
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn('[Audio Conversion] ffmpeg-static not found, using system ffmpeg. Install it for better reliability.');
-    }
+    speechLog('warn', 'ffmpeg-static not found, using system ffmpeg');
   }
 
   // Create temporary files for input and output
@@ -235,9 +262,9 @@ async function convertWebmOpusToWav(webmBuffer: Buffer): Promise<Buffer> {
       if (existsSync(outputPath)) await unlink(outputPath).catch(() => {});
     } catch (cleanupErr) {
       // Ignore cleanup errors (non-critical)
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn('[Audio Conversion] Failed to clean up temp files:', cleanupErr);
-      }
+      speechLog('warn', 'Failed to clean up audio conversion temp files', {
+        error: cleanupErr instanceof Error ? cleanupErr.message : String(cleanupErr),
+      });
     }
   }
 }
@@ -270,6 +297,7 @@ interface AssessmentParams {
   sentenceId: string;
   referenceText: string;
   language: string;
+  requestId: string;
 }
 
 interface AssessmentResult {
@@ -280,34 +308,29 @@ interface AssessmentResult {
 async function processPronunciationAssessment(
   params: AssessmentParams
 ): Promise<AssessmentResult> {
-  const { audioBuffer, sentenceId, referenceText, language } = params;
+  const { audioBuffer, sentenceId, referenceText, language, requestId } = params;
 
   // Get Azure config
   const { key, region } = getAzureSpeechConfig();
 
   // Convert webm/opus to WAV format required by Azure
   // Azure Pronunciation Assessment REQUIRES PCM/WAV (16kHz, 16-bit, mono)
-  let wavBuffer: Buffer;
-  let contentType: string;
+  let wavBuffer: Buffer = audioBuffer;
+  let contentType = 'audio/webm; codecs=opus';
   
   try {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('[Pronunciation Assessment] Converting webm/opus to WAV...');
-      const conversionStart = Date.now();
-      wavBuffer = await convertWebmOpusToWav(audioBuffer);
-      const conversionTime = Date.now() - conversionStart;
-      console.log(`[Pronunciation Assessment] Conversion completed in ${conversionTime}ms, output size: ${wavBuffer.length} bytes`);
-    } else {
-      wavBuffer = await convertWebmOpusToWav(audioBuffer);
-    }
+    wavBuffer = await convertWebmOpusToWav(audioBuffer);
     contentType = 'audio/wav';
   } catch (conversionError) {
-    console.error('[Pronunciation Assessment] Audio conversion failed:', conversionError);
     // Fall back to original format (may not work, but better than failing completely)
-    wavBuffer = audioBuffer;
-    contentType = 'audio/webm; codecs=opus';
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn('[Pronunciation Assessment] WARNING: Using original webm/opus format. Azure may not return PronunciationAssessment fields.');
+    speechLog('warn', 'Audio conversion failed; using original upload format', { requestId });
+    if (isSpeechDebugEnabled()) {
+      speechLog(
+        'warn',
+        'Audio conversion failure details',
+        { requestId, error: conversionError instanceof Error ? conversionError.message : String(conversionError) },
+        { allowSensitive: true }
+      );
     }
   }
 
@@ -317,30 +340,11 @@ async function processPronunciationAssessment(
 
   // Build pronunciation assessment header
   const paHeader = buildPronunciationAssessmentHeader(referenceText);
-  
-  // Comprehensive debug logging (development only)
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('[Pronunciation Assessment] ===== REQUEST DEBUG =====');
-    console.log('[Pronunciation Assessment] Endpoint:', azureEndpoint.replace(key, '***'));
-    console.log('[Pronunciation Assessment] Reference text:', referenceText);
-    console.log('[Pronunciation Assessment] Language:', language);
-    console.log('[Pronunciation Assessment] Input audio size:', audioBuffer.length, 'bytes');
-    console.log('[Pronunciation Assessment] Output audio size:', wavBuffer.length, 'bytes');
-    console.log('[Pronunciation Assessment] Content-Type:', contentType);
-    console.log('[Pronunciation Assessment] PA header (base64):', paHeader);
-    // Decode to verify
-    try {
-      const decoded = Buffer.from(paHeader, 'base64').toString('utf-8');
-      console.log('[Pronunciation Assessment] PA header (decoded):', decoded);
-    } catch (e) {
-      console.warn('[Pronunciation Assessment] Failed to decode PA header:', e);
-    }
-    console.log('[Pronunciation Assessment] ========================');
-  }
 
   // Call Azure Speech API
   // Convert Buffer to Uint8Array for fetch compatibility
   const audioBody = new Uint8Array(wavBuffer);
+  const azureStartedAt = Date.now();
   
   const azureResponse = await fetch(azureEndpoint, {
     method: 'POST',
@@ -351,64 +355,37 @@ async function processPronunciationAssessment(
     },
     body: audioBody,
   });
+  const azureLatencyMs = Date.now() - azureStartedAt;
 
   // Handle non-200 responses
   if (!azureResponse.ok) {
     const errorText = await azureResponse.text();
-    console.error('Azure Speech API error:', {
-      status: azureResponse.status,
-      statusText: azureResponse.statusText,
-      body: errorText,
+    speechLog('error', 'Azure Speech API request failed', {
+      requestId,
+      statusClass: getStatusClass(azureResponse.status),
+      azureStatus: azureResponse.status,
+      azureLatencyMs,
     });
-
-    throw new Error(`Azure Speech API request failed: ${azureResponse.status} - ${errorText}`);
+    if (isSpeechDebugEnabled()) {
+      speechLog(
+        'error',
+        'Azure Speech API failure details',
+        {
+          requestId,
+          azureStatusText: azureResponse.statusText,
+          errorBody: errorText,
+        },
+        { allowSensitive: true }
+      );
+    }
+    throw new Error(`Azure Speech API request failed: ${azureResponse.status}`);
   }
 
   // Parse Azure response
   const rawAzure = await azureResponse.json();
-  
-  // Comprehensive debug logging and save response (development only)
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('[Pronunciation Assessment] ===== RESPONSE DEBUG =====');
-    console.log('[Pronunciation Assessment] Response status:', azureResponse.status);
-    console.log('[Pronunciation Assessment] Response structure analysis:');
-    console.log('  - Is array?', Array.isArray(rawAzure));
-    console.log('  - Root keys:', Object.keys(Array.isArray(rawAzure) ? rawAzure[0] || {} : rawAzure || {}));
-    console.log('  - RecognitionStatus:', (Array.isArray(rawAzure) ? rawAzure[0] : rawAzure)?.RecognitionStatus);
-    console.log('  - DisplayText:', (Array.isArray(rawAzure) ? rawAzure[0] : rawAzure)?.DisplayText);
-    
-    const nBest = (Array.isArray(rawAzure) ? rawAzure[0] : rawAzure)?.NBest;
-    if (nBest && nBest[0]) {
-      const firstNBest = nBest[0];
-      console.log('  - NBest[0] keys:', Object.keys(firstNBest));
-      console.log('  - Has PronunciationAssessment?', !!firstNBest.PronunciationAssessment);
-      console.log('  - Direct AccuracyScore?', firstNBest.AccuracyScore !== undefined);
-      console.log('  - Nested AccuracyScore?', firstNBest.PronunciationAssessment?.AccuracyScore !== undefined);
-      console.log('  - Words count:', firstNBest.Words?.length ?? 0);
-      if (firstNBest.Words && firstNBest.Words[0]) {
-        const firstWord = firstNBest.Words[0];
-        console.log('  - First word:', firstWord.Word);
-        console.log('  - First word has PronunciationAssessment?', !!firstWord.PronunciationAssessment);
-        console.log('  - First word direct AccuracyScore?', firstWord.AccuracyScore !== undefined);
-      }
-    }
-    
-    // Save full response to file for detailed inspection
-    const fs = await import('fs/promises');
-    const path = await import('path');
-    const debugDir = path.join(process.cwd(), 'data', 'debug');
+  if (isSpeechDebugEnabled()) {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename = `azure_pronunciation_live_sample_${timestamp}.json`;
-    const filepath = path.join(debugDir, filename);
-    try {
-      await fs.mkdir(debugDir, { recursive: true });
-      await fs.writeFile(filepath, JSON.stringify(rawAzure, null, 2));
-      console.log(`[Pronunciation Assessment] Saved full response to: ${filepath}`);
-    } catch (err) {
-      console.warn('[Pronunciation Assessment] Failed to save response:', err);
-    }
-    
-    console.log('[Pronunciation Assessment] ===========================');
+    await writeSpeechDebugDump(`azure_pronunciation_${requestId}_${timestamp}.json`, rawAzure);
   }
 
   // Map to AttemptScore
@@ -422,9 +399,23 @@ async function processPronunciationAssessment(
       undefined // audioUrl - client will attach the blob URL
     );
   } catch (mappingError) {
-    console.error('[Pronunciation Assessment] Error mapping Azure response:', mappingError);
-    console.error('[Pronunciation Assessment] Raw Azure response:', JSON.stringify(rawAzure, null, 2));
-    throw new Error(`Failed to map Azure response: ${mappingError instanceof Error ? mappingError.message : 'Unknown mapping error'}`);
+    speechLog('error', 'Failed to map Azure pronunciation response', {
+      requestId,
+      statusClass: '5xx',
+    });
+    if (isSpeechDebugEnabled()) {
+      speechLog(
+        'error',
+        'Azure pronunciation payload (mapping failure)',
+        {
+          requestId,
+          error: mappingError instanceof Error ? mappingError.message : String(mappingError),
+          rawAzure,
+        },
+        { allowSensitive: true }
+      );
+    }
+    throw new Error('Failed to map Azure response');
   }
 
   return {
@@ -454,6 +445,9 @@ async function processPronunciationAssessment(
 export async function handlePronunciationAssessment(
   request: WebRequest
 ): Promise<WebResponse> {
+  const requestId = request.headers.get('x-request-id') || randomUUID();
+  const startedAt = Date.now();
+
   try {
     // Parse multipart form data
     const formData = await request.formData();
@@ -466,28 +460,28 @@ export async function handlePronunciationAssessment(
     // Validate required fields
     if (!audioFile) {
       return new Response(
-        JSON.stringify({ error: 'Missing audio file' }),
+        JSON.stringify({ error: 'Missing audio file', requestId }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (!sentenceId || typeof sentenceId !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Missing or invalid sentenceId' }),
+        JSON.stringify({ error: 'Missing or invalid sentenceId', requestId }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (!referenceText || typeof referenceText !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Missing or invalid referenceText' }),
+        JSON.stringify({ error: 'Missing or invalid referenceText', requestId }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (!language || typeof language !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Missing or invalid language' }),
+        JSON.stringify({ error: 'Missing or invalid language', requestId }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -511,7 +505,7 @@ export async function handlePronunciationAssessment(
       }
     } catch (error) {
       return new Response(
-        JSON.stringify({ error: 'Failed to process audio file', details: error instanceof Error ? error.message : 'Unknown error' }),
+        JSON.stringify({ error: 'Failed to process audio file', requestId }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -522,6 +516,13 @@ export async function handlePronunciationAssessment(
       sentenceId,
       referenceText,
       language,
+      requestId,
+    });
+
+    speechLog('info', 'Pronunciation request completed', {
+      requestId,
+      statusClass: '2xx',
+      durationMs: Date.now() - startedAt,
     });
 
     // Return both raw and mapped response
@@ -529,24 +530,37 @@ export async function handlePronunciationAssessment(
       JSON.stringify(result),
       {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Request-Id': requestId,
+        },
       }
     );
   } catch (error) {
-    // Log server-side errors
-    console.error('Pronunciation assessment error:', error);
-
-    // Return safe error response
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     const statusCode = errorMessage.includes('Azure Speech API request failed') ? 502 : 500;
+    speechLog('error', 'Pronunciation request failed', {
+      requestId,
+      statusClass: getStatusClass(statusCode),
+      durationMs: Date.now() - startedAt,
+    });
+    if (isSpeechDebugEnabled()) {
+      speechLog(
+        'error',
+        'Pronunciation request failure details',
+        { requestId, stack: error instanceof Error ? error.stack : undefined },
+        { allowSensitive: true }
+      );
+    }
+
     return new Response(
-      JSON.stringify({
-        error: 'Internal server error',
-        message: errorMessage,
-      }),
+      JSON.stringify(buildSafeErrorPayload(statusCode, requestId)),
       {
         status: statusCode,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Request-Id': requestId,
+        },
       }
     );
   }
@@ -563,10 +577,13 @@ const upload = multer({
 export const pronunciationUploadMiddleware = upload.single('audio');
 
 export async function handlePronunciationAssessmentExpress(req: ExpressRequest, res: ExpressResponse): Promise<void> {
+  const requestId = (req.header('x-request-id') || randomUUID()).toString();
+  const startedAt = Date.now();
+
   try {
     // Validate required fields
     if (!req.file) {
-      res.status(400).json({ error: 'Missing audio file' });
+      res.status(400).json({ error: 'Missing audio file', requestId });
       return;
     }
 
@@ -575,17 +592,17 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
     const language = req.body.language;
 
     if (!sentenceId || typeof sentenceId !== 'string') {
-      res.status(400).json({ error: 'Missing or invalid sentenceId' });
+      res.status(400).json({ error: 'Missing or invalid sentenceId', requestId });
       return;
     }
 
     if (!referenceText || typeof referenceText !== 'string') {
-      res.status(400).json({ error: 'Missing or invalid referenceText' });
+      res.status(400).json({ error: 'Missing or invalid referenceText', requestId });
       return;
     }
 
     if (!language || typeof language !== 'string') {
-      res.status(400).json({ error: 'Missing or invalid language' });
+      res.status(400).json({ error: 'Missing or invalid language', requestId });
       return;
     }
 
@@ -595,17 +612,36 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
       sentenceId,
       referenceText,
       language,
+      requestId,
     });
 
+    speechLog('info', 'Pronunciation request completed', {
+      requestId,
+      statusClass: '2xx',
+      durationMs: Date.now() - startedAt,
+    });
+
+    res.setHeader('X-Request-Id', requestId);
     res.json(result);
   } catch (error) {
-    console.error('Pronunciation assessment error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     const statusCode = errorMessage.includes('Azure Speech API request failed') ? 502 : 500;
-    res.status(statusCode).json({
-      error: 'Internal server error',
-      message: errorMessage,
+    speechLog('error', 'Pronunciation request failed', {
+      requestId,
+      statusClass: getStatusClass(statusCode),
+      durationMs: Date.now() - startedAt,
     });
+    if (isSpeechDebugEnabled()) {
+      speechLog(
+        'error',
+        'Pronunciation request failure details',
+        { requestId, stack: error instanceof Error ? error.stack : undefined },
+        { allowSensitive: true }
+      );
+    }
+
+    res.setHeader('X-Request-Id', requestId);
+    res.status(statusCode).json(buildSafeErrorPayload(statusCode, requestId));
   }
 }
 
