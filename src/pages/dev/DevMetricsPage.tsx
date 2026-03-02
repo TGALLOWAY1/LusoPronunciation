@@ -34,6 +34,7 @@ export default function DevMetricsPage() {
     ).length;
     const convertFailures = attempts.filter((attempt) => {
       return (
+        attempt.flags.fallbackUsed ||
         attempt.error.errorClass === 'server_convert_failed' ||
         attempt.error.errorClass === 'server_convert_timeout'
       );

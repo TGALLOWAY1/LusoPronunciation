@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import { ERROR_CLASS } from '../../lib/errorTaxonomy';
 import { speechLog } from '../utils/speechDebug';
 
 const DEFAULT_ALLOWED_ORIGINS = [
@@ -154,6 +155,7 @@ export function pronunciationRateLimitMiddleware(req: Request, res: Response, ne
       error: 'Too many requests',
       message: 'You have reached the pronunciation request limit. Please wait and try again.',
       requestId,
+      errorClass: ERROR_CLASS.serverRateLimited,
     });
     return;
   }

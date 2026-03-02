@@ -11,6 +11,7 @@ import {
   appendAttemptTelemetryRecord,
   createAttemptTelemetryRecord,
 } from '@/lib/attemptMetrics';
+import { ERROR_CLASS, isErrorClass } from '@/lib/errorTaxonomy';
 
 /**
  * Response type from the pronunciation assessment API
@@ -47,6 +48,19 @@ function waitForNextPaint(): Promise<void> {
     }
     setTimeout(resolve, 0);
   });
+}
+
+function looksLikeMicPermissionError(value: string | null | undefined): boolean {
+  if (!value) {
+    return false;
+  }
+
+  const normalized = value.toLowerCase();
+  return (
+    normalized.includes('denied') ||
+    normalized.includes('permission') ||
+    normalized.includes('notallowederror')
+  );
 }
 
 async function blobToDataUrl(blob: Blob): Promise<string> {
@@ -228,14 +242,6 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     referenceText: string,
     logParams?: LogAttemptParams | null
   ): Promise<void> => {
-    // Guard against missing audio blob
-    if (!audioBlob) {
-      setError('No recording available. Please record audio first.');
-      setAttemptState('error');
-      return;
-    }
-
-    setError(null);
     const telemetryAttemptId = `attempt_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
     const attemptTelemetry = createAttemptTelemetryRecord(telemetryAttemptId);
     const submitStartedAt = nowMs();
@@ -250,6 +256,20 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       telemetryPersisted = true;
     };
 
+    // Guard against missing audio blob
+    if (!audioBlob) {
+      setError('No recording available. Please record audio first.');
+      setAttemptState('error');
+      attemptTelemetry.error.errorClass = looksLikeMicPermissionError(recorderError)
+        ? ERROR_CLASS.clientMicDenied
+        : ERROR_CLASS.serverUnknown;
+      attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
+      persistTelemetry();
+      return;
+    }
+
+    setError(null);
+
     // Client-side audio quality gate: block very short or effectively silent submissions.
     try {
       const quality = await analyzeAudioBlob(audioBlob);
@@ -258,7 +278,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
           `Too short - try speaking the whole sentence (at least ${(MIN_DURATION_MS / 1000).toFixed(1)}s).`
         );
         setAttemptState('error');
-        attemptTelemetry.error.errorClass = 'client_quality_gate';
+        attemptTelemetry.error.errorClass = ERROR_CLASS.clientQualityGate;
         attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
         persistTelemetry();
         return;
@@ -266,7 +286,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       if (quality.isSilent) {
         setError('Too quiet - move closer to the mic and try again.');
         setAttemptState('error');
-        attemptTelemetry.error.errorClass = 'client_quality_gate';
+        attemptTelemetry.error.errorClass = ERROR_CLASS.clientQualityGate;
         attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
         persistTelemetry();
         return;
@@ -275,7 +295,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       console.error('Audio quality analysis failed:', qualityError);
       setError('Could not analyze this recording. Please record again and speak clearly.');
       setAttemptState('error');
-      attemptTelemetry.error.errorClass = 'client_quality_gate';
+      attemptTelemetry.error.errorClass = ERROR_CLASS.clientQualityGate;
       attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
       persistTelemetry();
       return;
@@ -318,7 +338,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       // Check if request was aborted
       if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         attemptTelemetry.flags.canceled = true;
-        attemptTelemetry.error.errorClass = 'client_abort';
+        attemptTelemetry.error.errorClass = ERROR_CLASS.clientAbort;
         attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
         persistTelemetry();
         return; // Don't update state if component unmounted
@@ -335,7 +355,9 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
 
         attemptTelemetry.requestId = errorPayload.requestId ?? attemptTelemetry.requestId;
         attemptTelemetry.error.httpStatus = response.status;
-        attemptTelemetry.error.errorClass = errorPayload.errorClass ?? 'server_unknown';
+        attemptTelemetry.error.errorClass = isErrorClass(errorPayload.errorClass)
+          ? errorPayload.errorClass
+          : ERROR_CLASS.serverUnknown;
         throw new Error(errorPayload.message || errorPayload.error || `HTTP ${response.status}`);
       }
 
@@ -374,7 +396,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       // Check if request was aborted after JSON parsing
       if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         attemptTelemetry.flags.canceled = true;
-        attemptTelemetry.error.errorClass = 'client_abort';
+        attemptTelemetry.error.errorClass = ERROR_CLASS.clientAbort;
         attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
         persistTelemetry();
         return;
@@ -501,7 +523,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       // Check if request was aborted
       if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         attemptTelemetry.flags.canceled = true;
-        attemptTelemetry.error.errorClass = 'client_abort';
+        attemptTelemetry.error.errorClass = ERROR_CLASS.clientAbort;
         attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
         persistTelemetry();
         return; // Don't update state if component unmounted
@@ -520,7 +542,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         // Check for network errors
         if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
           errorMessage = 'Network error: Could not connect to the server. Please check your connection and ensure the API route is configured.';
-          attemptTelemetry.error.errorClass = 'network_error';
+          attemptTelemetry.error.errorClass = ERROR_CLASS.networkError;
         } else if (err.message.includes('404')) {
           errorMessage = 'API endpoint not found. Please ensure the server is running and the /api/pronunciation/assessment route is configured.';
         } else if (err.message.includes('500')) {
@@ -535,7 +557,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       }
 
       if (!attemptTelemetry.error.errorClass) {
-        attemptTelemetry.error.errorClass = 'server_unknown';
+        attemptTelemetry.error.errorClass = ERROR_CLASS.serverUnknown;
       }
       attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
       persistTelemetry();
@@ -555,7 +577,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         setSubmitting(false);
       }
     }
-  }, [audioBlob, audioUrl, logSentenceAttempt]);
+  }, [audioBlob, audioUrl, logSentenceAttempt, recorderError]);
 
   // Derive current attempt (most recent)
   const currentAttempt = attempts.length > 0 ? attempts[0] : null;

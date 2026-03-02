@@ -1,3 +1,5 @@
+import type { ErrorClass } from '@/lib/errorTaxonomy';
+
 export const ATTEMPT_METRICS_STORAGE_KEY = 'luso.metrics.attempts.v1';
 export const ATTEMPT_METRICS_MAX_RECORDS = 200;
 
@@ -23,7 +25,7 @@ export type AttemptTelemetryRecord = {
     canceled: boolean;
   };
   error: {
-    errorClass: string | null;
+    errorClass: ErrorClass | null;
     httpStatus: number | null;
   };
   createdAt: string;
