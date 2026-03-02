@@ -96,7 +96,12 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { writeFile, readFile, unlink } from 'fs/promises';
 import { existsSync } from 'fs';
-import { Router, Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import {
+  Router,
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+  NextFunction,
+} from 'express';
 import multer from 'multer';
 import {
   isSpeechDebugEnabled,
@@ -110,6 +115,24 @@ type WebRequest = Request;
 type WebResponse = Response;
 
 const execAsync = promisify(exec);
+
+const DEFAULT_MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+
+function getMaxPronunciationUploadBytes(): number {
+  const rawValue = process.env.SPEECH_MAX_UPLOAD_BYTES;
+  if (!rawValue) {
+    return DEFAULT_MAX_UPLOAD_BYTES;
+  }
+
+  const parsed = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_MAX_UPLOAD_BYTES;
+  }
+
+  return parsed;
+}
+
+const MAX_PRONUNCIATION_UPLOAD_BYTES = getMaxPronunciationUploadBytes();
 
 function getStatusClass(statusCode: number): `${number}xx` {
   return `${Math.floor(statusCode / 100)}xx`;
@@ -510,6 +533,17 @@ export async function handlePronunciationAssessment(
       );
     }
 
+    if (audioBuffer.length > MAX_PRONUNCIATION_UPLOAD_BYTES) {
+      return new Response(
+        JSON.stringify({
+          error: 'Audio file too large',
+          message: `Maximum upload size is ${Math.round(MAX_PRONUNCIATION_UPLOAD_BYTES / (1024 * 1024))}MB.`,
+          requestId,
+        }),
+        { status: 413, headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId } }
+      );
+    }
+
     // Process assessment
     const result = await processPronunciationAssessment({
       audioBuffer,
@@ -570,7 +604,7 @@ export async function handlePronunciationAssessment(
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
+    fileSize: MAX_PRONUNCIATION_UPLOAD_BYTES,
   },
 });
 
@@ -645,12 +679,37 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
   }
 }
 
+export function pronunciationUploadErrorHandler(
+  err: unknown,
+  req: ExpressRequest,
+  res: ExpressResponse,
+  next: NextFunction
+): void {
+  if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+    const requestId = (req.header('x-request-id') || randomUUID()).toString();
+    speechLog('warn', 'Pronunciation upload rejected: payload too large', {
+      requestId,
+      statusClass: '4xx',
+    });
+    res.setHeader('X-Request-Id', requestId);
+    res.status(413).json({
+      error: 'Audio file too large',
+      message: `Maximum upload size is ${Math.round(MAX_PRONUNCIATION_UPLOAD_BYTES / (1024 * 1024))}MB.`,
+      requestId,
+    });
+    return;
+  }
+
+  next(err);
+}
+
 /**
  * Canonical pronunciation route.
  * POST /api/pronunciation/assessment
  */
 const router = Router();
 router.post('/assessment', pronunciationUploadMiddleware, handlePronunciationAssessmentExpress);
+router.use(pronunciationUploadErrorHandler);
 
 /**
  * Temporary legacy alias route.
@@ -658,5 +717,6 @@ router.post('/assessment', pronunciationUploadMiddleware, handlePronunciationAss
  */
 export const legacyPronunciationAssessmentRouter = Router();
 legacyPronunciationAssessmentRouter.post('/', pronunciationUploadMiddleware, handlePronunciationAssessmentExpress);
+legacyPronunciationAssessmentRouter.use(pronunciationUploadErrorHandler);
 
 export default router;

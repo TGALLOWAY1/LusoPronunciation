@@ -1,5 +1,4 @@
 import express, { Express } from 'express';
-import cors from 'cors';
 import { config } from 'dotenv';
 import { connectMongo } from './db/mongoClient';
 import healthRouter from './routes/health';
@@ -8,6 +7,10 @@ import authRouter from './routes/auth';
 import practiceRouter from './routes/practice';
 import migrationRouter from './routes/migration';
 import flashcardsRouter from './routes/flashcards';
+import {
+  pronunciationCorsMiddleware,
+  pronunciationRateLimitMiddleware,
+} from './middleware/pronunciationSecurity';
 
 // Load environment variables
 config();
@@ -16,7 +19,6 @@ const app: Express = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Routes
@@ -25,8 +27,18 @@ app.use('/api/auth', authRouter);
 app.use('/api', practiceRouter);
 app.use('/api/migrate', migrationRouter);
 app.use('/api/flashcards', flashcardsRouter);
-app.use('/api/pronunciation', pronunciationRouter);
-app.use('/api/pronunciation-assessment', legacyPronunciationAssessmentRouter);
+app.use(
+  '/api/pronunciation',
+  pronunciationCorsMiddleware,
+  pronunciationRateLimitMiddleware,
+  pronunciationRouter
+);
+app.use(
+  '/api/pronunciation-assessment',
+  pronunciationCorsMiddleware,
+  pronunciationRateLimitMiddleware,
+  legacyPronunciationAssessmentRouter
+);
 
 // Root route
 app.get('/', (req, res) => {
