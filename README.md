@@ -1,27 +1,13 @@
 # LusoPronounce
 
-LusoPronounce is a Brazilian Portuguese pronunciation trainer focused on the high-frequency learning loop:
+LusoPronounce is a Brazilian Portuguese pronunciation trainer.
 
-`record -> submit -> feedback -> retry`
+The app provides sentence and word practice, pronunciation scoring feedback, attempt history, and coaching to help English speakers improve pronunciation with targeted repetition.
 
-The app provides sentence and word practice, scoring feedback, attempt history, and coaching to help English speakers improve pronunciation with targeted repetition.
-
-## Main Screens
-
-### Dashboard
-![Dashboard](docs/assets/readme/dashboard.png)
+## Main Screen
 
 ### Sentence Practice
 ![Sentence Practice](docs/assets/readme/sentence-practice.png)
-
-### Word Practice
-![Word Practice](docs/assets/readme/word-practice.png)
-
-### Review Queue
-![Review Queue](docs/assets/readme/review-queue.png)
-
-### Recent Sessions
-![Recent Sessions](docs/assets/readme/recent-sessions.png)
 
 ## Core Features
 
