@@ -79,6 +79,7 @@ export default function LivePracticeSection({
     currentAttempt,
     rawAzureResponse,
     submitAttempt,
+    cancelAnalysis,
   } = useLivePronunciationPractice();
 
   // Notify parent of current attempt changes
@@ -277,6 +278,17 @@ export default function LivePracticeSection({
             </>
           )}
         </div>
+
+        {submitting && (
+          <div className="flex justify-center">
+            <button
+              onClick={cancelAnalysis}
+              className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              Cancel analysis
+            </button>
+          </div>
+        )}
 
         {error && (
           <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-800 dark:text-red-200">

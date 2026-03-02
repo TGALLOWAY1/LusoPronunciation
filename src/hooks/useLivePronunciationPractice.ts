@@ -85,6 +85,7 @@ export type UseLivePronunciationPracticeResult = {
     referenceText: string,
     logParams?: LogAttemptParams | null
   ) => Promise<void>;
+  cancelAnalysis: () => void;
 };
 
 /**
@@ -120,6 +121,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
 
   // AbortController for canceling in-flight requests
   const abortControllerRef = useRef<AbortController | null>(null);
+  const activeRequestIdRef = useRef<string | null>(null);
 
   // Track recording start time for duration calculation (optional, for logging)
   const recordingStartTimeRef = useRef<number | null>(null);
@@ -154,6 +156,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
+      activeRequestIdRef.current = null;
     };
   }, []);
 
@@ -166,6 +169,19 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     setAttemptState('idle');
     recordingStartTimeRef.current = null;
   }, [resetRecorder]);
+
+  const cancelAnalysis = useCallback(() => {
+    if (!abortControllerRef.current) {
+      return;
+    }
+
+    abortControllerRef.current.abort();
+    abortControllerRef.current = null;
+    activeRequestIdRef.current = null;
+    setSubmitting(false);
+    setError(null);
+    setAttemptState('canceled');
+  }, []);
 
   /**
    * Submits the recorded audio to the pronunciation assessment API.
@@ -215,10 +231,13 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
+    activeRequestIdRef.current = null;
 
     // Create new AbortController for this request
     const abortController = new AbortController();
+    const requestId = `req_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
     abortControllerRef.current = abortController;
+    activeRequestIdRef.current = requestId;
 
     setSubmitting(true);
     setAttemptState('submitting');
@@ -246,7 +265,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       const latencyMs = Math.round(finishedAt - startedAt);
 
       // Check if request was aborted
-      if (abortController.signal.aborted) {
+      if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         return; // Don't update state if component unmounted
       }
 
@@ -278,7 +297,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       }
 
       // Check if request was aborted after JSON parsing
-      if (abortController.signal.aborted) {
+      if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         return;
       }
 
@@ -390,7 +409,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       setAttemptState('scored');
     } catch (err) {
       // Check if request was aborted
-      if (abortController.signal.aborted) {
+      if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
         return; // Don't update state if component unmounted
       }
 
@@ -429,12 +448,13 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         });
       }
     } finally {
-      // Only update submitting state if request wasn't aborted
-      if (!abortController.signal.aborted) {
+      if (activeRequestIdRef.current === requestId) {
+        activeRequestIdRef.current = null;
+        abortControllerRef.current = null;
         setSubmitting(false);
       }
     }
-  }, [audioBlob, audioUrl, resetRecorder, logSentenceAttempt]);
+  }, [audioBlob, audioUrl, logSentenceAttempt]);
 
   // Derive current attempt (most recent)
   const currentAttempt = attempts.length > 0 ? attempts[0] : null;
@@ -468,5 +488,6 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
 
     // Actions
     submitAttempt,
+    cancelAnalysis,
   };
 }
