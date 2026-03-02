@@ -76,6 +76,7 @@ function buildAssessmentResponse(attemptId: string): Response {
 describe('useLivePronunciationPractice lifecycle', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    window.localStorage.clear();
     vi.stubGlobal('fetch', vi.fn());
     vi.mocked(analyzeAudioBlob).mockResolvedValue({
       durationMs: 1400,

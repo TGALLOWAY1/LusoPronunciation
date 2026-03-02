@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 import { ProgressStoreProvider } from '../state/progressStore';
 import { SettingsStoreProvider } from '../state/settingsStore';
 import { PracticeLogStoreProvider } from '../state/practiceLogStore';
@@ -13,6 +14,8 @@ import RecentSessions from '../pages/RecentSessions';
 import AuthPage from '../pages/AuthPage';
 import PronunciationFixtures from '../pages/dev/pronunciation-fixtures';
 import DevAnalyticsPage from '../pages/dev/DevAnalyticsPage';
+import DevMetricsPage from '../pages/dev/DevMetricsPage';
+import { isAuthenticated, pingSpeechServiceHealth } from '@/api/auth';
 
 function AppRoutes() {
   return (
@@ -27,6 +30,7 @@ function AppRoutes() {
           <Route path="/sessions" element={<RecentSessions />} />
           <Route path="/dev/pronunciation-fixtures" element={<PronunciationFixtures />} />
           <Route path="/dev/analytics" element={<DevAnalyticsPage />} />
+          <Route path="/dev/metrics" element={<DevMetricsPage />} />
         </Routes>
       </AppLayout>
     </BrowserRouter>
@@ -34,6 +38,14 @@ function AppRoutes() {
 }
 
 function App() {
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      return;
+    }
+
+    void pingSpeechServiceHealth();
+  }, []);
+
   return (
     <ErrorBoundary>
       <SettingsStoreProvider>
@@ -49,4 +61,3 @@ function App() {
 }
 
 export default App;
-

@@ -22,6 +22,7 @@ const sectionLabels: Record<string, string> = {
   '/review': 'Review Queue',
   '/sessions': 'Recent Sessions',
   '/dev/analytics': 'Dev Analytics',
+  '/dev/metrics': 'Dev Metrics',
 };
 
 // Check if dev features should be enabled
@@ -95,17 +96,30 @@ export default function AppLayout({ children }: AppLayoutProps) {
             </Link>
             {/* Dev-only navigation items */}
             {isDevMode && (
-              <Link
-                to="/dev/analytics"
-                className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  location.pathname === '/dev/analytics' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <BarChart3 size={18} />
-                  Dev Analytics
-                </span>
-              </Link>
+              <>
+                <Link
+                  to="/dev/analytics"
+                  className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                    location.pathname === '/dev/analytics' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <BarChart3 size={18} />
+                    Dev Analytics
+                  </span>
+                </Link>
+                <Link
+                  to="/dev/metrics"
+                  className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                    location.pathname === '/dev/metrics' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <BarChart3 size={18} />
+                    Dev Metrics
+                  </span>
+                </Link>
+              </>
             )}
           </div>
         </nav>
@@ -129,4 +143,3 @@ export default function AppLayout({ children }: AppLayoutProps) {
     </div>
   );
 }
-

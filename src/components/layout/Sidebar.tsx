@@ -26,6 +26,7 @@ const navItems: NavItem[] = [
 // Dev-only navigation items
 const devNavItems: NavItem[] = [
   { path: '/dev/analytics', label: 'Dev Analytics', icon: BarChart3 },
+  { path: '/dev/metrics', label: 'Dev Metrics', icon: BarChart3 },
 ];
 
 // Check if dev features should be enabled
@@ -84,4 +85,3 @@ export default function Sidebar() {
     </aside>
   );
 }
-

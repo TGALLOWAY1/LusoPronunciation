@@ -88,14 +88,10 @@
  */
 
 import { randomUUID } from 'crypto';
+import { readFile, writeFile } from 'fs/promises';
+import { ERROR_CLASS, type ErrorClass } from '../../lib/errorTaxonomy';
 import { mapAzurePronunciationResultToAttemptScore } from '../../lib/pronunciationUtils';
 import type { AttemptScore } from '../../types/pronunciation';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import { tmpdir } from 'os';
-import { join } from 'path';
-import { writeFile, readFile, unlink } from 'fs/promises';
-import { existsSync } from 'fs';
 import {
   Router,
   Request as ExpressRequest,
@@ -108,13 +104,18 @@ import {
   speechLog,
   writeSpeechDebugDump,
 } from '../utils/speechDebug';
+import {
+  convertToWav,
+  ConvertFailedError,
+  ConvertTimeoutError,
+} from '../lib/audioConversion';
+import { createWorkspace, type TempWorkspace } from '../lib/tempWorkspace';
+import { measureAsync } from '../lib/timing';
 
 // Web API Request/Response types (available in Node.js 18+)
 // Using global types - no import needed
 type WebRequest = Request;
 type WebResponse = Response;
-
-const execAsync = promisify(exec);
 
 const DEFAULT_MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 
@@ -138,16 +139,40 @@ function getStatusClass(statusCode: number): `${number}xx` {
   return `${Math.floor(statusCode / 100)}xx`;
 }
 
-function buildSafeErrorPayload(statusCode: number, requestId: string): {
+function buildSafeErrorPayload(
+  statusCode: number,
+  requestId: string,
+  errorClass: ErrorClass
+): {
   error: string;
   message: string;
   requestId: string;
+  errorClass: ErrorClass;
 } {
   if (statusCode === 502) {
     return {
       error: 'Speech service unavailable',
       message: 'Pronunciation assessment is temporarily unavailable. Please try again.',
       requestId,
+      errorClass,
+    };
+  }
+
+  if (statusCode === 429) {
+    return {
+      error: 'Too many requests',
+      message: 'You have reached the pronunciation request limit. Please wait and try again.',
+      requestId,
+      errorClass,
+    };
+  }
+
+  if (statusCode === 413) {
+    return {
+      error: 'Audio file too large',
+      message: `Maximum upload size is ${Math.round(MAX_PRONUNCIATION_UPLOAD_BYTES / (1024 * 1024))}MB.`,
+      requestId,
+      errorClass,
     };
   }
 
@@ -155,6 +180,45 @@ function buildSafeErrorPayload(statusCode: number, requestId: string): {
     error: 'Internal server error',
     message: 'Failed to assess pronunciation. Please try again.',
     requestId,
+    errorClass,
+  };
+}
+
+class PronunciationRouteError extends Error {
+  readonly statusCode: number;
+  readonly errorClass: ErrorClass;
+
+  constructor(statusCode: number, errorClass: ErrorClass, message: string) {
+    super(message);
+    this.name = 'PronunciationRouteError';
+    this.statusCode = statusCode;
+    this.errorClass = errorClass;
+  }
+}
+
+function mapAzureStatusToErrorClass(statusCode: number): ErrorClass {
+  if (statusCode >= 400 && statusCode <= 499) {
+    return ERROR_CLASS.azure4xx;
+  }
+
+  if (statusCode >= 500) {
+    return ERROR_CLASS.azure5xx;
+  }
+
+  return ERROR_CLASS.serverUnknown;
+}
+
+function resolveErrorMetadata(error: unknown): { statusCode: number; errorClass: ErrorClass } {
+  if (error instanceof PronunciationRouteError) {
+    return {
+      statusCode: error.statusCode,
+      errorClass: error.errorClass,
+    };
+  }
+
+  return {
+    statusCode: 500,
+    errorClass: ERROR_CLASS.serverUnknown,
   };
 }
 
@@ -197,14 +261,18 @@ function getAzureSpeechConfig() {
   const region = process.env.AZURE_SPEECH_REGION;
 
   if (!key || typeof key !== 'string' || key.trim() === '') {
-    throw new Error(
+    throw new PronunciationRouteError(
+      503,
+      ERROR_CLASS.azureServiceUnavailable,
       'Missing required environment variable: AZURE_SPEECH_KEY\n' +
       'Please set AZURE_SPEECH_KEY in your server environment.'
     );
   }
 
   if (!region || typeof region !== 'string' || region.trim() === '') {
-    throw new Error(
+    throw new PronunciationRouteError(
+      503,
+      ERROR_CLASS.azureServiceUnavailable,
       'Missing required environment variable: AZURE_SPEECH_REGION\n' +
       'Please set AZURE_SPEECH_REGION in your server environment.\n' +
       'Example values: "eastus", "westus2", "brazilsouth"'
@@ -214,81 +282,82 @@ function getAzureSpeechConfig() {
   return { key, region };
 }
 
-/**
- * Converts webm/opus audio buffer to PCM/WAV format required by Azure.
- * 
- * @param webmBuffer - Input webm/opus audio buffer
- * @returns Promise resolving to WAV buffer (16kHz, 16-bit, mono PCM)
- * @throws Error if conversion fails
- */
-async function convertWebmOpusToWav(webmBuffer: Buffer): Promise<Buffer> {
-  // Use ffmpeg-static if available, otherwise fall back to system ffmpeg
-  let ffmpegPath = 'ffmpeg';
-  try {
-    // Try to use ffmpeg-static (bundled binary)
-    // Dynamic import to avoid requiring it at module load time
-    // @ts-ignore - ffmpeg-static is optional dependency, may not be installed
-    const ffmpegStatic = await import('ffmpeg-static').catch(() => null);
-    if (ffmpegStatic) {
-      // ffmpeg-static exports the path as default or as the module itself
-      if (typeof ffmpegStatic === 'string') {
-        ffmpegPath = ffmpegStatic;
-      } else if (typeof (ffmpegStatic as any).default === 'string') {
-        ffmpegPath = (ffmpegStatic as any).default;
-      } else if (typeof (ffmpegStatic as any) === 'string') {
-        ffmpegPath = ffmpegStatic as any;
-      }
-    }
-  } catch {
-    // ffmpeg-static not installed, use system ffmpeg
-    speechLog('warn', 'ffmpeg-static not found, using system ffmpeg');
+const DEFAULT_AUDIO_CONVERT_TIMEOUT_MS = 10_000;
+const DEFAULT_SPEECH_HEALTH_TIMEOUT_MS = 3_000;
+
+function getAudioConvertTimeoutMs(): number {
+  const rawValue = process.env.AUDIO_CONVERT_TIMEOUT_MS;
+  if (!rawValue) {
+    return DEFAULT_AUDIO_CONVERT_TIMEOUT_MS;
   }
 
-  // Create temporary files for input and output
-  const tempDir = tmpdir();
-  const inputPath = join(tempDir, `input_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.webm`);
-  const outputPath = join(tempDir, `output_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.wav`);
+  const parsed = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_AUDIO_CONVERT_TIMEOUT_MS;
+  }
+
+  return parsed;
+}
+
+function getSpeechHealthTimeoutMs(): number {
+  const rawValue = process.env.SPEECH_HEALTH_TIMEOUT_MS;
+  if (!rawValue) {
+    return DEFAULT_SPEECH_HEALTH_TIMEOUT_MS;
+  }
+
+  const parsed = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_SPEECH_HEALTH_TIMEOUT_MS;
+  }
+
+  return parsed;
+}
+
+async function pingAzureSpeechService(requestId: string): Promise<void> {
+  const { key, region } = getAzureSpeechConfig();
+  const endpoint = `https://${region}.api.cognitive.microsoft.com/sts/v1.0/issueToken`;
+  const timeoutMs = getSpeechHealthTimeoutMs();
+  const controller = new AbortController();
+  const timer = setTimeout(() => {
+    controller.abort();
+  }, timeoutMs);
 
   try {
-    // Write input buffer to temp file
-    await writeFile(inputPath, webmBuffer);
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': key,
+      },
+      signal: controller.signal,
+    });
 
-    // Convert using ffmpeg: webm/opus -> WAV (16kHz, 16-bit, mono PCM)
-    // -f wav: WAV format
-    // -ar 16000: 16kHz sample rate
-    // -ac 1: Mono channel
-    // -sample_fmt s16: 16-bit signed integer samples
-    // -y: Overwrite output file
-    // -loglevel error: Only show errors (reduce noise)
-    const { stderr } = await execAsync(
-      `"${ffmpegPath}" -i "${inputPath}" -f wav -ar 16000 -ac 1 -sample_fmt s16 -loglevel error -y "${outputPath}"`,
-      { timeout: 10000 } // 10 second timeout
-    );
-
-    // Read converted WAV file
-    if (!existsSync(outputPath)) {
-      throw new Error(`ffmpeg conversion failed: output file not created. stderr: ${stderr || 'none'}`);
+    if (!response.ok) {
+      throw new PronunciationRouteError(
+        503,
+        ERROR_CLASS.azureServiceUnavailable,
+        `Azure speech health probe failed with status ${response.status}.`
+      );
+    }
+  } catch (error) {
+    if (error instanceof PronunciationRouteError) {
+      throw error;
     }
 
-    const wavBuffer = await readFile(outputPath);
+    const message =
+      error instanceof Error && error.name === 'AbortError'
+        ? `Azure speech health probe timed out after ${timeoutMs}ms.`
+        : error instanceof Error
+          ? error.message
+          : 'Azure speech health probe failed.';
 
-    // Verify WAV header (basic sanity check)
-    if (wavBuffer.length < 12 || wavBuffer.toString('ascii', 0, 4) !== 'RIFF' || wavBuffer.toString('ascii', 8, 12) !== 'WAVE') {
-      throw new Error('Converted file does not appear to be a valid WAV file');
-    }
+    speechLog('warn', 'Azure speech health probe failed', {
+      requestId,
+      statusClass: '5xx',
+    });
 
-    return wavBuffer;
+    throw new PronunciationRouteError(503, ERROR_CLASS.azureServiceUnavailable, message);
   } finally {
-    // Clean up temp files
-    try {
-      if (existsSync(inputPath)) await unlink(inputPath).catch(() => {});
-      if (existsSync(outputPath)) await unlink(outputPath).catch(() => {});
-    } catch (cleanupErr) {
-      // Ignore cleanup errors (non-critical)
-      speechLog('warn', 'Failed to clean up audio conversion temp files', {
-        error: cleanupErr instanceof Error ? cleanupErr.message : String(cleanupErr),
-      });
-    }
+    clearTimeout(timer);
   }
 }
 
@@ -322,17 +391,40 @@ interface AssessmentParams {
   language: string;
   requestId: string;
   audioMimeType?: string;
+  workspace: TempWorkspace;
+  convertTimeoutMs: number;
+  registerConversionKill?: (kill: (() => void) | null) => void;
 }
 
 interface AssessmentResult {
   rawAzure: any;
   attemptScore: AttemptScore;
+  telemetry: {
+    requestId: string;
+    serverTimingsMs: {
+      convertMs: number;
+      azureMs: number;
+      normalizeMs: number;
+    };
+    fallbackUsed: boolean;
+  };
+  fallbackUsed: boolean;
 }
 
 async function processPronunciationAssessment(
   params: AssessmentParams
 ): Promise<AssessmentResult> {
-  const { audioBuffer, sentenceId, referenceText, language, requestId, audioMimeType } = params;
+  const {
+    audioBuffer,
+    sentenceId,
+    referenceText,
+    language,
+    requestId,
+    audioMimeType,
+    workspace,
+    convertTimeoutMs,
+    registerConversionKill,
+  } = params;
 
   // Get Azure config
   const { key, region } = getAzureSpeechConfig();
@@ -346,23 +438,63 @@ async function processPronunciationAssessment(
     normalizedMimeType.includes('audio/x-wav') ||
     normalizedMimeType.includes('audio/wave');
   let contentType = isWavInput ? 'audio/wav' : 'audio/webm; codecs=opus';
+  let fallbackUsed = false;
+  let conversionErrorClass: ErrorClass | null = null;
+  const serverTimingsMs = {
+    convertMs: 0,
+    azureMs: 0,
+    normalizeMs: 0,
+  };
 
   if (!isWavInput) {
-    try {
-      wavBuffer = await convertWebmOpusToWav(audioBuffer);
-      contentType = 'audio/wav';
-    } catch (conversionError) {
-      // Fall back to original format (may not work, but better than failing completely)
-      speechLog('warn', 'Audio conversion failed; using original upload format', { requestId });
-      if (isSpeechDebugEnabled()) {
-        speechLog(
-          'warn',
-          'Audio conversion failure details',
-          { requestId, error: conversionError instanceof Error ? conversionError.message : String(conversionError) },
-          { allowSensitive: true }
-        );
+    const conversionStage = await measureAsync('convert', async () => {
+      try {
+        await writeFile(workspace.inputPath, audioBuffer);
+        await convertToWav({
+          inputPath: workspace.inputPath,
+          outputPath: workspace.outputPath,
+          timeoutMs: convertTimeoutMs,
+          onKill: (kill) => registerConversionKill?.(kill),
+        });
+        wavBuffer = await readFile(workspace.outputPath);
+        if (
+          wavBuffer.length < 12 ||
+          wavBuffer.toString('ascii', 0, 4) !== 'RIFF' ||
+          wavBuffer.toString('ascii', 8, 12) !== 'WAVE'
+        ) {
+          throw new ConvertFailedError('Converted file does not appear to be a valid WAV file.');
+        }
+        contentType = 'audio/wav';
+      } catch (conversionError) {
+        // Fall back to original format (may not work, but better than failing completely)
+        fallbackUsed = true;
+        conversionErrorClass =
+          conversionError instanceof ConvertTimeoutError
+            ? ERROR_CLASS.serverConvertTimeout
+            : ERROR_CLASS.serverConvertFailed;
+        speechLog('warn', 'Audio conversion failed; using original upload format', {
+          requestId,
+          errorClass: conversionErrorClass,
+        });
+        if (isSpeechDebugEnabled()) {
+          const errorMessage =
+            conversionError instanceof ConvertTimeoutError
+              ? `timeout after ${conversionError.timeoutMs}ms`
+              : conversionError instanceof Error
+                ? conversionError.message
+                : String(conversionError);
+          speechLog(
+            'warn',
+            'Audio conversion failure details',
+            { requestId, error: errorMessage },
+            { allowSensitive: true }
+          );
+        }
+      } finally {
+        registerConversionKill?.(null);
       }
-    }
+    });
+    serverTimingsMs.convertMs = conversionStage.durationMs;
   } else {
     contentType = 'audio/wav';
   }
@@ -377,83 +509,98 @@ async function processPronunciationAssessment(
   // Call Azure Speech API
   // Convert Buffer to Uint8Array for fetch compatibility
   const audioBody = new Uint8Array(wavBuffer);
-  const azureStartedAt = Date.now();
-  
-  const azureResponse = await fetch(azureEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': contentType,
-      'Ocp-Apim-Subscription-Key': key,
-      'Pronunciation-Assessment': paHeader,
-    },
-    body: audioBody,
-  });
-  const azureLatencyMs = Date.now() - azureStartedAt;
-
-  // Handle non-200 responses
-  if (!azureResponse.ok) {
-    const errorText = await azureResponse.text();
-    speechLog('error', 'Azure Speech API request failed', {
-      requestId,
-      statusClass: getStatusClass(azureResponse.status),
-      azureStatus: azureResponse.status,
-      azureLatencyMs,
+  const azureStage = await measureAsync('azure', async () => {
+    const azureResponse = await fetch(azureEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': contentType,
+        'Ocp-Apim-Subscription-Key': key,
+        'Pronunciation-Assessment': paHeader,
+      },
+      body: audioBody,
     });
-    if (isSpeechDebugEnabled()) {
-      speechLog(
-        'error',
-        'Azure Speech API failure details',
-        {
-          requestId,
-          azureStatusText: azureResponse.statusText,
-          errorBody: errorText,
-        },
-        { allowSensitive: true }
+
+    if (!azureResponse.ok) {
+      const errorText = await azureResponse.text();
+      speechLog('error', 'Azure Speech API request failed', {
+        requestId,
+        statusClass: getStatusClass(azureResponse.status),
+        azureStatus: azureResponse.status,
+      });
+      if (isSpeechDebugEnabled()) {
+        speechLog(
+          'error',
+          'Azure Speech API failure details',
+          {
+            requestId,
+            azureStatusText: azureResponse.statusText,
+            errorBody: errorText,
+          },
+          { allowSensitive: true }
+        );
+      }
+      throw new PronunciationRouteError(
+        502,
+        mapAzureStatusToErrorClass(azureResponse.status),
+        `Azure Speech API request failed: ${azureResponse.status}`
       );
     }
-    throw new Error(`Azure Speech API request failed: ${azureResponse.status}`);
-  }
 
-  // Parse Azure response
-  const rawAzure = await azureResponse.json();
+    return azureResponse.json();
+  });
+  serverTimingsMs.azureMs = azureStage.durationMs;
+  const rawAzure = azureStage.value;
   if (isSpeechDebugEnabled()) {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     await writeSpeechDebugDump(`azure_pronunciation_${requestId}_${timestamp}.json`, rawAzure);
   }
 
   // Map to AttemptScore
-  const attemptId = randomUUID();
-  let attemptScore: AttemptScore;
-  try {
-    attemptScore = mapAzurePronunciationResultToAttemptScore(
-      rawAzure,
-      sentenceId,
-      attemptId,
-      undefined // audioUrl - client will attach the blob URL
-    );
-  } catch (mappingError) {
-    speechLog('error', 'Failed to map Azure pronunciation response', {
-      requestId,
-      statusClass: '5xx',
-    });
-    if (isSpeechDebugEnabled()) {
-      speechLog(
-        'error',
-        'Azure pronunciation payload (mapping failure)',
-        {
-          requestId,
-          error: mappingError instanceof Error ? mappingError.message : String(mappingError),
-          rawAzure,
-        },
-        { allowSensitive: true }
+  const normalizeStage = await measureAsync('normalize', async () => {
+    const attemptId = randomUUID();
+    try {
+      return mapAzurePronunciationResultToAttemptScore(
+        rawAzure,
+        sentenceId,
+        attemptId,
+        undefined // audioUrl - client will attach the blob URL
+      );
+    } catch (mappingError) {
+      speechLog('error', 'Failed to map Azure pronunciation response', {
+        requestId,
+        statusClass: '5xx',
+      });
+      if (isSpeechDebugEnabled()) {
+        speechLog(
+          'error',
+          'Azure pronunciation payload (mapping failure)',
+          {
+            requestId,
+            error: mappingError instanceof Error ? mappingError.message : String(mappingError),
+            rawAzure,
+          },
+          { allowSensitive: true }
+        );
+      }
+      throw new PronunciationRouteError(
+        500,
+        ERROR_CLASS.serverUnknown,
+        'Failed to map Azure response'
       );
     }
-    throw new Error('Failed to map Azure response');
-  }
+  });
+  serverTimingsMs.normalizeMs = normalizeStage.durationMs;
+  const attemptScore = normalizeStage.value;
 
   return {
     rawAzure,
     attemptScore,
+    telemetry: {
+      requestId,
+      serverTimingsMs,
+      fallbackUsed,
+    },
+    fallbackUsed,
   };
 }
 
@@ -480,6 +627,8 @@ export async function handlePronunciationAssessment(
 ): Promise<WebResponse> {
   const requestId = request.headers.get('x-request-id') || randomUUID();
   const startedAt = Date.now();
+  const workspace = await createWorkspace('pronunciation', requestId);
+  const convertTimeoutMs = getAudioConvertTimeoutMs();
 
   try {
     // Parse multipart form data
@@ -500,28 +649,48 @@ export async function handlePronunciationAssessment(
     // Validate required fields
     if (!audioFile) {
       return new Response(
-        JSON.stringify({ error: 'Missing audio file', requestId }),
+        JSON.stringify({
+          error: 'Missing audio file',
+          message: 'Audio file is required.',
+          requestId,
+          errorClass: ERROR_CLASS.serverUnknown,
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (!sentenceId || typeof sentenceId !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Missing or invalid sentenceId', requestId }),
+        JSON.stringify({
+          error: 'Missing or invalid sentenceId',
+          message: 'sentenceId is required.',
+          requestId,
+          errorClass: ERROR_CLASS.serverUnknown,
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (!referenceText || typeof referenceText !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Missing or invalid referenceText', requestId }),
+        JSON.stringify({
+          error: 'Missing or invalid referenceText',
+          message: 'referenceText is required.',
+          requestId,
+          errorClass: ERROR_CLASS.serverUnknown,
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (!language || typeof language !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Missing or invalid language', requestId }),
+        JSON.stringify({
+          error: 'Missing or invalid language',
+          message: 'language is required.',
+          requestId,
+          errorClass: ERROR_CLASS.serverUnknown,
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -545,18 +714,21 @@ export async function handlePronunciationAssessment(
       }
     } catch (error) {
       return new Response(
-        JSON.stringify({ error: 'Failed to process audio file', requestId }),
+        JSON.stringify({
+          error: 'Failed to process audio file',
+          message: 'Could not process uploaded audio.',
+          requestId,
+          errorClass: ERROR_CLASS.serverUnknown,
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (audioBuffer.length > MAX_PRONUNCIATION_UPLOAD_BYTES) {
       return new Response(
-        JSON.stringify({
-          error: 'Audio file too large',
-          message: `Maximum upload size is ${Math.round(MAX_PRONUNCIATION_UPLOAD_BYTES / (1024 * 1024))}MB.`,
-          requestId,
-        }),
+        JSON.stringify(
+          buildSafeErrorPayload(413, requestId, ERROR_CLASS.serverPayloadTooLarge)
+        ),
         { status: 413, headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId } }
       );
     }
@@ -569,6 +741,8 @@ export async function handlePronunciationAssessment(
       language,
       requestId,
       audioMimeType,
+      workspace,
+      convertTimeoutMs,
     });
 
     speechLog('info', 'Pronunciation request completed', {
@@ -589,8 +763,7 @@ export async function handlePronunciationAssessment(
       }
     );
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    const statusCode = errorMessage.includes('Azure Speech API request failed') ? 502 : 500;
+    const { statusCode, errorClass } = resolveErrorMetadata(error);
     speechLog('error', 'Pronunciation request failed', {
       requestId,
       statusClass: getStatusClass(statusCode),
@@ -606,7 +779,7 @@ export async function handlePronunciationAssessment(
     }
 
     return new Response(
-      JSON.stringify(buildSafeErrorPayload(statusCode, requestId)),
+      JSON.stringify(buildSafeErrorPayload(statusCode, requestId, errorClass)),
       {
         status: statusCode,
         headers: {
@@ -615,6 +788,8 @@ export async function handlePronunciationAssessment(
         },
       }
     );
+  } finally {
+    await workspace.cleanup();
   }
 }
 
@@ -631,11 +806,31 @@ export const pronunciationUploadMiddleware = upload.single('audio');
 export async function handlePronunciationAssessmentExpress(req: ExpressRequest, res: ExpressResponse): Promise<void> {
   const requestId = (req.header('x-request-id') || randomUUID()).toString();
   const startedAt = Date.now();
+  const workspace = await createWorkspace('pronunciation', requestId);
+  const convertTimeoutMs = getAudioConvertTimeoutMs();
+  let clientDisconnected = false;
+  let killActiveConversion: (() => void) | null = null;
+
+  const markClientDisconnected = (): void => {
+    if (res.writableEnded) {
+      return;
+    }
+    clientDisconnected = true;
+    killActiveConversion?.();
+  };
+
+  req.on('aborted', markClientDisconnected);
+  req.on('close', markClientDisconnected);
 
   try {
     // Validate required fields
     if (!req.file) {
-      res.status(400).json({ error: 'Missing audio file', requestId });
+      res.status(400).json({
+        error: 'Missing audio file',
+        message: 'Audio file is required.',
+        requestId,
+        errorClass: ERROR_CLASS.serverUnknown,
+      });
       return;
     }
 
@@ -644,17 +839,32 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
     const language = req.body.language;
 
     if (!sentenceId || typeof sentenceId !== 'string') {
-      res.status(400).json({ error: 'Missing or invalid sentenceId', requestId });
+      res.status(400).json({
+        error: 'Missing or invalid sentenceId',
+        message: 'sentenceId is required.',
+        requestId,
+        errorClass: ERROR_CLASS.serverUnknown,
+      });
       return;
     }
 
     if (!referenceText || typeof referenceText !== 'string') {
-      res.status(400).json({ error: 'Missing or invalid referenceText', requestId });
+      res.status(400).json({
+        error: 'Missing or invalid referenceText',
+        message: 'referenceText is required.',
+        requestId,
+        errorClass: ERROR_CLASS.serverUnknown,
+      });
       return;
     }
 
     if (!language || typeof language !== 'string') {
-      res.status(400).json({ error: 'Missing or invalid language', requestId });
+      res.status(400).json({
+        error: 'Missing or invalid language',
+        message: 'language is required.',
+        requestId,
+        errorClass: ERROR_CLASS.serverUnknown,
+      });
       return;
     }
 
@@ -666,6 +876,14 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
       language,
       requestId,
       audioMimeType: req.file.mimetype,
+      workspace,
+      convertTimeoutMs,
+      registerConversionKill: (kill) => {
+        killActiveConversion = kill;
+        if (kill && clientDisconnected) {
+          kill();
+        }
+      },
     });
 
     speechLog('info', 'Pronunciation request completed', {
@@ -674,11 +892,18 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
       durationMs: Date.now() - startedAt,
     });
 
+    if (clientDisconnected || res.writableEnded) {
+      return;
+    }
+
     res.setHeader('X-Request-Id', requestId);
     res.json(result);
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    const statusCode = errorMessage.includes('Azure Speech API request failed') ? 502 : 500;
+    if (clientDisconnected || res.writableEnded) {
+      return;
+    }
+
+    const { statusCode, errorClass } = resolveErrorMetadata(error);
     speechLog('error', 'Pronunciation request failed', {
       requestId,
       statusClass: getStatusClass(statusCode),
@@ -694,7 +919,12 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
     }
 
     res.setHeader('X-Request-Id', requestId);
-    res.status(statusCode).json(buildSafeErrorPayload(statusCode, requestId));
+    res.status(statusCode).json(buildSafeErrorPayload(statusCode, requestId, errorClass));
+  } finally {
+    req.off('aborted', markClientDisconnected);
+    req.off('close', markClientDisconnected);
+    killActiveConversion = null;
+    await workspace.cleanup();
   }
 }
 
@@ -711,11 +941,9 @@ export function pronunciationUploadErrorHandler(
       statusClass: '4xx',
     });
     res.setHeader('X-Request-Id', requestId);
-    res.status(413).json({
-      error: 'Audio file too large',
-      message: `Maximum upload size is ${Math.round(MAX_PRONUNCIATION_UPLOAD_BYTES / (1024 * 1024))}MB.`,
-      requestId,
-    });
+    res
+      .status(413)
+      .json(buildSafeErrorPayload(413, requestId, ERROR_CLASS.serverPayloadTooLarge));
     return;
   }
 
@@ -727,6 +955,32 @@ export function pronunciationUploadErrorHandler(
  * POST /api/pronunciation/assessment
  */
 const router = Router();
+router.get('/speech-health', async (req: ExpressRequest, res: ExpressResponse) => {
+  const requestId = (req.header('x-request-id') || randomUUID()).toString();
+  const checkedAt = new Date().toISOString();
+
+  try {
+    await pingAzureSpeechService(requestId);
+    res.setHeader('X-Request-Id', requestId);
+    res.json({
+      ok: true,
+      checkedAt,
+      requestId,
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Speech service health check failed.';
+    res.setHeader('X-Request-Id', requestId);
+    res.status(503).json({
+      ok: false,
+      checkedAt,
+      requestId,
+      error: 'Speech service unavailable',
+      message: errorMessage,
+      errorClass: ERROR_CLASS.azureServiceUnavailable,
+      httpStatus: 503,
+    });
+  }
+});
 router.post('/assessment', pronunciationUploadMiddleware, handlePronunciationAssessmentExpress);
 router.use(pronunciationUploadErrorHandler);
 

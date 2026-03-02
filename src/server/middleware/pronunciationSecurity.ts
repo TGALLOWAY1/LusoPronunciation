@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import { ERROR_CLASS } from '../../lib/errorTaxonomy';
 import { speechLog } from '../utils/speechDebug';
 
 const DEFAULT_ALLOWED_ORIGINS = [
@@ -105,7 +106,7 @@ export function pronunciationCorsMiddleware(req: Request, res: Response, next: N
     req.header('access-control-request-headers') || 'Content-Type, Authorization, X-Request-Id';
   res.setHeader('Access-Control-Allow-Origin', requestOrigin);
   res.setHeader('Vary', 'Origin');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', requestedHeaders);
   res.setHeader('Access-Control-Max-Age', '600');
 
@@ -154,6 +155,7 @@ export function pronunciationRateLimitMiddleware(req: Request, res: Response, ne
       error: 'Too many requests',
       message: 'You have reached the pronunciation request limit. Please wait and try again.',
       requestId,
+      errorClass: ERROR_CLASS.serverRateLimited,
     });
     return;
   }
