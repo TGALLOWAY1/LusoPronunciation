@@ -1,99 +1,78 @@
-**LusoPronounce** 
-A Personal Pronunciation Trainer For Brazilian Portuguese**
+# LusoPronounce
 
-LusoPronounce is a lightweight, offline-friendly Portuguese pronunciation training app designed for a single user (me). It generates sentences, words, and pronunciation tips; stores local scoring history; and provides a simple UI for practicing speaking, getting feedback, and improving over time through spaced repetition.
-This app focuses on practical, real-world Portuguese (Brazilian Portuguese optional), not academic linguistics — and is optimized for daily self-driven practice.
+LusoPronounce is a Brazilian Portuguese pronunciation trainer focused on the high-frequency learning loop:
 
-📌 Why This Project Exists
-I want to become conversationally fluent in Portuguese with a tool optimized specifically for the pronunciation problems English speakers face. Generic apps don't give real feedback — LusoPronounce does.
+`record -> submit -> feedback -> retry`
 
-<img width="1289" height="1274" alt="image" src="https://github.com/user-attachments/assets/1e215439-95df-4c7f-8685-a114a2a772ca" />
+The app provides sentence and word practice, scoring feedback, attempt history, and coaching to help English speakers improve pronunciation with targeted repetition.
 
+## Main Screens
 
-✨ Features (MVP)
-🎤 Pronunciation Practice
-Listen to native-quality audio for each sentence or word
-Record your own attempt
-Automatically score pronunciation (1–5 scale)
-Show phoneme-level tips for improvement
+### Dashboard
+![Dashboard](docs/assets/readme/dashboard.png)
 
-📚 Content
-Static, pre-generated dataset including:
-Sentences (English + Portuguese)
-Vocabulary words
-Common mispronunciations for English speakers
-Pronunciation tips
-Male & female audio variations (optional)
+### Sentence Practice
+![Sentence Practice](docs/assets/readme/sentence-practice.png)
 
-🎯 Difficulty System
-Each sentence/word is tagged with:
-Difficulty 1–5
-Category (food, travel, family/friends, etc.)
-Phoneme targets (e.g., “ão”, “lh”, “rr”)
+### Word Practice
+![Word Practice](docs/assets/readme/word-practice.png)
 
-📈 Progress Tracking
-Local progress log
-Visual progress bar for each category
-Spaced repetition algorithm automatically surfaces weak items\
+### Review Queue
+![Review Queue](docs/assets/readme/review-queue.png)
 
-🗂️ Category-Based Learning (V2 – Planned)
-Choose themed categories (food, travel, family, friends)
-Multiple-choice testing mode
-Progress per category (XP + mastery %)
-Adaptive review based on past mistakes
+### Recent Sessions
+![Recent Sessions](docs/assets/readme/recent-sessions.png)
 
-🧱 Architecture Overview
-Front End
-Lightweight web UI
-Sentence review view
-Word drill view
-Progress dashboard
-Category selection view (V2)
+## Core Features
 
-🧪 Data Generation Plan
-All source data is static but can be regenerated via a script:
-Sentence generation (pattern-based + curated)
-Word lists by theme
-Pronunciation tips (English-speaker-specific)
-Audio files using multiple TTS voices
-Difficulty assignments using heuristics:
-- length
-- phoneme complexity
-- stress patterns
+- Live recording and pronunciation assessment for sentence practice
+- Word-by-word and phrase-level scoring feedback
+- Client quality gate for short/silent recordings
+- Cancel/retry handling for in-flight assessment
+- Coaching and minimal-pair drill suggestions after scored attempts
+- Local attempt history, trend views, and recent session summaries
 
-🔄 Spaced Repetition (Simplified)
-A simple algorithm determines what to review:
-Items with low scores surface more often
-Items with long gaps since last practice appear again
-Category decks shuffle but prefer weak words
+## Tech Stack
 
-🖥️ Pages
-1. Home / Dashboard
-Quick practice button
-Category overview with progress bars
-Daily goal (XP or attempts)
-2. Sentence Practice Page
-Audio playback
-Recording + score
-Tip highlights on mistakes
-3. Word Drill Page
-Single word view
-Fast repetition loop
-Quick tip for tough phonemes
-4. Category Learning Page
-V2: Multiple-choice mode
-Spaced repetition queue
-Category progress
-5. Settings
-Voice selection (male/female/both)
-Accent: Brazilian / European
-Difficulty range
+- React + TypeScript + Vite
+- Express server for pronunciation endpoints
+- Vitest for unit/contract testing
+- Playwright for deterministic browser e2e coverage
 
+## Local Development
 
-🛠️ Tech Stack
-Vanilla JS / TypeScript (or lightweight framework)
-Local JSON datastore
-Browser speech capture
-Azure Speech / Web Speech API for scoring
-Static hosting (e.g., Vercel)
+### 1. Install dependencies
 
+```bash
+npm install
+```
+
+### 2. Start the app
+
+```bash
+npm run dev
+```
+
+### 3. (Optional) Start backend API server
+
+```bash
+npm run dev:server
+```
+
+## Testing
+
+### Targeted Phase 0-4 verification
+
+```bash
+npm run test:phase04
+npm run e2e:phase04
+npm run verify:phase04
+```
+
+### Capture fresh README screenshots
+
+```bash
+npm run screenshots:readme
+```
+
+This writes PNGs to `docs/assets/readme/`.
