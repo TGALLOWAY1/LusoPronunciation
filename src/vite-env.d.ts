@@ -11,3 +11,10 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
+interface Window {
+  __E2E__?: {
+    enabled?: boolean;
+    mediaScenario?: 'success' | 'silent' | 'short' | 'micDenied';
+    mediaStopDelayMs?: number;
+  };
+}
