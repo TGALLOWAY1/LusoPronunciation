@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 import { ProgressStoreProvider } from '../state/progressStore';
 import { SettingsStoreProvider } from '../state/settingsStore';
 import { PracticeLogStoreProvider } from '../state/practiceLogStore';
@@ -14,6 +15,7 @@ import AuthPage from '../pages/AuthPage';
 import PronunciationFixtures from '../pages/dev/pronunciation-fixtures';
 import DevAnalyticsPage from '../pages/dev/DevAnalyticsPage';
 import DevMetricsPage from '../pages/dev/DevMetricsPage';
+import { isAuthenticated, pingSpeechServiceHealth } from '@/api/auth';
 
 function AppRoutes() {
   return (
@@ -36,6 +38,14 @@ function AppRoutes() {
 }
 
 function App() {
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      return;
+    }
+
+    void pingSpeechServiceHealth();
+  }, []);
+
   return (
     <ErrorBoundary>
       <SettingsStoreProvider>

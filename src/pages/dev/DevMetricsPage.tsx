@@ -6,6 +6,10 @@ import {
   readAttemptTelemetryRecords,
   type AttemptTelemetryRecord,
 } from '@/lib/attemptMetrics';
+import {
+  clearSpeechServiceHealthRecord,
+  readSpeechServiceHealthRecord,
+} from '@/lib/speechServiceHealth';
 
 function formatMs(value: number | null): string {
   if (value === null || Number.isNaN(value)) {
@@ -25,6 +29,7 @@ export default function DevMetricsPage() {
   const [attempts, setAttempts] = useState<AttemptTelemetryRecord[]>(() =>
     readAttemptTelemetryRecords()
   );
+  const [speechHealth, setSpeechHealth] = useState(() => readSpeechServiceHealthRecord());
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   const summary = useMemo(() => {
@@ -59,7 +64,9 @@ export default function DevMetricsPage() {
 
   const handleClear = (): void => {
     clearAttemptTelemetryRecords();
+    clearSpeechServiceHealthRecord();
     setAttempts([]);
+    setSpeechHealth(null);
     setCopyStatus('idle');
   };
 
@@ -116,6 +123,28 @@ export default function DevMetricsPage() {
       )}
 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="card">
+          <p className="text-sm text-gray-600 dark:text-gray-400">Speech Service</p>
+          <p
+            className={`text-2xl font-bold ${
+              speechHealth?.ok
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : 'text-red-600 dark:text-red-400'
+            }`}
+          >
+            {speechHealth ? (speechHealth.ok ? 'Online' : 'Offline') : 'Unknown'}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            {speechHealth
+              ? `Checked ${new Date(speechHealth.checkedAt).toLocaleString()}`
+              : 'No login health check recorded yet'}
+          </p>
+          {!speechHealth?.ok && speechHealth?.errorClass && (
+            <p className="text-xs text-red-700 dark:text-red-300 mt-1">
+              errorClass: {speechHealth.errorClass}
+            </p>
+          )}
+        </div>
         <div className="card">
           <p className="text-sm text-gray-600 dark:text-gray-400">Total Attempts</p>
           <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{summary.totalAttempts}</p>

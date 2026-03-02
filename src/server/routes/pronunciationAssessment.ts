@@ -261,14 +261,18 @@ function getAzureSpeechConfig() {
   const region = process.env.AZURE_SPEECH_REGION;
 
   if (!key || typeof key !== 'string' || key.trim() === '') {
-    throw new Error(
+    throw new PronunciationRouteError(
+      503,
+      ERROR_CLASS.azureServiceUnavailable,
       'Missing required environment variable: AZURE_SPEECH_KEY\n' +
       'Please set AZURE_SPEECH_KEY in your server environment.'
     );
   }
 
   if (!region || typeof region !== 'string' || region.trim() === '') {
-    throw new Error(
+    throw new PronunciationRouteError(
+      503,
+      ERROR_CLASS.azureServiceUnavailable,
       'Missing required environment variable: AZURE_SPEECH_REGION\n' +
       'Please set AZURE_SPEECH_REGION in your server environment.\n' +
       'Example values: "eastus", "westus2", "brazilsouth"'
@@ -279,6 +283,7 @@ function getAzureSpeechConfig() {
 }
 
 const DEFAULT_AUDIO_CONVERT_TIMEOUT_MS = 10_000;
+const DEFAULT_SPEECH_HEALTH_TIMEOUT_MS = 3_000;
 
 function getAudioConvertTimeoutMs(): number {
   const rawValue = process.env.AUDIO_CONVERT_TIMEOUT_MS;
@@ -292,6 +297,68 @@ function getAudioConvertTimeoutMs(): number {
   }
 
   return parsed;
+}
+
+function getSpeechHealthTimeoutMs(): number {
+  const rawValue = process.env.SPEECH_HEALTH_TIMEOUT_MS;
+  if (!rawValue) {
+    return DEFAULT_SPEECH_HEALTH_TIMEOUT_MS;
+  }
+
+  const parsed = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_SPEECH_HEALTH_TIMEOUT_MS;
+  }
+
+  return parsed;
+}
+
+async function pingAzureSpeechService(requestId: string): Promise<void> {
+  const { key, region } = getAzureSpeechConfig();
+  const endpoint = `https://${region}.api.cognitive.microsoft.com/sts/v1.0/issueToken`;
+  const timeoutMs = getSpeechHealthTimeoutMs();
+  const controller = new AbortController();
+  const timer = setTimeout(() => {
+    controller.abort();
+  }, timeoutMs);
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': key,
+      },
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new PronunciationRouteError(
+        503,
+        ERROR_CLASS.azureServiceUnavailable,
+        `Azure speech health probe failed with status ${response.status}.`
+      );
+    }
+  } catch (error) {
+    if (error instanceof PronunciationRouteError) {
+      throw error;
+    }
+
+    const message =
+      error instanceof Error && error.name === 'AbortError'
+        ? `Azure speech health probe timed out after ${timeoutMs}ms.`
+        : error instanceof Error
+          ? error.message
+          : 'Azure speech health probe failed.';
+
+    speechLog('warn', 'Azure speech health probe failed', {
+      requestId,
+      statusClass: '5xx',
+    });
+
+    throw new PronunciationRouteError(503, ERROR_CLASS.azureServiceUnavailable, message);
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 /**
@@ -888,6 +955,32 @@ export function pronunciationUploadErrorHandler(
  * POST /api/pronunciation/assessment
  */
 const router = Router();
+router.get('/speech-health', async (req: ExpressRequest, res: ExpressResponse) => {
+  const requestId = (req.header('x-request-id') || randomUUID()).toString();
+  const checkedAt = new Date().toISOString();
+
+  try {
+    await pingAzureSpeechService(requestId);
+    res.setHeader('X-Request-Id', requestId);
+    res.json({
+      ok: true,
+      checkedAt,
+      requestId,
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Speech service health check failed.';
+    res.setHeader('X-Request-Id', requestId);
+    res.status(503).json({
+      ok: false,
+      checkedAt,
+      requestId,
+      error: 'Speech service unavailable',
+      message: errorMessage,
+      errorClass: ERROR_CLASS.azureServiceUnavailable,
+      httpStatus: 503,
+    });
+  }
+});
 router.post('/assessment', pronunciationUploadMiddleware, handlePronunciationAssessmentExpress);
 router.use(pronunciationUploadErrorHandler);
 

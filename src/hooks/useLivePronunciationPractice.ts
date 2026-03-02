@@ -12,6 +12,7 @@ import {
   createAttemptTelemetryRecord,
 } from '@/lib/attemptMetrics';
 import { ERROR_CLASS, isErrorClass } from '@/lib/errorTaxonomy';
+import { writeSpeechServiceHealthRecord } from '@/lib/speechServiceHealth';
 
 /**
  * Response type from the pronunciation assessment API
@@ -358,6 +359,20 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         attemptTelemetry.error.errorClass = isErrorClass(errorPayload.errorClass)
           ? errorPayload.errorClass
           : ERROR_CLASS.serverUnknown;
+        if (
+          attemptTelemetry.error.errorClass === ERROR_CLASS.azureServiceUnavailable ||
+          attemptTelemetry.error.errorClass === ERROR_CLASS.azure4xx ||
+          attemptTelemetry.error.errorClass === ERROR_CLASS.azure5xx
+        ) {
+          writeSpeechServiceHealthRecord({
+            checkedAt: new Date().toISOString(),
+            ok: false,
+            requestId: attemptTelemetry.requestId,
+            errorClass: attemptTelemetry.error.errorClass,
+            httpStatus: response.status,
+            message: errorPayload.message || errorPayload.error || null,
+          });
+        }
         throw new Error(errorPayload.message || errorPayload.error || `HTTP ${response.status}`);
       }
 
@@ -392,6 +407,14 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         azureMs: telemetry?.serverTimingsMs?.azureMs ?? null,
         normalizeMs: telemetry?.serverTimingsMs?.normalizeMs ?? null,
       };
+      writeSpeechServiceHealthRecord({
+        checkedAt: new Date().toISOString(),
+        ok: true,
+        requestId: attemptTelemetry.requestId,
+        errorClass: null,
+        httpStatus: 200,
+        message: null,
+      });
 
       // Check if request was aborted after JSON parsing
       if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {

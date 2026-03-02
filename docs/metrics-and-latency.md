@@ -38,6 +38,7 @@ Stable `errorClass` values:
 - `client_quality_gate`
 - `client_abort`
 - `network_error`
+- `azure_service_unavailable`
 - `server_rate_limited`
 - `server_payload_too_large`
 - `server_convert_failed`
@@ -48,6 +49,7 @@ Stable `errorClass` values:
 
 ## `/dev/metrics` Usage
 Navigate to `/dev/metrics` (dev tools section) to inspect:
+- Speech service online/offline status from latest login-time ping
 - Total attempts
 - Success rate
 - p50 and p95 time-to-feedback
@@ -59,6 +61,11 @@ Available actions:
 - `Copy JSON`: copies current telemetry payload to clipboard
 - `Clear Metrics`: clears `luso.metrics.attempts.v1`
 
+Login behavior:
+- After a successful login, the client sends `GET /api/pronunciation/speech-health`.
+- This route performs a fast Azure speech token probe.
+- Failures are recorded with `errorClass: azure_service_unavailable`.
+
 Percentile behavior:
 - p50 uses median
 - p95 uses sorted index `ceil(0.95 * n) - 1`
@@ -67,3 +74,6 @@ Percentile behavior:
 - `AUDIO_CONVERT_TIMEOUT_MS`
   - Controls ffmpeg conversion timeout in milliseconds.
   - Defaults to `10000` if unset or invalid.
+- `SPEECH_HEALTH_TIMEOUT_MS`
+  - Controls login-time speech health probe timeout in milliseconds.
+  - Defaults to `3000` if unset or invalid.

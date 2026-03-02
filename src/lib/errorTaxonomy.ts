@@ -3,6 +3,7 @@ export const ERROR_CLASS = {
   clientQualityGate: 'client_quality_gate',
   clientAbort: 'client_abort',
   networkError: 'network_error',
+  azureServiceUnavailable: 'azure_service_unavailable',
   serverRateLimited: 'server_rate_limited',
   serverPayloadTooLarge: 'server_payload_too_large',
   serverConvertFailed: 'server_convert_failed',

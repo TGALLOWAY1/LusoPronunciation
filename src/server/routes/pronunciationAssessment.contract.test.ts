@@ -4,6 +4,7 @@ import pronunciationRouter, {
   handlePronunciationAssessmentExpress,
   legacyPronunciationAssessmentRouter,
 } from './pronunciationAssessment';
+import { ERROR_CLASS } from '../../lib/errorTaxonomy';
 
 const mockAzureResponse = {
   RecognitionStatus: 'Success',
@@ -48,6 +49,12 @@ function createRequest(): ExpressRequest {
     header: vi.fn().mockReturnValue(undefined),
     on: vi.fn(),
     off: vi.fn(),
+  } as unknown as ExpressRequest;
+}
+
+function createHealthRequest(): ExpressRequest {
+  return {
+    header: vi.fn().mockReturnValue(undefined),
   } as unknown as ExpressRequest;
 }
 
@@ -135,5 +142,59 @@ describe('pronunciation assessment endpoint contract', () => {
     const canonicalPostHandler = canonicalRouteLayer.route.stack[1].handle;
     const aliasPostHandler = aliasRouteLayer.route.stack[1].handle;
     expect(aliasPostHandler).toBe(canonicalPostHandler);
+  });
+
+  it('GET /api/pronunciation/speech-health returns ok when speech service is reachable', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response('token', {
+        status: 200,
+        headers: { 'Content-Type': 'text/plain' },
+      })
+    );
+
+    const routeLayer = (pronunciationRouter as any).stack.find(
+      (layer: any) => layer.route?.path === '/speech-health'
+    );
+    const handler = routeLayer.route.stack[0].handle as (
+      req: ExpressRequest,
+      res: ExpressResponse
+    ) => Promise<void>;
+
+    const req = createHealthRequest();
+    const res = createResponse();
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual(
+      expect.objectContaining({
+        ok: true,
+        checkedAt: expect.any(String),
+        requestId: expect.any(String),
+      })
+    );
+  });
+
+  it('GET /api/pronunciation/speech-health returns special error when speech service is unavailable', async () => {
+    vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new Error('connect ECONNREFUSED'));
+
+    const routeLayer = (pronunciationRouter as any).stack.find(
+      (layer: any) => layer.route?.path === '/speech-health'
+    );
+    const handler = routeLayer.route.stack[0].handle as (
+      req: ExpressRequest,
+      res: ExpressResponse
+    ) => Promise<void>;
+
+    const req = createHealthRequest();
+    const res = createResponse();
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(503);
+    expect(res.body).toEqual(
+      expect.objectContaining({
+        ok: false,
+        errorClass: ERROR_CLASS.azureServiceUnavailable,
+      })
+    );
   });
 });

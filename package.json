@@ -22,7 +22,7 @@
     "dev:test-enrichment": "tsx scripts/devTestEnrichment.ts",
     "test": "vitest",
     "test:phase01": "vitest src/server/routes/pronunciationAssessment.contract.test.ts src/lib/audioQuality.test.ts src/hooks/useLivePronunciationPractice.test.tsx",
-    "test:phase02": "vitest src/server/routes/pronunciationAssessment.contract.test.ts src/lib/audioQuality.test.ts src/hooks/useLivePronunciationPractice.test.tsx src/server/lib/audioConversion.test.ts src/lib/metricsPercentiles.test.ts src/hooks/useLivePronunciationPractice.telemetry.test.tsx",
+    "test:phase02": "vitest src/server/routes/pronunciationAssessment.contract.test.ts src/lib/audioQuality.test.ts src/hooks/useLivePronunciationPractice.test.tsx src/server/lib/audioConversion.test.ts src/lib/metricsPercentiles.test.ts src/hooks/useLivePronunciationPractice.telemetry.test.tsx src/api/auth.test.ts",
     "test:watch": "vitest --watch"
   },
   "dependencies": {
