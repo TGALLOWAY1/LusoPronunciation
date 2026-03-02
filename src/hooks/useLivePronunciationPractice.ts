@@ -7,6 +7,10 @@ import {
   analyzeAudioBlob,
   MIN_DURATION_MS,
 } from '@/lib/audioQuality';
+import {
+  appendAttemptTelemetryRecord,
+  createAttemptTelemetryRecord,
+} from '@/lib/attemptMetrics';
 
 /**
  * Response type from the pronunciation assessment API
@@ -14,9 +18,36 @@ import {
 type PronunciationAssessmentResponse = {
   rawAzure: any;
   attemptScore: AttemptScore;
+  fallbackUsed?: boolean;
+  telemetry?: {
+    requestId?: string;
+    fallbackUsed?: boolean;
+    serverTimingsMs?: {
+      convertMs?: number;
+      azureMs?: number;
+      normalizeMs?: number;
+    };
+  };
 };
 
 const MAX_PERSISTED_AUDIO_BYTES = 1.5 * 1024 * 1024; // ~1.5MB safety cap for localStorage
+
+function nowMs(): number {
+  if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+    return performance.now();
+  }
+  return Date.now();
+}
+
+function waitForNextPaint(): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(() => resolve());
+      return;
+    }
+    setTimeout(resolve, 0);
+  });
+}
 
 async function blobToDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -205,6 +236,19 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     }
 
     setError(null);
+    const telemetryAttemptId = `attempt_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    const attemptTelemetry = createAttemptTelemetryRecord(telemetryAttemptId);
+    const submitStartedAt = nowMs();
+    let responseReceivedAt = submitStartedAt;
+    let telemetryPersisted = false;
+
+    const persistTelemetry = (): void => {
+      if (telemetryPersisted) {
+        return;
+      }
+      appendAttemptTelemetryRecord(attemptTelemetry);
+      telemetryPersisted = true;
+    };
 
     // Client-side audio quality gate: block very short or effectively silent submissions.
     try {
@@ -214,17 +258,26 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
           `Too short - try speaking the whole sentence (at least ${(MIN_DURATION_MS / 1000).toFixed(1)}s).`
         );
         setAttemptState('error');
+        attemptTelemetry.error.errorClass = 'client_quality_gate';
+        attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
+        persistTelemetry();
         return;
       }
       if (quality.isSilent) {
         setError('Too quiet - move closer to the mic and try again.');
         setAttemptState('error');
+        attemptTelemetry.error.errorClass = 'client_quality_gate';
+        attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
+        persistTelemetry();
         return;
       }
     } catch (qualityError) {
       console.error('Audio quality analysis failed:', qualityError);
       setError('Could not analyze this recording. Please record again and speak clearly.');
       setAttemptState('error');
+      attemptTelemetry.error.errorClass = 'client_quality_gate';
+      attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
+      persistTelemetry();
       return;
     }
 
@@ -251,28 +304,39 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       formData.append('referenceText', referenceText);
       formData.append('language', 'pt-BR');
 
-      // Measure latency: start timer before fetch
-      const startedAt = performance.now();
-
       // POST to API endpoint
       const response = await fetch('/api/pronunciation/assessment', {
         method: 'POST',
         body: formData,
         signal: abortController.signal,
       });
-
-      // Measure latency: stop timer after response is received
-      const finishedAt = performance.now();
-      const latencyMs = Math.round(finishedAt - startedAt);
+      responseReceivedAt = nowMs();
+      const latencyMs = Math.max(0, Math.round(responseReceivedAt - submitStartedAt));
+      attemptTelemetry.clientTimingsMs.submitToResponseMs = latencyMs;
+      attemptTelemetry.requestId = response.headers.get('X-Request-Id');
 
       // Check if request was aborted
       if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
+        attemptTelemetry.flags.canceled = true;
+        attemptTelemetry.error.errorClass = 'client_abort';
+        attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
+        persistTelemetry();
         return; // Don't update state if component unmounted
       }
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(errorData.error || `HTTP ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorPayload = errorData as {
+          error?: string;
+          message?: string;
+          requestId?: string;
+          errorClass?: string;
+        };
+
+        attemptTelemetry.requestId = errorPayload.requestId ?? attemptTelemetry.requestId;
+        attemptTelemetry.error.httpStatus = response.status;
+        attemptTelemetry.error.errorClass = errorPayload.errorClass ?? 'server_unknown';
+        throw new Error(errorPayload.message || errorPayload.error || `HTTP ${response.status}`);
       }
 
       // Parse response with better error handling
@@ -289,7 +353,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}. The server may have returned invalid JSON.`);
       }
 
-      const { rawAzure, attemptScore } = responseData;
+      const { rawAzure, attemptScore, telemetry } = responseData;
       
       // Validate response structure
       if (!rawAzure || !attemptScore) {
@@ -297,8 +361,22 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         throw new Error('Invalid response: missing rawAzure or attemptScore');
       }
 
+      attemptTelemetry.requestId = telemetry?.requestId ?? attemptTelemetry.requestId;
+      attemptTelemetry.flags.fallbackUsed = Boolean(
+        telemetry?.fallbackUsed ?? responseData.fallbackUsed
+      );
+      attemptTelemetry.serverTimingsMs = {
+        convertMs: telemetry?.serverTimingsMs?.convertMs ?? null,
+        azureMs: telemetry?.serverTimingsMs?.azureMs ?? null,
+        normalizeMs: telemetry?.serverTimingsMs?.normalizeMs ?? null,
+      };
+
       // Check if request was aborted after JSON parsing
       if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
+        attemptTelemetry.flags.canceled = true;
+        attemptTelemetry.error.errorClass = 'client_abort';
+        attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
+        persistTelemetry();
         return;
       }
 
@@ -408,9 +486,24 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       // 3. Sentence changes (handled by parent component)
       recordingStartTimeRef.current = null;
       setAttemptState('scored');
+      await waitForNextPaint();
+      const feedbackRenderedAt = nowMs();
+      attemptTelemetry.clientTimingsMs.responseToRenderMs = Math.max(
+        0,
+        Math.round(feedbackRenderedAt - responseReceivedAt)
+      );
+      attemptTelemetry.timeToFeedbackMs = Math.max(
+        0,
+        Math.round(feedbackRenderedAt - submitStartedAt)
+      );
+      persistTelemetry();
     } catch (err) {
       // Check if request was aborted
       if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
+        attemptTelemetry.flags.canceled = true;
+        attemptTelemetry.error.errorClass = 'client_abort';
+        attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
+        persistTelemetry();
         return; // Don't update state if component unmounted
       }
 
@@ -427,6 +520,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         // Check for network errors
         if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
           errorMessage = 'Network error: Could not connect to the server. Please check your connection and ensure the API route is configured.';
+          attemptTelemetry.error.errorClass = 'network_error';
         } else if (err.message.includes('404')) {
           errorMessage = 'API endpoint not found. Please ensure the server is running and the /api/pronunciation/assessment route is configured.';
         } else if (err.message.includes('500')) {
@@ -439,6 +533,12 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         setError('Failed to assess pronunciation. Please try again.');
         setAttemptState('error');
       }
+
+      if (!attemptTelemetry.error.errorClass) {
+        attemptTelemetry.error.errorClass = 'server_unknown';
+      }
+      attemptTelemetry.timeToFeedbackMs = Math.max(0, Math.round(nowMs() - submitStartedAt));
+      persistTelemetry();
 
       console.error('Error submitting pronunciation assessment:', err);
       if (import.meta.env.DEV) {

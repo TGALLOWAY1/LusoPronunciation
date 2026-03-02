@@ -109,6 +109,7 @@ import {
   ConvertTimeoutError,
 } from '../lib/audioConversion';
 import { createWorkspace, type TempWorkspace } from '../lib/tempWorkspace';
+import { measureAsync } from '../lib/timing';
 
 // Web API Request/Response types (available in Node.js 18+)
 // Using global types - no import needed
@@ -267,6 +268,15 @@ interface AssessmentParams {
 interface AssessmentResult {
   rawAzure: any;
   attemptScore: AttemptScore;
+  telemetry: {
+    requestId: string;
+    serverTimingsMs: {
+      convertMs: number;
+      azureMs: number;
+      normalizeMs: number;
+    };
+    fallbackUsed: boolean;
+  };
   fallbackUsed: boolean;
 }
 
@@ -298,40 +308,54 @@ async function processPronunciationAssessment(
     normalizedMimeType.includes('audio/wave');
   let contentType = isWavInput ? 'audio/wav' : 'audio/webm; codecs=opus';
   let fallbackUsed = false;
+  const serverTimingsMs = {
+    convertMs: 0,
+    azureMs: 0,
+    normalizeMs: 0,
+  };
 
   if (!isWavInput) {
-    try {
-      await writeFile(workspace.inputPath, audioBuffer);
-      await convertToWav({
-        inputPath: workspace.inputPath,
-        outputPath: workspace.outputPath,
-        timeoutMs: convertTimeoutMs,
-        onKill: (kill) => registerConversionKill?.(kill),
-      });
-      wavBuffer = await readFile(workspace.outputPath);
-      if (
-        wavBuffer.length < 12 ||
-        wavBuffer.toString('ascii', 0, 4) !== 'RIFF' ||
-        wavBuffer.toString('ascii', 8, 12) !== 'WAVE'
-      ) {
-        throw new ConvertFailedError('Converted file does not appear to be a valid WAV file.');
+    const conversionStage = await measureAsync('convert', async () => {
+      try {
+        await writeFile(workspace.inputPath, audioBuffer);
+        await convertToWav({
+          inputPath: workspace.inputPath,
+          outputPath: workspace.outputPath,
+          timeoutMs: convertTimeoutMs,
+          onKill: (kill) => registerConversionKill?.(kill),
+        });
+        wavBuffer = await readFile(workspace.outputPath);
+        if (
+          wavBuffer.length < 12 ||
+          wavBuffer.toString('ascii', 0, 4) !== 'RIFF' ||
+          wavBuffer.toString('ascii', 8, 12) !== 'WAVE'
+        ) {
+          throw new ConvertFailedError('Converted file does not appear to be a valid WAV file.');
+        }
+        contentType = 'audio/wav';
+      } catch (conversionError) {
+        // Fall back to original format (may not work, but better than failing completely)
+        fallbackUsed = true;
+        speechLog('warn', 'Audio conversion failed; using original upload format', { requestId });
+        if (isSpeechDebugEnabled()) {
+          const errorMessage =
+            conversionError instanceof ConvertTimeoutError
+              ? `timeout after ${conversionError.timeoutMs}ms`
+              : conversionError instanceof Error
+                ? conversionError.message
+                : String(conversionError);
+          speechLog(
+            'warn',
+            'Audio conversion failure details',
+            { requestId, error: errorMessage },
+            { allowSensitive: true }
+          );
+        }
+      } finally {
+        registerConversionKill?.(null);
       }
-      contentType = 'audio/wav';
-    } catch (conversionError) {
-      // Fall back to original format (may not work, but better than failing completely)
-      fallbackUsed = true;
-      speechLog('warn', 'Audio conversion failed; using original upload format', { requestId });
-      if (isSpeechDebugEnabled()) {
-        speechLog(
-          'warn',
-          'Audio conversion failure details',
-          { requestId, error: conversionError instanceof Error ? conversionError.message : String(conversionError) },
-          { allowSensitive: true }
-        );
-      }
-    } finally {
-      registerConversionKill?.(null);
-    }
+    });
+    serverTimingsMs.convertMs = conversionStage.durationMs;
   } else {
     contentType = 'audio/wav';
   }
@@ -346,83 +370,89 @@ async function processPronunciationAssessment(
   // Call Azure Speech API
   // Convert Buffer to Uint8Array for fetch compatibility
   const audioBody = new Uint8Array(wavBuffer);
-  const azureStartedAt = Date.now();
-  
-  const azureResponse = await fetch(azureEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': contentType,
-      'Ocp-Apim-Subscription-Key': key,
-      'Pronunciation-Assessment': paHeader,
-    },
-    body: audioBody,
-  });
-  const azureLatencyMs = Date.now() - azureStartedAt;
-
-  // Handle non-200 responses
-  if (!azureResponse.ok) {
-    const errorText = await azureResponse.text();
-    speechLog('error', 'Azure Speech API request failed', {
-      requestId,
-      statusClass: getStatusClass(azureResponse.status),
-      azureStatus: azureResponse.status,
-      azureLatencyMs,
+  const azureStage = await measureAsync('azure', async () => {
+    const azureResponse = await fetch(azureEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': contentType,
+        'Ocp-Apim-Subscription-Key': key,
+        'Pronunciation-Assessment': paHeader,
+      },
+      body: audioBody,
     });
-    if (isSpeechDebugEnabled()) {
-      speechLog(
-        'error',
-        'Azure Speech API failure details',
-        {
-          requestId,
-          azureStatusText: azureResponse.statusText,
-          errorBody: errorText,
-        },
-        { allowSensitive: true }
-      );
-    }
-    throw new Error(`Azure Speech API request failed: ${azureResponse.status}`);
-  }
 
-  // Parse Azure response
-  const rawAzure = await azureResponse.json();
+    if (!azureResponse.ok) {
+      const errorText = await azureResponse.text();
+      speechLog('error', 'Azure Speech API request failed', {
+        requestId,
+        statusClass: getStatusClass(azureResponse.status),
+        azureStatus: azureResponse.status,
+      });
+      if (isSpeechDebugEnabled()) {
+        speechLog(
+          'error',
+          'Azure Speech API failure details',
+          {
+            requestId,
+            azureStatusText: azureResponse.statusText,
+            errorBody: errorText,
+          },
+          { allowSensitive: true }
+        );
+      }
+      throw new Error(`Azure Speech API request failed: ${azureResponse.status}`);
+    }
+
+    return azureResponse.json();
+  });
+  serverTimingsMs.azureMs = azureStage.durationMs;
+  const rawAzure = azureStage.value;
   if (isSpeechDebugEnabled()) {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     await writeSpeechDebugDump(`azure_pronunciation_${requestId}_${timestamp}.json`, rawAzure);
   }
 
   // Map to AttemptScore
-  const attemptId = randomUUID();
-  let attemptScore: AttemptScore;
-  try {
-    attemptScore = mapAzurePronunciationResultToAttemptScore(
-      rawAzure,
-      sentenceId,
-      attemptId,
-      undefined // audioUrl - client will attach the blob URL
-    );
-  } catch (mappingError) {
-    speechLog('error', 'Failed to map Azure pronunciation response', {
-      requestId,
-      statusClass: '5xx',
-    });
-    if (isSpeechDebugEnabled()) {
-      speechLog(
-        'error',
-        'Azure pronunciation payload (mapping failure)',
-        {
-          requestId,
-          error: mappingError instanceof Error ? mappingError.message : String(mappingError),
-          rawAzure,
-        },
-        { allowSensitive: true }
+  const normalizeStage = await measureAsync('normalize', async () => {
+    const attemptId = randomUUID();
+    try {
+      return mapAzurePronunciationResultToAttemptScore(
+        rawAzure,
+        sentenceId,
+        attemptId,
+        undefined // audioUrl - client will attach the blob URL
       );
+    } catch (mappingError) {
+      speechLog('error', 'Failed to map Azure pronunciation response', {
+        requestId,
+        statusClass: '5xx',
+      });
+      if (isSpeechDebugEnabled()) {
+        speechLog(
+          'error',
+          'Azure pronunciation payload (mapping failure)',
+          {
+            requestId,
+            error: mappingError instanceof Error ? mappingError.message : String(mappingError),
+            rawAzure,
+          },
+          { allowSensitive: true }
+        );
+      }
+      throw new Error('Failed to map Azure response');
     }
-    throw new Error('Failed to map Azure response');
-  }
+  });
+  serverTimingsMs.normalizeMs = normalizeStage.durationMs;
+  const attemptScore = normalizeStage.value;
 
   return {
     rawAzure,
     attemptScore,
+    telemetry: {
+      requestId,
+      serverTimingsMs,
+      fallbackUsed,
+    },
     fallbackUsed,
   };
 }
