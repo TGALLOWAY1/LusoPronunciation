@@ -13,6 +13,7 @@ import RecentSessions from '../pages/RecentSessions';
 import AuthPage from '../pages/AuthPage';
 import PronunciationFixtures from '../pages/dev/pronunciation-fixtures';
 import DevAnalyticsPage from '../pages/dev/DevAnalyticsPage';
+import DevMetricsPage from '../pages/dev/DevMetricsPage';
 
 function AppRoutes() {
   return (
@@ -27,6 +28,7 @@ function AppRoutes() {
           <Route path="/sessions" element={<RecentSessions />} />
           <Route path="/dev/pronunciation-fixtures" element={<PronunciationFixtures />} />
           <Route path="/dev/analytics" element={<DevAnalyticsPage />} />
+          <Route path="/dev/metrics" element={<DevMetricsPage />} />
         </Routes>
       </AppLayout>
     </BrowserRouter>
@@ -49,4 +51,3 @@ function App() {
 }
 
 export default App;
-
