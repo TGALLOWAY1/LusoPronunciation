@@ -10,6 +10,11 @@ import {
   clearSpeechServiceHealthRecord,
   readSpeechServiceHealthRecord,
 } from '@/lib/speechServiceHealth';
+import {
+  clearCoachingTelemetryEvents,
+  readCoachingTelemetryEvents,
+  type CoachingTelemetryEvent,
+} from '@/lib/coaching/coachingTelemetry';
 
 function formatMs(value: number | null): string {
   if (value === null || Number.isNaN(value)) {
@@ -28,6 +33,9 @@ function formatRate(count: number, total: number): string {
 export default function DevMetricsPage() {
   const [attempts, setAttempts] = useState<AttemptTelemetryRecord[]>(() =>
     readAttemptTelemetryRecords()
+  );
+  const [coachingEvents, setCoachingEvents] = useState<CoachingTelemetryEvent[]>(() =>
+    readCoachingTelemetryEvents()
   );
   const [speechHealth, setSpeechHealth] = useState(() => readSpeechServiceHealthRecord());
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
@@ -61,11 +69,31 @@ export default function DevMetricsPage() {
   }, [attempts]);
 
   const recentAttempts = useMemo(() => attempts.slice(0, 50), [attempts]);
+  const recentCoachingEvents = useMemo(() => coachingEvents.slice(0, 50), [coachingEvents]);
+
+  const coachingSummary = useMemo(() => {
+    const shownCount = coachingEvents.filter((event) => event.event === 'coaching_shown').length;
+    const ctaClickCount = coachingEvents.filter(
+      (event) => event.event === 'coaching_cta_clicked'
+    ).length;
+    const drillOpenCount = coachingEvents.filter(
+      (event) => event.event === 'minimal_pairs_opened'
+    ).length;
+
+    return {
+      total: coachingEvents.length,
+      shownCount,
+      ctaClickCount,
+      drillOpenCount,
+    };
+  }, [coachingEvents]);
 
   const handleClear = (): void => {
     clearAttemptTelemetryRecords();
+    clearCoachingTelemetryEvents();
     clearSpeechServiceHealthRecord();
     setAttempts([]);
+    setCoachingEvents([]);
     setSpeechHealth(null);
     setCopyStatus('idle');
   };
@@ -75,7 +103,16 @@ export default function DevMetricsPage() {
       if (!navigator.clipboard) {
         throw new Error('Clipboard API not available');
       }
-      await navigator.clipboard.writeText(JSON.stringify(attempts, null, 2));
+      await navigator.clipboard.writeText(
+        JSON.stringify(
+          {
+            attempts,
+            coachingEvents,
+          },
+          null,
+          2
+        )
+      );
       setCopyStatus('copied');
     } catch {
       setCopyStatus('failed');
@@ -95,6 +132,9 @@ export default function DevMetricsPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Attempt Metrics</h1>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
             Last {attempts.length} attempt telemetry records from local storage
+          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Coaching events: {coachingEvents.length}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -169,6 +209,18 @@ export default function DevMetricsPage() {
           <p className="text-sm text-gray-600 dark:text-gray-400">Fallback Usage Rate</p>
           <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{summary.fallbackUsageRate}</p>
         </div>
+        <div className="card">
+          <p className="text-sm text-gray-600 dark:text-gray-400">Coaching Shown</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{coachingSummary.shownCount}</p>
+        </div>
+        <div className="card">
+          <p className="text-sm text-gray-600 dark:text-gray-400">Coaching CTA Clicks</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{coachingSummary.ctaClickCount}</p>
+        </div>
+        <div className="card">
+          <p className="text-sm text-gray-600 dark:text-gray-400">Minimal Pair Opens</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{coachingSummary.drillOpenCount}</p>
+        </div>
       </section>
 
       <section className="card overflow-x-auto">
@@ -222,6 +274,57 @@ export default function DevMetricsPage() {
                   colSpan={7}
                 >
                   No metrics recorded yet.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </section>
+
+      <section className="card overflow-x-auto">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          Last 50 Coaching Events
+        </h2>
+        <table className="w-full min-w-[880px] text-sm">
+          <thead>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <th className="text-left py-2 px-3 font-semibold text-gray-700 dark:text-gray-300">
+                Created
+              </th>
+              <th className="text-left py-2 px-3 font-semibold text-gray-700 dark:text-gray-300">
+                Event
+              </th>
+              <th className="text-left py-2 px-3 font-semibold text-gray-700 dark:text-gray-300">
+                Kind
+              </th>
+              <th className="text-left py-2 px-3 font-semibold text-gray-700 dark:text-gray-300">
+                Tags
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {recentCoachingEvents.map((event) => (
+              <tr
+                key={`${event.event}-${event.kind}-${event.createdAt}`}
+                className="border-b border-gray-100 dark:border-gray-800"
+              >
+                <td className="py-2 px-3 text-gray-700 dark:text-gray-300">
+                  {new Date(event.createdAt).toLocaleString()}
+                </td>
+                <td className="py-2 px-3 text-gray-700 dark:text-gray-300">{event.event}</td>
+                <td className="py-2 px-3 text-gray-700 dark:text-gray-300">{event.kind}</td>
+                <td className="py-2 px-3 text-gray-700 dark:text-gray-300">
+                  {event.tags && event.tags.length > 0 ? event.tags.join(', ') : '-'}
+                </td>
+              </tr>
+            ))}
+            {recentCoachingEvents.length === 0 && (
+              <tr>
+                <td
+                  className="py-8 px-3 text-center text-gray-500 dark:text-gray-400"
+                  colSpan={4}
+                >
+                  No coaching telemetry recorded yet.
                 </td>
               </tr>
             )}

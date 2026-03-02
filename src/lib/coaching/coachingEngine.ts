@@ -1,13 +1,5 @@
 import type { AttemptScore } from '@/types/pronunciation';
-
-export type MinimalPairDrill = {
-  tags: string[];
-  pairs: Array<{
-    a: string;
-    b: string;
-    note?: string;
-  }>;
-};
+import type { MinimalPairDrill } from './minimalPairs.ptbr';
 
 export type CoachingSuggestion = {
   kind: 'retry' | 'minimal_pairs' | 'rhythm' | 'clarity' | 'coverage';
