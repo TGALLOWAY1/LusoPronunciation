@@ -74,6 +74,7 @@ export default function LivePracticeSection({
     resetRecording,
     submitting,
     error,
+    attemptState,
     attempts,
     currentAttempt,
     rawAzureResponse,
@@ -158,13 +159,19 @@ export default function LivePracticeSection({
     showDifficultyBadge: false,
   }), [attempts, currentAttempt, sentence, sentenceAudio, wordAudios, enrichedWords]);
 
-  const canSubmit = Boolean(audioUrl) && !submitting && !isRecording;
+  const canSubmit = Boolean(audioUrl) && attemptState !== 'submitting' && attemptState !== 'recording';
   const recordingFileExists = Boolean(audioUrl);
 
-  // Determine current state
-  const isReadyToRecord = !isRecording && !recordingFileExists;
-  const isRecordingInProgress = isRecording;
-  const isReviewState = !isRecording && recordingFileExists;
+  // UI rendering is driven from the centralized attempt lifecycle state.
+  const isReadyToRecord = attemptState === 'idle' || (!recordingFileExists && attemptState !== 'recording');
+  const isRecordingInProgress = attemptState === 'recording' || isRecording;
+  const isReviewState =
+    recordingFileExists &&
+    (attemptState === 'recorded' ||
+      attemptState === 'submitting' ||
+      attemptState === 'scored' ||
+      attemptState === 'error' ||
+      attemptState === 'canceled');
 
   return (
     <div className="space-y-6">
@@ -283,4 +290,3 @@ export default function LivePracticeSection({
     </div>
   );
 }
-

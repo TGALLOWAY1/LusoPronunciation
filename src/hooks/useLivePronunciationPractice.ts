@@ -48,6 +48,15 @@ export interface LogAttemptParams {
   recordingDurationSeconds?: number;
 }
 
+export type AttemptLifecycleState =
+  | 'idle'
+  | 'recording'
+  | 'recorded'
+  | 'submitting'
+  | 'scored'
+  | 'error'
+  | 'canceled';
+
 /**
  * Result type for the useLivePronunciationPractice hook
  */
@@ -62,6 +71,7 @@ export type UseLivePronunciationPracticeResult = {
   // Submission state
   submitting: boolean;
   error: string | null;
+  attemptState: AttemptLifecycleState;
 
   // Attempt state
   attempts: AttemptScore[];
@@ -104,6 +114,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [attemptState, setAttemptState] = useState<AttemptLifecycleState>('idle');
   const [attempts, setAttempts] = useState<AttemptScore[]>([]);
   const [allRawAzureResponses, setAllRawAzureResponses] = useState<Map<string, any>>(new Map());
 
@@ -120,9 +131,22 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
   useEffect(() => {
     if (isRecording) {
       setError(null);
+      setAttemptState('recording');
       recordingStartTimeRef.current = Date.now();
     }
   }, [isRecording]);
+
+  useEffect(() => {
+    if (!isRecording && audioBlob && (attemptState === 'idle' || attemptState === 'recording' || attemptState === 'canceled')) {
+      setAttemptState('recorded');
+    }
+  }, [audioBlob, isRecording, attemptState]);
+
+  useEffect(() => {
+    if (recorderError) {
+      setAttemptState('error');
+    }
+  }, [recorderError]);
 
   // Cleanup abort controller on unmount
   useEffect(() => {
@@ -139,6 +163,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
   const resetRecording = useCallback(() => {
     resetRecorder();
     setError(null);
+    setAttemptState('idle');
     recordingStartTimeRef.current = null;
   }, [resetRecorder]);
 
@@ -158,6 +183,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     // Guard against missing audio blob
     if (!audioBlob) {
       setError('No recording available. Please record audio first.');
+      setAttemptState('error');
       return;
     }
 
@@ -170,15 +196,18 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         setError(
           `Too short - try speaking the whole sentence (at least ${(MIN_DURATION_MS / 1000).toFixed(1)}s).`
         );
+        setAttemptState('error');
         return;
       }
       if (quality.isSilent) {
         setError('Too quiet - move closer to the mic and try again.');
+        setAttemptState('error');
         return;
       }
     } catch (qualityError) {
       console.error('Audio quality analysis failed:', qualityError);
       setError('Could not analyze this recording. Please record again and speak clearly.');
+      setAttemptState('error');
       return;
     }
 
@@ -192,6 +221,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     abortControllerRef.current = abortController;
 
     setSubmitting(true);
+    setAttemptState('submitting');
 
     try {
       // Build FormData
@@ -357,6 +387,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       // 2. User starts a new recording (startRecording clears previous state)
       // 3. Sentence changes (handled by parent component)
       recordingStartTimeRef.current = null;
+      setAttemptState('scored');
     } catch (err) {
       // Check if request was aborted
       if (abortController.signal.aborted) {
@@ -383,8 +414,10 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         }
         
         setError(errorMessage);
+        setAttemptState('error');
       } else {
         setError('Failed to assess pronunciation. Please try again.');
+        setAttemptState('error');
       }
 
       console.error('Error submitting pronunciation assessment:', err);
@@ -425,6 +458,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     // Submission state
     submitting,
     error: combinedError,
+    attemptState,
 
     // Attempt state
     attempts,
