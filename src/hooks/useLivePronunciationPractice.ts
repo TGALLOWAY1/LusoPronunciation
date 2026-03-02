@@ -2,6 +2,10 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { useMicrophoneRecorder } from './useMicrophoneRecorder';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import type { AttemptScore, WordScore } from '@/types/pronunciation';
+import {
+  analyzeAudioBlob,
+  MIN_DURATION_MS,
+} from '@/lib/audioQuality';
 
 /**
  * Response type from the pronunciation assessment API
@@ -157,6 +161,27 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       return;
     }
 
+    setError(null);
+
+    // Client-side audio quality gate: block very short or effectively silent submissions.
+    try {
+      const quality = await analyzeAudioBlob(audioBlob);
+      if (quality.isTooShort) {
+        setError(
+          `Too short - try speaking the whole sentence (at least ${(MIN_DURATION_MS / 1000).toFixed(1)}s).`
+        );
+        return;
+      }
+      if (quality.isSilent) {
+        setError('Too quiet - move closer to the mic and try again.');
+        return;
+      }
+    } catch (qualityError) {
+      console.error('Audio quality analysis failed:', qualityError);
+      setError('Could not analyze this recording. Please record again and speak clearly.');
+      return;
+    }
+
     // Cancel any in-flight request
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -167,7 +192,6 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     abortControllerRef.current = abortController;
 
     setSubmitting(true);
-    setError(null);
 
     try {
       // Build FormData
@@ -412,4 +436,3 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     submitAttempt,
   };
 }
-
