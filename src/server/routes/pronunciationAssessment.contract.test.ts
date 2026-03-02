@@ -105,6 +105,16 @@ describe('pronunciation assessment endpoint contract', () => {
           sentenceId: 'sentence-1',
           wordScores: expect.any(Array),
         }),
+        telemetry: expect.objectContaining({
+          requestId: expect.any(String),
+          fallbackUsed: expect.any(Boolean),
+          serverTimingsMs: expect.objectContaining({
+            convertMs: expect.any(Number),
+            azureMs: expect.any(Number),
+            normalizeMs: expect.any(Number),
+          }),
+        }),
+        fallbackUsed: expect.any(Boolean),
       })
     );
   });
