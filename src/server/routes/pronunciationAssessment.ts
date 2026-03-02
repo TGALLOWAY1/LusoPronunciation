@@ -321,6 +321,7 @@ interface AssessmentParams {
   referenceText: string;
   language: string;
   requestId: string;
+  audioMimeType?: string;
 }
 
 interface AssessmentResult {
@@ -331,7 +332,7 @@ interface AssessmentResult {
 async function processPronunciationAssessment(
   params: AssessmentParams
 ): Promise<AssessmentResult> {
-  const { audioBuffer, sentenceId, referenceText, language, requestId } = params;
+  const { audioBuffer, sentenceId, referenceText, language, requestId, audioMimeType } = params;
 
   // Get Azure config
   const { key, region } = getAzureSpeechConfig();
@@ -339,22 +340,31 @@ async function processPronunciationAssessment(
   // Convert webm/opus to WAV format required by Azure
   // Azure Pronunciation Assessment REQUIRES PCM/WAV (16kHz, 16-bit, mono)
   let wavBuffer: Buffer = audioBuffer;
-  let contentType = 'audio/webm; codecs=opus';
-  
-  try {
-    wavBuffer = await convertWebmOpusToWav(audioBuffer);
-    contentType = 'audio/wav';
-  } catch (conversionError) {
-    // Fall back to original format (may not work, but better than failing completely)
-    speechLog('warn', 'Audio conversion failed; using original upload format', { requestId });
-    if (isSpeechDebugEnabled()) {
-      speechLog(
-        'warn',
-        'Audio conversion failure details',
-        { requestId, error: conversionError instanceof Error ? conversionError.message : String(conversionError) },
-        { allowSensitive: true }
-      );
+  const normalizedMimeType = (audioMimeType || '').toLowerCase();
+  const isWavInput =
+    normalizedMimeType.includes('audio/wav') ||
+    normalizedMimeType.includes('audio/x-wav') ||
+    normalizedMimeType.includes('audio/wave');
+  let contentType = isWavInput ? 'audio/wav' : 'audio/webm; codecs=opus';
+
+  if (!isWavInput) {
+    try {
+      wavBuffer = await convertWebmOpusToWav(audioBuffer);
+      contentType = 'audio/wav';
+    } catch (conversionError) {
+      // Fall back to original format (may not work, but better than failing completely)
+      speechLog('warn', 'Audio conversion failed; using original upload format', { requestId });
+      if (isSpeechDebugEnabled()) {
+        speechLog(
+          'warn',
+          'Audio conversion failure details',
+          { requestId, error: conversionError instanceof Error ? conversionError.message : String(conversionError) },
+          { allowSensitive: true }
+        );
+      }
     }
+  } else {
+    contentType = 'audio/wav';
   }
 
   // Build Azure endpoint URL
@@ -479,6 +489,13 @@ export async function handlePronunciationAssessment(
     const sentenceId = formData.get('sentenceId');
     const referenceText = formData.get('referenceText');
     const language = formData.get('language');
+    const audioMimeType =
+      typeof audioFile === 'object' &&
+      audioFile !== null &&
+      'type' in audioFile &&
+      typeof (audioFile as { type?: unknown }).type === 'string'
+        ? (audioFile as { type: string }).type
+        : undefined;
 
     // Validate required fields
     if (!audioFile) {
@@ -551,6 +568,7 @@ export async function handlePronunciationAssessment(
       referenceText,
       language,
       requestId,
+      audioMimeType,
     });
 
     speechLog('info', 'Pronunciation request completed', {
@@ -647,6 +665,7 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
       referenceText,
       language,
       requestId,
+      audioMimeType: req.file.mimetype,
     });
 
     speechLog('info', 'Pronunciation request completed', {

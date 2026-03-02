@@ -139,7 +139,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
   }, [isRecording]);
 
   useEffect(() => {
-    if (!isRecording && audioBlob && (attemptState === 'idle' || attemptState === 'recording' || attemptState === 'canceled')) {
+    if (!isRecording && audioBlob && (attemptState === 'idle' || attemptState === 'recording')) {
       setAttemptState('recorded');
     }
   }, [audioBlob, isRecording, attemptState]);
