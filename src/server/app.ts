@@ -3,7 +3,7 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import { connectMongo } from './db/mongoClient';
 import healthRouter from './routes/health';
-import pronunciationRouter from './routes/pronunciationAssessment';
+import pronunciationRouter, { legacyPronunciationAssessmentRouter } from './routes/pronunciationAssessment';
 import authRouter from './routes/auth';
 import practiceRouter from './routes/practice';
 import migrationRouter from './routes/migration';
@@ -26,6 +26,7 @@ app.use('/api', practiceRouter);
 app.use('/api/migrate', migrationRouter);
 app.use('/api/flashcards', flashcardsRouter);
 app.use('/api/pronunciation', pronunciationRouter);
+app.use('/api/pronunciation-assessment', legacyPronunciationAssessmentRouter);
 
 // Root route
 app.get('/', (req, res) => {
@@ -77,4 +78,3 @@ if (require.main === module) {
 }
 
 export default app;
-

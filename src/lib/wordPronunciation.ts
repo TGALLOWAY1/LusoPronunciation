@@ -29,7 +29,7 @@ export async function scoreWordPronunciation(
   formData.append('language', 'pt-BR');
 
   // POST to API endpoint (same endpoint as sentences)
-  const response = await fetch('/api/pronunciation-assessment', {
+  const response = await fetch('/api/pronunciation/assessment', {
     method: 'POST',
     body: formData,
   });

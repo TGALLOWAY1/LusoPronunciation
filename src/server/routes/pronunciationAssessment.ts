@@ -66,7 +66,7 @@
  *   import express from 'express';
  *   import { handlePronunciationAssessment } from './server/routes/pronunciationAssessment';
  *   const app = express();
- *   app.post('/api/pronunciation-assessment', async (req, res) => {
+ *   app.post('/api/pronunciation/assessment', async (req, res) => {
  *     const response = await handlePronunciationAssessment(req);
  *     res.status(response.status);
  *     response.headers.forEach((value, key) => res.setHeader(key, value));
@@ -552,19 +552,6 @@ export async function handlePronunciationAssessment(
   }
 }
 
-/**
- * Express router for pronunciation assessment
- * 
- * POST /api/pronunciation/assessment
- * 
- * Expected multipart/form-data fields:
- * - audio: File (audio recording)
- * - sentenceId: string
- * - referenceText: string
- * - language: string (e.g., "pt-BR")
- */
-const router = Router();
-
 // Configure multer for in-memory file storage
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -573,11 +560,14 @@ const upload = multer({
   },
 });
 
-router.post('/assessment', upload.single('audio'), async (req: ExpressRequest, res: ExpressResponse) => {
+export const pronunciationUploadMiddleware = upload.single('audio');
+
+export async function handlePronunciationAssessmentExpress(req: ExpressRequest, res: ExpressResponse): Promise<void> {
   try {
     // Validate required fields
     if (!req.file) {
-      return res.status(400).json({ error: 'Missing audio file' });
+      res.status(400).json({ error: 'Missing audio file' });
+      return;
     }
 
     const sentenceId = req.body.sentenceId;
@@ -585,15 +575,18 @@ router.post('/assessment', upload.single('audio'), async (req: ExpressRequest, r
     const language = req.body.language;
 
     if (!sentenceId || typeof sentenceId !== 'string') {
-      return res.status(400).json({ error: 'Missing or invalid sentenceId' });
+      res.status(400).json({ error: 'Missing or invalid sentenceId' });
+      return;
     }
 
     if (!referenceText || typeof referenceText !== 'string') {
-      return res.status(400).json({ error: 'Missing or invalid referenceText' });
+      res.status(400).json({ error: 'Missing or invalid referenceText' });
+      return;
     }
 
     if (!language || typeof language !== 'string') {
-      return res.status(400).json({ error: 'Missing or invalid language' });
+      res.status(400).json({ error: 'Missing or invalid language' });
+      return;
     }
 
     // Process assessment
@@ -614,7 +607,20 @@ router.post('/assessment', upload.single('audio'), async (req: ExpressRequest, r
       message: errorMessage,
     });
   }
-});
+}
+
+/**
+ * Canonical pronunciation route.
+ * POST /api/pronunciation/assessment
+ */
+const router = Router();
+router.post('/assessment', pronunciationUploadMiddleware, handlePronunciationAssessmentExpress);
+
+/**
+ * Temporary legacy alias route.
+ * POST /api/pronunciation-assessment
+ */
+export const legacyPronunciationAssessmentRouter = Router();
+legacyPronunciationAssessmentRouter.post('/', pronunciationUploadMiddleware, handlePronunciationAssessmentExpress);
 
 export default router;
-

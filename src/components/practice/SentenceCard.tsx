@@ -72,7 +72,7 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       formData.append('language', 'pt-BR');
 
       // POST to API endpoint
-      const response = await fetch('/api/pronunciation-assessment', {
+      const response = await fetch('/api/pronunciation/assessment', {
         method: 'POST',
         body: formData,
       });

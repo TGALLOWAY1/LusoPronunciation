@@ -78,7 +78,7 @@ export type UseLivePronunciationPracticeResult = {
  * 
  * Encapsulates:
  * - Microphone recording (via useMicrophoneRecorder)
- * - Audio submission to /api/pronunciation-assessment
+ * - Audio submission to /api/pronunciation/assessment
  * - Round-trip latency measurement
  * - Attempt history management
  * - Optional practice log integration
@@ -181,7 +181,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       const startedAt = performance.now();
 
       // POST to API endpoint
-      const response = await fetch('/api/pronunciation-assessment', {
+      const response = await fetch('/api/pronunciation/assessment', {
         method: 'POST',
         body: formData,
         signal: abortController.signal,
@@ -353,7 +353,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
         if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
           errorMessage = 'Network error: Could not connect to the server. Please check your connection and ensure the API route is configured.';
         } else if (err.message.includes('404')) {
-          errorMessage = 'API endpoint not found. Please ensure the server is running and the /api/pronunciation-assessment route is configured.';
+          errorMessage = 'API endpoint not found. Please ensure the server is running and the /api/pronunciation/assessment route is configured.';
         } else if (err.message.includes('500')) {
           errorMessage = 'Server error: The pronunciation assessment service encountered an error. Please try again.';
         }
