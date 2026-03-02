@@ -9,8 +9,6 @@ import {
   mapPronunciationAttemptDocsToDtos,
 } from '../mappers/practiceMapper';
 import type {
-  PracticeSession,
-  PronunciationAttempt,
   PracticeSessionMode,
 } from '../../shared/types';
 
@@ -324,4 +322,3 @@ router.get('/pronunciation-attempts', requireAuth, async (req: AuthenticatedRequ
 });
 
 export default router;
-

@@ -116,12 +116,12 @@ export function computeSentenceWordRefs(
  */
 export function buildWordRefs(
   sentence: string,
-  words: EnrichedWord[]
+  words: Array<Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>>
 ): Array<{ wordId: string; tokenIndex: number; startChar: number; endChar: number }> {
   const wordRefs: Array<{ wordId: string; tokenIndex: number; startChar: number; endChar: number }> = [];
   
-  // Create a lookup map of normalized word text to EnrichedWord
-  const wordMap = new Map<string, EnrichedWord>();
+  // Create a lookup map of normalized word text to source word metadata.
+  const wordMap = new Map<string, Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>>();
   for (const word of words) {
     const normalized = word.normalizedText || normalizeToken(word.text);
     // If multiple words have the same normalized form, keep the first one
@@ -182,4 +182,3 @@ export function buildWordRefs(
 
   return wordRefs;
 }
-

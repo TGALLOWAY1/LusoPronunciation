@@ -1,7 +1,6 @@
 import { memo, useMemo } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
 import type { Sentence } from '@/lib/types';
-import type { NormalizedAudioVariant } from '@/components/pronunciation/shared/types';
 import { PronunciationFeedbackPanel } from '@/components/pronunciation';
 import type { PronunciationFeedbackPanelProps } from '@/components/pronunciation';
 import {
@@ -31,28 +30,6 @@ export interface SentenceFeedbackProps {
   className?: string;
 }
 
-
-/**
- * Builds normalized audio variants from sentence audio URLs.
- * Only includes the native audio variant that matches the selected voice preference.
- */
-function buildSentenceAudioVariants(
-  sentence: Sentence,
-  selectedVoice: 'male' | 'female'
-): NormalizedAudioVariant[] {
-  const variants: NormalizedAudioVariant[] = [];
-  
-  // Add native audio variant based on selected voice preference
-  const nativeAudioUrl = selectedVoice === 'male' ? sentence.audioMaleUrl : sentence.audioFemaleUrl;
-  if (nativeAudioUrl) {
-    variants.push({
-      type: 'native',
-      url: nativeAudioUrl,
-    });
-  }
-  
-  return variants;
-}
 
 /**
  * SentenceFeedback displays pronunciation assessment results.
@@ -101,14 +78,6 @@ function SentenceFeedback({
     }
     return enrichWordsWithCanonicalData(sentence, normalizedWords, canonicalWordMap);
   }, [sentence, normalizedWords, canonicalWordMap]);
-
-  // Build sentence audio variants (only if sentence is provided)
-  const sentenceAudio = useMemo(() => {
-    if (sentence) {
-      return buildSentenceAudioVariants(sentence, selectedVoice);
-    }
-    return [];
-  }, [sentence, selectedVoice]);
 
   // Build word audio variants from sentence wordRefs
   // Returns empty array if no sentence or wordRefs (not undefined)

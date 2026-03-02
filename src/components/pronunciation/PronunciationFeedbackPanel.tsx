@@ -69,7 +69,6 @@ export default function PronunciationFeedbackPanel({
   translationText,
   difficulty,
   sentenceAudio,
-  wordAudios,
   words,
   title,
   showDevControls = false,
@@ -82,12 +81,9 @@ export default function PronunciationFeedbackPanel({
   
   // Centralized audio state
   const [activeSentenceType, setActiveSentenceType] = useState<'native' | 'user' | null>(null);
-  const [activeWordIndex, setActiveWordIndex] = useState<number | null>(null);
-  const [activeWordType, setActiveWordType] = useState<'native' | 'user' | null>(null);
   
   // Refs for audio elements to enable stopping from parent
   const sentenceAudioRef = useRef<HTMLAudioElement>(null);
-  const wordAudioRef = useRef<HTMLAudioElement>(null);
 
   // Reset practice mode when sentence changes (use sentenceText as key)
   useEffect(() => {
@@ -138,14 +134,6 @@ export default function PronunciationFeedbackPanel({
 
   // Sentence audio callbacks
   const handleSentenceStart = (type: 'native' | 'user') => {
-    // Stop word audio if playing
-    if (wordAudioRef.current) {
-      wordAudioRef.current.pause();
-      wordAudioRef.current.currentTime = 0;
-    }
-    // Clear word state
-    setActiveWordIndex(null);
-    setActiveWordType(null);
     // Set sentence state
     setActiveSentenceType(type);
     
@@ -158,25 +146,6 @@ export default function PronunciationFeedbackPanel({
 
   const handleSentenceStop = () => {
     setActiveSentenceType(null);
-  };
-
-  // Word audio callbacks
-  const handleWordStart = (wordIndex: number, type: 'native' | 'user') => {
-    // Stop sentence audio if playing
-    if (sentenceAudioRef.current) {
-      sentenceAudioRef.current.pause();
-      sentenceAudioRef.current.currentTime = 0;
-    }
-    // Clear sentence state
-    setActiveSentenceType(null);
-    // Set word state
-    setActiveWordIndex(wordIndex);
-    setActiveWordType(type);
-  };
-
-  const handleWordStop = () => {
-    setActiveWordIndex(null);
-    setActiveWordType(null);
   };
 
   const handleInteractiveWordClick = (wordData: any, index: number) => {
@@ -208,7 +177,7 @@ export default function PronunciationFeedbackPanel({
 
       return {
         word: token,
-        overallScore: normalizedWord?.score ?? normalizedWord?.accuracyScore ?? null,
+        overallScore: normalizedWord?.score ?? normalizedWord?.accuracyScore ?? 0,
         normalizedWord,
       };
     });
@@ -308,4 +277,3 @@ export default function PronunciationFeedbackPanel({
     </div>
   );
 }
-

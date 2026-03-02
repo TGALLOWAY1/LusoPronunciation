@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useMicrophoneRecorder } from './useMicrophoneRecorder';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
+import type { Difficulty } from '@/lib/types';
 import type { AttemptScore, WordScore } from '@/types/pronunciation';
 import {
   analyzeAudioBlob,
@@ -39,7 +40,7 @@ async function blobToDataUrl(blob: Blob): Promise<string> {
 export interface LogAttemptParams {
   sessionId: string;
   sentenceId: string;
-  difficulty: number;
+  difficulty: Difficulty;
   category: string;
   retriesInThisSession?: number;
   usedHint?: boolean;

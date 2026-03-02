@@ -8,8 +8,8 @@ import {
   type NormalizedWordAudioVariant,
 } from '@/components/pronunciation/shared';
 import type { AudioVariant, WordAudioVariant } from '@/types/pronunciationFixtures';
-import { loadAllCategories, loadAllSentences, type Category } from '@/lib/data';
-import type { Sentence } from '@/lib/types';
+import { loadAllCategories, loadAllSentences } from '@/lib/data';
+import type { Category, Sentence } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import MultiSelect, { type MultiSelectOption } from '@/components/common/MultiSelect';
 import ScoringPanel from '@/components/pronunciation/ScoringPanel';
@@ -150,8 +150,19 @@ export default function PronunciationFixtures() {
 
   // Start a practice session on mount
   useEffect(() => {
-    const newSessionId = startSession('sentences');
-    setSessionId(newSessionId);
+    let mounted = true;
+    startSession('sentences')
+      .then((newSessionId) => {
+        if (mounted) {
+          setSessionId(newSessionId);
+        }
+      })
+      .catch((error) => {
+        console.warn('Failed to start practice session:', error);
+      });
+    return () => {
+      mounted = false;
+    };
   }, [startSession]);
 
   useEffect(() => {
@@ -445,4 +456,3 @@ export default function PronunciationFixtures() {
     </div>
   );
 }
-

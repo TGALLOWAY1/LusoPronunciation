@@ -40,7 +40,6 @@ function WordListeningMcqCard({
   const { logWordAttempt } = usePracticeLogStore();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);
-  const [hasPlayedAudio, setHasPlayedAudio] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
   const cardStartTimeRef = useRef<number>(Date.now());
   const firstPlayTimeRef = useRef<number | null>(null);
@@ -89,7 +88,6 @@ function WordListeningMcqCard({
     if (isPlaying && !prevIsPlayingRef.current && firstPlayTimeRef.current === null) {
       // Audio just started playing
       firstPlayTimeRef.current = Date.now();
-      setHasPlayedAudio(true);
     }
     prevIsPlayingRef.current = isPlaying;
   }, [isPlaying]);
@@ -154,7 +152,6 @@ function WordListeningMcqCard({
   useEffect(() => {
     setSelectedAnswer(null);
     setHasAnswered(false);
-    setHasPlayedAudio(false);
     setAudioError(null);
     cardStartTimeRef.current = Date.now();
     firstPlayTimeRef.current = null;
@@ -433,4 +430,3 @@ function WordListeningMcqCard({
 }
 
 export default memo(WordListeningMcqCard);
-

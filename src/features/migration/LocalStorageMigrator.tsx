@@ -1,18 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { isAuthenticated } from '@/api/auth';
 import { authenticatedFetch } from '@/api/auth';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useProgressStore } from '@/state/progressStore';
 
 const MIGRATION_FLAG_KEY = 'luso_cloud_migrated';
-
-interface MigrationResult {
-  importedSessions: number;
-  importedAttempts: number;
-  skippedSessions: number;
-  skippedAttempts: number;
-  errors: string[];
-}
 
 /**
  * LocalStorageMigrator component
@@ -25,12 +17,6 @@ interface MigrationResult {
  * so it runs once after login.
  */
 export default function LocalStorageMigrator() {
-  const [migrationStatus, setMigrationStatus] = useState<
-    'idle' | 'checking' | 'migrating' | 'completed' | 'error'
-  >('idle');
-  const [migrationResult, setMigrationResult] = useState<MigrationResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
   const practiceLogStore = usePracticeLogStore();
   const progressStore = useProgressStore();
 
@@ -42,15 +28,12 @@ export default function LocalStorageMigrator() {
       }
 
       // Check if migration has already been completed
-      if (typeof window !== 'undefined') {
-        const alreadyMigrated = localStorage.getItem(MIGRATION_FLAG_KEY);
-        if (alreadyMigrated === 'true') {
-          setMigrationStatus('completed');
-          return;
+        if (typeof window !== 'undefined') {
+          const alreadyMigrated = localStorage.getItem(MIGRATION_FLAG_KEY);
+          if (alreadyMigrated === 'true') {
+            return;
+          }
         }
-      }
-
-      setMigrationStatus('checking');
 
       try {
         // Read legacy data from stores
@@ -69,11 +52,8 @@ export default function LocalStorageMigrator() {
           if (typeof window !== 'undefined') {
             localStorage.setItem(MIGRATION_FLAG_KEY, 'true');
           }
-          setMigrationStatus('completed');
           return;
         }
-
-        setMigrationStatus('migrating');
 
         // Prepare migration payload
         const payload = {
@@ -97,15 +77,12 @@ export default function LocalStorageMigrator() {
           throw new Error(errorData.message || errorData.error || `HTTP ${response.status}`);
         }
 
-        const result: MigrationResult = await response.json();
-        setMigrationResult(result);
+        const result = await response.json();
 
         // Mark migration as completed
         if (typeof window !== 'undefined') {
           localStorage.setItem(MIGRATION_FLAG_KEY, 'true');
         }
-
-        setMigrationStatus('completed');
 
         // Log migration results
         console.log('[Migration] Migration completed:', {
@@ -120,9 +97,6 @@ export default function LocalStorageMigrator() {
           console.warn('[Migration] Some items failed to migrate:', result.errors);
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-        setError(errorMessage);
-        setMigrationStatus('error');
         console.error('[Migration] Migration failed:', err);
       }
     }
@@ -134,4 +108,3 @@ export default function LocalStorageMigrator() {
   // It runs silently in the background
   return null;
 }
-

@@ -37,7 +37,7 @@ interface PracticeLogStoreState {
 
 interface PracticeLogStore extends PracticeLogStoreState {
   storageError: boolean;
-  startSession: (mode: PracticeSession['mode']) => Promise<string>;
+  startSession: (mode: Exclude<PracticeSession['mode'], 'assessment'>) => Promise<string>;
   endSession: (sessionId: string) => Promise<void>;
   logSentenceAttempt: (
     attempt: Omit<SentencePracticeAttempt, 'attemptId' | 'userId' | 'createdAt'>
@@ -83,6 +83,7 @@ function loadPracticeLogFromStorage(): PracticeLogStoreState {
         sessions: [],
         sentenceAttempts: [],
         wordAttempts: [],
+        serverSessionIds: {},
       };
     }
 
@@ -228,7 +229,7 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
   }, [state]);
 
   const startSession = useCallback(
-    async (mode: PracticeSession['mode']): Promise<string> => {
+    async (mode: Exclude<PracticeSession['mode'], 'assessment'>): Promise<string> => {
       const sessionId = generateSessionId();
       const now = new Date().toISOString();
 
@@ -609,6 +610,7 @@ export function PracticeLogStoreProvider({ children }: { children: ReactNode }) 
       sessions: state.sessions,
       sentenceAttempts: state.sentenceAttempts,
       wordAttempts: state.wordAttempts,
+      serverSessionIds: state.serverSessionIds,
       storageError,
       startSession,
       endSession,
@@ -659,4 +661,3 @@ export function usePracticeLogStore(): PracticeLogStore {
   }
   return context;
 }
-

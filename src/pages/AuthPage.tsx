@@ -5,7 +5,7 @@ import type { User } from '@/shared/types';
 export default function AuthPage() {
   const navigate = useNavigate();
 
-  const handleSuccess = (user: User) => {
+  const handleSuccess = (_user: User) => {
     // Redirect to dashboard after successful auth
     navigate('/');
   };
@@ -16,4 +16,3 @@ export default function AuthPage() {
     </div>
   );
 }
-

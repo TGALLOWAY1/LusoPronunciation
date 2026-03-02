@@ -260,7 +260,7 @@ async function convertWebmOpusToWav(webmBuffer: Buffer): Promise<Buffer> {
     // -sample_fmt s16: 16-bit signed integer samples
     // -y: Overwrite output file
     // -loglevel error: Only show errors (reduce noise)
-    const { stdout, stderr } = await execAsync(
+    const { stderr } = await execAsync(
       `"${ffmpegPath}" -i "${inputPath}" -f wav -ar 16000 -ac 1 -sample_fmt s16 -loglevel error -y "${outputPath}"`,
       { timeout: 10000 } // 10 second timeout
     );

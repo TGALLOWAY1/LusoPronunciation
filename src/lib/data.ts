@@ -332,7 +332,7 @@ export async function loadAllSentences(): Promise<Sentence[]> {
         .replace(/[^\w\s]/g, ''); // Remove punctuation
     };
     
-    let wordsForWordRefs: EnrichedWord[] = [];
+    let wordsForWordRefs: Array<Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>> = [];
     try {
       const wordsData = await loadAllWords();
       // Convert Word[] to EnrichedWord[] format for buildWordRefs
@@ -651,4 +651,3 @@ export function clearDataCache(): void {
   cachedCategories = null;
   cachedAudioIndex = null;
 }
-

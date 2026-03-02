@@ -6,7 +6,7 @@ import {
   loadAllCategories,
   filterWordsByCategory,
 } from '@/lib/data';
-import type { Word, Category, Difficulty, WordProgress, WordId } from '@/lib/types';
+import type { Word, Category, Difficulty } from '@/lib/types';
 import { buildWordProgress, getWeakWordIds } from '@/lib/practiceAnalytics';
 import WordStudyCard from '@/components/practice/WordStudyCard';
 import WordCard from '@/components/practice/WordCard';

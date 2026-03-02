@@ -240,6 +240,7 @@ export interface SentencePracticeAttempt {
     overallScore: number;
     accuracyScore?: number;
     fluencyScore?: number;
+    errorType?: 'none' | 'mispronounced' | 'omitted' | 'extra';
     phonemeScores?: {
       phonemeId: PhonemeId;
       overallScore: number;
@@ -395,4 +396,3 @@ export interface PhonemeStats {
   lastPracticedAt?: string; // ISO timestamp
   weaknessLabel?: "weak" | "ok" | "strong";
 }
-
