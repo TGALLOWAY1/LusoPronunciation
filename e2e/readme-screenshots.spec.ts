@@ -4,26 +4,45 @@ import { expect, test, type Page } from '@playwright/test';
 
 const OUTPUT_DIR = path.resolve(process.cwd(), 'docs/assets/readme');
 
-const screenMatrix: Array<{ route: string; fileName: string; heading: string | RegExp }> = [
-  { route: '/', fileName: 'dashboard.png', heading: 'Dashboard' },
-  { route: '/practice/sentence', fileName: 'sentence-practice.png', heading: 'Sentence Practice' },
-  { route: '/practice/word', fileName: 'word-practice.png', heading: /Word Practice/i },
-  { route: '/review', fileName: 'review-queue.png', heading: /Review/i },
-  { route: '/sessions', fileName: 'recent-sessions.png', heading: /Recent Sessions/i },
+const screenMatrix: Array<{
+  route: string;
+  fileName: string;
+  readyText: string;
+}> = [
+  { route: '/', fileName: 'dashboard.png', readyText: 'Dashboard' },
+  {
+    route: '/practice/sentence',
+    fileName: 'sentence-practice.png',
+    readyText: 'Sentence Practice',
+  },
+  {
+    route: '/practice/word',
+    fileName: 'word-practice.png',
+    readyText: 'Word Practice',
+  },
+  { route: '/review', fileName: 'review-queue.png', readyText: 'Review Queue' },
+  {
+    route: '/sessions',
+    fileName: 'recent-sessions.png',
+    readyText: 'Recent Sessions',
+  },
 ];
 
-async function captureRoute(page: Page, route: string, heading: string | RegExp, outputPath: string) {
+async function captureRoute(page: Page, route: string, readyText: string, outputPath: string) {
   await page.goto(route, { waitUntil: 'domcontentloaded' });
   await page.setViewportSize({ width: 1440, height: 920 });
+  await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
 
-  if (typeof heading === 'string') {
-    await expect(page.getByRole('heading', { name: heading }).first()).toBeVisible();
-  } else {
-    await expect(page.getByRole('heading', { name: heading }).first()).toBeVisible();
-  }
+  await page.addStyleTag({
+    content:
+      '*{animation-duration:0s !important;animation-delay:0s !important;transition-duration:0s !important;scroll-behavior:auto !important;}',
+  });
 
-  await page.waitForTimeout(300);
-  await page.screenshot({ path: outputPath, fullPage: true });
+  const readyTarget = page.locator('main').getByRole('heading', { name: readyText }).first();
+  await expect(readyTarget).toBeVisible({ timeout: 15_000 });
+  await expect(readyTarget).toHaveCSS('opacity', '1', { timeout: 15_000 });
+  await page.waitForTimeout(200);
+  await page.screenshot({ path: outputPath, fullPage: false });
 }
 
 test.describe('README screenshots', () => {
@@ -32,7 +51,7 @@ test.describe('README screenshots', () => {
 
     for (const screen of screenMatrix) {
       const outputPath = path.join(OUTPUT_DIR, screen.fileName);
-      await captureRoute(page, screen.route, screen.heading, outputPath);
+      await captureRoute(page, screen.route, screen.readyText, outputPath);
     }
   });
 });
