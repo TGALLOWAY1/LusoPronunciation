@@ -6,6 +6,7 @@
     "dev": "vite",
     "dev:server": "tsx src/server/app.ts",
     "build": "tsc && vite build",
+    "start": "tsx src/server/app.ts",
     "preview": "vite preview",
     "lint": "echo \"lint not configured\"",
     "generate:audio": "node scripts/generate_audio.js",

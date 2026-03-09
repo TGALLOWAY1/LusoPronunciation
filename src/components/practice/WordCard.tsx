@@ -29,6 +29,7 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
   const { selectedVoice } = useSettingsStore();
   const { logWordAttempt } = usePracticeLogStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [latestAttempt, setLatestAttempt] = useState<AttemptScore | null>(null);
   
   const {
@@ -163,7 +164,7 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
       recordingStartTimeRef.current = null;
     } catch (error) {
       console.error('Error submitting word pronunciation assessment:', error);
-      alert(`Failed to assess pronunciation: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setSubmitError(error instanceof Error ? error.message : 'Failed to assess pronunciation. Please try again.');
     } finally {
       setIsSubmitting(false);
       setPendingSubmission(false);
@@ -199,6 +200,7 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
       stopRecording();
     } else {
       // Start recording - track start time for duration calculation
+      setSubmitError(null);
       recordingStartTimeRef.current = Date.now();
       await startRecording();
     }
@@ -417,6 +419,20 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
           <p className="mt-2 text-sm text-red-600 dark:text-red-400">{recorderError}</p>
         )}
       </div>
+
+      {/* Submit error banner */}
+      {submitError && (
+        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start justify-between gap-2">
+          <p className="text-sm text-red-700 dark:text-red-300">{submitError}</p>
+          <button
+            type="button"
+            onClick={() => setSubmitError(null)}
+            className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-200 text-sm font-medium shrink-0"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {/* Pronunciation Feedback - show feedback for the most recent attempt */}
       {latestAttempt && (

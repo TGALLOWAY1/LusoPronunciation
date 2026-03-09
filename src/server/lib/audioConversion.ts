@@ -13,7 +13,7 @@ export class ConvertTimeoutError extends Error {
 export class ConvertFailedError extends Error {
   readonly exitCode?: number | null;
   readonly stderr?: string;
-  override readonly cause?: unknown;
+  readonly cause?: unknown;
 
   constructor(
     message: string,

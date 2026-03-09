@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { ProgressStoreProvider } from '../state/progressStore';
 import { SettingsStoreProvider } from '../state/settingsStore';
 import { PracticeLogStoreProvider } from '../state/practiceLogStore';
@@ -12,10 +12,12 @@ import WordPractice from '../pages/WordPractice';
 import Review from '../pages/Review';
 import RecentSessions from '../pages/RecentSessions';
 import AuthPage from '../pages/AuthPage';
-import PronunciationFixtures from '../pages/dev/pronunciation-fixtures';
-import DevAnalyticsPage from '../pages/dev/DevAnalyticsPage';
-import DevMetricsPage from '../pages/dev/DevMetricsPage';
 import { isAuthenticated, pingSpeechServiceHealth } from '@/api/auth';
+
+// Dev-only pages — lazy loaded and tree-shaken from production bundle
+const PronunciationFixtures = lazy(() => import('../pages/dev/pronunciation-fixtures'));
+const DevAnalyticsPage = lazy(() => import('../pages/dev/DevAnalyticsPage'));
+const DevMetricsPage = lazy(() => import('../pages/dev/DevMetricsPage'));
 
 function AppRoutes() {
   return (
@@ -28,9 +30,13 @@ function AppRoutes() {
           <Route path="/practice/word" element={<WordPractice />} />
           <Route path="/review" element={<Review />} />
           <Route path="/sessions" element={<RecentSessions />} />
-          <Route path="/dev/pronunciation-fixtures" element={<PronunciationFixtures />} />
-          <Route path="/dev/analytics" element={<DevAnalyticsPage />} />
-          <Route path="/dev/metrics" element={<DevMetricsPage />} />
+          {import.meta.env.DEV && (
+            <>
+              <Route path="/dev/pronunciation-fixtures" element={<Suspense fallback={null}><PronunciationFixtures /></Suspense>} />
+              <Route path="/dev/analytics" element={<Suspense fallback={null}><DevAnalyticsPage /></Suspense>} />
+              <Route path="/dev/metrics" element={<Suspense fallback={null}><DevMetricsPage /></Suspense>} />
+            </>
+          )}
         </Routes>
       </AppLayout>
     </BrowserRouter>

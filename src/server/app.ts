@@ -1,4 +1,6 @@
 import express, { Express } from 'express';
+import path from 'path';
+import { existsSync } from 'fs';
 import { config } from 'dotenv';
 import { connectMongo } from './db/mongoClient';
 import healthRouter from './routes/health';
@@ -11,6 +13,7 @@ import {
   pronunciationCorsMiddleware,
   pronunciationRateLimitMiddleware,
 } from './middleware/pronunciationSecurity';
+import { requireAuth } from './middleware/auth';
 
 // Load environment variables
 config();
@@ -30,23 +33,48 @@ app.use('/api/flashcards', flashcardsRouter);
 app.use(
   '/api/pronunciation',
   pronunciationCorsMiddleware,
+  requireAuth,
   pronunciationRateLimitMiddleware,
   pronunciationRouter
 );
 app.use(
   '/api/pronunciation-assessment',
   pronunciationCorsMiddleware,
+  requireAuth,
   pronunciationRateLimitMiddleware,
   legacyPronunciationAssessmentRouter
 );
 
-// Root route
-app.get('/', (_req, res) => {
-  res.json({
-    message: 'LusoPronunciation API',
-    version: '1.0.0',
+// ──────────────── Static SPA Serving (production) ────────────────
+const distPath = path.resolve(__dirname, '../../dist');
+
+if (existsSync(distPath)) {
+  // Serve Vite-built static assets with aggressive caching
+  app.use(express.static(distPath, {
+    maxAge: '1y',
+    immutable: true,
+    // Don't cache index.html itself (must always fetch latest)
+    setHeaders(res, filePath) {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+    },
+  }));
+
+  // SPA fallback — serve index.html for all non-API routes
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
   });
-});
+} else {
+  // Dev/API-only mode — no SPA built yet
+  app.get('/', (_req, res) => {
+    res.json({
+      message: 'LusoPronunciation API',
+      version: '1.0.0',
+      note: 'Run "npm run build" to enable SPA serving.',
+    });
+  });
+}
 
 /**
  * Starts the Express server

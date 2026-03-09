@@ -12,6 +12,7 @@ export default function AuthForm({ onSuccess, initialMode = 'login' }: AuthFormP
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [inviteCode, setInviteCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -22,9 +23,14 @@ export default function AuthForm({ onSuccess, initialMode = 'login' }: AuthFormP
 
     try {
       let response: AuthResponse;
-      
+
       if (mode === 'register') {
-        response = await register(email, password, displayName || undefined);
+        response = await register(
+          email,
+          password,
+          displayName || undefined,
+          inviteCode || undefined
+        );
       } else {
         response = await login(email, password);
       }
@@ -51,19 +57,40 @@ export default function AuthForm({ onSuccess, initialMode = 'login' }: AuthFormP
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {mode === 'register' && (
-          <div>
-            <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-1">
-              Display Name (optional)
-            </label>
-            <input
-              id="displayName"
-              type="text"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Your name"
-            />
-          </div>
+          <>
+            <div>
+              <label htmlFor="inviteCode" className="block text-sm font-medium text-gray-700 mb-1">
+                Invite Code
+              </label>
+              <input
+                id="inviteCode"
+                type="text"
+                value={inviteCode}
+                onChange={(e) => setInviteCode(e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
+                placeholder="Enter your invite code"
+                autoComplete="off"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Contact the app owner for an invite code.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-1">
+                Display Name (optional)
+              </label>
+              <input
+                id="displayName"
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Your name"
+              />
+            </div>
+          </>
         )}
 
         <div>
@@ -123,4 +150,3 @@ export default function AuthForm({ onSuccess, initialMode = 'login' }: AuthFormP
     </div>
   );
 }
-

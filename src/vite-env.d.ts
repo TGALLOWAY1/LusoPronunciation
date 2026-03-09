@@ -1,10 +1,9 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_AZURE_SPEECH_KEY?: string;
-  readonly VITE_AZURE_SPEECH_REGION?: string;
+  readonly VITE_ENABLE_DEV_ANALYTICS?: string;
+  readonly VITE_CONTENT_SOURCE?: string;
   readonly DEV?: boolean;
-  // Add other env vars as needed
 }
 
 interface ImportMeta {

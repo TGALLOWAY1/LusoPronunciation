@@ -8,6 +8,7 @@ import { useSettingsStore } from '@/state/settingsStore';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import PremiumRecordButton from '@/components/common/PremiumRecordButton';
+import { getAuthHeader } from '@/api/auth';
 
 interface SentenceCardProps {
   sentence: Sentence;
@@ -20,6 +21,7 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
   const { selectedVoice } = useSettingsStore();
   const { logSentenceAttempt } = usePracticeLogStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [attempts, setAttempts] = useState<AttemptScore[]>([]);
   // Store raw Azure responses keyed by attemptId for phoneme extraction
   const [rawAzureResponses, setRawAzureResponses] = useState<Map<string, any>>(new Map());
@@ -72,8 +74,13 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       formData.append('language', 'pt-BR');
 
       // POST to API endpoint
+      const headers: Record<string, string> = {};
+      const authHeaderValue = getAuthHeader();
+      if (authHeaderValue) headers['Authorization'] = authHeaderValue;
+
       const response = await fetch('/api/pronunciation/assessment', {
         method: 'POST',
+        headers,
         body: formData,
       });
 
@@ -169,7 +176,7 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       recordingStartTimeRef.current = null;
     } catch (error) {
       console.error('Error submitting pronunciation assessment:', error);
-      alert(`Failed to assess pronunciation: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setSubmitError(error instanceof Error ? error.message : 'Failed to assess pronunciation. Please try again.');
     } finally {
       setIsSubmitting(false);
       setPendingSubmission(false);
@@ -207,6 +214,7 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       stopRecording();
     } else {
       // Start recording - track start time for duration calculation
+      setSubmitError(null);
       recordingStartTimeRef.current = Date.now();
       await startRecording();
     }
@@ -309,6 +317,20 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
           <p className="mt-2 text-sm text-red-600 dark:text-red-400">{recorderError}</p>
         )}
       </div>
+
+      {/* Submit error banner */}
+      {submitError && (
+        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start justify-between gap-2">
+          <p className="text-sm text-red-700 dark:text-red-300">{submitError}</p>
+          <button
+            type="button"
+            onClick={() => setSubmitError(null)}
+            className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-200 text-sm font-medium shrink-0"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {/* Pronunciation Feedback - always show panel scaffold, even before first attempt */}
       <SentenceFeedback 

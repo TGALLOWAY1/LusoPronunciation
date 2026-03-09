@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserModel } from '../models/UserModel';
+import { InviteCodeModel } from '../models/InviteCodeModel';
 import { mapUserDocToDto } from '../mappers/userMapper';
 
 const router = Router();
@@ -53,13 +54,13 @@ function isValidEmail(email: string): boolean {
 
 /**
  * POST /api/auth/register
- * 
- * Body: { email, password, displayName? }
+ *
+ * Body: { email, password, displayName?, inviteCode? }
  * Returns: { token, user: { id, email, displayName } }
  */
 router.post('/register', async (req: Request, res: Response) => {
   try {
-    const { email, password, displayName } = req.body;
+    const { email, password, displayName, inviteCode } = req.body;
 
     // Validate input
     if (!email || typeof email !== 'string' || !isValidEmail(email)) {
@@ -74,6 +75,42 @@ router.post('/register', async (req: Request, res: Response) => {
         error: 'Invalid password',
         message: 'Password must be at least 6 characters long',
       });
+    }
+
+    // ──────────────── Invite code validation ────────────────
+    const requireInvite = process.env.REQUIRE_INVITE_CODE !== 'false';
+
+    if (requireInvite) {
+      if (!inviteCode || typeof inviteCode !== 'string' || inviteCode.trim() === '') {
+        return res.status(403).json({
+          error: 'Invite code required',
+          message: 'An invite code is required to register. Contact the app owner for access.',
+        });
+      }
+
+      const normalizedCode = inviteCode.trim().toUpperCase();
+      const invite = await InviteCodeModel.findOne({ code: normalizedCode });
+
+      if (!invite || !invite.isActive) {
+        return res.status(403).json({
+          error: 'Invalid invite code',
+          message: 'This invite code is not valid.',
+        });
+      }
+
+      if (invite.expiresAt && invite.expiresAt < new Date()) {
+        return res.status(403).json({
+          error: 'Expired invite code',
+          message: 'This invite code has expired.',
+        });
+      }
+
+      if (invite.usedCount >= invite.maxUses) {
+        return res.status(403).json({
+          error: 'Invite code used',
+          message: 'This invite code has reached its usage limit.',
+        });
+      }
     }
 
     // Check if user already exists
@@ -97,6 +134,18 @@ router.post('/register', async (req: Request, res: Response) => {
     });
 
     await userDoc.save();
+
+    // Record invite usage (atomic update)
+    if (requireInvite && inviteCode) {
+      const normalizedCode = inviteCode.trim().toUpperCase();
+      await InviteCodeModel.updateOne(
+        { code: normalizedCode },
+        {
+          $inc: { usedCount: 1 },
+          $push: { usedBy: userDoc._id },
+        }
+      );
+    }
 
     // Generate token
     const token = generateToken(userDoc._id.toString(), userDoc.email);

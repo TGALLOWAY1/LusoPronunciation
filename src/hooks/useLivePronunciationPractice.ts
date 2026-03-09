@@ -13,6 +13,7 @@ import {
 } from '@/lib/attemptMetrics';
 import { ERROR_CLASS, isErrorClass } from '@/lib/errorTaxonomy';
 import { writeSpeechServiceHealthRecord } from '@/lib/speechServiceHealth';
+import { getAuthHeader } from '@/api/auth';
 
 /**
  * Response type from the pronunciation assessment API
@@ -326,8 +327,13 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       formData.append('language', 'pt-BR');
 
       // POST to API endpoint
+      const fetchHeaders: Record<string, string> = {};
+      const authHeaderValue = getAuthHeader();
+      if (authHeaderValue) fetchHeaders['Authorization'] = authHeaderValue;
+
       const response = await fetch('/api/pronunciation/assessment', {
         method: 'POST',
+        headers: fetchHeaders,
         body: formData,
         signal: abortController.signal,
       });
