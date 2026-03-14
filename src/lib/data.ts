@@ -529,11 +529,52 @@ export async function loadAllCategories(): Promise<Category[]> {
   }
 
   try {
-    const response = await fetch('/STATIC DATA/sentences.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load categories: ${response.statusText}`);
+    const categoryLabels = await loadCategoryLabels();
+
+    const masterResponse = await fetch('/data/masterSentences.json');
+    if (masterResponse.ok) {
+      const enrichedSentences: EnrichedSentence[] = await masterResponse.json();
+      if (enrichedSentences.length > 0) {
+        const activeCategoryIds = new Set(
+          enrichedSentences
+            .map(sentence => sentence.category)
+            .filter((categoryId): categoryId is string => Boolean(categoryId))
+        );
+
+        const categories: Category[] = [];
+
+        for (const [id, labels] of categoryLabels.entries()) {
+          if (activeCategoryIds.has(id)) {
+            categories.push({
+              id,
+              labelEn: labels.labelEn,
+              labelPt: labels.labelPt,
+            });
+            activeCategoryIds.delete(id);
+          }
+        }
+
+        for (const id of activeCategoryIds) {
+          categories.push({
+            id,
+            labelEn: id,
+            labelPt: id,
+          });
+        }
+
+        cachedCategories = categories;
+        return categories;
+      }
     }
-    
+
+    let response = await fetch('/data/sentences.json');
+    if (!response.ok) {
+      response = await fetch('/STATIC DATA/sentences.json');
+      if (!response.ok) {
+        throw new Error(`Failed to load categories: ${response.statusText}`);
+      }
+    }
+
     const data: SentencesData = await response.json();
     
     const categories: Category[] = data.categories.map(cat => ({
