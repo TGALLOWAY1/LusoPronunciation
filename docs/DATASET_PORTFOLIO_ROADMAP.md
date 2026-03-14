@@ -4,16 +4,16 @@ This roadmap turns the current sentence and word corpus into a portfolio-grade d
 
 ## Current Baseline
 
-Measured with `npm run audit:dataset` after bucket completion, alias-aware matching, and the supplemental coverage lexicon pass:
+Measured with `npm run audit:dataset` after bucket completion, alias-aware matching, the supplemental coverage lexicon pass, and phase 5 batch 01:
 
-- Raw sentences: 511
-- Master sentences: 503
+- Raw sentences: 551
+- Master sentences: 543
 - Raw words: 975
 - Master words: 974
-- Sentence audio variants ready: 1006/1006
+- Sentence audio variants ready: 1086/1086
 - Word audio variants ready: 1948/1948
 - Sentence token coverage by word inventory: 100.0%
-- Fully covered sentences: 511/511
+- Fully covered sentences: 551/551
 - Sentences with zero word refs: 0
 - Empty sentence category/difficulty buckets: 0
 - Difficulty 5 sentences: present in all active categories
@@ -138,12 +138,25 @@ Success criteria:
 
 ### Phase 5: Controlled corpus expansion
 
-Only after phases 2 to 4 are stable:
+In progress.
 
-- expand from ~500 to 1,000 to 1,500 sentences
-- regenerate audio for the expanded corpus
-- rerun dataset audit and pipeline validation
-- spot-check naturalness, translation quality, and pronunciation coaching usefulness
+Done in this pass:
+
+- Allow the pipeline and audit to load multiple raw sentence sources instead of one monolithic file.
+- Start a dedicated batch folder at `data/sentence_expansions/`.
+- Add phase 5 batch 01 with 40 curated sentences:
+  - 1 new level 1 sentence per category
+  - 1 new level 2 sentence per category
+  - 1 new level 4 sentence per category
+  - 1 new level 5 sentence per category
+- Regenerate sentence audio, master datasets, and audio index for the expanded corpus.
+
+Next work:
+
+- keep adding curated batch files instead of editing the legacy base source directly
+- prioritize the weakest category/difficulty buckets first
+- push every category toward the 20 to 30 sentence per difficulty target without reopening coverage gaps
+- spot-check naturalness and translation quality after each batch
 
 ## Operational Rules
 

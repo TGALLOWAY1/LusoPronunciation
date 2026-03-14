@@ -43,7 +43,10 @@ const generationPipelineConfig: GenerationPipelineConfig = {
   ],
   paths: {
     rawWordsJsonPath: "STATIC DATA/words.json",
-    rawSentencesJsonPath: "data/sentences.json",
+    rawSentencesJsonPath: [
+      "data/sentences.json",
+      "data/sentence_expansions/phase5_batch_01.json",
+    ],
     masterWordsPath: "data/masterWords.json",
     masterSentencesPath: "data/masterSentences.json",
     audioBaseDir: "public/audio",
@@ -62,4 +65,3 @@ const generationPipelineConfig: GenerationPipelineConfig = {
 };
 
 export default generationPipelineConfig;
-
