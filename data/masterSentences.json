@@ -19700,5 +19700,1988 @@
         "tokenIndex": 9
       }
     ]
+  },
+  {
+    "id": "phase5_batch02_food_001",
+    "text": "Mais água, por favor.",
+    "normalizedText": "mais água, por favor.",
+    "en": "More water, please.",
+    "category": "food",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_109",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "food_word_001",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "basic_007",
+        "tokenIndex": 2
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_food_002",
+    "text": "O jantar está quase pronto.",
+    "normalizedText": "o jantar está quase pronto.",
+    "en": "Dinner is almost ready.",
+    "category": "food",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 15,
+    "wordRefs": [
+      {
+        "wordId": "food_word_019",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_074",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_353",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_354",
+        "tokenIndex": 4
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_food_003",
+    "text": "Você quer dividir a sobremesa comigo?",
+    "normalizedText": "você quer dividir a sobremesa comigo?",
+    "en": "Do you want to share dessert with me?",
+    "category": "food",
+    "difficulty": 3,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 18,
+    "wordRefs": [
+      {
+        "wordId": "misc_205",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_162",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_021",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "food_word_021",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_287",
+        "tokenIndex": 5
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_food_004",
+    "text": "Se o atendimento não for ótimo, eu volto mais tarde.",
+    "normalizedText": "se o atendimento não for ótimo, eu volto mais tarde.",
+    "en": "If the service isn't great, I'll come back later.",
+    "category": "food",
+    "difficulty": 4,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 60,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_033",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "basic_011",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "coverage_034",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "coverage_158",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "coverage_032",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_109",
+        "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_food_005",
+    "text": "Mesmo quando eu já comi, eu gosto de conversar durante o café.",
+    "normalizedText": "mesmo quando eu já comi, eu gosto de conversar durante o café.",
+    "en": "Even when I've already eaten, I like to sit and talk over coffee.",
+    "category": "food",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [
+      "high_syllable_count"
+    ],
+    "cefr": "B1",
+    "difficultyScore": 51,
+    "wordRefs": [
+      {
+        "wordId": "coverage_102",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_159",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_217",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "coverage_007",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_093",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_030",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "coverage_147",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "food_word_005",
+        "tokenIndex": 11
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_travel_001",
+    "text": "Meu passaporte está aqui.",
+    "normalizedText": "meu passaporte está aqui.",
+    "en": "My passport is here.",
+    "category": "travel",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_114",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_042",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_074",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_016",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_travel_002",
+    "text": "O embarque é agora?",
+    "normalizedText": "o embarque é agora?",
+    "en": "Is boarding now?",
+    "category": "travel",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "coverage_047",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "time_004",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_travel_003",
+    "text": "Posso confirmar o embarque no aplicativo?",
+    "normalizedText": "posso confirmar o embarque no aplicativo?",
+    "en": "Can I confirm boarding in the app?",
+    "category": "travel",
+    "difficulty": 3,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 18,
+    "wordRefs": [
+      {
+        "wordId": "misc_150",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_249",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_047",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_125",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "coverage_275",
+        "tokenIndex": 5
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_travel_004",
+    "text": "Se o hotel não tiver wi-fi, eu preciso de outro lugar.",
+    "normalizedText": "se o hotel não tiver wi-fi, eu preciso de outro lugar.",
+    "en": "If the hotel doesn't have Wi-Fi, I need another place.",
+    "category": "travel",
+    "difficulty": 4,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 78,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "travel_word_008",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "basic_011",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "coverage_354",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "coverage_040",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_152",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "misc_132",
+        "tokenIndex": 10
+      },
+      {
+        "wordId": "misc_106",
+        "tokenIndex": 11
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_travel_005",
+    "text": "Se o voo mudar, eu fico calmo no aeroporto.",
+    "normalizedText": "se o voo mudar, eu fico calmo no aeroporto.",
+    "en": "If the flight changes, I stay calm at the airport.",
+    "category": "travel",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 27,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_344",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_051",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_081",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "coverage_191",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_125",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "travel_word_002",
+        "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_family_friends_001",
+    "text": "Meu tio vem hoje.",
+    "normalizedText": "meu tio vem hoje.",
+    "en": "My uncle is coming today.",
+    "category": "family_friends",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_114",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "fam_word_017",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_199",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "time_001",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_family_friends_002",
+    "text": "Minha sobrinha adora chocolate.",
+    "normalizedText": "minha sobrinha adora chocolate.",
+    "en": "My niece loves chocolate.",
+    "category": "family_friends",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_117",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_065",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_069",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_080",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_family_friends_003",
+    "text": "A gente vai ao aniversário da minha irmã.",
+    "normalizedText": "a gente vai ao aniversário da minha irmã.",
+    "en": "We're going to my sister's birthday.",
+    "category": "family_friends",
+    "difficulty": 3,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 54,
+    "wordRefs": [
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_089",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_218",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_258",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "coverage_064",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_057",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_117",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "fam_word_005",
+        "tokenIndex": 7
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_family_friends_004",
+    "text": "Se meus sogros estão aqui, eu preparo o almoço.",
+    "normalizedText": "se meus sogros estão aqui, eu preparo o almoço.",
+    "en": "If my in-laws are here, I prepare lunch.",
+    "category": "family_friends",
+    "difficulty": 4,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 57,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_115",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_068",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "verb_002",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_016",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "coverage_144",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "food_word_018",
+        "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_family_friends_005",
+    "text": "Mesmo quando cada um está ocupado, a família se reúne mais tarde.",
+    "normalizedText": "mesmo quando cada um está ocupado, a família se reúne mais tarde.",
+    "en": "Even when everyone is busy, the family gets together later.",
+    "category": "family_friends",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [
+      "high_syllable_count"
+    ],
+    "cefr": "B1",
+    "difficultyScore": 51,
+    "wordRefs": [
+      {
+        "wordId": "coverage_102",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_159",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_103",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "num_001",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_074",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "coverage_104",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "fam_word_001",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "coverage_073",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "misc_109",
+        "tokenIndex": 10
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_daily_routine_001",
+    "text": "Eu tomo banho agora.",
+    "normalizedText": "eu tomo banho agora.",
+    "en": "I'm taking a shower now.",
+    "category": "daily_routine",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_190",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "time_004",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_daily_routine_002",
+    "text": "Eu preparo o jantar em casa.",
+    "normalizedText": "eu preparo o jantar em casa.",
+    "en": "I prepare dinner at home.",
+    "category": "daily_routine",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 18,
+    "wordRefs": [
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_144",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "food_word_019",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_059",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "house_001",
+        "tokenIndex": 5
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_daily_routine_003",
+    "text": "Antes de dormir, eu leio um pouco.",
+    "normalizedText": "antes de dormir, eu leio um pouco.",
+    "en": "Before going to sleep, I read a little.",
+    "category": "daily_routine",
+    "difficulty": 3,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 21,
+    "wordRefs": [
+      {
+        "wordId": "misc_014",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "daily_word_002",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "coverage_125",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "num_001",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_151",
+        "tokenIndex": 6
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_daily_routine_004",
+    "text": "Quando eu volto do trabalho, eu lavo a louça e organizo a casa.",
+    "normalizedText": "quando eu volto do trabalho, eu lavo a louça e organizo a casa.",
+    "en": "When I get back from work, I wash the dishes and organize the house.",
+    "category": "daily_routine",
+    "difficulty": 4,
+    "hardForEnglish": true,
+    "tags": [
+      "has_lh",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 84,
+    "wordRefs": [
+      {
+        "wordId": "misc_159",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_032",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_052",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_192",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "coverage_122",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "coverage_151",
+        "tokenIndex": 10
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 11
+      },
+      {
+        "wordId": "house_001",
+        "tokenIndex": 12
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_daily_routine_005",
+    "text": "Se eu não coloco o celular para carregar, eu acabo atrasando.",
+    "normalizedText": "se eu não coloco o celular para carregar, eu acabo atrasando.",
+    "en": "If I don't put my phone on the charger, I end up running late.",
+    "category": "daily_routine",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "has_rr",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 88,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "basic_011",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_137",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_235",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_137",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "coverage_138",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "coverage_153",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "coverage_154",
+        "tokenIndex": 10
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_feelings_001",
+    "text": "Hoje estou tranquilo.",
+    "normalizedText": "hoje estou tranquilo.",
+    "en": "Today I'm calm.",
+    "category": "feelings",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 9,
+    "wordRefs": [
+      {
+        "wordId": "time_001",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_072",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_334",
+        "tokenIndex": 2
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_feelings_002",
+    "text": "Fiquei contente com a notícia.",
+    "normalizedText": "fiquei contente com a notícia.",
+    "en": "I was happy about the news.",
+    "category": "feelings",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 15,
+    "wordRefs": [
+      {
+        "wordId": "misc_228",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_161",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_321",
+        "tokenIndex": 4
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_feelings_003",
+    "text": "Essa surpresa foi incrível.",
+    "normalizedText": "essa surpresa foi incrível.",
+    "en": "That surprise was amazing.",
+    "category": "feelings",
+    "difficulty": 3,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_069",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_183",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_083",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_188",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_feelings_004",
+    "text": "Mesmo com vergonha, eu consegui falar com todo mundo.",
+    "normalizedText": "mesmo com vergonha, eu consegui falar com todo mundo.",
+    "en": "Even though I was embarrassed, I managed to talk to everyone.",
+    "category": "feelings",
+    "difficulty": 4,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 27,
+    "wordRefs": [
+      {
+        "wordId": "coverage_102",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_192",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "coverage_313",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "verb_008",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_275",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_227",
+        "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_feelings_005",
+    "text": "Quando eu fico preocupado, eu foco no progresso.",
+    "normalizedText": "quando eu fico preocupado, eu foco no progresso.",
+    "en": "When I get worried, I focus on progress.",
+    "category": "feelings",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 24,
+    "wordRefs": [
+      {
+        "wordId": "misc_159",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_081",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_179",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "coverage_155",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_125",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "coverage_173",
+        "tokenIndex": 7
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_questions_001",
+    "text": "Pode repetir isso?",
+    "normalizedText": "pode repetir isso?",
+    "en": "Can you repeat that?",
+    "category": "questions",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 9,
+    "wordRefs": [
+      {
+        "wordId": "misc_147",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_165",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_101",
+        "tokenIndex": 2
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_questions_002",
+    "text": "Qual palavra você disse?",
+    "normalizedText": "qual palavra você disse?",
+    "en": "Which word did you say?",
+    "category": "questions",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_216",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_136",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_205",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_212",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_questions_003",
+    "text": "Você pode me mostrar como se escreve esse nome?",
+    "normalizedText": "você pode me mostrar como se escreve esse nome?",
+    "en": "Can you show me how to write that name?",
+    "category": "questions",
+    "difficulty": 3,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 27,
+    "wordRefs": [
+      {
+        "wordId": "misc_205",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_147",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_111",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_119",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_027",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "coverage_214",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_226",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_319",
+        "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_questions_004",
+    "text": "Se eu tenho dúvida, posso pedir outro exemplo?",
+    "normalizedText": "se eu tenho dúvida, posso pedir outro exemplo?",
+    "en": "If I have a question, can I ask for another example?",
+    "category": "questions",
+    "difficulty": 4,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 24,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_186",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_213",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_150",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_271",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_132",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "coverage_208",
+        "tokenIndex": 7
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_questions_005",
+    "text": "Quando eu tiver uma dúvida, eu quero verificar a informação.",
+    "normalizedText": "quando eu tiver uma dúvida, eu quero verificar a informação.",
+    "en": "When I have a question, I want to verify the information.",
+    "category": "questions",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 60,
+    "wordRefs": [
+      {
+        "wordId": "misc_159",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_354",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_196",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "coverage_213",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "coverage_248",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "coverage_221",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "coverage_217",
+        "tokenIndex": 9
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_shopping_001",
+    "text": "Esse valor está certo?",
+    "normalizedText": "esse valor está certo?",
+    "en": "Is this amount right?",
+    "category": "shopping",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_226",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_247",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_074",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_021",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_shopping_002",
+    "text": "Posso provar esta camisa?",
+    "normalizedText": "posso provar esta camisa?",
+    "en": "Can I try on this shirt?",
+    "category": "shopping",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 12,
+    "wordRefs": [
+      {
+        "wordId": "misc_150",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_226",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_074",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "cloth_002",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_shopping_003",
+    "text": "A promoção é para cartão de débito?",
+    "normalizedText": "a promoção é para cartão de débito?",
+    "en": "Is the sale for debit card purchases?",
+    "category": "shopping",
+    "difficulty": 3,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 51,
+    "wordRefs": [
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_237",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_137",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_020",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "coverage_229",
+        "tokenIndex": 6
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_shopping_004",
+    "text": "Se eu pagar em dinheiro, tem troco?",
+    "normalizedText": "se eu pagar em dinheiro, tem troco?",
+    "en": "If I pay in cash, do you have change?",
+    "category": "shopping",
+    "difficulty": 4,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 21,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_134",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_059",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_047",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_184",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "coverage_233",
+        "tokenIndex": 6
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_shopping_005",
+    "text": "Se a garantia cobre tudo, eu levo hoje.",
+    "normalizedText": "se a garantia cobre tudo, eu levo hoje.",
+    "en": "If the warranty covers everything, I'll take it today.",
+    "category": "shopping",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 24,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_250",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_251",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_212",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_349",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "time_001",
+        "tokenIndex": 7
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_directions_001",
+    "text": "É perto daqui?",
+    "normalizedText": "é perto daqui?",
+    "en": "Is it close to here?",
+    "category": "directions",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 9,
+    "wordRefs": [
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_145",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_036",
+        "tokenIndex": 2
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_directions_002",
+    "text": "O metrô passa por aqui?",
+    "normalizedText": "o metrô passa por aqui?",
+    "en": "Does the metro come through here?",
+    "category": "directions",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 15,
+    "wordRefs": [
+      {
+        "wordId": "travel_word_016",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_270",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_214",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_016",
+        "tokenIndex": 4
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_directions_003",
+    "text": "Depois do semáforo, é à esquerda?",
+    "normalizedText": "depois do semáforo, é à esquerda?",
+    "en": "After the traffic light, is it on the left?",
+    "category": "directions",
+    "difficulty": 3,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 18,
+    "wordRefs": [
+      {
+        "wordId": "misc_040",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_052",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_256",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_067",
+        "tokenIndex": 5
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_directions_004",
+    "text": "Se eu descer na Central, ainda preciso fazer baldeação?",
+    "normalizedText": "se eu descer na central, ainda preciso fazer baldeação?",
+    "en": "If I get off at Central, do I still need to transfer?",
+    "category": "directions",
+    "difficulty": 4,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 57,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_265",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_122",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "coverage_266",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_278",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_152",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "verb_005",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "coverage_271",
+        "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_directions_005",
+    "text": "Se a avenida fechar agora, qual caminho é melhor?",
+    "normalizedText": "se a avenida fechar agora, qual caminho é melhor?",
+    "en": "If the avenue closes now, which route is better?",
+    "category": "directions",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_lh"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 57,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_260",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_302",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "time_004",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_216",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_286",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_112",
+        "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_work_study_001",
+    "text": "A reunião é hoje?",
+    "normalizedText": "a reunião é hoje?",
+    "en": "Is the meeting today?",
+    "category": "work_study",
+    "difficulty": 1,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 42,
+    "wordRefs": [
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "daily_word_020",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "time_001",
+        "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_work_study_002",
+    "text": "Meu professor explicou de novo.",
+    "normalizedText": "meu professor explicou de novo.",
+    "en": "My teacher explained it again.",
+    "category": "work_study",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 15,
+    "wordRefs": [
+      {
+        "wordId": "misc_114",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_299",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_300",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "adj_006",
+        "tokenIndex": 4
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_work_study_003",
+    "text": "Eu preparo o relatório antes da aula.",
+    "normalizedText": "eu preparo o relatório antes da aula.",
+    "en": "I prepare the report before class.",
+    "category": "work_study",
+    "difficulty": 3,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 21,
+    "wordRefs": [
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_144",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_288",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_014",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_057",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_283",
+        "tokenIndex": 6
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_work_study_004",
+    "text": "Se a entrevista for amanhã, eu preparo tudo hoje à noite.",
+    "normalizedText": "se a entrevista for amanhã, eu preparo tudo hoje à noite.",
+    "en": "If the interview is tomorrow, I'll prepare everything tonight.",
+    "category": "work_study",
+    "difficulty": 4,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 78,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "coverage_291",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_034",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "time_002",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "coverage_144",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_212",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "time_001",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 9
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_work_study_005",
+    "text": "Mesmo com home office, a carga horária fica difícil.",
+    "normalizedText": "mesmo com home office, a carga horária fica difícil.",
+    "en": "Even with remote work, the workload gets difficult.",
+    "category": "work_study",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 27,
+    "wordRefs": [
+      {
+        "wordId": "coverage_102",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "coverage_290",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "coverage_327",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "coverage_328",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_080",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "coverage_309",
+        "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_small_talk_001",
+    "text": "Tudo bem hoje?",
+    "normalizedText": "tudo bem hoje?",
+    "en": "Everything good today?",
+    "category": "small_talk",
+    "difficulty": 1,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A1",
+    "difficultyScore": 9,
+    "wordRefs": [
+      {
+        "wordId": "basic_013",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "time_001",
+        "tokenIndex": 2
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_small_talk_002",
+    "text": "Você viu o jogo ontem?",
+    "normalizedText": "você viu o jogo ontem?",
+    "en": "Did you see the game yesterday?",
+    "category": "small_talk",
+    "difficulty": 2,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 15,
+    "wordRefs": [
+      {
+        "wordId": "misc_205",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "verb_009",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_357",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "time_003",
+        "tokenIndex": 4
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_small_talk_003",
+    "text": "No fim de semana, eu fico em casa.",
+    "normalizedText": "no fim de semana, eu fico em casa.",
+    "en": "On the weekend, I stay home.",
+    "category": "small_talk",
+    "difficulty": 3,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 24,
+    "wordRefs": [
+      {
+        "wordId": "misc_125",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_082",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "time_005",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_081",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_059",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "house_001",
+        "tokenIndex": 7
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_small_talk_004",
+    "text": "Se o tempo ficar bom, podemos tomar um café ali.",
+    "normalizedText": "se o tempo ficar bom, podemos tomar um café ali.",
+    "en": "If the weather turns nice, we can grab a coffee over there.",
+    "category": "small_talk",
+    "difficulty": 4,
+    "hardForEnglish": false,
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 30,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_185",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "verb_014",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "adj_001",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "verb_006",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "num_001",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "food_word_005",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "coverage_258",
+        "tokenIndex": 9
+      }
+    ]
+  },
+  {
+    "id": "phase5_batch02_small_talk_005",
+    "text": "Mesmo com muito calor, eu gosto de caminhar no fim da tarde.",
+    "normalizedText": "mesmo com muito calor, eu gosto de caminhar no fim da tarde.",
+    "en": "Even when it's very hot, I like to walk in the late afternoon.",
+    "category": "small_talk",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [
+      "high_syllable_count"
+    ],
+    "cefr": "B1",
+    "difficultyScore": 51,
+    "wordRefs": [
+      {
+        "wordId": "coverage_102",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_121",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "coverage_335",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_093",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "daily_word_013",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_125",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "misc_082",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "misc_057",
+        "tokenIndex": 10
+      }
+    ]
   }
 ]

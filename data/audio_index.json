@@ -21236,5 +21236,705 @@
       "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch01_small_talk_004.wav",
       "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch01_small_talk_004.wav"
     }
+  },
+  "phase5_batch02_food_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_food_001",
+    "textPt": "Mais água, por favor.",
+    "textEn": "More water, please.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_food_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_food_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_food_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_food_001.wav"
+    }
+  },
+  "phase5_batch02_food_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_food_002",
+    "textPt": "O jantar está quase pronto.",
+    "textEn": "Dinner is almost ready.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_food_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_food_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_food_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_food_002.wav"
+    }
+  },
+  "phase5_batch02_food_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_food_003",
+    "textPt": "Você quer dividir a sobremesa comigo?",
+    "textEn": "Do you want to share dessert with me?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_food_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_food_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_food_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_food_003.wav"
+    }
+  },
+  "phase5_batch02_food_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_food_004",
+    "textPt": "Se o atendimento não for ótimo, eu volto mais tarde.",
+    "textEn": "If the service isn't great, I'll come back later.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_food_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_food_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_food_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_food_004.wav"
+    }
+  },
+  "phase5_batch02_food_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_food_005",
+    "textPt": "Mesmo quando eu já comi, eu gosto de conversar durante o café.",
+    "textEn": "Even when I've already eaten, I like to sit and talk over coffee.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_food_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_food_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_food_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_food_005.wav"
+    }
+  },
+  "phase5_batch02_travel_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_travel_001",
+    "textPt": "Meu passaporte está aqui.",
+    "textEn": "My passport is here.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_travel_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_travel_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_travel_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_travel_001.wav"
+    }
+  },
+  "phase5_batch02_travel_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_travel_002",
+    "textPt": "O embarque é agora?",
+    "textEn": "Is boarding now?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_travel_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_travel_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_travel_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_travel_002.wav"
+    }
+  },
+  "phase5_batch02_travel_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_travel_003",
+    "textPt": "Posso confirmar o embarque no aplicativo?",
+    "textEn": "Can I confirm boarding in the app?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_travel_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_travel_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_travel_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_travel_003.wav"
+    }
+  },
+  "phase5_batch02_travel_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_travel_004",
+    "textPt": "Se o hotel não tiver wi-fi, eu preciso de outro lugar.",
+    "textEn": "If the hotel doesn't have Wi-Fi, I need another place.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_travel_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_travel_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_travel_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_travel_004.wav"
+    }
+  },
+  "phase5_batch02_travel_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_travel_005",
+    "textPt": "Se o voo mudar, eu fico calmo no aeroporto.",
+    "textEn": "If the flight changes, I stay calm at the airport.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_travel_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_travel_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_travel_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_travel_005.wav"
+    }
+  },
+  "phase5_batch02_family_friends_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_family_friends_001",
+    "textPt": "Meu tio vem hoje.",
+    "textEn": "My uncle is coming today.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_family_friends_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_family_friends_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_family_friends_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_family_friends_001.wav"
+    }
+  },
+  "phase5_batch02_family_friends_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_family_friends_002",
+    "textPt": "Minha sobrinha adora chocolate.",
+    "textEn": "My niece loves chocolate.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_family_friends_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_family_friends_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_family_friends_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_family_friends_002.wav"
+    }
+  },
+  "phase5_batch02_family_friends_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_family_friends_003",
+    "textPt": "A gente vai ao aniversário da minha irmã.",
+    "textEn": "We're going to my sister's birthday.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_family_friends_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_family_friends_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_family_friends_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_family_friends_003.wav"
+    }
+  },
+  "phase5_batch02_family_friends_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_family_friends_004",
+    "textPt": "Se meus sogros estão aqui, eu preparo o almoço.",
+    "textEn": "If my in-laws are here, I prepare lunch.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_family_friends_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_family_friends_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_family_friends_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_family_friends_004.wav"
+    }
+  },
+  "phase5_batch02_family_friends_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_family_friends_005",
+    "textPt": "Mesmo quando cada um está ocupado, a família se reúne mais tarde.",
+    "textEn": "Even when everyone is busy, the family gets together later.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_family_friends_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_family_friends_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_family_friends_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_family_friends_005.wav"
+    }
+  },
+  "phase5_batch02_daily_routine_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_daily_routine_001",
+    "textPt": "Eu tomo banho agora.",
+    "textEn": "I'm taking a shower now.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_daily_routine_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_daily_routine_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_daily_routine_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_daily_routine_001.wav"
+    }
+  },
+  "phase5_batch02_daily_routine_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_daily_routine_002",
+    "textPt": "Eu preparo o jantar em casa.",
+    "textEn": "I prepare dinner at home.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_daily_routine_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_daily_routine_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_daily_routine_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_daily_routine_002.wav"
+    }
+  },
+  "phase5_batch02_daily_routine_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_daily_routine_003",
+    "textPt": "Antes de dormir, eu leio um pouco.",
+    "textEn": "Before going to sleep, I read a little.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_daily_routine_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_daily_routine_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_daily_routine_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_daily_routine_003.wav"
+    }
+  },
+  "phase5_batch02_daily_routine_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_daily_routine_004",
+    "textPt": "Quando eu volto do trabalho, eu lavo a louça e organizo a casa.",
+    "textEn": "When I get back from work, I wash the dishes and organize the house.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_daily_routine_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_daily_routine_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_daily_routine_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_daily_routine_004.wav"
+    }
+  },
+  "phase5_batch02_daily_routine_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_daily_routine_005",
+    "textPt": "Se eu não coloco o celular para carregar, eu acabo atrasando.",
+    "textEn": "If I don't put my phone on the charger, I end up running late.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_daily_routine_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_daily_routine_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_daily_routine_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_daily_routine_005.wav"
+    }
+  },
+  "phase5_batch02_feelings_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_feelings_001",
+    "textPt": "Hoje estou tranquilo.",
+    "textEn": "Today I'm calm.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_feelings_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_feelings_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_feelings_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_feelings_001.wav"
+    }
+  },
+  "phase5_batch02_feelings_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_feelings_002",
+    "textPt": "Fiquei contente com a notícia.",
+    "textEn": "I was happy about the news.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_feelings_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_feelings_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_feelings_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_feelings_002.wav"
+    }
+  },
+  "phase5_batch02_feelings_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_feelings_003",
+    "textPt": "Essa surpresa foi incrível.",
+    "textEn": "That surprise was amazing.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_feelings_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_feelings_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_feelings_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_feelings_003.wav"
+    }
+  },
+  "phase5_batch02_feelings_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_feelings_004",
+    "textPt": "Mesmo com vergonha, eu consegui falar com todo mundo.",
+    "textEn": "Even though I was embarrassed, I managed to talk to everyone.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_feelings_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_feelings_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_feelings_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_feelings_004.wav"
+    }
+  },
+  "phase5_batch02_feelings_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_feelings_005",
+    "textPt": "Quando eu fico preocupado, eu foco no progresso.",
+    "textEn": "When I get worried, I focus on progress.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_feelings_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_feelings_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_feelings_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_feelings_005.wav"
+    }
+  },
+  "phase5_batch02_questions_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_questions_001",
+    "textPt": "Pode repetir isso?",
+    "textEn": "Can you repeat that?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_questions_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_questions_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_questions_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_questions_001.wav"
+    }
+  },
+  "phase5_batch02_questions_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_questions_002",
+    "textPt": "Qual palavra você disse?",
+    "textEn": "Which word did you say?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_questions_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_questions_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_questions_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_questions_002.wav"
+    }
+  },
+  "phase5_batch02_questions_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_questions_003",
+    "textPt": "Você pode me mostrar como se escreve esse nome?",
+    "textEn": "Can you show me how to write that name?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_questions_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_questions_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_questions_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_questions_003.wav"
+    }
+  },
+  "phase5_batch02_questions_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_questions_004",
+    "textPt": "Se eu tenho dúvida, posso pedir outro exemplo?",
+    "textEn": "If I have a question, can I ask for another example?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_questions_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_questions_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_questions_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_questions_004.wav"
+    }
+  },
+  "phase5_batch02_questions_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_questions_005",
+    "textPt": "Quando eu tiver uma dúvida, eu quero verificar a informação.",
+    "textEn": "When I have a question, I want to verify the information.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_questions_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_questions_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_questions_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_questions_005.wav"
+    }
+  },
+  "phase5_batch02_shopping_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_shopping_001",
+    "textPt": "Esse valor está certo?",
+    "textEn": "Is this amount right?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_shopping_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_shopping_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_shopping_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_shopping_001.wav"
+    }
+  },
+  "phase5_batch02_shopping_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_shopping_002",
+    "textPt": "Posso provar esta camisa?",
+    "textEn": "Can I try on this shirt?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_shopping_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_shopping_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_shopping_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_shopping_002.wav"
+    }
+  },
+  "phase5_batch02_shopping_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_shopping_003",
+    "textPt": "A promoção é para cartão de débito?",
+    "textEn": "Is the sale for debit card purchases?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_shopping_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_shopping_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_shopping_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_shopping_003.wav"
+    }
+  },
+  "phase5_batch02_shopping_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_shopping_004",
+    "textPt": "Se eu pagar em dinheiro, tem troco?",
+    "textEn": "If I pay in cash, do you have change?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_shopping_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_shopping_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_shopping_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_shopping_004.wav"
+    }
+  },
+  "phase5_batch02_shopping_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_shopping_005",
+    "textPt": "Se a garantia cobre tudo, eu levo hoje.",
+    "textEn": "If the warranty covers everything, I'll take it today.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_shopping_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_shopping_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_shopping_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_shopping_005.wav"
+    }
+  },
+  "phase5_batch02_directions_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_directions_001",
+    "textPt": "É perto daqui?",
+    "textEn": "Is it close to here?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_directions_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_directions_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_directions_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_directions_001.wav"
+    }
+  },
+  "phase5_batch02_directions_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_directions_002",
+    "textPt": "O metrô passa por aqui?",
+    "textEn": "Does the metro come through here?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_directions_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_directions_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_directions_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_directions_002.wav"
+    }
+  },
+  "phase5_batch02_directions_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_directions_003",
+    "textPt": "Depois do semáforo, é à esquerda?",
+    "textEn": "After the traffic light, is it on the left?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_directions_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_directions_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_directions_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_directions_003.wav"
+    }
+  },
+  "phase5_batch02_directions_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_directions_004",
+    "textPt": "Se eu descer na Central, ainda preciso fazer baldeação?",
+    "textEn": "If I get off at Central, do I still need to transfer?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_directions_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_directions_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_directions_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_directions_004.wav"
+    }
+  },
+  "phase5_batch02_directions_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_directions_005",
+    "textPt": "Se a avenida fechar agora, qual caminho é melhor?",
+    "textEn": "If the avenue closes now, which route is better?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_directions_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_directions_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_directions_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_directions_005.wav"
+    }
+  },
+  "phase5_batch02_work_study_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_work_study_001",
+    "textPt": "A reunião é hoje?",
+    "textEn": "Is the meeting today?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_work_study_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_work_study_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_work_study_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_work_study_001.wav"
+    }
+  },
+  "phase5_batch02_work_study_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_work_study_002",
+    "textPt": "Meu professor explicou de novo.",
+    "textEn": "My teacher explained it again.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_work_study_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_work_study_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_work_study_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_work_study_002.wav"
+    }
+  },
+  "phase5_batch02_work_study_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_work_study_003",
+    "textPt": "Eu preparo o relatório antes da aula.",
+    "textEn": "I prepare the report before class.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_work_study_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_work_study_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_work_study_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_work_study_003.wav"
+    }
+  },
+  "phase5_batch02_work_study_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_work_study_004",
+    "textPt": "Se a entrevista for amanhã, eu preparo tudo hoje à noite.",
+    "textEn": "If the interview is tomorrow, I'll prepare everything tonight.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_work_study_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_work_study_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_work_study_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_work_study_004.wav"
+    }
+  },
+  "phase5_batch02_work_study_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_work_study_005",
+    "textPt": "Mesmo com home office, a carga horária fica difícil.",
+    "textEn": "Even with remote work, the workload gets difficult.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_work_study_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_work_study_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_work_study_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_work_study_005.wav"
+    }
+  },
+  "phase5_batch02_small_talk_001": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_small_talk_001",
+    "textPt": "Tudo bem hoje?",
+    "textEn": "Everything good today?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_small_talk_001.wav",
+      "female": "audio/ptbr/female/phase5_batch02_small_talk_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_small_talk_001.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_small_talk_001.wav"
+    }
+  },
+  "phase5_batch02_small_talk_002": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_small_talk_002",
+    "textPt": "Você viu o jogo ontem?",
+    "textEn": "Did you see the game yesterday?",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_small_talk_002.wav",
+      "female": "audio/ptbr/female/phase5_batch02_small_talk_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_small_talk_002.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_small_talk_002.wav"
+    }
+  },
+  "phase5_batch02_small_talk_003": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_small_talk_003",
+    "textPt": "No fim de semana, eu fico em casa.",
+    "textEn": "On the weekend, I stay home.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_small_talk_003.wav",
+      "female": "audio/ptbr/female/phase5_batch02_small_talk_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_small_talk_003.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_small_talk_003.wav"
+    }
+  },
+  "phase5_batch02_small_talk_004": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_small_talk_004",
+    "textPt": "Se o tempo ficar bom, podemos tomar um café ali.",
+    "textEn": "If the weather turns nice, we can grab a coffee over there.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_small_talk_004.wav",
+      "female": "audio/ptbr/female/phase5_batch02_small_talk_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_small_talk_004.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_small_talk_004.wav"
+    }
+  },
+  "phase5_batch02_small_talk_005": {
+    "type": "sentence",
+    "sourceId": "phase5_batch02_small_talk_005",
+    "textPt": "Mesmo com muito calor, eu gosto de caminhar no fim da tarde.",
+    "textEn": "Even when it's very hot, I like to walk in the late afternoon.",
+    "ptbr": {
+      "male": "audio/ptbr/male/phase5_batch02_small_talk_005.wav",
+      "female": "audio/ptbr/female/phase5_batch02_small_talk_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/phase5_batch02_small_talk_005.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/phase5_batch02_small_talk_005.wav"
+    }
   }
 }

@@ -4,16 +4,16 @@ This roadmap turns the current sentence and word corpus into a portfolio-grade d
 
 ## Current Baseline
 
-Measured with `npm run audit:dataset` after bucket completion, alias-aware matching, the supplemental coverage lexicon pass, and phase 5 batch 01:
+Measured with `npm run audit:dataset` after bucket completion, alias-aware matching, the supplemental coverage lexicon pass, and phase 5 batches 01 to 02:
 
-- Raw sentences: 551
-- Master sentences: 543
+- Raw sentences: 601
+- Master sentences: 593
 - Raw words: 975
 - Master words: 974
-- Sentence audio variants ready: 1086/1086
+- Sentence audio variants ready: 1186/1186
 - Word audio variants ready: 1948/1948
 - Sentence token coverage by word inventory: 100.0%
-- Fully covered sentences: 551/551
+- Fully covered sentences: 601/601
 - Sentences with zero word refs: 0
 - Empty sentence category/difficulty buckets: 0
 - Difficulty 5 sentences: present in all active categories
@@ -147,6 +147,12 @@ Done in this pass:
 - Add phase 5 batch 01 with 40 curated sentences:
   - 1 new level 1 sentence per category
   - 1 new level 2 sentence per category
+  - 1 new level 4 sentence per category
+  - 1 new level 5 sentence per category
+- Add phase 5 batch 02 with 50 curated sentences:
+  - 1 new level 1 sentence per category
+  - 1 new level 2 sentence per category
+  - 1 new level 3 sentence per category
   - 1 new level 4 sentence per category
   - 1 new level 5 sentence per category
 - Regenerate sentence audio, master datasets, and audio index for the expanded corpus.

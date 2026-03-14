@@ -46,6 +46,7 @@ const generationPipelineConfig: GenerationPipelineConfig = {
     rawSentencesJsonPath: [
       "data/sentences.json",
       "data/sentence_expansions/phase5_batch_01.json",
+      "data/sentence_expansions/phase5_batch_02.json",
     ],
     masterWordsPath: "data/masterWords.json",
     masterSentencesPath: "data/masterSentences.json",
