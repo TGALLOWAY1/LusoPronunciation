@@ -1,0 +1,316 @@
+{
+  "language_pair": "en-pt-BR",
+  "version": "1.1",
+  "categories": [
+    {
+      "id": "food",
+      "label_en": "Food & Eating",
+      "label_pt": "Comida e Refeições",
+      "sentences": [
+        {
+          "id": "phase5_batch01_food_001",
+          "pt": "Quero café agora.",
+          "en": "I want coffee now.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_food_002",
+          "pt": "A mesa está pronta?",
+          "en": "Is the table ready?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_food_003",
+          "pt": "Se tiver mesa para duas pessoas, eu volto mais tarde.",
+          "en": "If there's a table for two, I'll come back later.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_food_004",
+          "pt": "Se a comida ficar muito salgada, eu prefiro outra coisa.",
+          "en": "If the food ends up too salty, I prefer something else.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "label_en": "Travel & Transportation",
+      "label_pt": "Viagem e Transporte",
+      "sentences": [
+        {
+          "id": "phase5_batch01_travel_001",
+          "pt": "Meu voo é hoje.",
+          "en": "My flight is today.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_travel_002",
+          "pt": "O hotel fica perto daqui?",
+          "en": "Is the hotel near here?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_travel_003",
+          "pt": "Se o portão mudar, me avise pelo aplicativo.",
+          "en": "If the gate changes, let me know through the app.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_travel_004",
+          "pt": "Se o voo mudar de novo, eu preciso de ajuda no aeroporto.",
+          "en": "If the flight changes again, I need help at the airport.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "family_friends",
+      "label_en": "Family & Friends",
+      "label_pt": "Família e Amigos",
+      "sentences": [
+        {
+          "id": "phase5_batch01_family_friends_001",
+          "pt": "Minha irmã vem hoje.",
+          "en": "My sister is coming today.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_family_friends_002",
+          "pt": "Meu primo mora longe.",
+          "en": "My cousin lives far away.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_family_friends_003",
+          "pt": "Quando a família se reúne no Natal, todo mundo leva comida.",
+          "en": "When the family gets together at Christmas, everyone brings food.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_family_friends_004",
+          "pt": "Mesmo quando cada um está ocupado, a família se reúne no Natal.",
+          "en": "Even when everyone is busy, the family gets together at Christmas.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "daily_routine",
+      "label_en": "Daily Routine",
+      "label_pt": "Rotina Diária",
+      "sentences": [
+        {
+          "id": "phase5_batch01_daily_routine_001",
+          "pt": "Eu tomo café em casa.",
+          "en": "I have coffee at home.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_daily_routine_002",
+          "pt": "Eu lavo a louça à noite.",
+          "en": "I wash the dishes at night.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_daily_routine_003",
+          "pt": "Quando eu saio do trabalho, vou direto para casa.",
+          "en": "When I leave work, I go straight home.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_daily_routine_004",
+          "pt": "Se eu não coloco o despertador para carregar, eu acabo atrasando.",
+          "en": "If I don't plug in the alarm clock, I end up running late.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "feelings",
+      "label_en": "Feelings & Emotions",
+      "label_pt": "Sentimentos e Emoções",
+      "sentences": [
+        {
+          "id": "phase5_batch01_feelings_001",
+          "pt": "Estou mais calmo hoje.",
+          "en": "I'm calmer today.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_feelings_002",
+          "pt": "Fiquei triste ontem.",
+          "en": "I felt sad yesterday.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_feelings_003",
+          "pt": "Mesmo com medo, eu consegui fazer a apresentação.",
+          "en": "Even though I was afraid, I managed to do the presentation.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_feelings_004",
+          "pt": "Quando o coração fica partido, eu acredito que vai passar.",
+          "en": "When your heart feels broken, I believe it will pass.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "label_en": "Questions & Help",
+      "label_pt": "Perguntas e Ajuda",
+      "sentences": [
+        {
+          "id": "phase5_batch01_questions_001",
+          "pt": "Quem falou isso?",
+          "en": "Who said that?",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_questions_002",
+          "pt": "Como se escreve isso em português?",
+          "en": "How do you write that in Portuguese?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_questions_003",
+          "pt": "Se você não entendeu a pergunta, eu posso dar outro exemplo.",
+          "en": "If you didn't understand the question, I can give another example.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_questions_004",
+          "pt": "Quando eu tiver dúvida, posso te ligar mais tarde?",
+          "en": "When I have a question, can I call you later?",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "shopping",
+      "label_en": "Shopping & Money",
+      "label_pt": "Compras e Dinheiro",
+      "sentences": [
+        {
+          "id": "phase5_batch01_shopping_001",
+          "pt": "Quanto ficou tudo?",
+          "en": "How much was everything?",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_shopping_002",
+          "pt": "Quero pagar no débito.",
+          "en": "I want to pay with debit.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_shopping_003",
+          "pt": "Se a máquina não funcionar, posso pagar em dinheiro.",
+          "en": "If the card machine doesn't work, can I pay in cash?",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_shopping_004",
+          "pt": "Se o preço mudar na promoção, eu volto para comprar.",
+          "en": "If the price changes during the sale, I'll come back to buy it.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "directions",
+      "label_en": "Directions & Navigation",
+      "label_pt": "Direções e Navegação",
+      "sentences": [
+        {
+          "id": "phase5_batch01_directions_001",
+          "pt": "Onde fica o banco?",
+          "en": "Where is the bank?",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_directions_002",
+          "pt": "É logo ali à direita?",
+          "en": "Is it right over there on the right?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_directions_003",
+          "pt": "Se você passar do semáforo, o prédio fica logo ali.",
+          "en": "If you go past the traffic light, the building is right there.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_directions_004",
+          "pt": "Se a linha fechar agora, eu vou de Uber.",
+          "en": "If the line closes now, I'll take an Uber.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "work_study",
+      "label_en": "Work & Study",
+      "label_pt": "Trabalho e Estudos",
+      "sentences": [
+        {
+          "id": "phase5_batch01_work_study_001",
+          "pt": "Tenho reunião agora.",
+          "en": "I have a meeting now.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_work_study_002",
+          "pt": "A aula começa hoje.",
+          "en": "Class starts today.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_work_study_003",
+          "pt": "Se o computador travou de novo, eu trabalho em casa.",
+          "en": "If the computer crashed again, I'll work from home.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_work_study_004",
+          "pt": "Mesmo com a carga horária difícil, eu consegui conciliar estudo e trabalho.",
+          "en": "Even with a difficult schedule, I managed to balance study and work.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "small_talk",
+      "label_en": "Small Talk",
+      "label_pt": "Conversa Casual",
+      "sentences": [
+        {
+          "id": "phase5_batch01_small_talk_001",
+          "pt": "Que calor hoje.",
+          "en": "It's so hot today.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch01_small_talk_002",
+          "pt": "Seu fim de semana foi bom?",
+          "en": "Was your weekend good?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch01_small_talk_003",
+          "pt": "Se chover mais tarde, eu fico em casa e vejo um seriado.",
+          "en": "If it rains later, I'll stay home and watch a series.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch01_small_talk_004",
+          "pt": "Quando eu tiver um tempinho livre, podemos tomar um café.",
+          "en": "When I have a little free time, we can grab a coffee.",
+          "difficulty": 5
+        }
+      ]
+    }
+  ]
+}

@@ -1,603 +1,94 @@
-[
+{
+  "RecognitionStatus": "Success",
+  "Offset": 8600000,
+  "Duration": 30900000,
+  "DisplayText": "O, O, o, O que o.",
+  "SNR": 33.88857,
+  "NBest": [
     {
-        "Id": "6c787f955d89465981560d2a84f3c515",
-        "RecognitionStatus": "Success",
-        "Offset": 3700000,
-        "Duration": 46100000,
-        "Channel": 0,
-        "DisplayText": "Posso posso ver O cardápio por favor.",
-        "SNR": 33.88857,
-        "NBest": [
-            {
-                "Confidence": 0.95254254,
-                "Lexical": "posso posso ver o cardápio por favor",
-                "ITN": "posso posso ver O cardápio por favor",
-                "MaskedITN": "posso posso ver o cardápio por favor",
-                "Display": "Posso posso ver O cardápio por favor.",
-                "PronunciationAssessment": {
-                    "AccuracyScore": 70,
-                    "FluencyScore": 92,
-                    "ProsodyScore": 61.5,
-                    "CompletenessScore": 86,
-                    "PronScore": 74.2
-                },
-                "Words": [
-                    {
-                        "Word": "posso",
-                        "Offset": 3700000,
-                        "Duration": 5900000,
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 69,
-                            "ErrorType": "None",
-                            "Feedback": {
-                                "Prosody": {
-                                    "Break": {
-                                        "ErrorTypes": [
-                                            "None"
-                                        ],
-                                        "BreakLength": 0
-                                    },
-                                    "Intonation": {
-                                        "ErrorTypes": [],
-                                        "Monotone": {
-                                            "SyllablePitchDeltaConfidence": 0.27038312
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "Syllables": [
-                            {
-                                "Syllable": "pao",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 73
-                                },
-                                "Offset": 3700000,
-                                "Duration": 2500000
-                            },
-                            {
-                                "Syllable": "sow",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 60
-                                },
-                                "Offset": 6300000,
-                                "Duration": 3300000
-                            }
-                        ],
-                        "Phonemes": [
-                            {
-                                "Phoneme": "p",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 73
-                                },
-                                "Offset": 3700000,
-                                "Duration": 1900000
-                            },
-                            {
-                                "Phoneme": "ao",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 73
-                                },
-                                "Offset": 5700000,
-                                "Duration": 500000
-                            },
-                            {
-                                "Phoneme": "s",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 67
-                                },
-                                "Offset": 6300000,
-                                "Duration": 2100000
-                            },
-                            {
-                                "Phoneme": "ow",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 47
-                                },
-                                "Offset": 8500000,
-                                "Duration": 1100000
-                            }
-                        ]
-                    },
-                    {
-                        "Word": "posso",
-                        "Offset": 11900000,
-                        "Duration": 5500000,
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 82,
-                            "ErrorType": "Insertion",
-                            "Feedback": {
-                                "Prosody": {
-                                    "Break": {
-                                        "ErrorTypes": [
-                                            "UnexpectedBreak"
-                                        ],
-                                        "UnexpectedBreak": {
-                                            "Confidence": 0.66978925
-                                        },
-                                        "MissingBreak": {
-                                            "Confidence": 0
-                                        },
-                                        "BreakLength": 2200000
-                                    },
-                                    "Intonation": {
-                                        "ErrorTypes": [],
-                                        "Monotone": {
-                                            "SyllablePitchDeltaConfidence": 0.27038312
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "Syllables": [
-                            {
-                                "Syllable": "pao",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 68
-                                },
-                                "Offset": 11900000,
-                                "Duration": 2300000
-                            },
-                            {
-                                "Syllable": "sow",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 88
-                                },
-                                "Offset": 14300000,
-                                "Duration": 3100000
-                            }
-                        ],
-                        "Phonemes": [
-                            {
-                                "Phoneme": "p",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 72
-                                },
-                                "Offset": 11900000,
-                                "Duration": 1500000
-                            },
-                            {
-                                "Phoneme": "ao",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 61
-                                },
-                                "Offset": 13500000,
-                                "Duration": 700000
-                            },
-                            {
-                                "Phoneme": "s",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 72
-                                },
-                                "Offset": 14300000,
-                                "Duration": 1300000
-                            },
-                            {
-                                "Phoneme": "ow",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 15700000,
-                                "Duration": 1700000
-                            }
-                        ]
-                    },
-                    {
-                        "Word": "ver",
-                        "Offset": 17500000,
-                        "Duration": 5800000,
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 73,
-                            "ErrorType": "None",
-                            "Feedback": {
-                                "Prosody": {
-                                    "Break": {
-                                        "ErrorTypes": [
-                                            "None"
-                                        ],
-                                        "UnexpectedBreak": {
-                                            "Confidence": 3.0444966e-8
-                                        },
-                                        "MissingBreak": {
-                                            "Confidence": 1
-                                        },
-                                        "BreakLength": 0
-                                    },
-                                    "Intonation": {
-                                        "ErrorTypes": [],
-                                        "Monotone": {
-                                            "SyllablePitchDeltaConfidence": 0.27038312
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "Syllables": [
-                            {
-                                "Syllable": "verr",
-                                "Grapheme": "ver",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 69
-                                },
-                                "Offset": 17500000,
-                                "Duration": 5800000
-                            }
-                        ],
-                        "Phonemes": [
-                            {
-                                "Phoneme": "v",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 91
-                                },
-                                "Offset": 17500000,
-                                "Duration": 1100000
-                            },
-                            {
-                                "Phoneme": "er",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 65
-                                },
-                                "Offset": 18700000,
-                                "Duration": 2500000
-                            },
-                            {
-                                "Phoneme": "r",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 61
-                                },
-                                "Offset": 21300000,
-                                "Duration": 2000000
-                            }
-                        ]
-                    },
-                    {
-                        "Word": "o",
-                        "Offset": 23600000,
-                        "Duration": 3300000,
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 21,
-                            "ErrorType": "Mispronunciation",
-                            "Feedback": {
-                                "Prosody": {
-                                    "Break": {
-                                        "ErrorTypes": [
-                                            "None"
-                                        ],
-                                        "UnexpectedBreak": {
-                                            "Confidence": 0.06088996
-                                        },
-                                        "MissingBreak": {
-                                            "Confidence": 0.969555
-                                        },
-                                        "BreakLength": 200000
-                                    },
-                                    "Intonation": {
-                                        "ErrorTypes": [],
-                                        "Monotone": {
-                                            "SyllablePitchDeltaConfidence": 0.27038312
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "Syllables": [
-                            {
-                                "Syllable": "ow",
-                                "Grapheme": "o",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 16
-                                },
-                                "Offset": 23600000,
-                                "Duration": 3300000
-                            }
-                        ],
-                        "Phonemes": [
-                            {
-                                "Phoneme": "ow",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 15.735294117647058
-                                },
-                                "Offset": 23600000,
-                                "Duration": 3300000
-                            }
-                        ]
-                    },
-                    {
-                        "Word": "cardápio",
-                        "Offset": 27000000,
-                        "Duration": 12600000,
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 73,
-                            "ErrorType": "None",
-                            "Feedback": {
-                                "Prosody": {
-                                    "Break": {
-                                        "ErrorTypes": [
-                                            "None"
-                                        ],
-                                        "UnexpectedBreak": {
-                                            "Confidence": 3.0444966e-8
-                                        },
-                                        "MissingBreak": {
-                                            "Confidence": 1
-                                        },
-                                        "BreakLength": 0
-                                    },
-                                    "Intonation": {
-                                        "ErrorTypes": [],
-                                        "Monotone": {
-                                            "SyllablePitchDeltaConfidence": 0.27038312
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "Syllables": [
-                            {
-                                "Syllable": "kaar",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 68
-                                },
-                                "Offset": 27000000,
-                                "Duration": 4600000
-                            },
-                            {
-                                "Syllable": "dae",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 84
-                                },
-                                "Offset": 31700000,
-                                "Duration": 2300000
-                            },
-                            {
-                                "Syllable": "piy",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 78
-                                },
-                                "Offset": 34100000,
-                                "Duration": 2300000
-                            },
-                            {
-                                "Syllable": "ow",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 60
-                                },
-                                "Offset": 36500000,
-                                "Duration": 3100000
-                            }
-                        ],
-                        "Phonemes": [
-                            {
-                                "Phoneme": "k",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 51
-                                },
-                                "Offset": 27000000,
-                                "Duration": 3000000
-                            },
-                            {
-                                "Phoneme": "aa",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 30100000,
-                                "Duration": 700000
-                            },
-                            {
-                                "Phoneme": "r",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 30900000,
-                                "Duration": 700000
-                            },
-                            {
-                                "Phoneme": "d",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 31700000,
-                                "Duration": 1100000
-                            },
-                            {
-                                "Phoneme": "ae",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 68
-                                },
-                                "Offset": 32900000,
-                                "Duration": 1100000
-                            },
-                            {
-                                "Phoneme": "p",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 63
-                                },
-                                "Offset": 34100000,
-                                "Duration": 1300000
-                            },
-                            {
-                                "Phoneme": "iy",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 35500000,
-                                "Duration": 900000
-                            },
-                            {
-                                "Phoneme": "ow",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 60
-                                },
-                                "Offset": 36500000,
-                                "Duration": 3100000
-                            }
-                        ],
-                        "Punctuation": ","
-                    },
-                    {
-                        "Word": "por",
-                        "Offset": 40800000,
-                        "Duration": 2800000,
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 100,
-                            "ErrorType": "None",
-                            "Feedback": {
-                                "Prosody": {
-                                    "Break": {
-                                        "ErrorTypes": [
-                                            "None"
-                                        ],
-                                        "UnexpectedBreak": {
-                                            "Confidence": 0.33489463
-                                        },
-                                        "MissingBreak": {
-                                            "Confidence": 0
-                                        },
-                                        "BreakLength": 1100000
-                                    },
-                                    "Intonation": {
-                                        "ErrorTypes": [],
-                                        "Monotone": {
-                                            "SyllablePitchDeltaConfidence": 0.27038312
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "Syllables": [
-                            {
-                                "Syllable": "paor",
-                                "Grapheme": "por",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 40800000,
-                                "Duration": 2800000
-                            }
-                        ],
-                        "Phonemes": [
-                            {
-                                "Phoneme": "p",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 40800000,
-                                "Duration": 1200000
-                            },
-                            {
-                                "Phoneme": "ao",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 42100000,
-                                "Duration": 400000
-                            },
-                            {
-                                "Phoneme": "r",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 100
-                                },
-                                "Offset": 42600000,
-                                "Duration": 1000000
-                            }
-                        ]
-                    },
-                    {
-                        "Word": "favor",
-                        "Offset": 43700000,
-                        "Duration": 6100000,
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 70,
-                            "ErrorType": "None",
-                            "Feedback": {
-                                "Prosody": {
-                                    "Break": {
-                                        "ErrorTypes": [
-                                            "None"
-                                        ],
-                                        "UnexpectedBreak": {
-                                            "Confidence": 3.0444966e-8
-                                        },
-                                        "MissingBreak": {
-                                            "Confidence": 1
-                                        },
-                                        "BreakLength": 0
-                                    },
-                                    "Intonation": {
-                                        "ErrorTypes": [],
-                                        "Monotone": {
-                                            "SyllablePitchDeltaConfidence": 0.27038312
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "Syllables": [
-                            {
-                                "Syllable": "fey",
-                                "Grapheme": "fa",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 64
-                                },
-                                "Offset": 43700000,
-                                "Duration": 1200000
-                            },
-                            {
-                                "Syllable": "vaxr",
-                                "Grapheme": "vor",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 62
-                                },
-                                "Offset": 45000000,
-                                "Duration": 4800000
-                            }
-                        ],
-                        "Phonemes": [
-                            {
-                                "Phoneme": "f",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 70
-                                },
-                                "Offset": 43700000,
-                                "Duration": 500000
-                            },
-                            {
-                                "Phoneme": "ey",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 58
-                                },
-                                "Offset": 44300000,
-                                "Duration": 600000
-                            },
-                            {
-                                "Phoneme": "v",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 58
-                                },
-                                "Offset": 45000000,
-                                "Duration": 600000
-                            },
-                            {
-                                "Phoneme": "ax",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 75
-                                },
-                                "Offset": 45700000,
-                                "Duration": 2100000
-                            },
-                            {
-                                "Phoneme": "r",
-                                "PronunciationAssessment": {
-                                    "AccuracyScore": 50
-                                },
-                                "Offset": 47900000,
-                                "Duration": 1900000
-                            }
-                        ],
-                        "Punctuation": "?"
-                    }
-                ]
-            }
-        ]
+      "Confidence": 0.5577675,
+      "Lexical": "O O o O que o",
+      "ITN": "O O o O que o",
+      "MaskedITN": "o o o o que o",
+      "Display": "O, O, o, O que o.",
+      "AccuracyScore": 31,
+      "FluencyScore": 47,
+      "CompletenessScore": 17,
+      "PronScore": 25.8,
+      "Words": [
+        {
+          "Word": "O",
+          "Offset": 8600000,
+          "Duration": 2100000,
+          "Confidence": 0,
+          "AccuracyScore": 63,
+          "ErrorType": "Insertion"
+        },
+        {
+          "Word": "O",
+          "Offset": 14200000,
+          "Duration": 3300000,
+          "Confidence": 0,
+          "AccuracyScore": 54,
+          "ErrorType": "Insertion"
+        },
+        {
+          "Word": "o",
+          "Offset": 17600000,
+          "Duration": 1400000,
+          "Confidence": 0,
+          "AccuracyScore": 60,
+          "ErrorType": "Insertion"
+        },
+        {
+          "Word": "O",
+          "Offset": 20100000,
+          "Duration": 10600000,
+          "Confidence": 0,
+          "AccuracyScore": 49,
+          "ErrorType": "Mispronunciation"
+        },
+        {
+          "Word": "que",
+          "Offset": 35700000,
+          "Duration": 600000,
+          "Confidence": 0,
+          "AccuracyScore": 80,
+          "ErrorType": "None"
+        },
+        {
+          "Word": "tem",
+          "Offset": 0,
+          "Duration": 0,
+          "Confidence": 0,
+          "AccuracyScore": 0,
+          "ErrorType": "Omission"
+        },
+        {
+          "Word": "para",
+          "Offset": 0,
+          "Duration": 0,
+          "Confidence": 0,
+          "AccuracyScore": 0,
+          "ErrorType": "Omission"
+        },
+        {
+          "Word": "o",
+          "Offset": 36400000,
+          "Duration": 3100000,
+          "Confidence": 0,
+          "AccuracyScore": 59,
+          "ErrorType": "Mispronunciation"
+        },
+        {
+          "Word": "jantar",
+          "Offset": 0,
+          "Duration": 0,
+          "Confidence": 0,
+          "AccuracyScore": 0,
+          "ErrorType": "Omission"
+        }
+      ]
     }
-]
+  ]
+}

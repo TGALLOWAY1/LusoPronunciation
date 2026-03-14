@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "dev:server": "tsx src/server/app.ts",
-    "build": "tsc && vite build",
+    "prebuild": "mkdir -p public/data && cp data/masterSentences.json data/masterWords.json data/audio_index.json public/data/",
+    "build": "npm run prebuild && tsc && vite build",
     "start": "tsx src/server/app.ts",
     "preview": "vite preview",
     "lint": "echo \"lint not configured\"",
@@ -16,7 +17,8 @@
     "audio:words:force": "tsx scripts/generateWordAudio.ts --force",
     "audio:words:male": "tsx scripts/generateWordAudio.ts --voice=male",
     "audio:words:female": "tsx scripts/generateWordAudio.ts --voice=female",
-    "generation:pipeline": "tsx scripts/generationPipeline.ts --stage=all",
+    "generation:pipeline": "tsx scripts/generationPipeline.ts",
+    "audit:dataset": "tsx scripts/auditDatasetReadiness.ts",
     "generate:gemini:sentences": "python3 scripts/generateGeminiSentences.py --output data/raw/gemini_sentences.csv",
     "generate:normalize:sentences": "tsx scripts/normalizeGeminiSentences.ts",
     "generate:sentences:stage0": "npm run generate:gemini:sentences && npm run generate:normalize:sentences",
@@ -47,7 +49,10 @@
     "multer": "^2.0.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.6"
+    "react-router-dom": "^7.9.6",
+    "ffmpeg-static": "^5.3.0",
+    "helmet": "^8.0.0",
+    "tsx": "^4.20.6"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
@@ -65,12 +70,8 @@
     "jsdom": "^27.2.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.18",
-    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vite": "^7.2.2",
     "vitest": "^4.0.10"
-  },
-  "optionalDependencies": {
-    "ffmpeg-static": "^5.3.0"
   }
 }

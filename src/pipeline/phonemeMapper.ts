@@ -86,6 +86,12 @@ export function mapWordToPhonemes(word: string): {
     const nextChar = i + 1 < normalized.length ? normalized[i + 1] : '';
     const twoChars = char + nextChar;
 
+    // Silent h in Portuguese orthography
+    if (char === 'h') {
+      i++;
+      continue;
+    }
+
     // Handle digraphs first (longer sequences take priority)
     if (twoChars === 'lh') {
       const phonemeId = 'LH';
@@ -297,7 +303,23 @@ export function mapWordToPhonemes(word: string): {
       continue;
     }
 
+    if (char === 'á' || char === 'à' || char === 'â') {
+      if (getPhonemeById('AA')) {
+        phonemes.push('AA');
+      }
+      i++;
+      continue;
+    }
+
     if (char === 'e') {
+      if (getPhonemeById('EH')) {
+        phonemes.push('EH');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'é' || char === 'ê') {
       if (getPhonemeById('EH')) {
         phonemes.push('EH');
       }
@@ -313,6 +335,14 @@ export function mapWordToPhonemes(word: string): {
       continue;
     }
 
+    if (char === 'í') {
+      if (getPhonemeById('IY')) {
+        phonemes.push('IY');
+      }
+      i++;
+      continue;
+    }
+
     if (char === 'o') {
       if (getPhonemeById('OW')) {
         phonemes.push('OW');
@@ -321,7 +351,23 @@ export function mapWordToPhonemes(word: string): {
       continue;
     }
 
+    if (char === 'ó' || char === 'ô') {
+      if (getPhonemeById('OW')) {
+        phonemes.push('OW');
+      }
+      i++;
+      continue;
+    }
+
     if (char === 'u') {
+      if (getPhonemeById('UW')) {
+        phonemes.push('UW');
+      }
+      i++;
+      continue;
+    }
+
+    if (char === 'ú') {
       if (getPhonemeById('UW')) {
         phonemes.push('UW');
       }
@@ -361,4 +407,3 @@ export function mapWordToPhonemes(word: string): {
 
   return { phonemes };
 }
-

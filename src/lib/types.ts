@@ -25,6 +25,7 @@ export interface RawSentence {
   id: string;                    // e.g., "food_001"
   en: string;                     // English translation
   pt: string;                     // Portuguese text
+  category?: string;              // Canonical category ID from source dataset
   difficulty: Difficulty;
   pronunciation_notes?: string;
 }
@@ -35,8 +36,10 @@ export interface RawSentence {
 export interface RawWord {
   id: string;                     // e.g., "food_word_001"
   pt: string;                      // Portuguese text
+  forms?: string[];                // Alternate surface forms used in sentences
   en: string;                     // English translation
   pos: string;                    // Part of speech (noun, verb, etc.)
+  category?: string;              // Canonical category ID from source dataset
   difficulty: Difficulty;
   difficult_for_english: boolean;
   pronunciation_notes?: string;
@@ -137,6 +140,7 @@ export interface Sentence {
 export interface Word {
   id: string;
   textPt: string;
+  forms?: string[];
   translationEn: string;
   partOfSpeech: string;
   difficulty: Difficulty;

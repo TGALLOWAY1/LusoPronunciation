@@ -161,6 +161,7 @@
         {
           "id": "verb_002",
           "pt": "estar",
+          "forms": ["estava", "estamos", "estão", "esteja"],
           "en": "to be (temporary/location)",
           "pos": "verb",
           "difficulty": 2,
@@ -170,6 +171,7 @@
         {
           "id": "verb_003",
           "pt": "ter",
+          "forms": ["tinha"],
           "en": "to have",
           "pos": "verb",
           "difficulty": 2,
@@ -179,6 +181,7 @@
         {
           "id": "verb_004",
           "pt": "ir",
+          "forms": ["indo"],
           "en": "to go",
           "pos": "verb",
           "difficulty": 1,
@@ -188,6 +191,7 @@
         {
           "id": "verb_005",
           "pt": "fazer",
+          "forms": ["faço", "faz", "fez"],
           "en": "to do / to make",
           "pos": "verb",
           "difficulty": 2,
@@ -197,6 +201,7 @@
         {
           "id": "verb_006",
           "pt": "poder",
+          "forms": ["podemos"],
           "en": "can / to be able to",
           "pos": "verb",
           "difficulty": 2,
@@ -215,6 +220,7 @@
         {
           "id": "verb_008",
           "pt": "falar",
+          "forms": ["falando"],
           "en": "to speak",
           "pos": "verb",
           "difficulty": 1,
@@ -224,6 +230,7 @@
         {
           "id": "verb_009",
           "pt": "ver",
+          "forms": ["vê", "viu"],
           "en": "to see",
           "pos": "verb",
           "difficulty": 1,
@@ -233,6 +240,7 @@
         {
           "id": "verb_010",
           "pt": "dar",
+          "forms": ["deu"],
           "en": "to give",
           "pos": "verb",
           "difficulty": 1,
@@ -260,6 +268,7 @@
         {
           "id": "verb_013",
           "pt": "vir",
+          "forms": ["veio", "vier"],
           "en": "to come",
           "pos": "verb",
           "difficulty": 2,
@@ -269,6 +278,7 @@
         {
           "id": "verb_014",
           "pt": "ficar",
+          "forms": ["ficou", "ficam"],
           "en": "to stay / to become",
           "pos": "verb",
           "difficulty": 2,
@@ -287,6 +297,7 @@
         {
           "id": "verb_016",
           "pt": "chegar",
+          "forms": ["chego"],
           "en": "to arrive",
           "pos": "verb",
           "difficulty": 2,
@@ -305,6 +316,7 @@
         {
           "id": "verb_018",
           "pt": "precisar",
+          "forms": ["precisa"],
           "en": "to need",
           "pos": "verb",
           "difficulty": 2,
@@ -314,6 +326,7 @@
         {
           "id": "verb_019",
           "pt": "achar",
+          "forms": ["acha"],
           "en": "to find / to think (opinion)",
           "pos": "verb",
           "difficulty": 2,
@@ -1231,6 +1244,7 @@
         {
           "id": "fam_word_006",
           "pt": "filho",
+          "forms": ["filhos"],
           "en": "son",
           "pos": "noun",
           "difficulty": 4,
@@ -1630,12 +1644,13 @@
             "difficult_for_english": true,
             "pronunciation_notes": "Stress on 'rá'; 'rio' like 'ryo'."
           },
-          {
-            "id": "daily_word_020",
-            "pt": "reunião",
-            "en": "meeting",
-            "pos": "noun",
-            "difficulty": 4,
+        {
+          "id": "daily_word_020",
+          "pt": "reunião",
+          "forms": ["reuniões"],
+          "en": "meeting",
+          "pos": "noun",
+          "difficulty": 4,
             "difficult_for_english": true,
             "pronunciation_notes": "Nasal 'ão'; three vowels in a row."
           },
@@ -2278,6 +2293,7 @@
         {
           "id": "misc_024",
           "pt": "comer",
+          "forms": ["come"],
           "en": "to eat",
           "pos": "verb",
           "difficulty": 2,
@@ -2287,6 +2303,7 @@
         {
           "id": "misc_025",
           "pt": "começar",
+          "forms": ["começo"],
           "en": "to start / to begin",
           "pos": "verb",
           "difficulty": 2,
@@ -2503,6 +2520,7 @@
         {
           "id": "misc_049",
           "pt": "divertir",
+          "forms": ["divertiu"],
           "en": "to have fun / to entertain",
           "pos": "verb",
           "difficulty": 3,
@@ -2710,6 +2728,7 @@
         {
           "id": "misc_072",
           "pt": "estou",
+          "forms": ["tô"],
           "en": "I am",
           "pos": "verb",
           "difficulty": 2,
@@ -2719,6 +2738,7 @@
         {
           "id": "misc_073",
           "pt": "estudo",
+          "forms": ["estudos"],
           "en": "I study / study (noun)",
           "pos": "verb",
           "difficulty": 2,
@@ -2728,6 +2748,7 @@
         {
           "id": "misc_074",
           "pt": "está",
+          "forms": ["tá"],
           "en": "is (temporary)",
           "pos": "verb",
           "difficulty": 2,
@@ -2845,6 +2866,7 @@
         {
           "id": "misc_087",
           "pt": "funcionar",
+          "forms": ["funcionando"],
           "en": "to work / to function",
           "pos": "verb",
           "difficulty": 3,
@@ -3295,6 +3317,7 @@
         {
           "id": "misc_137",
           "pt": "para",
+          "forms": ["pra"],
           "en": "for / to",
           "pos": "preposition",
           "difficulty": 1,
@@ -3529,6 +3552,7 @@
         {
           "id": "misc_163",
           "pt": "recomendar",
+          "forms": ["recomenda"],
           "en": "to recommend",
           "pos": "verb",
           "difficulty": 3,
@@ -4002,6 +4026,1705 @@
           "difficulty": 2,
           "difficult_for_english": false,
           "pronunciation_notes": "fa-VOR; stress on 'vor'; 'r' can be guttural or tapped."
+        },
+        {
+          "id": "misc_216",
+          "pt": "qual",
+          "en": "which / what",
+          "pos": "pronoun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "KWAL; starts with a clear 'kw' sound."
+        },
+        {
+          "id": "misc_217",
+          "pt": "já",
+          "en": "already / now",
+          "pos": "adverb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "ZHÁ; 'j' sounds like the 's' in 'measure'."
+        },
+        {
+          "id": "misc_218",
+          "pt": "vai",
+          "en": "goes / will go",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "VAI; rhymes roughly with 'eye'."
+        },
+        {
+          "id": "misc_219",
+          "pt": "ele",
+          "en": "he",
+          "pos": "pronoun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "EH-li; final 'e' is light."
+        },
+        {
+          "id": "misc_220",
+          "pt": "seu",
+          "en": "your / his",
+          "pos": "pronoun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "SEH-o / SEW depending on region; glide at the end."
+        },
+        {
+          "id": "misc_221",
+          "pt": "sempre",
+          "en": "always",
+          "pos": "adverb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "SEM-pre; nasal 'sem' plus tapped 'r'."
+        },
+        {
+          "id": "misc_222",
+          "pt": "nós",
+          "en": "we / us",
+          "pos": "pronoun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "NÓS; open stressed 'ó'."
+        },
+        {
+          "id": "misc_223",
+          "pt": "ela",
+          "en": "she",
+          "pos": "pronoun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "EH-la; both vowels are open and clear."
+        },
+        {
+          "id": "misc_224",
+          "pt": "poderia",
+          "en": "could / would be able to",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "po-de-RI-a; stress on 'ri'."
+        },
+        {
+          "id": "misc_225",
+          "pt": "aceita",
+          "en": "accepts / do you accept",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-CEI-ta; 'cei' sounds like 'say'."
+        },
+        {
+          "id": "misc_226",
+          "pt": "esse",
+          "en": "this / that (masc.)",
+          "pos": "pronoun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "EH-se; both vowels stay short."
+        },
+        {
+          "id": "misc_227",
+          "pt": "mundo",
+          "en": "world / everyone",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "MUN-do; nasal-ish 'mun' followed by a clear 'do'."
+        },
+        {
+          "id": "misc_228",
+          "pt": "fiquei",
+          "en": "I became / I was",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "fi-KEI; stress on the last syllable."
+        },
+        {
+          "id": "misc_229",
+          "pt": "parece",
+          "en": "seems / looks",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pa-RE-ce; final 'ce' sounds like 'see'."
+        },
+        {
+          "id": "misc_230",
+          "pt": "sabe",
+          "en": "knows",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "SA-be; first syllable stressed."
+        },
+        {
+          "id": "misc_231",
+          "pt": "táxi",
+          "en": "taxi",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "TÁK-si; stress on the first syllable."
+        },
+        {
+          "id": "misc_232",
+          "pt": "museu",
+          "en": "museum",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "mu-ZEU; final glide like 'eh-o'."
+        },
+        {
+          "id": "misc_233",
+          "pt": "caixa",
+          "en": "cashier / register / box",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "KAI-sha; 'x' sounds like 'sh'."
+        },
+        {
+          "id": "misc_234",
+          "pt": "senha",
+          "en": "password / code",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "SEN-ya; 'nh' sounds like 'ny'."
+        },
+        {
+          "id": "misc_235",
+          "pt": "celular",
+          "en": "cell phone",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "se-lu-LAR; final 'r' is guttural in many accents."
+        },
+        {
+          "id": "misc_236",
+          "pt": "rua",
+          "en": "street",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "RU-a; start with a Portuguese 'r', then open 'a'."
+        },
+        {
+          "id": "misc_237",
+          "pt": "faculdade",
+          "en": "college / university",
+          "pos": "noun",
+          "difficulty": 4,
+          "difficult_for_english": false,
+          "pronunciation_notes": "fa-cul-DA-de; stress on 'da'."
+        },
+        {
+          "id": "misc_238",
+          "pt": "pix",
+          "en": "Pix instant payment",
+          "pos": "noun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "PIKS; one sharp syllable."
+        },
+        {
+          "id": "misc_239",
+          "pt": "sacola",
+          "en": "bag / shopping bag",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "sa-KO-la; stress on 'ko'."
+        },
+        {
+          "id": "misc_240",
+          "pt": "produto",
+          "en": "product",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pro-DU-to; 'u' like 'oo'."
+        },
+        {
+          "id": "misc_241",
+          "pt": "defeito",
+          "en": "defect / flaw",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "de-FEI-to; stress on 'fei'."
+        },
+        {
+          "id": "misc_242",
+          "pt": "com certeza",
+          "en": "certainly / for sure",
+          "pos": "phrase",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "kom ser-TE-za; phrase stressed on 'te'."
+        },
+        {
+          "id": "misc_243",
+          "pt": "bolo",
+          "en": "cake",
+          "pos": "noun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "BO-lo; open first syllable."
+        },
+        {
+          "id": "misc_244",
+          "pt": "sede",
+          "en": "thirst",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "SE-de; first syllable stressed."
+        },
+        {
+          "id": "misc_245",
+          "pt": "incluído",
+          "forms": ["incluída"],
+          "en": "included",
+          "pos": "adjective",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "in-clu-Í-do; stress on the accented 'í'."
+        },
+        {
+          "id": "misc_246",
+          "pt": "radiante",
+          "en": "radiant",
+          "pos": "adjective",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "ra-di-AN-te; stress on 'an'."
+        },
+        {
+          "id": "misc_247",
+          "pt": "felicidade",
+          "en": "happiness",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "fe-li-ci-DA-de; stress on 'da'."
+        },
+        {
+          "id": "misc_248",
+          "pt": "chateado",
+          "en": "upset / annoyed",
+          "pos": "adjective",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "sha-te-A-do; 'ch' sounds like 'sh'."
+        },
+        {
+          "id": "misc_249",
+          "pt": "apaixonada",
+          "en": "in love (fem.)",
+          "pos": "adjective",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "a-pai-sho-NA-da; 'x' sounds like 'sh'."
+        },
+        {
+          "id": "misc_250",
+          "pt": "ciúmes",
+          "en": "jealousy / jealousy feelings",
+          "pos": "noun",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "ci-Ú-mes; stress on 'ú'."
+        },
+        {
+          "id": "misc_251",
+          "pt": "série",
+          "en": "series / TV show",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "SÉ-rie; open stressed 'é'."
+        },
+        {
+          "id": "misc_252",
+          "pt": "sabia",
+          "en": "knew",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "sa-BI-a; stress on 'bi'."
+        },
+        {
+          "id": "misc_253",
+          "pt": "disso",
+          "en": "of that / about that",
+          "pos": "pronoun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "DI-so; first syllable stressed."
+        },
+        {
+          "id": "misc_254",
+          "pt": "número",
+          "en": "number",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "NÚ-me-ro; stress on the first syllable."
+        },
+        {
+          "id": "misc_255",
+          "pt": "total",
+          "en": "total",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "to-TAL; stress on the second syllable."
+        },
+        {
+          "id": "misc_256",
+          "pt": "reais",
+          "en": "reais (Brazilian currency, plural)",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "he-AIS / re-AIS depending on accent; stress at the end."
+        },
+        {
+          "id": "misc_257",
+          "pt": "cartão de crédito",
+          "en": "credit card",
+          "pos": "phrase",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "car-TÃO de CRÉ-di-to; nasal 'ão' and open 'cré'."
+        },
+        {
+          "id": "misc_258",
+          "pt": "ao",
+          "en": "to the / at the (masc.)",
+          "pos": "contraction",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "AO; the two vowels glide together like 'ow'."
+        },
+        {
+          "id": "misc_259",
+          "pt": "tirar",
+          "en": "to take / to remove",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "ti-RAR; final 'r' is guttural."
+        },
+        {
+          "id": "misc_260",
+          "pt": "uns",
+          "en": "some / a few (masc. plural)",
+          "pos": "pronoun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "UNS; nasal 'un' plus final 's'."
+        },
+        {
+          "id": "misc_261",
+          "pt": "aí",
+          "en": "there / then / hey",
+          "pos": "adverb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-Í; stress falls on the last syllable."
+        },
+        {
+          "id": "misc_262",
+          "pt": "assim",
+          "en": "like this / this way",
+          "pos": "adverb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "a-SIM; nasal final 'im'."
+        },
+        {
+          "id": "misc_263",
+          "pt": "calma",
+          "en": "calm / calmness",
+          "pos": "noun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "CAL-ma; first syllable is stressed."
+        },
+        {
+          "id": "misc_264",
+          "pt": "chamar",
+          "en": "to call",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "sha-MAR; 'ch' sounds like 'sh'."
+        },
+        {
+          "id": "misc_265",
+          "pt": "final",
+          "en": "final / ending",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "fi-NAL; stress falls on 'nal'."
+        },
+        {
+          "id": "misc_266",
+          "pt": "isto",
+          "en": "this",
+          "pos": "pronoun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "IS-to; short first syllable."
+        },
+        {
+          "id": "misc_267",
+          "pt": "junto",
+          "en": "together",
+          "pos": "adverb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "JUN-to; nasal 'jun'."
+        },
+        {
+          "id": "misc_268",
+          "pt": "lá",
+          "en": "there / over there",
+          "pos": "adverb",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "LÁ; open stressed 'a'."
+        },
+        {
+          "id": "misc_269",
+          "pt": "mês",
+          "en": "month",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "MÊS; closed stressed 'ê'."
+        },
+        {
+          "id": "misc_270",
+          "pt": "nota",
+          "en": "grade / note / bill",
+          "pos": "noun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "NO-ta; first syllable is stressed."
+        },
+        {
+          "id": "misc_271",
+          "pt": "pedir",
+          "en": "to ask for / to order",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pe-DIR; final 'r' is guttural."
+        },
+        {
+          "id": "misc_272",
+          "pt": "pegar",
+          "forms": ["pego"],
+          "en": "to get / to take",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pe-GAR; hard 'g' and guttural 'r'."
+        },
+        {
+          "id": "misc_273",
+          "pt": "pelo",
+          "en": "by the / through the (masc.)",
+          "pos": "contraction",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "PE-lo; contraction of 'por' + 'o'."
+        },
+        {
+          "id": "misc_274",
+          "pt": "prazo",
+          "en": "deadline / time limit",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "PRA-zo; clean initial 'pr' cluster."
+        },
+        {
+          "id": "misc_275",
+          "pt": "todo",
+          "en": "every / all",
+          "pos": "pronoun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "TO-do; open stressed 'to'."
+        },
+        {
+          "id": "misc_276",
+          "pt": "abraço",
+          "en": "hug",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-BRA-so; 'ç' sounds like 's'."
+        },
+        {
+          "id": "misc_277",
+          "pt": "agenda",
+          "en": "schedule / planner",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "a-JEN-da; 'g' sounds like 'j'."
+        },
+        {
+          "id": "misc_278",
+          "pt": "ainda",
+          "en": "still / yet",
+          "pos": "adverb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-IN-da; stress on the middle syllable."
+        },
+        {
+          "id": "misc_279",
+          "pt": "alguém",
+          "en": "someone",
+          "pos": "pronoun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "al-GUÉM; nasal final 'em'."
+        },
+        {
+          "id": "misc_280",
+          "pt": "aprender",
+          "en": "to learn",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "a-pren-DER; nasal 'pren'."
+        },
+        {
+          "id": "misc_281",
+          "pt": "apresentação",
+          "en": "presentation",
+          "pos": "noun",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "a-pre-zen-ta-ÇÃO; nasal final 'ão'."
+        },
+        {
+          "id": "misc_282",
+          "pt": "aquela",
+          "en": "that one (fem.)",
+          "pos": "pronoun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-KE-la; stress on 'ke'."
+        },
+        {
+          "id": "misc_283",
+          "pt": "aula",
+          "forms": ["aulas"],
+          "en": "class / lesson",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "AU-la; starts with the diphthong 'au'."
+        },
+        {
+          "id": "misc_284",
+          "pt": "bastante",
+          "en": "quite / enough / a lot",
+          "pos": "adverb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "bas-TAN-te; nasal 'tan'."
+        },
+        {
+          "id": "misc_285",
+          "pt": "beber",
+          "en": "to drink",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "be-BER; final 'r' is guttural."
+        },
+        {
+          "id": "misc_286",
+          "pt": "caminho",
+          "en": "way / path",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "ca-MI-nho; 'nh' sounds like 'ny'."
+        },
+        {
+          "id": "misc_287",
+          "pt": "comigo",
+          "en": "with me",
+          "pos": "pronoun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "co-MI-go; stress on 'mi'."
+        },
+        {
+          "id": "misc_288",
+          "pt": "compra",
+          "en": "purchase / shopping",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "COM-pra; nasal 'com' before 'pr'."
+        },
+        {
+          "id": "misc_289",
+          "pt": "contar",
+          "en": "to tell / to count",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "con-TAR; nasal 'con'."
+        },
+        {
+          "id": "misc_290",
+          "pt": "corrida",
+          "en": "busy / rushed (fem.)",
+          "pos": "adjective",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "co-RRI-da; double 'rr' is guttural."
+        },
+        {
+          "id": "misc_291",
+          "pt": "corrido",
+          "en": "busy / rushed (masc.)",
+          "pos": "adjective",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "co-RRI-do; double 'rr' is guttural."
+        },
+        {
+          "id": "misc_292",
+          "pt": "cuidado",
+          "en": "care / caution",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "cui-DA-do; stress on 'da'."
+        },
+        {
+          "id": "misc_293",
+          "pt": "devolução",
+          "en": "return / refund",
+          "pos": "noun",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "de-vo-lu-ÇÃO; nasal final 'ão'."
+        },
+        {
+          "id": "misc_294",
+          "pt": "doente",
+          "en": "sick / ill",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "do-EN-te; open 'en' in the middle."
+        },
+        {
+          "id": "misc_295",
+          "pt": "domingo",
+          "en": "Sunday",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "do-MIN-go; stress on 'min'."
+        },
+        {
+          "id": "misc_296",
+          "pt": "eletrônico",
+          "en": "electronic",
+          "pos": "adjective",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "e-le-TRÔ-ni-co; stress on 'trô'."
+        },
+        {
+          "id": "misc_297",
+          "pt": "emprego",
+          "en": "job / employment",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "em-PRE-go; nasal 'em'."
+        },
+        {
+          "id": "misc_298",
+          "pt": "endereço",
+          "en": "address",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "en-de-RE-so; 'ç' sounds like 's'."
+        },
+        {
+          "id": "misc_299",
+          "pt": "entregar",
+          "en": "to deliver / to hand in",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "en-tre-GAR; nasal 'en'."
+        },
+        {
+          "id": "misc_300",
+          "pt": "equipe",
+          "en": "team",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "e-KI-pe; stress on 'ki'."
+        },
+        {
+          "id": "misc_301",
+          "pt": "escola",
+          "en": "school",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "es-CO-la; stress on 'co'."
+        },
+        {
+          "id": "misc_302",
+          "pt": "fechar",
+          "forms": ["fecha"],
+          "en": "to close / to complete",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "fe-SHAR; 'ch' sounds like 'sh'."
+        },
+        {
+          "id": "misc_303",
+          "pt": "falta",
+          "en": "lack / absence",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "FAL-ta; light 'l' before 't'."
+        },
+        {
+          "id": "misc_304",
+          "pt": "feriado",
+          "en": "holiday",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "fe-ri-A-do; stress on 'a'."
+        },
+        {
+          "id": "misc_305",
+          "pt": "filme",
+          "en": "movie",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "FIL-me; short first syllable."
+        },
+        {
+          "id": "misc_306",
+          "pt": "fins de semana",
+          "en": "weekends",
+          "pos": "phrase",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "fins dji se-MA-na; nasal 'fins'."
+        },
+        {
+          "id": "misc_307",
+          "pt": "foto",
+          "en": "photo",
+          "pos": "noun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "FO-to; short open first syllable."
+        },
+        {
+          "id": "misc_308",
+          "pt": "horrível",
+          "en": "horrible / awful",
+          "pos": "adjective",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "o-RRÍ-vel; guttural 'rr' and stress on 'rí'."
+        },
+        {
+          "id": "misc_309",
+          "pt": "inglês",
+          "en": "English",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "in-GLÊS; nasal 'in' and stressed 'ês'."
+        },
+        {
+          "id": "misc_310",
+          "pt": "lição",
+          "en": "lesson / homework",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "li-ÇÃO; nasal final 'ão'."
+        },
+        {
+          "id": "misc_311",
+          "pt": "loja",
+          "en": "store",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "LO-ja; 'j' sounds like 'zh'."
+        },
+        {
+          "id": "misc_312",
+          "pt": "mandar",
+          "forms": ["manda", "mandei"],
+          "en": "to send",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "man-DAR; nasal 'man'."
+        },
+        {
+          "id": "misc_313",
+          "pt": "marcar",
+          "en": "to schedule / to mark",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "mar-CAR; final 'r' is guttural."
+        },
+        {
+          "id": "misc_314",
+          "pt": "matéria",
+          "en": "subject / course material",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "ma-TÉ-ria; stress on 'té'."
+        },
+        {
+          "id": "misc_315",
+          "pt": "meio-dia",
+          "en": "noon",
+          "pos": "phrase",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "MEI-o DI-a; stress on 'mei'."
+        },
+        {
+          "id": "misc_316",
+          "pt": "minhas",
+          "en": "my (fem. plural)",
+          "pos": "pronoun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "MI-nhas; 'nh' sounds like 'ny'."
+        },
+        {
+          "id": "misc_317",
+          "pt": "minutos",
+          "en": "minutes",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "mi-NU-tos; stress on 'nu'."
+        },
+        {
+          "id": "misc_318",
+          "pt": "né",
+          "en": "right? / isn't it?",
+          "pos": "interjection",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "NÉ; open stressed 'é'."
+        },
+        {
+          "id": "misc_319",
+          "pt": "nome",
+          "en": "name",
+          "pos": "noun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "NO-me; first syllable is stressed."
+        },
+        {
+          "id": "misc_320",
+          "pt": "nossa",
+          "en": "wow / our (fem.)",
+          "pos": "interjection",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "NOS-sa; double 'ss' stays sharp."
+        },
+        {
+          "id": "misc_321",
+          "pt": "notícia",
+          "en": "news",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "no-TÍ-cia; stress on 'tí'."
+        },
+        {
+          "id": "misc_322",
+          "pt": "nova",
+          "en": "new (fem.)",
+          "pos": "adjective",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "NO-va; first syllable is stressed."
+        },
+        {
+          "id": "misc_323",
+          "pt": "novidade",
+          "en": "news / something new",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "no-vi-DA-de; stress on 'da'."
+        },
+        {
+          "id": "misc_324",
+          "pt": "olhar",
+          "forms": ["olhando"],
+          "en": "to look / to watch",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "o-LHAR; 'lh' sounds like 'ly'."
+        },
+        {
+          "id": "misc_325",
+          "pt": "opção",
+          "en": "option",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "op-ÇÃO; nasal final 'ão'."
+        },
+        {
+          "id": "misc_326",
+          "pt": "ótima",
+          "en": "great / excellent (fem.)",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "Ó-ti-ma; open stressed 'ó'."
+        },
+        {
+          "id": "misc_327",
+          "pt": "paciência",
+          "en": "patience",
+          "pos": "noun",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "pa-ci-ÊN-cia; nasal 'ên'."
+        },
+        {
+          "id": "misc_328",
+          "pt": "pagamento",
+          "en": "payment",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "pa-ga-MEN-to; nasal 'men'."
+        },
+        {
+          "id": "misc_329",
+          "pt": "preço",
+          "en": "price",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "PRE-so; 'ç' sounds like 's'."
+        },
+        {
+          "id": "misc_330",
+          "pt": "presente",
+          "en": "gift / present",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "pre-ZEN-te; 's' sounds like 'z'."
+        },
+        {
+          "id": "misc_331",
+          "pt": "primeira",
+          "en": "first (fem.)",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pri-MEI-ra; stress on 'mei'."
+        },
+        {
+          "id": "misc_332",
+          "pt": "problema",
+          "en": "problem",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pro-BLE-ma; middle consonant cluster stays clear."
+        },
+        {
+          "id": "misc_333",
+          "pt": "quem",
+          "en": "who",
+          "pos": "pronoun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "QUEM; nasal final 'em'."
+        },
+        {
+          "id": "misc_334",
+          "pt": "raiva",
+          "en": "anger",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "RAI-va; starts with 'rai'."
+        },
+        {
+          "id": "misc_335",
+          "pt": "rápido",
+          "en": "fast / quickly",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "RÁ-pi-do; open stressed 'á'."
+        },
+        {
+          "id": "misc_336",
+          "pt": "restaurante",
+          "en": "restaurant",
+          "pos": "noun",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "res-tau-RAN-te; nasal 'ran'."
+        },
+        {
+          "id": "misc_337",
+          "pt": "reto",
+          "en": "straight",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "RE-to; short open 'e'."
+        },
+        {
+          "id": "misc_338",
+          "pt": "sábado",
+          "en": "Saturday",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "SÁ-ba-do; stress on the first syllable."
+        },
+        {
+          "id": "misc_339",
+          "pt": "sapatos",
+          "en": "shoes",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "sa-PA-tos; stress on 'pa'."
+        },
+        {
+          "id": "misc_340",
+          "pt": "saudades",
+          "en": "I miss you / longing",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "sau-DA-des; starts with 'sau'."
+        },
+        {
+          "id": "misc_341",
+          "pt": "sério",
+          "en": "serious / really",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "SÉ-rio; open stressed 'é'."
+        },
+        {
+          "id": "misc_342",
+          "pt": "tradição",
+          "en": "tradition",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "tra-di-ÇÃO; nasal final 'ão'."
+        },
+        {
+          "id": "misc_343",
+          "pt": "usar",
+          "en": "to use",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "u-ZAR; stress on 'zar'."
+        },
+        {
+          "id": "misc_344",
+          "pt": "voo",
+          "en": "flight",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "VO-o; two clear vowel beats."
+        },
+        {
+          "id": "misc_345",
+          "pt": "embora",
+          "en": "although / even though / away",
+          "pos": "conjunction",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "em-BO-ra; stress on 'bo'."
+        },
+        {
+          "id": "misc_346",
+          "pt": "acontecer",
+          "forms": ["aconteceu"],
+          "en": "to happen",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "a-con-te-SER; final 'r' is guttural."
+        },
+        {
+          "id": "misc_347",
+          "pt": "costumar",
+          "forms": ["costumo"],
+          "en": "to usually / to tend to",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "cos-tu-MAR; stress on 'mar'."
+        },
+        {
+          "id": "misc_348",
+          "pt": "escovar",
+          "forms": ["escovo"],
+          "en": "to brush",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "es-co-VAR; stress on 'var'."
+        },
+        {
+          "id": "misc_349",
+          "pt": "levar",
+          "forms": ["levo"],
+          "en": "to take / to carry",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "le-VAR; stress on 'var'."
+        },
+        {
+          "id": "misc_350",
+          "pt": "calçar",
+          "forms": ["calço"],
+          "en": "to wear (shoes) / to fit",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "cal-SAR; 'ç' sounds like 's'."
+        },
+        {
+          "id": "misc_351",
+          "pt": "quarenta",
+          "en": "forty",
+          "pos": "number",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "qua-REN-ta; stress on 'ren'."
+        },
+        {
+          "id": "misc_352",
+          "pt": "janta",
+          "en": "dinner",
+          "pos": "noun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "JAN-ta; nasal first syllable."
+        },
+        {
+          "id": "misc_353",
+          "pt": "quase",
+          "en": "almost",
+          "pos": "adverb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "QUA-se; the first syllable is stressed."
+        },
+        {
+          "id": "misc_354",
+          "pt": "pronto",
+          "forms": ["pronta"],
+          "en": "ready",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "PRON-to; nasal 'on'."
+        },
+        {
+          "id": "misc_355",
+          "pt": "voltar",
+          "forms": ["voltam"],
+          "en": "to return / to come back",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "vol-TAR; stress on 'tar'."
+        },
+        {
+          "id": "misc_356",
+          "pt": "agosto",
+          "en": "August",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-GOS-to; stress on 'gos'."
+        },
+        {
+          "id": "misc_357",
+          "pt": "jogo",
+          "en": "game / match",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "JO-go; 'j' sounds like 'zh'."
+        },
+        {
+          "id": "misc_358",
+          "pt": "banco",
+          "en": "bank / bench",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "BAN-co; nasal 'ban'."
+        },
+        {
+          "id": "misc_359",
+          "pt": "continuar",
+          "forms": ["continue"],
+          "en": "to continue",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "con-ti-nu-AR; stress on the end."
+        },
+        {
+          "id": "misc_360",
+          "pt": "encher",
+          "en": "to fill",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "en-SHER; nasal 'en' and 'ch' like 'sh'."
+        },
+        {
+          "id": "misc_361",
+          "pt": "tanque",
+          "en": "tank",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "TAN-que; nasal 'tan'."
+        },
+        {
+          "id": "misc_362",
+          "pt": "irritar",
+          "forms": ["irrita"],
+          "en": "to annoy / to irritate",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "i-ri-TAR; stress on 'tar'."
+        },
+        {
+          "id": "misc_363",
+          "pt": "profundamente",
+          "en": "deeply",
+          "pos": "adverb",
+          "difficulty": 4,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pro-fun-da-MEN-te; stress on 'men'."
+        },
+        {
+          "id": "misc_364",
+          "pt": "alívio",
+          "en": "relief",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "a-LÍ-vio; stress on the accented 'í'."
+        },
+        {
+          "id": "misc_365",
+          "pt": "morrer",
+          "forms": ["morrendo"],
+          "en": "to die / to be dying",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "mo-RRER; double 'rr' is guttural."
+        },
+        {
+          "id": "misc_366",
+          "pt": "apetite",
+          "en": "appetite",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-pe-TI-te; stress on 'ti'."
+        },
+        {
+          "id": "misc_367",
+          "pt": "preferir",
+          "forms": ["prefiro"],
+          "en": "to prefer",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pre-fe-RIR; stress on the end."
+        },
+        {
+          "id": "misc_368",
+          "pt": "natural",
+          "en": "natural",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "na-tu-RAL; stress on 'ral'."
+        },
+        {
+          "id": "misc_369",
+          "pt": "sopa",
+          "en": "soup",
+          "pos": "noun",
+          "difficulty": 1,
+          "difficult_for_english": false,
+          "pronunciation_notes": "SO-pa; first syllable is stressed."
+        },
+        {
+          "id": "misc_370",
+          "pt": "fria",
+          "en": "cold (fem.)",
+          "pos": "adjective",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "FRI-a; two clear syllables."
+        },
+        {
+          "id": "misc_371",
+          "pt": "provador",
+          "forms": ["provadores"],
+          "en": "fitting room",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "pro-va-DOR; stress on 'dor'."
+        },
+        {
+          "id": "misc_372",
+          "pt": "duzentos",
+          "en": "two hundred",
+          "pos": "number",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "du-ZEN-tos; stress on 'zen'."
+        },
+        {
+          "id": "misc_373",
+          "pt": "grama",
+          "forms": ["gramas"],
+          "en": "gram",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "GRA-ma; first syllable is stressed."
+        },
+        {
+          "id": "misc_374",
+          "pt": "queijo",
+          "en": "cheese",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "QUEI-jo; 'j' sounds like 'zh'."
+        },
+        {
+          "id": "misc_375",
+          "pt": "oitenta",
+          "en": "eighty",
+          "pos": "number",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "oi-TEN-ta; stress on 'ten'."
+        },
+        {
+          "id": "misc_376",
+          "pt": "experimentar",
+          "en": "to try on / to try out",
+          "pos": "verb",
+          "difficulty": 4,
+          "difficult_for_english": false,
+          "pronunciation_notes": "ex-pe-ri-men-TAR; stress on the end."
+        },
+        {
+          "id": "misc_377",
+          "pt": "tênis",
+          "en": "sneakers / tennis shoes",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": true,
+          "pronunciation_notes": "TÊ-nis; closed stressed 'ê'."
+        },
+        {
+          "id": "misc_378",
+          "pt": "cuidar",
+          "forms": ["cuida"],
+          "en": "to take care",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "cui-DAR; stress on 'dar'."
+        },
+        {
+          "id": "misc_379",
+          "pt": "adorar",
+          "forms": ["adorei"],
+          "en": "to love / to adore",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-do-RAR; stress on 'rar'."
+        },
+        {
+          "id": "misc_380",
+          "pt": "Brasil",
+          "en": "Brazil",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "bra-ZIL; stress on the last syllable."
+        },
+        {
+          "id": "misc_381",
+          "pt": "gorjeta",
+          "en": "tip",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "gor-JE-ta; 'j' sounds like 'zh'."
+        },
+        {
+          "id": "misc_382",
+          "pt": "serviço",
+          "en": "service",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "ser-VI-so; 'ç' sounds like 's'."
+        },
+        {
+          "id": "misc_383",
+          "pt": "currículo",
+          "en": "resume / CV",
+          "pos": "noun",
+          "difficulty": 4,
+          "difficult_for_english": true,
+          "pronunciation_notes": "cur-RÍ-cu-lo; stress on the accented 'rí'."
+        },
+        {
+          "id": "misc_384",
+          "pt": "vaga",
+          "en": "opening / position",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "VA-ga; first syllable is stressed."
+        },
+        {
+          "id": "misc_385",
+          "pt": "estágio",
+          "en": "internship",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "es-TÁ-gio; stress on the accented 'tá'."
+        },
+        {
+          "id": "misc_386",
+          "pt": "área",
+          "en": "area / field",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "Á-re-a; three clear syllables."
+        },
+        {
+          "id": "misc_387",
+          "pt": "redes sociais",
+          "en": "social media",
+          "pos": "phrase",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "RE-des so-ci-AIS; stress on 'ais'."
+        },
+        {
+          "id": "misc_388",
+          "pt": "atravessar",
+          "forms": ["atravesse"],
+          "en": "to cross",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-tra-ves-SAR; stress on the end."
+        },
+        {
+          "id": "misc_389",
+          "pt": "faixa de pedestres",
+          "en": "crosswalk",
+          "pos": "phrase",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "FAI-sha dji pe-DES-tres; stress on 'des'."
+        },
+        {
+          "id": "misc_390",
+          "pt": "direção",
+          "en": "direction",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "di-re-ÇÃO; nasal final 'ão'."
+        },
+        {
+          "id": "misc_391",
+          "pt": "sentir",
+          "forms": ["senti"],
+          "en": "to feel",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "sen-TIR; nasal 'sen'."
+        },
+        {
+          "id": "misc_392",
+          "pt": "ofendido",
+          "en": "offended",
+          "pos": "adjective",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "o-fen-DI-do; stress on 'di'."
+        },
+        {
+          "id": "misc_393",
+          "pt": "comentário",
+          "en": "comment",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "co-men-TÁ-rio; stress on the accented 'tá'."
+        },
+        {
+          "id": "misc_394",
+          "pt": "último",
+          "en": "last / final",
+          "pos": "adjective",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "ÚL-ti-mo; stress on the accented 'úl'."
+        },
+        {
+          "id": "misc_395",
+          "pt": "ensino médio",
+          "en": "high school",
+          "pos": "phrase",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "en-SI-no MÉ-dio; stress on 'mé'."
+        },
+        {
+          "id": "misc_396",
+          "pt": "sonho",
+          "forms": ["sonhos"],
+          "en": "dream",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "SON-yo; 'nh' sounds like 'ny'."
+        },
+        {
+          "id": "misc_397",
+          "pt": "aliviado",
+          "en": "relieved",
+          "pos": "adjective",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "a-li-vi-A-do; stress on 'a'."
+        },
+        {
+          "id": "misc_398",
+          "pt": "perceber",
+          "forms": ["percebi"],
+          "en": "to notice / to realize",
+          "pos": "verb",
+          "difficulty": 3,
+          "difficult_for_english": false,
+          "pronunciation_notes": "per-ce-BER; stress on the end."
+        },
+        {
+          "id": "misc_399",
+          "pt": "solução",
+          "en": "solution",
+          "pos": "noun",
+          "difficulty": 3,
+          "difficult_for_english": true,
+          "pronunciation_notes": "so-lu-ÇÃO; nasal final 'ão'."
+        },
+        {
+          "id": "misc_400",
+          "pt": "revisar",
+          "en": "to review",
+          "pos": "verb",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "re-vi-ZAR; stress on the end."
+        },
+        {
+          "id": "misc_401",
+          "pt": "dados",
+          "en": "data",
+          "pos": "noun",
+          "difficulty": 2,
+          "difficult_for_english": false,
+          "pronunciation_notes": "DA-dos; first syllable is stressed."
         }
       ]
     }

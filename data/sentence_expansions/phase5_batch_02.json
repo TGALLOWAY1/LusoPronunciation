@@ -1,0 +1,376 @@
+{
+  "language_pair": "en-pt-BR",
+  "version": "1.2",
+  "categories": [
+    {
+      "id": "food",
+      "label_en": "Food & Eating",
+      "label_pt": "Comida e Refeições",
+      "sentences": [
+        {
+          "id": "phase5_batch02_food_001",
+          "pt": "Mais água, por favor.",
+          "en": "More water, please.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_food_002",
+          "pt": "O jantar está quase pronto.",
+          "en": "Dinner is almost ready.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_food_003",
+          "pt": "Você quer dividir a sobremesa comigo?",
+          "en": "Do you want to share dessert with me?",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_food_004",
+          "pt": "Se o atendimento não for ótimo, eu volto mais tarde.",
+          "en": "If the service isn't great, I'll come back later.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_food_005",
+          "pt": "Mesmo quando eu já comi, eu gosto de conversar durante o café.",
+          "en": "Even when I've already eaten, I like to sit and talk over coffee.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "label_en": "Travel & Transportation",
+      "label_pt": "Viagem e Transporte",
+      "sentences": [
+        {
+          "id": "phase5_batch02_travel_001",
+          "pt": "Meu passaporte está aqui.",
+          "en": "My passport is here.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_travel_002",
+          "pt": "O embarque é agora?",
+          "en": "Is boarding now?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_travel_003",
+          "pt": "Posso confirmar o embarque no aplicativo?",
+          "en": "Can I confirm boarding in the app?",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_travel_004",
+          "pt": "Se o hotel não tiver wi-fi, eu preciso de outro lugar.",
+          "en": "If the hotel doesn't have Wi-Fi, I need another place.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_travel_005",
+          "pt": "Se o voo mudar, eu fico calmo no aeroporto.",
+          "en": "If the flight changes, I stay calm at the airport.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "family_friends",
+      "label_en": "Family & Friends",
+      "label_pt": "Família e Amigos",
+      "sentences": [
+        {
+          "id": "phase5_batch02_family_friends_001",
+          "pt": "Meu tio vem hoje.",
+          "en": "My uncle is coming today.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_family_friends_002",
+          "pt": "Minha sobrinha adora chocolate.",
+          "en": "My niece loves chocolate.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_family_friends_003",
+          "pt": "A gente vai ao aniversário da minha irmã.",
+          "en": "We're going to my sister's birthday.",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_family_friends_004",
+          "pt": "Se meus sogros estão aqui, eu preparo o almoço.",
+          "en": "If my in-laws are here, I prepare lunch.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_family_friends_005",
+          "pt": "Mesmo quando cada um está ocupado, a família se reúne mais tarde.",
+          "en": "Even when everyone is busy, the family gets together later.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "daily_routine",
+      "label_en": "Daily Routine",
+      "label_pt": "Rotina Diária",
+      "sentences": [
+        {
+          "id": "phase5_batch02_daily_routine_001",
+          "pt": "Eu tomo banho agora.",
+          "en": "I'm taking a shower now.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_daily_routine_002",
+          "pt": "Eu preparo o jantar em casa.",
+          "en": "I prepare dinner at home.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_daily_routine_003",
+          "pt": "Antes de dormir, eu leio um pouco.",
+          "en": "Before going to sleep, I read a little.",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_daily_routine_004",
+          "pt": "Quando eu volto do trabalho, eu lavo a louça e organizo a casa.",
+          "en": "When I get back from work, I wash the dishes and organize the house.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_daily_routine_005",
+          "pt": "Se eu não coloco o celular para carregar, eu acabo atrasando.",
+          "en": "If I don't put my phone on the charger, I end up running late.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "feelings",
+      "label_en": "Feelings & Emotions",
+      "label_pt": "Sentimentos e Emoções",
+      "sentences": [
+        {
+          "id": "phase5_batch02_feelings_001",
+          "pt": "Hoje estou tranquilo.",
+          "en": "Today I'm calm.",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_feelings_002",
+          "pt": "Fiquei contente com a notícia.",
+          "en": "I was happy about the news.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_feelings_003",
+          "pt": "Essa surpresa foi incrível.",
+          "en": "That surprise was amazing.",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_feelings_004",
+          "pt": "Mesmo com vergonha, eu consegui falar com todo mundo.",
+          "en": "Even though I was embarrassed, I managed to talk to everyone.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_feelings_005",
+          "pt": "Quando eu fico preocupado, eu foco no progresso.",
+          "en": "When I get worried, I focus on progress.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "label_en": "Questions & Help",
+      "label_pt": "Perguntas e Ajuda",
+      "sentences": [
+        {
+          "id": "phase5_batch02_questions_001",
+          "pt": "Pode repetir isso?",
+          "en": "Can you repeat that?",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_questions_002",
+          "pt": "Qual palavra você disse?",
+          "en": "Which word did you say?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_questions_003",
+          "pt": "Você pode me mostrar como se escreve esse nome?",
+          "en": "Can you show me how to write that name?",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_questions_004",
+          "pt": "Se eu tenho dúvida, posso pedir outro exemplo?",
+          "en": "If I have a question, can I ask for another example?",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_questions_005",
+          "pt": "Quando eu tiver uma dúvida, eu quero verificar a informação.",
+          "en": "When I have a question, I want to verify the information.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "shopping",
+      "label_en": "Shopping & Money",
+      "label_pt": "Compras e Dinheiro",
+      "sentences": [
+        {
+          "id": "phase5_batch02_shopping_001",
+          "pt": "Esse valor está certo?",
+          "en": "Is this amount right?",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_shopping_002",
+          "pt": "Posso provar esta camisa?",
+          "en": "Can I try on this shirt?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_shopping_003",
+          "pt": "A promoção é para cartão de débito?",
+          "en": "Is the sale for debit card purchases?",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_shopping_004",
+          "pt": "Se eu pagar em dinheiro, tem troco?",
+          "en": "If I pay in cash, do you have change?",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_shopping_005",
+          "pt": "Se a garantia cobre tudo, eu levo hoje.",
+          "en": "If the warranty covers everything, I'll take it today.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "directions",
+      "label_en": "Directions & Navigation",
+      "label_pt": "Direções e Navegação",
+      "sentences": [
+        {
+          "id": "phase5_batch02_directions_001",
+          "pt": "É perto daqui?",
+          "en": "Is it close to here?",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_directions_002",
+          "pt": "O metrô passa por aqui?",
+          "en": "Does the metro come through here?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_directions_003",
+          "pt": "Depois do semáforo, é à esquerda?",
+          "en": "After the traffic light, is it on the left?",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_directions_004",
+          "pt": "Se eu descer na Central, ainda preciso fazer baldeação?",
+          "en": "If I get off at Central, do I still need to transfer?",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_directions_005",
+          "pt": "Se a avenida fechar agora, qual caminho é melhor?",
+          "en": "If the avenue closes now, which route is better?",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "work_study",
+      "label_en": "Work & Study",
+      "label_pt": "Trabalho e Estudos",
+      "sentences": [
+        {
+          "id": "phase5_batch02_work_study_001",
+          "pt": "A reunião é hoje?",
+          "en": "Is the meeting today?",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_work_study_002",
+          "pt": "Meu professor explicou de novo.",
+          "en": "My teacher explained it again.",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_work_study_003",
+          "pt": "Eu preparo o relatório antes da aula.",
+          "en": "I prepare the report before class.",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_work_study_004",
+          "pt": "Se a entrevista for amanhã, eu preparo tudo hoje à noite.",
+          "en": "If the interview is tomorrow, I'll prepare everything tonight.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_work_study_005",
+          "pt": "Mesmo com home office, a carga horária fica difícil.",
+          "en": "Even with remote work, the workload gets difficult.",
+          "difficulty": 5
+        }
+      ]
+    },
+    {
+      "id": "small_talk",
+      "label_en": "Small Talk",
+      "label_pt": "Conversa Casual",
+      "sentences": [
+        {
+          "id": "phase5_batch02_small_talk_001",
+          "pt": "Tudo bem hoje?",
+          "en": "Everything good today?",
+          "difficulty": 1
+        },
+        {
+          "id": "phase5_batch02_small_talk_002",
+          "pt": "Você viu o jogo ontem?",
+          "en": "Did you see the game yesterday?",
+          "difficulty": 2
+        },
+        {
+          "id": "phase5_batch02_small_talk_003",
+          "pt": "No fim de semana, eu fico em casa.",
+          "en": "On the weekend, I stay home.",
+          "difficulty": 3
+        },
+        {
+          "id": "phase5_batch02_small_talk_004",
+          "pt": "Se o tempo ficar bom, podemos tomar um café ali.",
+          "en": "If the weather turns nice, we can grab a coffee over there.",
+          "difficulty": 4
+        },
+        {
+          "id": "phase5_batch02_small_talk_005",
+          "pt": "Mesmo com muito calor, eu gosto de caminhar no fim da tarde.",
+          "en": "Even when it's very hot, I like to walk in the late afternoon.",
+          "difficulty": 5
+        }
+      ]
+    }
+  ]
+}

@@ -53,8 +53,9 @@ export function enrichWords(
       id: raw.id,
       text,
       normalizedText,
+      forms: raw.forms?.map(form => form.trim()).filter(Boolean),
       en: raw.en.trim(), // Preserve English translation
-      category: inferCategory(undefined, text), // Could extract from raw data if available
+      category: inferCategory(raw.category, text),
       partOfSpeech: raw.pos,
       difficulty: raw.difficulty, // Preserve difficulty (1-5 scale)
       difficultForEnglish: raw.difficult_for_english,
@@ -108,7 +109,7 @@ export function enrichSentences(
       text,
       normalizedText,
       en: raw.en.trim(), // Preserve English translation
-      category: inferCategory(undefined, text), // Could extract from raw data if available
+      category: inferCategory(raw.category, text),
       difficulty: raw.difficulty, // Preserve difficulty (1-5 scale)
       pronunciationNotes: raw.pronunciation_notes, // Preserve pronunciation notes
       hardForEnglish,
@@ -123,4 +124,3 @@ export function enrichSentences(
   
   return sentencesWithRefs;
 }
-

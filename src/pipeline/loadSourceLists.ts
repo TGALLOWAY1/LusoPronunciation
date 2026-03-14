@@ -21,6 +21,7 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import type { RawWord, RawSentence, WordsData, SentencesData } from '../lib/types';
 import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
+import { COVERAGE_RAW_WORDS } from './coverageWords';
 
 /**
  * Normalizes text to lowercase for consistent matching.
@@ -30,6 +31,10 @@ import type { GenerationPipelineConfig } from '../../config/generationPipeline.c
  */
 function normalizeText(text: string): string {
   return text.toLowerCase().trim();
+}
+
+function toPathList(pathOrPaths: string | string[]): string[] {
+  return Array.isArray(pathOrPaths) ? pathOrPaths : [pathOrPaths];
 }
 
 /**
@@ -53,14 +58,20 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
       rawWords.push({
         id: word.id,
         pt: word.pt.trim(),
+        forms: Array.isArray(word.forms)
+          ? word.forms.map((form: string) => form.trim()).filter(Boolean)
+          : undefined,
         en: word.en.trim(),
         pos: word.pos,
+        category: category.id,
         difficulty: word.difficulty as 1 | 2 | 3 | 4 | 5,
         difficult_for_english: word.difficult_for_english,
         pronunciation_notes: word.pronunciation_notes,
       });
     }
   }
+
+  rawWords.push(...COVERAGE_RAW_WORDS);
   
   // Normalize: deduplicate by PT text (case-insensitive comparison)
   // Keep the first occurrence
@@ -74,8 +85,9 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
       seen.set(key, word);
       normalized.push(word);
     } else {
-      // Keep first occurrence
-      continue;
+      const existing = seen.get(key)!;
+      const mergedForms = [...new Set([...(existing.forms || []), ...(word.forms || [])])];
+      existing.forms = mergedForms.length > 0 ? mergedForms : undefined;
     }
   }
   
@@ -96,24 +108,27 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
  * @returns Promise resolving to an array of normalized RawSentence entries
  */
 export async function loadRawSentences(config: GenerationPipelineConfig): Promise<RawSentence[]> {
-  const sentencesPath = path.join(process.cwd(), config.paths.rawSentencesJsonPath);
-  
-  console.log(`Loading sentences from: ${sentencesPath}`);
-  const content = await fs.readFile(sentencesPath, 'utf-8');
-  const data: SentencesData = JSON.parse(content);
-  
   const rawSentences: RawSentence[] = [];
-  
-  // Flatten categories and map sentences to RawSentence
-  for (const category of data.categories) {
-    for (const sentence of category.sentences || []) {
-      rawSentences.push({
-        id: sentence.id,
-        pt: sentence.pt.trim(),
-        en: sentence.en.trim(),
-        difficulty: sentence.difficulty as 1 | 2 | 3 | 4 | 5,
-        pronunciation_notes: sentence.pronunciation_notes,
-      });
+
+  for (const relativePath of toPathList(config.paths.rawSentencesJsonPath)) {
+    const sentencesPath = path.join(process.cwd(), relativePath);
+
+    console.log(`Loading sentences from: ${sentencesPath}`);
+    const content = await fs.readFile(sentencesPath, 'utf-8');
+    const data: SentencesData = JSON.parse(content);
+
+    // Flatten categories and map sentences to RawSentence
+    for (const category of data.categories) {
+      for (const sentence of category.sentences || []) {
+        rawSentences.push({
+          id: sentence.id,
+          pt: sentence.pt.trim(),
+          en: sentence.en.trim(),
+          category: category.id,
+          difficulty: sentence.difficulty as 1 | 2 | 3 | 4 | 5,
+          pronunciation_notes: sentence.pronunciation_notes,
+        });
+      }
     }
   }
   
@@ -142,4 +157,3 @@ export async function loadRawSentences(config: GenerationPipelineConfig): Promis
   
   return limited;
 }
-
