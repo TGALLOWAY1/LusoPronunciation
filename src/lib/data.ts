@@ -138,6 +138,7 @@ function transformEnrichedWord(
   return {
     id: enriched.id,
     textPt: enriched.text,
+    forms: enriched.forms,
     translationEn: enriched.en || '', // Use preserved English translation
     partOfSpeech: enriched.partOfSpeech,
     difficulty: enriched.difficulty || difficulty, // Use preserved difficulty, fallback to computed
@@ -171,6 +172,7 @@ function transformWord(
   return {
     id: raw.id,
     textPt: raw.pt,
+    forms: raw.forms,
     translationEn: raw.en,
     partOfSpeech: raw.pos,
     difficulty: raw.difficulty,
@@ -332,7 +334,7 @@ export async function loadAllSentences(): Promise<Sentence[]> {
         .replace(/[^\w\s]/g, ''); // Remove punctuation
     };
     
-    let wordsForWordRefs: Array<Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>> = [];
+    let wordsForWordRefs: Array<Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'> & { forms?: string[] }> = [];
     try {
       const wordsData = await loadAllWords();
       // Convert Word[] to EnrichedWord[] format for buildWordRefs
@@ -340,6 +342,7 @@ export async function loadAllSentences(): Promise<Sentence[]> {
         id: word.id,
         text: word.textPt,
         normalizedText: normalizeToken(word.textPt),
+        forms: word.forms,
         category: word.categoryId,
       }));
     } catch (wordError) {

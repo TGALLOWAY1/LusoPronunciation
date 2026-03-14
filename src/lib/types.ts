@@ -36,6 +36,7 @@ export interface RawSentence {
 export interface RawWord {
   id: string;                     // e.g., "food_word_001"
   pt: string;                      // Portuguese text
+  forms?: string[];                // Alternate surface forms used in sentences
   en: string;                     // English translation
   pos: string;                    // Part of speech (noun, verb, etc.)
   category?: string;              // Canonical category ID from source dataset
@@ -139,6 +140,7 @@ export interface Sentence {
 export interface Word {
   id: string;
   textPt: string;
+  forms?: string[];
   translationEn: string;
   partOfSpeech: string;
   difficulty: Difficulty;

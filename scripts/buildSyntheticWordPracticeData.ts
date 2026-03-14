@@ -98,6 +98,7 @@ function loadSentences(): SentenceEntry[] {
 interface WordEntry {
   id: string;
   pt: string;
+  forms?: string[];
   en: string;
   difficulty: number;
 }
@@ -130,6 +131,7 @@ function loadWords(): WordEntry[] {
           words.push({
             id: word.id,
             pt: word.pt,
+            forms: Array.isArray(word.forms) ? word.forms : undefined,
             en: word.en,
             difficulty: word.difficulty,
           });
@@ -156,10 +158,15 @@ function buildWordIndex(words: WordEntry[]): Map<string, WordEntry> {
   const index = new Map<string, WordEntry>();
   
   for (const word of words) {
-    const normalized = normalizeWord(word.pt);
-    // Store first match (or could store array for multiple matches)
-    if (!index.has(normalized)) {
-      index.set(normalized, word);
+    for (const variant of [word.pt, ...(word.forms || [])]) {
+      const normalized = normalizeWord(variant);
+      if (!normalized) {
+        continue;
+      }
+
+      if (!index.has(normalized)) {
+        index.set(normalized, word);
+      }
     }
   }
   
@@ -331,4 +338,3 @@ function main() {
 }
 
 main();
-

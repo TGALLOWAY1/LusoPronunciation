@@ -69,7 +69,27 @@ function tokenizeSentence(text: string): Array<{
   return tokens;
 }
 
-function createWordLookup<T extends Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>>(words: T[]): {
+function getLookupVariants<T extends Pick<EnrichedWord, 'text' | 'normalizedText'> & { forms?: string[] }>(
+  word: T
+): string[] {
+  const variants = new Set<string>();
+  const baseVariant = normalizeToken(word.normalizedText || word.text);
+
+  if (baseVariant) {
+    variants.add(baseVariant);
+  }
+
+  for (const form of word.forms || []) {
+    const normalizedForm = normalizeToken(form);
+    if (normalizedForm) {
+      variants.add(normalizedForm);
+    }
+  }
+
+  return [...variants];
+}
+
+function createWordLookup<T extends Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'> & { forms?: string[] }>(words: T[]): {
   wordMap: Map<string, T>;
   maxPhraseLength: number;
 } {
@@ -77,16 +97,13 @@ function createWordLookup<T extends Pick<EnrichedWord, 'id' | 'text' | 'normaliz
   let maxPhraseLength = 1;
 
   for (const word of words) {
-    const normalized = normalizeToken(word.normalizedText || word.text);
-    if (!normalized) {
-      continue;
-    }
+    for (const normalized of getLookupVariants(word)) {
+      if (!wordMap.has(normalized)) {
+        wordMap.set(normalized, word);
+      }
 
-    if (!wordMap.has(normalized)) {
-      wordMap.set(normalized, word);
+      maxPhraseLength = Math.max(maxPhraseLength, normalized.split(' ').length);
     }
-
-    maxPhraseLength = Math.max(maxPhraseLength, normalized.split(' ').length);
   }
 
   return { wordMap, maxPhraseLength };
@@ -163,7 +180,7 @@ export function computeSentenceWordRefs(
  */
 export function buildWordRefs(
   sentence: string,
-  words: Array<Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>>
+  words: Array<Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'> & { forms?: string[] }>
 ): Array<{ wordId: string; tokenIndex: number; startChar: number; endChar: number }> {
   const wordRefs: Array<{ wordId: string; tokenIndex: number; startChar: number; endChar: number }> = [];
   const { wordMap, maxPhraseLength } = createWordLookup(words);

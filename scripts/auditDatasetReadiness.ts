@@ -41,6 +41,25 @@ function normalizeToken(token: string): string {
     .trim();
 }
 
+function collectWordTokens(
+  word: ({ text?: string; forms?: string[] } | { pt?: string; forms?: string[] })
+): string[] {
+  const variants = new Set<string>();
+  const baseText = 'text' in word ? word.text : word.pt;
+
+  for (const variant of [baseText, ...(word.forms || [])]) {
+    if (!variant) {
+      continue;
+    }
+
+    for (const token of normalizeToken(variant).split(' ').filter(Boolean)) {
+      variants.add(token);
+    }
+  }
+
+  return [...variants];
+}
+
 function toBucketRows<T extends { category?: string; difficulty: number }>(
   items: T[]
 ): Map<string, BucketRow> {
@@ -124,12 +143,14 @@ function findSentenceDuplicates(sentences: RawSentence[]): Array<{ text: string;
     .sort((a, b) => b.count - a.count || a.text.localeCompare(b.text));
 }
 
-function analyzeTokenCoverage(sentences: RawSentence[], words: Array<Pick<EnrichedWord, 'text'> | Pick<RawWord, 'pt'>>) {
+function analyzeTokenCoverage(
+  sentences: RawSentence[],
+  words: Array<(Pick<EnrichedWord, 'text'> & { forms?: string[] }) | (Pick<RawWord, 'pt'> & { forms?: string[] })>
+) {
   const wordSet = new Set<string>();
 
   for (const word of words) {
-    const text = 'text' in word ? word.text : word.pt;
-    for (const token of normalizeToken(text).split(' ').filter(Boolean)) {
+    for (const token of collectWordTokens(word)) {
       wordSet.add(token);
     }
   }

@@ -39,6 +39,7 @@ export interface RawSentenceInput {
 export interface MasterWord {
   id: string;
   text: string;              // PT-BR
+  forms?: string[];
   englishGloss: string;
   partOfSpeech: string;
   frequencyRank?: number;
@@ -131,6 +132,7 @@ export interface EnrichedWord {
   id: string;
   text: string;                   // Portuguese text (pt)
   normalizedText: string;            // Normalized version for matching
+  forms?: string[];                  // Alternate surface forms used in sentences
   en: string;                        // English translation (required for UI)
   baseForm?: string;                 // Optional base/infinitive form
   category: string;                  // Category ID
@@ -219,4 +221,3 @@ export interface ValidationReport {
   invalidWordRefs: string[];      // Sentence IDs with invalid word references
   otherErrors?: string[];         // Other validation errors
 }
-

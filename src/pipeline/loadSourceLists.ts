@@ -53,6 +53,9 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
       rawWords.push({
         id: word.id,
         pt: word.pt.trim(),
+        forms: Array.isArray(word.forms)
+          ? word.forms.map((form: string) => form.trim()).filter(Boolean)
+          : undefined,
         en: word.en.trim(),
         pos: word.pos,
         category: category.id,

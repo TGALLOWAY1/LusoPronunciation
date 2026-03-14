@@ -21,6 +21,7 @@ export interface Category {
 export interface Word {
   id: WordId;              // e.g. "word_001"
   textPt: string;          // "pão"
+  forms?: string[];        // Alternate sentence surface forms
   translationEn: string;   // "bread"
   categories: CategoryId[]; // e.g. ["foods"]
   difficulty: 1 | 2 | 3 | 4 | 5;
@@ -58,4 +59,3 @@ export interface Sentence {
   }[];
   hardForEnglish?: boolean; // Whether this sentence is hard for English speakers
 }
-

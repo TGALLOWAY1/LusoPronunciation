@@ -53,6 +53,7 @@ export function enrichWords(
       id: raw.id,
       text,
       normalizedText,
+      forms: raw.forms?.map(form => form.trim()).filter(Boolean),
       en: raw.en.trim(), // Preserve English translation
       category: inferCategory(raw.category, text),
       partOfSpeech: raw.pos,
