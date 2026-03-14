@@ -28,10 +28,11 @@ import type { TTSJob } from './audioJobPlanner';
 export async function runTTSJobs(
   jobs: TTSJob[],
   options?: { concurrency?: number }
-): Promise<{ successIds: string[]; failedIds: string[] }> {
+): Promise<{ successIds: string[]; failedIds: string[]; skippedIds: string[] }> {
   const concurrency = options?.concurrency ?? 4;
   const successIds: string[] = [];
   const failedIds: string[] = [];
+  const skippedIds: string[] = [];
   let processed = 0;
   let skipped = 0;
 
@@ -45,27 +46,34 @@ export async function runTTSJobs(
 
       try {
         // textToSpeechToFile handles idempotent behavior (skips if file exists and is non-empty)
-        // It returns the outputPath on success
-        await textToSpeechToFile({
+        const result = await textToSpeechToFile({
           text: job.text,
           voiceName: job.voiceName,
           outputPath,
         });
-        
-        // Check if file exists and is non-empty
+
+        if (result.skipped) {
+          skippedIds.push(job.id);
+          skipped++;
+          return;
+        }
+
+        // Check if file exists and is non-empty after synthesis
         try {
           const stats = await fs.stat(outputPath);
           if (stats.size > 0) {
-            // File was created or already existed
+            // File was synthesized successfully
             successIds.push(job.id);
             processed++;
           } else {
             // File exists but is empty (shouldn't happen, but handle it)
-            skipped++;
+            failedIds.push(job.id);
+            processed++;
           }
         } catch {
           // File doesn't exist (shouldn't happen after successful synthesis)
           failedIds.push(job.id);
+          processed++;
         }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
@@ -97,6 +105,5 @@ export async function runTTSJobs(
   console.log(`  Failed: ${failedIds.length}`);
   console.log('='.repeat(60));
 
-  return { successIds, failedIds };
+  return { successIds, failedIds, skippedIds };
 }
-

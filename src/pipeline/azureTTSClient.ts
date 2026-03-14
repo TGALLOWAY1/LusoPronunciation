@@ -41,14 +41,14 @@ export async function textToSpeechToFile(params: {
   voiceName: string;
   outputPath: string;
   retryCount?: number;
-}): Promise<string> {
+}): Promise<{ outputPath: string; skipped: boolean }> {
   const { text, voiceName, outputPath, retryCount = MAX_RETRIES } = params;
   // Check if file already exists and is non-empty (idempotent behavior)
   try {
     const stats = await fs.stat(outputPath);
     if (stats.size > 0) {
       // File exists and is non-empty, skip re-synthesizing
-      return outputPath;
+      return { outputPath, skipped: true };
     }
   } catch {
     // File doesn't exist, proceed with synthesis
@@ -80,7 +80,7 @@ export async function textToSpeechToFile(params: {
   while (attempt <= retryCount) {
     try {
       await synthesizeOnce(text, speechConfig, outputPath);
-      return outputPath; // Success
+      return { outputPath, skipped: false }; // Success
     } catch (err) {
       attempt++;
       const isLastAttempt = attempt > retryCount;
@@ -160,4 +160,3 @@ async function synthesizeOnce(
     synthesizer.close();
   }
 }
-

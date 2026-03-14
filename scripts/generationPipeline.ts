@@ -140,7 +140,9 @@ async function main() {
         
         if (!flags.dryRun) {
           const result = await runTTSJobs(jobs, { concurrency: 4 });
-          console.log(`   TTS audio generation complete: ${result.successIds.length} succeeded, ${result.failedIds.length} failed\n`);
+          console.log(
+            `   TTS audio generation complete: ${result.successIds.length} synthesized, ${result.skippedIds.length} skipped, ${result.failedIds.length} failed\n`
+          );
         } else {
           console.log('   [DRY RUN] Would generate TTS audio files\n');
         }
@@ -284,4 +286,3 @@ main().catch((error) => {
   console.error('\n❌ Unhandled error:', error);
   process.exit(1);
 });
-
