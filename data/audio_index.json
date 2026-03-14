@@ -8665,6 +8665,4976 @@
       "ptbr_female": "/audio/words/ptbr_female/misc_401.wav"
     }
   },
+  "coverage_001": {
+    "type": "word",
+    "sourceId": "coverage_001",
+    "textPt": "delícia",
+    "textEn": "delight / deliciousness",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_001.wav",
+      "female": "audio/ptbr/female/coverage_001.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_001.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_001.wav"
+    }
+  },
+  "coverage_002": {
+    "type": "word",
+    "sourceId": "coverage_002",
+    "textPt": "sal",
+    "textEn": "salt",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_002.wav",
+      "female": "audio/ptbr/female/coverage_002.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_002.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_002.wav"
+    }
+  },
+  "coverage_003": {
+    "type": "word",
+    "sourceId": "coverage_003",
+    "textPt": "brasileira",
+    "textEn": "Brazilian (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_003.wav",
+      "female": "audio/ptbr/female/coverage_003.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_003.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_003.wav"
+    }
+  },
+  "coverage_004": {
+    "type": "word",
+    "sourceId": "coverage_004",
+    "textPt": "pessoas",
+    "textEn": "people",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_004.wav",
+      "female": "audio/ptbr/female/coverage_004.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_004.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_004.wav"
+    }
+  },
+  "coverage_005": {
+    "type": "word",
+    "sourceId": "coverage_005",
+    "textPt": "gás",
+    "textEn": "gas",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_005.wav",
+      "female": "audio/ptbr/female/coverage_005.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_005.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_005.wav"
+    }
+  },
+  "coverage_006": {
+    "type": "word",
+    "sourceId": "coverage_006",
+    "textPt": "apimentada",
+    "textEn": "spicy (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_006.wav",
+      "female": "audio/ptbr/female/coverage_006.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_006.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_006.wav"
+    }
+  },
+  "coverage_007": {
+    "type": "word",
+    "sourceId": "coverage_007",
+    "textPt": "comi",
+    "textEn": "I ate",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_007.wav",
+      "female": "audio/ptbr/female/coverage_007.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_007.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_007.wav"
+    }
+  },
+  "coverage_008": {
+    "type": "word",
+    "sourceId": "coverage_008",
+    "textPt": "salgada",
+    "textEn": "salty / savory (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_008.wav",
+      "female": "audio/ptbr/female/coverage_008.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_008.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_008.wav"
+    }
+  },
+  "coverage_009": {
+    "type": "word",
+    "sourceId": "coverage_009",
+    "textPt": "satisfeito",
+    "textEn": "satisfied",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_009.wav",
+      "female": "audio/ptbr/female/coverage_009.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_009.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_009.wav"
+    }
+  },
+  "coverage_010": {
+    "type": "word",
+    "sourceId": "coverage_010",
+    "textPt": "pizza",
+    "textEn": "pizza",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_010.wav",
+      "female": "audio/ptbr/female/coverage_010.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_010.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_010.wav"
+    }
+  },
+  "coverage_011": {
+    "type": "word",
+    "sourceId": "coverage_011",
+    "textPt": "alergia",
+    "textEn": "allergy",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_011.wav",
+      "female": "audio/ptbr/female/coverage_011.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_011.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_011.wav"
+    }
+  },
+  "coverage_012": {
+    "type": "word",
+    "sourceId": "coverage_012",
+    "textPt": "camarão",
+    "textEn": "shrimp",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_012.wav",
+      "female": "audio/ptbr/female/coverage_012.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_012.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_012.wav"
+    }
+  },
+  "coverage_013": {
+    "type": "word",
+    "sourceId": "coverage_013",
+    "textPt": "garçom",
+    "textEn": "waiter",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_013.wav",
+      "female": "audio/ptbr/female/coverage_013.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_013.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_013.wav"
+    }
+  },
+  "coverage_014": {
+    "type": "word",
+    "sourceId": "coverage_014",
+    "textPt": "tomou",
+    "textEn": "took / had / drank",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_014.wav",
+      "female": "audio/ptbr/female/coverage_014.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_014.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_014.wav"
+    }
+  },
+  "coverage_015": {
+    "type": "word",
+    "sourceId": "coverage_015",
+    "textPt": "gostoso",
+    "textEn": "tasty",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_015.wav",
+      "female": "audio/ptbr/female/coverage_015.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_015.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_015.wav"
+    }
+  },
+  "coverage_016": {
+    "type": "word",
+    "sourceId": "coverage_016",
+    "textPt": "bife",
+    "textEn": "steak",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_016.wav",
+      "female": "audio/ptbr/female/coverage_016.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_016.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_016.wav"
+    }
+  },
+  "coverage_017": {
+    "type": "word",
+    "sourceId": "coverage_017",
+    "textPt": "passado",
+    "textEn": "done / cooked",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_017.wav",
+      "female": "audio/ptbr/female/coverage_017.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_017.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_017.wav"
+    }
+  },
+  "coverage_018": {
+    "type": "word",
+    "sourceId": "coverage_018",
+    "textPt": "brigadeiro",
+    "textEn": "brigadeiro",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_018.wav",
+      "female": "audio/ptbr/female/coverage_018.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_018.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_018.wav"
+    }
+  },
+  "coverage_019": {
+    "type": "word",
+    "sourceId": "coverage_019",
+    "textPt": "leite",
+    "textEn": "milk",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_019.wav",
+      "female": "audio/ptbr/female/coverage_019.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_019.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_019.wav"
+    }
+  },
+  "coverage_020": {
+    "type": "word",
+    "sourceId": "coverage_020",
+    "textPt": "glúten",
+    "textEn": "gluten",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_020.wav",
+      "female": "audio/ptbr/female/coverage_020.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_020.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_020.wav"
+    }
+  },
+  "coverage_021": {
+    "type": "word",
+    "sourceId": "coverage_021",
+    "textPt": "dividir",
+    "textEn": "to split / to share",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_021.wav",
+      "female": "audio/ptbr/female/coverage_021.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_021.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_021.wav"
+    }
+  },
+  "coverage_022": {
+    "type": "word",
+    "sourceId": "coverage_022",
+    "textPt": "fresco",
+    "textEn": "fresh",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_022.wav",
+      "female": "audio/ptbr/female/coverage_022.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_022.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_022.wav"
+    }
+  },
+  "coverage_023": {
+    "type": "word",
+    "sourceId": "coverage_023",
+    "textPt": "pedido",
+    "textEn": "order",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_023.wav",
+      "female": "audio/ptbr/female/coverage_023.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_023.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_023.wav"
+    }
+  },
+  "coverage_024": {
+    "type": "word",
+    "sourceId": "coverage_024",
+    "textPt": "laranja",
+    "textEn": "orange",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_024.wav",
+      "female": "audio/ptbr/female/coverage_024.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_024.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_024.wav"
+    }
+  },
+  "coverage_025": {
+    "type": "word",
+    "sourceId": "coverage_025",
+    "textPt": "coloca",
+    "textEn": "put / set",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_025.wav",
+      "female": "audio/ptbr/female/coverage_025.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_025.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_025.wav"
+    }
+  },
+  "coverage_026": {
+    "type": "word",
+    "sourceId": "coverage_026",
+    "textPt": "dieta",
+    "textEn": "diet",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_026.wav",
+      "female": "audio/ptbr/female/coverage_026.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_026.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_026.wav"
+    }
+  },
+  "coverage_027": {
+    "type": "word",
+    "sourceId": "coverage_027",
+    "textPt": "aquele",
+    "textEn": "that one",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_027.wav",
+      "female": "audio/ptbr/female/coverage_027.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_027.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_027.wav"
+    }
+  },
+  "coverage_028": {
+    "type": "word",
+    "sourceId": "coverage_028",
+    "textPt": "guardanapos",
+    "textEn": "napkins",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_028.wav",
+      "female": "audio/ptbr/female/coverage_028.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_028.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_028.wav"
+    }
+  },
+  "coverage_029": {
+    "type": "word",
+    "sourceId": "coverage_029",
+    "textPt": "feijoada",
+    "textEn": "feijoada",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_029.wav",
+      "female": "audio/ptbr/female/coverage_029.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_029.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_029.wav"
+    }
+  },
+  "coverage_030": {
+    "type": "word",
+    "sourceId": "coverage_030",
+    "textPt": "conseguem",
+    "textEn": "can / are able to",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_030.wav",
+      "female": "audio/ptbr/female/coverage_030.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_030.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_030.wav"
+    }
+  },
+  "coverage_031": {
+    "type": "word",
+    "sourceId": "coverage_031",
+    "textPt": "goste",
+    "textEn": "like (subjunctive)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_031.wav",
+      "female": "audio/ptbr/female/coverage_031.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_031.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_031.wav"
+    }
+  },
+  "coverage_032": {
+    "type": "word",
+    "sourceId": "coverage_032",
+    "textPt": "volto",
+    "textEn": "I return / I come back",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_032.wav",
+      "female": "audio/ptbr/female/coverage_032.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_032.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_032.wav"
+    }
+  },
+  "coverage_033": {
+    "type": "word",
+    "sourceId": "coverage_033",
+    "textPt": "atendimento",
+    "textEn": "service / customer service",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_033.wav",
+      "female": "audio/ptbr/female/coverage_033.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_033.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_033.wav"
+    }
+  },
+  "coverage_034": {
+    "type": "word",
+    "sourceId": "coverage_034",
+    "textPt": "for",
+    "textEn": "be / go (subjunctive)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_034.wav",
+      "female": "audio/ptbr/female/coverage_034.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_034.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_034.wav"
+    }
+  },
+  "coverage_035": {
+    "type": "word",
+    "sourceId": "coverage_035",
+    "textPt": "abre",
+    "textEn": "opens",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_035.wav",
+      "female": "audio/ptbr/female/coverage_035.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_035.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_035.wav"
+    }
+  },
+  "coverage_036": {
+    "type": "word",
+    "sourceId": "coverage_036",
+    "textPt": "queria",
+    "textEn": "I wanted / I would like",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_036.wav",
+      "female": "audio/ptbr/female/coverage_036.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_036.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_036.wav"
+    }
+  },
+  "coverage_037": {
+    "type": "word",
+    "sourceId": "coverage_037",
+    "textPt": "ingressos",
+    "textEn": "tickets",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_037.wav",
+      "female": "audio/ptbr/female/coverage_037.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_037.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_037.wav"
+    }
+  },
+  "coverage_038": {
+    "type": "word",
+    "sourceId": "coverage_038",
+    "textPt": "turístico",
+    "textEn": "tourist / touristic",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_038.wav",
+      "female": "audio/ptbr/female/coverage_038.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_038.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_038.wav"
+    }
+  },
+  "coverage_039": {
+    "type": "word",
+    "sourceId": "coverage_039",
+    "textPt": "famoso",
+    "textEn": "famous",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_039.wav",
+      "female": "audio/ptbr/female/coverage_039.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_039.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_039.wav"
+    }
+  },
+  "coverage_040": {
+    "type": "word",
+    "sourceId": "coverage_040",
+    "textPt": "wi-fi",
+    "textEn": "Wi-Fi",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_040.wav",
+      "female": "audio/ptbr/female/coverage_040.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_040.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_040.wav"
+    }
+  },
+  "coverage_041": {
+    "type": "word",
+    "sourceId": "coverage_041",
+    "textPt": "pro",
+    "textEn": "to the / for the",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_041.wav",
+      "female": "audio/ptbr/female/coverage_041.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_041.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_041.wav"
+    }
+  },
+  "coverage_042": {
+    "type": "word",
+    "sourceId": "coverage_042",
+    "textPt": "passaporte",
+    "textEn": "passport",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_042.wav",
+      "female": "audio/ptbr/female/coverage_042.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_042.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_042.wav"
+    }
+  },
+  "coverage_043": {
+    "type": "word",
+    "sourceId": "coverage_043",
+    "textPt": "médico",
+    "textEn": "doctor / medical",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_043.wav",
+      "female": "audio/ptbr/female/coverage_043.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_043.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_043.wav"
+    }
+  },
+  "coverage_044": {
+    "type": "word",
+    "sourceId": "coverage_044",
+    "textPt": "alugar",
+    "textEn": "to rent",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_044.wav",
+      "female": "audio/ptbr/female/coverage_044.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_044.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_044.wav"
+    }
+  },
+  "coverage_045": {
+    "type": "word",
+    "sourceId": "coverage_045",
+    "textPt": "chip",
+    "textEn": "SIM card / chip",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_045.wav",
+      "female": "audio/ptbr/female/coverage_045.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_045.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_045.wav"
+    }
+  },
+  "coverage_046": {
+    "type": "word",
+    "sourceId": "coverage_046",
+    "textPt": "portão",
+    "textEn": "gate",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_046.wav",
+      "female": "audio/ptbr/female/coverage_046.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_046.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_046.wav"
+    }
+  },
+  "coverage_047": {
+    "type": "word",
+    "sourceId": "coverage_047",
+    "textPt": "embarque",
+    "textEn": "boarding",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_047.wav",
+      "female": "audio/ptbr/female/coverage_047.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_047.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_047.wav"
+    }
+  },
+  "coverage_048": {
+    "type": "word",
+    "sourceId": "coverage_048",
+    "textPt": "quinze",
+    "textEn": "fifteen",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_048.wav",
+      "female": "audio/ptbr/female/coverage_048.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_048.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_048.wav"
+    }
+  },
+  "coverage_049": {
+    "type": "word",
+    "sourceId": "coverage_049",
+    "textPt": "despachar",
+    "textEn": "to check / to dispatch",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_049.wav",
+      "female": "audio/ptbr/female/coverage_049.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_049.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_049.wav"
+    }
+  },
+  "coverage_050": {
+    "type": "word",
+    "sourceId": "coverage_050",
+    "textPt": "maravilhoso",
+    "textEn": "wonderful",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_050.wav",
+      "female": "audio/ptbr/female/coverage_050.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_050.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_050.wav"
+    }
+  },
+  "coverage_051": {
+    "type": "word",
+    "sourceId": "coverage_051",
+    "textPt": "mudar",
+    "textEn": "to change",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_051.wav",
+      "female": "audio/ptbr/female/coverage_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_051.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_051.wav"
+    }
+  },
+  "coverage_052": {
+    "type": "word",
+    "sourceId": "coverage_052",
+    "textPt": "cancelar",
+    "textEn": "to cancel",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_052.wav",
+      "female": "audio/ptbr/female/coverage_052.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_052.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_052.wav"
+    }
+  },
+  "coverage_053": {
+    "type": "word",
+    "sourceId": "coverage_053",
+    "textPt": "chama",
+    "textEn": "is called / calls",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_053.wav",
+      "female": "audio/ptbr/female/coverage_053.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_053.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_053.wav"
+    }
+  },
+  "coverage_054": {
+    "type": "word",
+    "sourceId": "coverage_054",
+    "textPt": "Ana",
+    "textEn": "Ana",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_054.wav",
+      "female": "audio/ptbr/female/coverage_054.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_054.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_054.wav"
+    }
+  },
+  "coverage_055": {
+    "type": "word",
+    "sourceId": "coverage_055",
+    "textPt": "churrasco",
+    "textEn": "barbecue",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_055.wav",
+      "female": "audio/ptbr/female/coverage_055.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_055.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_055.wav"
+    }
+  },
+  "coverage_056": {
+    "type": "word",
+    "sourceId": "coverage_056",
+    "textPt": "conhece",
+    "textEn": "knows / meets",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_056.wav",
+      "female": "audio/ptbr/female/coverage_056.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_056.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_056.wav"
+    }
+  },
+  "coverage_057": {
+    "type": "word",
+    "sourceId": "coverage_057",
+    "textPt": "desde",
+    "textEn": "since",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_057.wav",
+      "female": "audio/ptbr/female/coverage_057.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_057.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_057.wav"
+    }
+  },
+  "coverage_058": {
+    "type": "word",
+    "sourceId": "coverage_058",
+    "textPt": "avós",
+    "textEn": "grandparents",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_058.wav",
+      "female": "audio/ptbr/female/coverage_058.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_058.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_058.wav"
+    }
+  },
+  "coverage_059": {
+    "type": "word",
+    "sourceId": "coverage_059",
+    "textPt": "casado",
+    "textEn": "married",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_059.wav",
+      "female": "audio/ptbr/female/coverage_059.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_059.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_059.wav"
+    }
+  },
+  "coverage_060": {
+    "type": "word",
+    "sourceId": "coverage_060",
+    "textPt": "unida",
+    "textEn": "united / close-knit",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_060.wav",
+      "female": "audio/ptbr/female/coverage_060.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_060.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_060.wav"
+    }
+  },
+  "coverage_061": {
+    "type": "word",
+    "sourceId": "coverage_061",
+    "textPt": "tal",
+    "textEn": "such / what about",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_061.wav",
+      "female": "audio/ptbr/female/coverage_061.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_061.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_061.wav"
+    }
+  },
+  "coverage_062": {
+    "type": "word",
+    "sourceId": "coverage_062",
+    "textPt": "cinema",
+    "textEn": "movie theater",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_062.wav",
+      "female": "audio/ptbr/female/coverage_062.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_062.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_062.wav"
+    }
+  },
+  "coverage_063": {
+    "type": "word",
+    "sourceId": "coverage_063",
+    "textPt": "segunda",
+    "textEn": "Monday / second",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_063.wav",
+      "female": "audio/ptbr/female/coverage_063.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_063.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_063.wav"
+    }
+  },
+  "coverage_064": {
+    "type": "word",
+    "sourceId": "coverage_064",
+    "textPt": "aniversário",
+    "textEn": "birthday",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_064.wav",
+      "female": "audio/ptbr/female/coverage_064.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_064.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_064.wav"
+    }
+  },
+  "coverage_065": {
+    "type": "word",
+    "sourceId": "coverage_065",
+    "textPt": "sobrinha",
+    "textEn": "niece",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_065.wav",
+      "female": "audio/ptbr/female/coverage_065.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_065.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_065.wav"
+    }
+  },
+  "coverage_066": {
+    "type": "word",
+    "sourceId": "coverage_066",
+    "textPt": "vejo",
+    "textEn": "I see",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_066.wav",
+      "female": "audio/ptbr/female/coverage_066.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_066.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_066.wav"
+    }
+  },
+  "coverage_067": {
+    "type": "word",
+    "sourceId": "coverage_067",
+    "textPt": "tios",
+    "textEn": "uncles",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_067.wav",
+      "female": "audio/ptbr/female/coverage_067.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_067.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_067.wav"
+    }
+  },
+  "coverage_068": {
+    "type": "word",
+    "sourceId": "coverage_068",
+    "textPt": "sogros",
+    "textEn": "in-laws",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_068.wav",
+      "female": "audio/ptbr/female/coverage_068.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_068.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_068.wav"
+    }
+  },
+  "coverage_069": {
+    "type": "word",
+    "sourceId": "coverage_069",
+    "textPt": "adora",
+    "textEn": "adores / loves",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_069.wav",
+      "female": "audio/ptbr/female/coverage_069.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_069.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_069.wav"
+    }
+  },
+  "coverage_070": {
+    "type": "word",
+    "sourceId": "coverage_070",
+    "textPt": "pescar",
+    "textEn": "to fish",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_070.wav",
+      "female": "audio/ptbr/female/coverage_070.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_070.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_070.wav"
+    }
+  },
+  "coverage_071": {
+    "type": "word",
+    "sourceId": "coverage_071",
+    "textPt": "fui",
+    "textEn": "I went / I was",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_071.wav",
+      "female": "audio/ptbr/female/coverage_071.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_071.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_071.wav"
+    }
+  },
+  "coverage_072": {
+    "type": "word",
+    "sourceId": "coverage_072",
+    "textPt": "toda",
+    "textEn": "all / entire (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_072.wav",
+      "female": "audio/ptbr/female/coverage_072.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_072.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_072.wav"
+    }
+  },
+  "coverage_073": {
+    "type": "word",
+    "sourceId": "coverage_073",
+    "textPt": "reúne",
+    "textEn": "gathers / brings together",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_073.wav",
+      "female": "audio/ptbr/female/coverage_073.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_073.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_073.wav"
+    }
+  },
+  "coverage_074": {
+    "type": "word",
+    "sourceId": "coverage_074",
+    "textPt": "Natal",
+    "textEn": "Christmas",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_074.wav",
+      "female": "audio/ptbr/female/coverage_074.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_074.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_074.wav"
+    }
+  },
+  "coverage_075": {
+    "type": "word",
+    "sourceId": "coverage_075",
+    "textPt": "der",
+    "textEn": "give / work out (subjunctive)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_075.wav",
+      "female": "audio/ptbr/female/coverage_075.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_075.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_075.wav"
+    }
+  },
+  "coverage_076": {
+    "type": "word",
+    "sourceId": "coverage_076",
+    "textPt": "padrinho",
+    "textEn": "best man / godfather",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_076.wav",
+      "female": "audio/ptbr/female/coverage_076.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_076.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_076.wav"
+    }
+  },
+  "coverage_077": {
+    "type": "word",
+    "sourceId": "coverage_077",
+    "textPt": "casamento",
+    "textEn": "wedding / marriage",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_077.wav",
+      "female": "audio/ptbr/female/coverage_077.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_077.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_077.wav"
+    }
+  },
+  "coverage_078": {
+    "type": "word",
+    "sourceId": "coverage_078",
+    "textPt": "planejando",
+    "textEn": "planning",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_078.wav",
+      "female": "audio/ptbr/female/coverage_078.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_078.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_078.wav"
+    }
+  },
+  "coverage_079": {
+    "type": "word",
+    "sourceId": "coverage_079",
+    "textPt": "festa",
+    "textEn": "party",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_079.wav",
+      "female": "audio/ptbr/female/coverage_079.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_079.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_079.wav"
+    }
+  },
+  "coverage_080": {
+    "type": "word",
+    "sourceId": "coverage_080",
+    "textPt": "chocolate",
+    "textEn": "chocolate",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_080.wav",
+      "female": "audio/ptbr/female/coverage_080.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_080.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_080.wav"
+    }
+  },
+  "coverage_081": {
+    "type": "word",
+    "sourceId": "coverage_081",
+    "textPt": "infância",
+    "textEn": "childhood",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_081.wav",
+      "female": "audio/ptbr/female/coverage_081.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_081.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_081.wav"
+    }
+  },
+  "coverage_082": {
+    "type": "word",
+    "sourceId": "coverage_082",
+    "textPt": "apoiam",
+    "textEn": "support",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_082.wav",
+      "female": "audio/ptbr/female/coverage_082.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_082.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_082.wav"
+    }
+  },
+  "coverage_083": {
+    "type": "word",
+    "sourceId": "coverage_083",
+    "textPt": "todas",
+    "textEn": "all (fem. pl.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_083.wav",
+      "female": "audio/ptbr/female/coverage_083.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_083.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_083.wav"
+    }
+  },
+  "coverage_084": {
+    "type": "word",
+    "sourceId": "coverage_084",
+    "textPt": "decisões",
+    "textEn": "decisions",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_084.wav",
+      "female": "audio/ptbr/female/coverage_084.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_084.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_084.wav"
+    }
+  },
+  "coverage_085": {
+    "type": "word",
+    "sourceId": "coverage_085",
+    "textPt": "nossos",
+    "textEn": "our (masc. pl.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_085.wav",
+      "female": "audio/ptbr/female/coverage_085.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_085.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_085.wav"
+    }
+  },
+  "coverage_086": {
+    "type": "word",
+    "sourceId": "coverage_086",
+    "textPt": "sobrinho",
+    "textEn": "nephew",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_086.wav",
+      "female": "audio/ptbr/female/coverage_086.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_086.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_086.wav"
+    }
+  },
+  "coverage_087": {
+    "type": "word",
+    "sourceId": "coverage_087",
+    "textPt": "acabou",
+    "textEn": "ended / just finished",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_087.wav",
+      "female": "audio/ptbr/female/coverage_087.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_087.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_087.wav"
+    }
+  },
+  "coverage_088": {
+    "type": "word",
+    "sourceId": "coverage_088",
+    "textPt": "ótimos",
+    "textEn": "great / excellent (pl.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_088.wav",
+      "female": "audio/ptbr/female/coverage_088.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_088.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_088.wav"
+    }
+  },
+  "coverage_089": {
+    "type": "word",
+    "sourceId": "coverage_089",
+    "textPt": "conselhos",
+    "textEn": "advice",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_089.wav",
+      "female": "audio/ptbr/female/coverage_089.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_089.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_089.wav"
+    }
+  },
+  "coverage_090": {
+    "type": "word",
+    "sourceId": "coverage_090",
+    "textPt": "ri",
+    "textEn": "I laughed",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_090.wav",
+      "female": "audio/ptbr/female/coverage_090.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_090.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_090.wav"
+    }
+  },
+  "coverage_091": {
+    "type": "word",
+    "sourceId": "coverage_091",
+    "textPt": "considero",
+    "textEn": "I consider",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_091.wav",
+      "female": "audio/ptbr/female/coverage_091.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_091.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_091.wav"
+    }
+  },
+  "coverage_092": {
+    "type": "word",
+    "sourceId": "coverage_092",
+    "textPt": "ligar",
+    "textEn": "to call",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_092.wav",
+      "female": "audio/ptbr/female/coverage_092.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_092.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_092.wav"
+    }
+  },
+  "coverage_093": {
+    "type": "word",
+    "sourceId": "coverage_093",
+    "textPt": "Julia",
+    "textEn": "Julia",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_093.wav",
+      "female": "audio/ptbr/female/coverage_093.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_093.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_093.wav"
+    }
+  },
+  "coverage_094": {
+    "type": "word",
+    "sourceId": "coverage_094",
+    "textPt": "amizade",
+    "textEn": "friendship",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_094.wav",
+      "female": "audio/ptbr/female/coverage_094.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_094.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_094.wav"
+    }
+  },
+  "coverage_095": {
+    "type": "word",
+    "sourceId": "coverage_095",
+    "textPt": "bonita",
+    "textEn": "beautiful",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_095.wav",
+      "female": "audio/ptbr/female/coverage_095.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_095.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_095.wav"
+    }
+  },
+  "coverage_096": {
+    "type": "word",
+    "sourceId": "coverage_096",
+    "textPt": "grávida",
+    "textEn": "pregnant",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_096.wav",
+      "female": "audio/ptbr/female/coverage_096.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_096.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_096.wav"
+    }
+  },
+  "coverage_097": {
+    "type": "word",
+    "sourceId": "coverage_097",
+    "textPt": "menina",
+    "textEn": "girl",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_097.wav",
+      "female": "audio/ptbr/female/coverage_097.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_097.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_097.wav"
+    }
+  },
+  "coverage_098": {
+    "type": "word",
+    "sourceId": "coverage_098",
+    "textPt": "nasceu",
+    "textEn": "was born",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_098.wav",
+      "female": "audio/ptbr/female/coverage_098.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_098.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_098.wav"
+    }
+  },
+  "coverage_099": {
+    "type": "word",
+    "sourceId": "coverage_099",
+    "textPt": "madrinha",
+    "textEn": "godmother",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_099.wav",
+      "female": "audio/ptbr/female/coverage_099.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_099.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_099.wav"
+    }
+  },
+  "coverage_100": {
+    "type": "word",
+    "sourceId": "coverage_100",
+    "textPt": "apresentou",
+    "textEn": "introduced / presented",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_100.wav",
+      "female": "audio/ptbr/female/coverage_100.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_100.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_100.wav"
+    }
+  },
+  "coverage_101": {
+    "type": "word",
+    "sourceId": "coverage_101",
+    "textPt": "grupo",
+    "textEn": "group",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_101.wav",
+      "female": "audio/ptbr/female/coverage_101.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_101.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_101.wav"
+    }
+  },
+  "coverage_102": {
+    "type": "word",
+    "sourceId": "coverage_102",
+    "textPt": "mesmo",
+    "textEn": "same / even",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_102.wav",
+      "female": "audio/ptbr/female/coverage_102.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_102.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_102.wav"
+    }
+  },
+  "coverage_103": {
+    "type": "word",
+    "sourceId": "coverage_103",
+    "textPt": "cada",
+    "textEn": "each",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_103.wav",
+      "female": "audio/ptbr/female/coverage_103.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_103.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_103.wav"
+    }
+  },
+  "coverage_104": {
+    "type": "word",
+    "sourceId": "coverage_104",
+    "textPt": "ocupado",
+    "textEn": "busy",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_104.wav",
+      "female": "audio/ptbr/female/coverage_104.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_104.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_104.wav"
+    }
+  },
+  "coverage_105": {
+    "type": "word",
+    "sourceId": "coverage_105",
+    "textPt": "questão",
+    "textEn": "matter / point / question",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_105.wav",
+      "female": "audio/ptbr/female/coverage_105.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_105.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_105.wav"
+    }
+  },
+  "coverage_106": {
+    "type": "word",
+    "sourceId": "coverage_106",
+    "textPt": "levantar",
+    "textEn": "to get up / to lift",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_106.wav",
+      "female": "audio/ptbr/female/coverage_106.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_106.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_106.wav"
+    }
+  },
+  "coverage_107": {
+    "type": "word",
+    "sourceId": "coverage_107",
+    "textPt": "despertar",
+    "textEn": "to wake up",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_107.wav",
+      "female": "audio/ptbr/female/coverage_107.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_107.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_107.wav"
+    }
+  },
+  "coverage_108": {
+    "type": "word",
+    "sourceId": "coverage_108",
+    "textPt": "xícara",
+    "textEn": "cup / mug",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_108.wav",
+      "female": "audio/ptbr/female/coverage_108.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_108.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_108.wav"
+    }
+  },
+  "coverage_109": {
+    "type": "word",
+    "sourceId": "coverage_109",
+    "textPt": "sair",
+    "textEn": "to leave / to go out",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_109.wav",
+      "female": "audio/ptbr/female/coverage_109.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_109.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_109.wav"
+    }
+  },
+  "coverage_110": {
+    "type": "word",
+    "sourceId": "coverage_110",
+    "textPt": "terrível",
+    "textEn": "terrible",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_110.wav",
+      "female": "audio/ptbr/female/coverage_110.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_110.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_110.wav"
+    }
+  },
+  "coverage_111": {
+    "type": "word",
+    "sourceId": "coverage_111",
+    "textPt": "escritório",
+    "textEn": "office",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_111.wav",
+      "female": "audio/ptbr/female/coverage_111.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_111.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_111.wav"
+    }
+  },
+  "coverage_112": {
+    "type": "word",
+    "sourceId": "coverage_112",
+    "textPt": "e-mails",
+    "textEn": "emails",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_112.wav",
+      "female": "audio/ptbr/female/coverage_112.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_112.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_112.wav"
+    }
+  },
+  "coverage_113": {
+    "type": "word",
+    "sourceId": "coverage_113",
+    "textPt": "muitas",
+    "textEn": "many (fem. pl.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_113.wav",
+      "female": "audio/ptbr/female/coverage_113.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_113.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_113.wav"
+    }
+  },
+  "coverage_114": {
+    "type": "word",
+    "sourceId": "coverage_114",
+    "textPt": "trago",
+    "textEn": "I bring",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_114.wav",
+      "female": "audio/ptbr/female/coverage_114.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_114.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_114.wav"
+    }
+  },
+  "coverage_115": {
+    "type": "word",
+    "sourceId": "coverage_115",
+    "textPt": "marmita",
+    "textEn": "packed lunch",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_115.wav",
+      "female": "audio/ptbr/female/coverage_115.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_115.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_115.wav"
+    }
+  },
+  "coverage_116": {
+    "type": "word",
+    "sourceId": "coverage_116",
+    "textPt": "saio",
+    "textEn": "I leave / go out",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_116.wav",
+      "female": "audio/ptbr/female/coverage_116.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_116.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_116.wav"
+    }
+  },
+  "coverage_117": {
+    "type": "word",
+    "sourceId": "coverage_117",
+    "textPt": "direto",
+    "textEn": "straight / directly",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_117.wav",
+      "female": "audio/ptbr/female/coverage_117.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_117.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_117.wav"
+    }
+  },
+  "coverage_118": {
+    "type": "word",
+    "sourceId": "coverage_118",
+    "textPt": "expediente",
+    "textEn": "work shift / office hours",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_118.wav",
+      "female": "audio/ptbr/female/coverage_118.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_118.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_118.wav"
+    }
+  },
+  "coverage_119": {
+    "type": "word",
+    "sourceId": "coverage_119",
+    "textPt": "voltando",
+    "textEn": "returning / coming back",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_119.wav",
+      "female": "audio/ptbr/female/coverage_119.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_119.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_119.wav"
+    }
+  },
+  "coverage_120": {
+    "type": "word",
+    "sourceId": "coverage_120",
+    "textPt": "tiro",
+    "textEn": "I take / remove",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_120.wav",
+      "female": "audio/ptbr/female/coverage_120.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_120.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_120.wav"
+    }
+  },
+  "coverage_121": {
+    "type": "word",
+    "sourceId": "coverage_121",
+    "textPt": "jantamos",
+    "textEn": "we have dinner",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_121.wav",
+      "female": "audio/ptbr/female/coverage_121.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_121.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_121.wav"
+    }
+  },
+  "coverage_122": {
+    "type": "word",
+    "sourceId": "coverage_122",
+    "textPt": "lavo",
+    "textEn": "I wash",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_122.wav",
+      "female": "audio/ptbr/female/coverage_122.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_122.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_122.wav"
+    }
+  },
+  "coverage_123": {
+    "type": "word",
+    "sourceId": "coverage_123",
+    "textPt": "seriado",
+    "textEn": "TV series",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_123.wav",
+      "female": "audio/ptbr/female/coverage_123.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_123.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_123.wav"
+    }
+  },
+  "coverage_124": {
+    "type": "word",
+    "sourceId": "coverage_124",
+    "textPt": "TV",
+    "textEn": "TV",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_124.wav",
+      "female": "audio/ptbr/female/coverage_124.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_124.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_124.wav"
+    }
+  },
+  "coverage_125": {
+    "type": "word",
+    "sourceId": "coverage_125",
+    "textPt": "leio",
+    "textEn": "I read",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_125.wav",
+      "female": "audio/ptbr/female/coverage_125.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_125.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_125.wav"
+    }
+  },
+  "coverage_126": {
+    "type": "word",
+    "sourceId": "coverage_126",
+    "textPt": "nas",
+    "textEn": "in the / at the (fem. pl.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_126.wav",
+      "female": "audio/ptbr/female/coverage_126.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_126.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_126.wav"
+    }
+  },
+  "coverage_127": {
+    "type": "word",
+    "sourceId": "coverage_127",
+    "textPt": "ajudo",
+    "textEn": "I help",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_127.wav",
+      "female": "audio/ptbr/female/coverage_127.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_127.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_127.wav"
+    }
+  },
+  "coverage_128": {
+    "type": "word",
+    "sourceId": "coverage_128",
+    "textPt": "converso",
+    "textEn": "I talk / chat",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_128.wav",
+      "female": "audio/ptbr/female/coverage_128.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_128.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_128.wav"
+    }
+  },
+  "coverage_129": {
+    "type": "word",
+    "sourceId": "coverage_129",
+    "textPt": "sobre",
+    "textEn": "about",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_129.wav",
+      "female": "audio/ptbr/female/coverage_129.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_129.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_129.wav"
+    }
+  },
+  "coverage_130": {
+    "type": "word",
+    "sourceId": "coverage_130",
+    "textPt": "cachorro",
+    "textEn": "dog",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_130.wav",
+      "female": "audio/ptbr/female/coverage_130.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_130.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_130.wav"
+    }
+  },
+  "coverage_131": {
+    "type": "word",
+    "sourceId": "coverage_131",
+    "textPt": "passear",
+    "textEn": "to walk / stroll",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_131.wav",
+      "female": "audio/ptbr/female/coverage_131.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_131.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_131.wav"
+    }
+  },
+  "coverage_132": {
+    "type": "word",
+    "sourceId": "coverage_132",
+    "textPt": "sono",
+    "textEn": "sleep / sleepiness",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_132.wav",
+      "female": "audio/ptbr/female/coverage_132.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_132.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_132.wav"
+    }
+  },
+  "coverage_133": {
+    "type": "word",
+    "sourceId": "coverage_133",
+    "textPt": "hora",
+    "textEn": "time / hour",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_133.wav",
+      "female": "audio/ptbr/female/coverage_133.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_133.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_133.wav"
+    }
+  },
+  "coverage_134": {
+    "type": "word",
+    "sourceId": "coverage_134",
+    "textPt": "deitar",
+    "textEn": "to lie down",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_134.wav",
+      "female": "audio/ptbr/female/coverage_134.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_134.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_134.wav"
+    }
+  },
+  "coverage_135": {
+    "type": "word",
+    "sourceId": "coverage_135",
+    "textPt": "esqueça",
+    "textEn": "forget",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_135.wav",
+      "female": "audio/ptbr/female/coverage_135.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_135.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_135.wav"
+    }
+  },
+  "coverage_136": {
+    "type": "word",
+    "sourceId": "coverage_136",
+    "textPt": "despertador",
+    "textEn": "alarm clock",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_136.wav",
+      "female": "audio/ptbr/female/coverage_136.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_136.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_136.wav"
+    }
+  },
+  "coverage_137": {
+    "type": "word",
+    "sourceId": "coverage_137",
+    "textPt": "coloco",
+    "textEn": "I put",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_137.wav",
+      "female": "audio/ptbr/female/coverage_137.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_137.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_137.wav"
+    }
+  },
+  "coverage_138": {
+    "type": "word",
+    "sourceId": "coverage_138",
+    "textPt": "carregar",
+    "textEn": "to charge / to carry",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_138.wav",
+      "female": "audio/ptbr/female/coverage_138.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_138.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_138.wav"
+    }
+  },
+  "coverage_139": {
+    "type": "word",
+    "sourceId": "coverage_139",
+    "textPt": "onze",
+    "textEn": "eleven",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_139.wav",
+      "female": "audio/ptbr/female/coverage_139.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_139.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_139.wav"
+    }
+  },
+  "coverage_140": {
+    "type": "word",
+    "sourceId": "coverage_140",
+    "textPt": "bons",
+    "textEn": "good (pl.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_140.wav",
+      "female": "audio/ptbr/female/coverage_140.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_140.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_140.wav"
+    }
+  },
+  "coverage_141": {
+    "type": "word",
+    "sourceId": "coverage_141",
+    "textPt": "aos",
+    "textEn": "to the / at the (masc. pl.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_141.wav",
+      "female": "audio/ptbr/female/coverage_141.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_141.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_141.wav"
+    }
+  },
+  "coverage_142": {
+    "type": "word",
+    "sourceId": "coverage_142",
+    "textPt": "sábados",
+    "textEn": "Saturdays",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_142.wav",
+      "female": "audio/ptbr/female/coverage_142.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_142.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_142.wav"
+    }
+  },
+  "coverage_143": {
+    "type": "word",
+    "sourceId": "coverage_143",
+    "textPt": "limpeza",
+    "textEn": "cleaning",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_143.wav",
+      "female": "audio/ptbr/female/coverage_143.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_143.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_143.wav"
+    }
+  },
+  "coverage_144": {
+    "type": "word",
+    "sourceId": "coverage_144",
+    "textPt": "preparo",
+    "textEn": "I prepare",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_144.wav",
+      "female": "audio/ptbr/female/coverage_144.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_144.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_144.wav"
+    }
+  },
+  "coverage_145": {
+    "type": "word",
+    "sourceId": "coverage_145",
+    "textPt": "roupas",
+    "textEn": "clothes",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_145.wav",
+      "female": "audio/ptbr/female/coverage_145.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_145.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_145.wav"
+    }
+  },
+  "coverage_146": {
+    "type": "word",
+    "sourceId": "coverage_146",
+    "textPt": "seguinte",
+    "textEn": "following / next",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_146.wav",
+      "female": "audio/ptbr/female/coverage_146.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_146.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_146.wav"
+    }
+  },
+  "coverage_147": {
+    "type": "word",
+    "sourceId": "coverage_147",
+    "textPt": "durante",
+    "textEn": "during",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_147.wav",
+      "female": "audio/ptbr/female/coverage_147.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_147.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_147.wav"
+    }
+  },
+  "coverage_148": {
+    "type": "word",
+    "sourceId": "coverage_148",
+    "textPt": "caminhada",
+    "textEn": "walk",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_148.wav",
+      "female": "audio/ptbr/female/coverage_148.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_148.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_148.wav"
+    }
+  },
+  "coverage_149": {
+    "type": "word",
+    "sourceId": "coverage_149",
+    "textPt": "ouço",
+    "textEn": "I listen",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_149.wav",
+      "female": "audio/ptbr/female/coverage_149.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_149.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_149.wav"
+    }
+  },
+  "coverage_150": {
+    "type": "word",
+    "sourceId": "coverage_150",
+    "textPt": "enquanto",
+    "textEn": "while",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_150.wav",
+      "female": "audio/ptbr/female/coverage_150.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_150.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_150.wav"
+    }
+  },
+  "coverage_151": {
+    "type": "word",
+    "sourceId": "coverage_151",
+    "textPt": "organizo",
+    "textEn": "I organize",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_151.wav",
+      "female": "audio/ptbr/female/coverage_151.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_151.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_151.wav"
+    }
+  },
+  "coverage_152": {
+    "type": "word",
+    "sourceId": "coverage_152",
+    "textPt": "anterior",
+    "textEn": "previous",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_152.wav",
+      "female": "audio/ptbr/female/coverage_152.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_152.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_152.wav"
+    }
+  },
+  "coverage_153": {
+    "type": "word",
+    "sourceId": "coverage_153",
+    "textPt": "acabo",
+    "textEn": "I end up / I finish",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_153.wav",
+      "female": "audio/ptbr/female/coverage_153.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_153.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_153.wav"
+    }
+  },
+  "coverage_154": {
+    "type": "word",
+    "sourceId": "coverage_154",
+    "textPt": "atrasando",
+    "textEn": "running late / delaying",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_154.wav",
+      "female": "audio/ptbr/female/coverage_154.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_154.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_154.wav"
+    }
+  },
+  "coverage_155": {
+    "type": "word",
+    "sourceId": "coverage_155",
+    "textPt": "foco",
+    "textEn": "focus",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_155.wav",
+      "female": "audio/ptbr/female/coverage_155.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_155.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_155.wav"
+    }
+  },
+  "coverage_156": {
+    "type": "word",
+    "sourceId": "coverage_156",
+    "textPt": "alegria",
+    "textEn": "joy",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_156.wav",
+      "female": "audio/ptbr/female/coverage_156.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_156.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_156.wav"
+    }
+  },
+  "coverage_157": {
+    "type": "word",
+    "sourceId": "coverage_157",
+    "textPt": "animado",
+    "textEn": "excited",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_157.wav",
+      "female": "audio/ptbr/female/coverage_157.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_157.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_157.wav"
+    }
+  },
+  "coverage_158": {
+    "type": "word",
+    "sourceId": "coverage_158",
+    "textPt": "ótimo",
+    "textEn": "great",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_158.wav",
+      "female": "audio/ptbr/female/coverage_158.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_158.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_158.wav"
+    }
+  },
+  "coverage_159": {
+    "type": "word",
+    "sourceId": "coverage_159",
+    "textPt": "humor",
+    "textEn": "mood",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_159.wav",
+      "female": "audio/ptbr/female/coverage_159.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_159.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_159.wav"
+    }
+  },
+  "coverage_160": {
+    "type": "word",
+    "sourceId": "coverage_160",
+    "textPt": "deixa",
+    "textEn": "leaves / makes",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_160.wav",
+      "female": "audio/ptbr/female/coverage_160.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_160.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_160.wav"
+    }
+  },
+  "coverage_161": {
+    "type": "word",
+    "sourceId": "coverage_161",
+    "textPt": "contente",
+    "textEn": "happy / pleased",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_161.wav",
+      "female": "audio/ptbr/female/coverage_161.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_161.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_161.wav"
+    }
+  },
+  "coverage_162": {
+    "type": "word",
+    "sourceId": "coverage_162",
+    "textPt": "pena",
+    "textEn": "pity / shame",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_162.wav",
+      "female": "audio/ptbr/female/coverage_162.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_162.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_162.wav"
+    }
+  },
+  "coverage_163": {
+    "type": "word",
+    "sourceId": "coverage_163",
+    "textPt": "desapontado",
+    "textEn": "disappointed",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_163.wav",
+      "female": "audio/ptbr/female/coverage_163.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_163.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_163.wav"
+    }
+  },
+  "coverage_164": {
+    "type": "word",
+    "sourceId": "coverage_164",
+    "textPt": "baixo",
+    "textEn": "low / down",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_164.wav",
+      "female": "audio/ptbr/female/coverage_164.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_164.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_164.wav"
+    }
+  },
+  "coverage_165": {
+    "type": "word",
+    "sourceId": "coverage_165",
+    "textPt": "coração",
+    "textEn": "heart",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_165.wav",
+      "female": "audio/ptbr/female/coverage_165.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_165.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_165.wav"
+    }
+  },
+  "coverage_166": {
+    "type": "word",
+    "sourceId": "coverage_166",
+    "textPt": "partido",
+    "textEn": "broken",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_166.wav",
+      "female": "audio/ptbr/female/coverage_166.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_166.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_166.wav"
+    }
+  },
+  "coverage_167": {
+    "type": "word",
+    "sourceId": "coverage_167",
+    "textPt": "fique",
+    "textEn": "stay / be (subjunctive)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_167.wav",
+      "female": "audio/ptbr/female/coverage_167.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_167.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_167.wav"
+    }
+  },
+  "coverage_168": {
+    "type": "word",
+    "sourceId": "coverage_168",
+    "textPt": "perdeu",
+    "textEn": "lost",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_168.wav",
+      "female": "audio/ptbr/female/coverage_168.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_168.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_168.wav"
+    }
+  },
+  "coverage_169": {
+    "type": "word",
+    "sourceId": "coverage_169",
+    "textPt": "acredito",
+    "textEn": "I believe",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_169.wav",
+      "female": "audio/ptbr/female/coverage_169.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_169.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_169.wav"
+    }
+  },
+  "coverage_170": {
+    "type": "word",
+    "sourceId": "coverage_170",
+    "textPt": "furiosa",
+    "textEn": "furious",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_170.wav",
+      "female": "audio/ptbr/female/coverage_170.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_170.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_170.wav"
+    }
+  },
+  "coverage_171": {
+    "type": "word",
+    "sourceId": "coverage_171",
+    "textPt": "situação",
+    "textEn": "situation",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_171.wav",
+      "female": "audio/ptbr/female/coverage_171.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_171.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_171.wav"
+    }
+  },
+  "coverage_172": {
+    "type": "word",
+    "sourceId": "coverage_172",
+    "textPt": "saco",
+    "textEn": "what a drag / bag",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_172.wav",
+      "female": "audio/ptbr/female/coverage_172.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_172.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_172.wav"
+    }
+  },
+  "coverage_173": {
+    "type": "word",
+    "sourceId": "coverage_173",
+    "textPt": "progresso",
+    "textEn": "progress",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_173.wav",
+      "female": "audio/ptbr/female/coverage_173.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_173.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_173.wav"
+    }
+  },
+  "coverage_174": {
+    "type": "word",
+    "sourceId": "coverage_174",
+    "textPt": "medo",
+    "textEn": "fear",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_174.wav",
+      "female": "audio/ptbr/female/coverage_174.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_174.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_174.wav"
+    }
+  },
+  "coverage_175": {
+    "type": "word",
+    "sourceId": "coverage_175",
+    "textPt": "pavor",
+    "textEn": "dread",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_175.wav",
+      "female": "audio/ptbr/female/coverage_175.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_175.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_175.wav"
+    }
+  },
+  "coverage_176": {
+    "type": "word",
+    "sourceId": "coverage_176",
+    "textPt": "altura",
+    "textEn": "height",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_176.wav",
+      "female": "audio/ptbr/female/coverage_176.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_176.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_176.wav"
+    }
+  },
+  "coverage_177": {
+    "type": "word",
+    "sourceId": "coverage_177",
+    "textPt": "assustado",
+    "textEn": "scared",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_177.wav",
+      "female": "audio/ptbr/female/coverage_177.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_177.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_177.wav"
+    }
+  },
+  "coverage_178": {
+    "type": "word",
+    "sourceId": "coverage_178",
+    "textPt": "barulho",
+    "textEn": "noise",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_178.wav",
+      "female": "audio/ptbr/female/coverage_178.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_178.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_178.wav"
+    }
+  },
+  "coverage_179": {
+    "type": "word",
+    "sourceId": "coverage_179",
+    "textPt": "preocupado",
+    "textEn": "worried",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_179.wav",
+      "female": "audio/ptbr/female/coverage_179.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_179.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_179.wav"
+    }
+  },
+  "coverage_180": {
+    "type": "word",
+    "sourceId": "coverage_180",
+    "textPt": "apresentações",
+    "textEn": "presentations",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_180.wav",
+      "female": "audio/ptbr/female/coverage_180.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_180.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_180.wav"
+    }
+  },
+  "coverage_181": {
+    "type": "word",
+    "sourceId": "coverage_181",
+    "textPt": "barriga",
+    "textEn": "belly / stomach",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_181.wav",
+      "female": "audio/ptbr/female/coverage_181.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_181.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_181.wav"
+    }
+  },
+  "coverage_182": {
+    "type": "word",
+    "sourceId": "coverage_182",
+    "textPt": "preocupe",
+    "textEn": "worry",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_182.wav",
+      "female": "audio/ptbr/female/coverage_182.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_182.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_182.wav"
+    }
+  },
+  "coverage_183": {
+    "type": "word",
+    "sourceId": "coverage_183",
+    "textPt": "surpresa",
+    "textEn": "surprise",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_183.wav",
+      "female": "audio/ptbr/female/coverage_183.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_183.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_183.wav"
+    }
+  },
+  "coverage_184": {
+    "type": "word",
+    "sourceId": "coverage_184",
+    "textPt": "chocado",
+    "textEn": "shocked",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_184.wav",
+      "female": "audio/ptbr/female/coverage_184.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_184.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_184.wav"
+    }
+  },
+  "coverage_185": {
+    "type": "word",
+    "sourceId": "coverage_185",
+    "textPt": "esperava",
+    "textEn": "expected",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_185.wav",
+      "female": "audio/ptbr/female/coverage_185.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_185.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_185.wav"
+    }
+  },
+  "coverage_186": {
+    "type": "word",
+    "sourceId": "coverage_186",
+    "textPt": "impressionada",
+    "textEn": "impressed",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_186.wav",
+      "female": "audio/ptbr/female/coverage_186.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_186.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_186.wav"
+    }
+  },
+  "coverage_187": {
+    "type": "word",
+    "sourceId": "coverage_187",
+    "textPt": "talento",
+    "textEn": "talent",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_187.wav",
+      "female": "audio/ptbr/female/coverage_187.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_187.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_187.wav"
+    }
+  },
+  "coverage_188": {
+    "type": "word",
+    "sourceId": "coverage_188",
+    "textPt": "incrível",
+    "textEn": "incredible",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_188.wav",
+      "female": "audio/ptbr/female/coverage_188.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_188.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_188.wav"
+    }
+  },
+  "coverage_189": {
+    "type": "word",
+    "sourceId": "coverage_189",
+    "textPt": "amo",
+    "textEn": "I love",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_189.wav",
+      "female": "audio/ptbr/female/coverage_189.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_189.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_189.wav"
+    }
+  },
+  "coverage_190": {
+    "type": "word",
+    "sourceId": "coverage_190",
+    "textPt": "carinho",
+    "textEn": "affection",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_190.wav",
+      "female": "audio/ptbr/female/coverage_190.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_190.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_190.wav"
+    }
+  },
+  "coverage_191": {
+    "type": "word",
+    "sourceId": "coverage_191",
+    "textPt": "calmo",
+    "textEn": "calm",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_191.wav",
+      "female": "audio/ptbr/female/coverage_191.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_191.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_191.wav"
+    }
+  },
+  "coverage_192": {
+    "type": "word",
+    "sourceId": "coverage_192",
+    "textPt": "vergonha",
+    "textEn": "embarrassment / shame",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_192.wav",
+      "female": "audio/ptbr/female/coverage_192.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_192.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_192.wav"
+    }
+  },
+  "coverage_193": {
+    "type": "word",
+    "sourceId": "coverage_193",
+    "textPt": "confuso",
+    "textEn": "confused",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_193.wav",
+      "female": "audio/ptbr/female/coverage_193.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_193.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_193.wav"
+    }
+  },
+  "coverage_194": {
+    "type": "word",
+    "sourceId": "coverage_194",
+    "textPt": "instruções",
+    "textEn": "instructions",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_194.wav",
+      "female": "audio/ptbr/female/coverage_194.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_194.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_194.wav"
+    }
+  },
+  "coverage_195": {
+    "type": "word",
+    "sourceId": "coverage_195",
+    "textPt": "orgulhoso",
+    "textEn": "proud",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_195.wav",
+      "female": "audio/ptbr/female/coverage_195.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_195.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_195.wav"
+    }
+  },
+  "coverage_196": {
+    "type": "word",
+    "sourceId": "coverage_196",
+    "textPt": "culpada",
+    "textEn": "guilty",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_196.wav",
+      "female": "audio/ptbr/female/coverage_196.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_196.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_196.wav"
+    }
+  },
+  "coverage_197": {
+    "type": "word",
+    "sourceId": "coverage_197",
+    "textPt": "ligado",
+    "textEn": "called / connected",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_197.wav",
+      "female": "audio/ptbr/female/coverage_197.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_197.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_197.wav"
+    }
+  },
+  "coverage_198": {
+    "type": "word",
+    "sourceId": "coverage_198",
+    "textPt": "exausto",
+    "textEn": "exhausted",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_198.wav",
+      "female": "audio/ptbr/female/coverage_198.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_198.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_198.wav"
+    }
+  },
+  "coverage_199": {
+    "type": "word",
+    "sourceId": "coverage_199",
+    "textPt": "otimista",
+    "textEn": "optimistic",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_199.wav",
+      "female": "audio/ptbr/female/coverage_199.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_199.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_199.wav"
+    }
+  },
+  "coverage_200": {
+    "type": "word",
+    "sourceId": "coverage_200",
+    "textPt": "minuto",
+    "textEn": "minute",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_200.wav",
+      "female": "audio/ptbr/female/coverage_200.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_200.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_200.wav"
+    }
+  },
+  "coverage_201": {
+    "type": "word",
+    "sourceId": "coverage_201",
+    "textPt": "significa",
+    "textEn": "means",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_201.wav",
+      "female": "audio/ptbr/female/coverage_201.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_201.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_201.wav"
+    }
+  },
+  "coverage_202": {
+    "type": "word",
+    "sourceId": "coverage_202",
+    "textPt": "informar",
+    "textEn": "to inform",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_202.wav",
+      "female": "audio/ptbr/female/coverage_202.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_202.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_202.wav"
+    }
+  },
+  "coverage_203": {
+    "type": "word",
+    "sourceId": "coverage_203",
+    "textPt": "saída",
+    "textEn": "exit / output",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_203.wav",
+      "female": "audio/ptbr/female/coverage_203.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_203.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_203.wav"
+    }
+  },
+  "coverage_204": {
+    "type": "word",
+    "sourceId": "coverage_204",
+    "textPt": "importaria",
+    "textEn": "would mind",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_204.wav",
+      "female": "audio/ptbr/female/coverage_204.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_204.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_204.wav"
+    }
+  },
+  "coverage_205": {
+    "type": "word",
+    "sourceId": "coverage_205",
+    "textPt": "mãozinha",
+    "textEn": "little hand / little help",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_205.wav",
+      "female": "audio/ptbr/female/coverage_205.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_205.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_205.wav"
+    }
+  },
+  "coverage_206": {
+    "type": "word",
+    "sourceId": "coverage_206",
+    "textPt": "será",
+    "textEn": "will it be / is it",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_206.wav",
+      "female": "audio/ptbr/female/coverage_206.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_206.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_206.wav"
+    }
+  },
+  "coverage_207": {
+    "type": "word",
+    "sourceId": "coverage_207",
+    "textPt": "sei",
+    "textEn": "I know",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_207.wav",
+      "female": "audio/ptbr/female/coverage_207.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_207.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_207.wav"
+    }
+  },
+  "coverage_208": {
+    "type": "word",
+    "sourceId": "coverage_208",
+    "textPt": "exemplo",
+    "textEn": "example",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_208.wav",
+      "female": "audio/ptbr/female/coverage_208.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_208.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_208.wav"
+    }
+  },
+  "coverage_209": {
+    "type": "word",
+    "sourceId": "coverage_209",
+    "textPt": "incômodo",
+    "textEn": "inconvenience / bother",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_209.wav",
+      "female": "audio/ptbr/female/coverage_209.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_209.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_209.wav"
+    }
+  },
+  "coverage_210": {
+    "type": "word",
+    "sourceId": "coverage_210",
+    "textPt": "mas",
+    "textEn": "but",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_210.wav",
+      "female": "audio/ptbr/female/coverage_210.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_210.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_210.wav"
+    }
+  },
+  "coverage_211": {
+    "type": "word",
+    "sourceId": "coverage_211",
+    "textPt": "entendeu",
+    "textEn": "understood",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_211.wav",
+      "female": "audio/ptbr/female/coverage_211.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_211.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_211.wav"
+    }
+  },
+  "coverage_212": {
+    "type": "word",
+    "sourceId": "coverage_212",
+    "textPt": "disse",
+    "textEn": "said",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_212.wav",
+      "female": "audio/ptbr/female/coverage_212.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_212.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_212.wav"
+    }
+  },
+  "coverage_213": {
+    "type": "word",
+    "sourceId": "coverage_213",
+    "textPt": "dúvida",
+    "textEn": "doubt",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_213.wav",
+      "female": "audio/ptbr/female/coverage_213.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_213.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_213.wav"
+    }
+  },
+  "coverage_214": {
+    "type": "word",
+    "sourceId": "coverage_214",
+    "textPt": "escreve",
+    "textEn": "writes / spells",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_214.wav",
+      "female": "audio/ptbr/female/coverage_214.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_214.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_214.wav"
+    }
+  },
+  "coverage_215": {
+    "type": "word",
+    "sourceId": "coverage_215",
+    "textPt": "conseguindo",
+    "textEn": "managing / being able",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_215.wav",
+      "female": "audio/ptbr/female/coverage_215.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_215.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_215.wav"
+    }
+  },
+  "coverage_216": {
+    "type": "word",
+    "sourceId": "coverage_216",
+    "textPt": "conectar",
+    "textEn": "to connect",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_216.wav",
+      "female": "audio/ptbr/female/coverage_216.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_216.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_216.wav"
+    }
+  },
+  "coverage_217": {
+    "type": "word",
+    "sourceId": "coverage_217",
+    "textPt": "informação",
+    "textEn": "information",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_217.wav",
+      "female": "audio/ptbr/female/coverage_217.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_217.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_217.wav"
+    }
+  },
+  "coverage_218": {
+    "type": "word",
+    "sourceId": "coverage_218",
+    "textPt": "emprestar",
+    "textEn": "to lend",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_218.wav",
+      "female": "audio/ptbr/female/coverage_218.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_218.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_218.wav"
+    }
+  },
+  "coverage_219": {
+    "type": "word",
+    "sourceId": "coverage_219",
+    "textPt": "carregador",
+    "textEn": "charger",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_219.wav",
+      "female": "audio/ptbr/female/coverage_219.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_219.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_219.wav"
+    }
+  },
+  "coverage_220": {
+    "type": "word",
+    "sourceId": "coverage_220",
+    "textPt": "teria",
+    "textEn": "would have / would there be",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_220.wav",
+      "female": "audio/ptbr/female/coverage_220.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_220.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_220.wav"
+    }
+  },
+  "coverage_221": {
+    "type": "word",
+    "sourceId": "coverage_221",
+    "textPt": "verificar",
+    "textEn": "to check / verify",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_221.wav",
+      "female": "audio/ptbr/female/coverage_221.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_221.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_221.wav"
+    }
+  },
+  "coverage_222": {
+    "type": "word",
+    "sourceId": "coverage_222",
+    "textPt": "direito",
+    "textEn": "properly / right",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_222.wav",
+      "female": "audio/ptbr/female/coverage_222.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_222.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_222.wav"
+    }
+  },
+  "coverage_223": {
+    "type": "word",
+    "sourceId": "coverage_223",
+    "textPt": "consertar",
+    "textEn": "to fix",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_223.wav",
+      "female": "audio/ptbr/female/coverage_223.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_223.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_223.wav"
+    }
+  },
+  "coverage_224": {
+    "type": "word",
+    "sourceId": "coverage_224",
+    "textPt": "documento",
+    "textEn": "document",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_224.wav",
+      "female": "audio/ptbr/female/coverage_224.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_224.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_224.wav"
+    }
+  },
+  "coverage_225": {
+    "type": "word",
+    "sourceId": "coverage_225",
+    "textPt": "enviado",
+    "textEn": "sent",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_225.wav",
+      "female": "audio/ptbr/female/coverage_225.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_225.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_225.wav"
+    }
+  },
+  "coverage_226": {
+    "type": "word",
+    "sourceId": "coverage_226",
+    "textPt": "provar",
+    "textEn": "to try / to taste / to prove",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_226.wav",
+      "female": "audio/ptbr/female/coverage_226.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_226.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_226.wav"
+    }
+  },
+  "coverage_227": {
+    "type": "word",
+    "sourceId": "coverage_227",
+    "textPt": "embrulhar",
+    "textEn": "to wrap",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_227.wav",
+      "female": "audio/ptbr/female/coverage_227.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_227.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_227.wav"
+    }
+  },
+  "coverage_228": {
+    "type": "word",
+    "sourceId": "coverage_228",
+    "textPt": "sacar",
+    "textEn": "to withdraw",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_228.wav",
+      "female": "audio/ptbr/female/coverage_228.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_228.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_228.wav"
+    }
+  },
+  "coverage_229": {
+    "type": "word",
+    "sourceId": "coverage_229",
+    "textPt": "débito",
+    "textEn": "debit",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_229.wav",
+      "female": "audio/ptbr/female/coverage_229.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_229.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_229.wav"
+    }
+  },
+  "coverage_230": {
+    "type": "word",
+    "sourceId": "coverage_230",
+    "textPt": "parcelar",
+    "textEn": "to pay in installments",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_230.wav",
+      "female": "audio/ptbr/female/coverage_230.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_230.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_230.wav"
+    }
+  },
+  "coverage_231": {
+    "type": "word",
+    "sourceId": "coverage_231",
+    "textPt": "quantas",
+    "textEn": "how many (fem. pl.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_231.wav",
+      "female": "audio/ptbr/female/coverage_231.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_231.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_231.wav"
+    }
+  },
+  "coverage_232": {
+    "type": "word",
+    "sourceId": "coverage_232",
+    "textPt": "juros",
+    "textEn": "interest",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_232.wav",
+      "female": "audio/ptbr/female/coverage_232.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_232.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_232.wav"
+    }
+  },
+  "coverage_233": {
+    "type": "word",
+    "sourceId": "coverage_233",
+    "textPt": "troco",
+    "textEn": "change",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_233.wav",
+      "female": "audio/ptbr/female/coverage_233.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_233.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_233.wav"
+    }
+  },
+  "coverage_234": {
+    "type": "word",
+    "sourceId": "coverage_234",
+    "textPt": "cem",
+    "textEn": "one hundred",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_234.wav",
+      "female": "audio/ptbr/female/coverage_234.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_234.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_234.wav"
+    }
+  },
+  "coverage_235": {
+    "type": "word",
+    "sourceId": "coverage_235",
+    "textPt": "CPF",
+    "textEn": "taxpayer ID",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_235.wav",
+      "female": "audio/ptbr/female/coverage_235.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_235.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_235.wav"
+    }
+  },
+  "coverage_236": {
+    "type": "word",
+    "sourceId": "coverage_236",
+    "textPt": "política",
+    "textEn": "policy",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_236.wav",
+      "female": "audio/ptbr/female/coverage_236.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_236.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_236.wav"
+    }
+  },
+  "coverage_237": {
+    "type": "word",
+    "sourceId": "coverage_237",
+    "textPt": "promoção",
+    "textEn": "sale / promotion",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_237.wav",
+      "female": "audio/ptbr/female/coverage_237.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_237.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_237.wav"
+    }
+  },
+  "coverage_238": {
+    "type": "word",
+    "sourceId": "coverage_238",
+    "textPt": "aproximação",
+    "textEn": "contactless / proximity",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_238.wav",
+      "female": "audio/ptbr/female/coverage_238.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_238.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_238.wav"
+    }
+  },
+  "coverage_239": {
+    "type": "word",
+    "sourceId": "coverage_239",
+    "textPt": "máquina",
+    "textEn": "machine / card machine",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_239.wav",
+      "female": "audio/ptbr/female/coverage_239.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_239.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_239.wav"
+    }
+  },
+  "coverage_240": {
+    "type": "word",
+    "sourceId": "coverage_240",
+    "textPt": "fiscal",
+    "textEn": "tax / fiscal",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_240.wav",
+      "female": "audio/ptbr/female/coverage_240.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_240.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_240.wav"
+    }
+  },
+  "coverage_241": {
+    "type": "word",
+    "sourceId": "coverage_241",
+    "textPt": "recibo",
+    "textEn": "receipt",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_241.wav",
+      "female": "audio/ptbr/female/coverage_241.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_241.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_241.wav"
+    }
+  },
+  "coverage_242": {
+    "type": "word",
+    "sourceId": "coverage_242",
+    "textPt": "encontro",
+    "textEn": "I find / encounter",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_242.wav",
+      "female": "audio/ptbr/female/coverage_242.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_242.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_242.wav"
+    }
+  },
+  "coverage_243": {
+    "type": "word",
+    "sourceId": "coverage_243",
+    "textPt": "seção",
+    "textEn": "section",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_243.wav",
+      "female": "audio/ptbr/female/coverage_243.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_243.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_243.wav"
+    }
+  },
+  "coverage_244": {
+    "type": "word",
+    "sourceId": "coverage_244",
+    "textPt": "negociável",
+    "textEn": "negotiable",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_244.wav",
+      "female": "audio/ptbr/female/coverage_244.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_244.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_244.wav"
+    }
+  },
+  "coverage_245": {
+    "type": "word",
+    "sourceId": "coverage_245",
+    "textPt": "liquidação",
+    "textEn": "clearance sale",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_245.wav",
+      "female": "audio/ptbr/female/coverage_245.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_245.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_245.wav"
+    }
+  },
+  "coverage_246": {
+    "type": "word",
+    "sourceId": "coverage_246",
+    "textPt": "via",
+    "textEn": "via / by",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_246.wav",
+      "female": "audio/ptbr/female/coverage_246.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_246.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_246.wav"
+    }
+  },
+  "coverage_247": {
+    "type": "word",
+    "sourceId": "coverage_247",
+    "textPt": "valor",
+    "textEn": "amount / value",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_247.wav",
+      "female": "audio/ptbr/female/coverage_247.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_247.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_247.wav"
+    }
+  },
+  "coverage_248": {
+    "type": "word",
+    "sourceId": "coverage_248",
+    "textPt": "quero",
+    "textEn": "I want",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_248.wav",
+      "female": "audio/ptbr/female/coverage_248.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_248.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_248.wav"
+    }
+  },
+  "coverage_249": {
+    "type": "word",
+    "sourceId": "coverage_249",
+    "textPt": "confirmar",
+    "textEn": "to confirm",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_249.wav",
+      "female": "audio/ptbr/female/coverage_249.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_249.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_249.wav"
+    }
+  },
+  "coverage_250": {
+    "type": "word",
+    "sourceId": "coverage_250",
+    "textPt": "garantia",
+    "textEn": "warranty",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_250.wav",
+      "female": "audio/ptbr/female/coverage_250.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_250.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_250.wav"
+    }
+  },
+  "coverage_251": {
+    "type": "word",
+    "sourceId": "coverage_251",
+    "textPt": "cobre",
+    "textEn": "covers",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_251.wav",
+      "female": "audio/ptbr/female/coverage_251.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_251.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_251.wav"
+    }
+  },
+  "coverage_252": {
+    "type": "word",
+    "sourceId": "coverage_252",
+    "textPt": "troca",
+    "textEn": "exchange",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_252.wav",
+      "female": "audio/ptbr/female/coverage_252.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_252.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_252.wav"
+    }
+  },
+  "coverage_253": {
+    "type": "word",
+    "sourceId": "coverage_253",
+    "textPt": "fabricação",
+    "textEn": "manufacturing",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_253.wav",
+      "female": "audio/ptbr/female/coverage_253.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_253.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_253.wav"
+    }
+  },
+  "coverage_254": {
+    "type": "word",
+    "sourceId": "coverage_254",
+    "textPt": "Copacabana",
+    "textEn": "Copacabana",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_254.wav",
+      "female": "audio/ptbr/female/coverage_254.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_254.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_254.wav"
+    }
+  },
+  "coverage_255": {
+    "type": "word",
+    "sourceId": "coverage_255",
+    "textPt": "quarteirões",
+    "textEn": "blocks",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_255.wav",
+      "female": "audio/ptbr/female/coverage_255.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_255.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_255.wav"
+    }
+  },
+  "coverage_256": {
+    "type": "word",
+    "sourceId": "coverage_256",
+    "textPt": "semáforo",
+    "textEn": "traffic light",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_256.wav",
+      "female": "audio/ptbr/female/coverage_256.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_256.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_256.wav"
+    }
+  },
+  "coverage_257": {
+    "type": "word",
+    "sourceId": "coverage_257",
+    "textPt": "logo",
+    "textEn": "right away / soon",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_257.wav",
+      "female": "audio/ptbr/female/coverage_257.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_257.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_257.wav"
+    }
+  },
+  "coverage_258": {
+    "type": "word",
+    "sourceId": "coverage_258",
+    "textPt": "ali",
+    "textEn": "there",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_258.wav",
+      "female": "audio/ptbr/female/coverage_258.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_258.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_258.wav"
+    }
+  },
+  "coverage_259": {
+    "type": "word",
+    "sourceId": "coverage_259",
+    "textPt": "lado",
+    "textEn": "side",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_259.wav",
+      "female": "audio/ptbr/female/coverage_259.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_259.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_259.wav"
+    }
+  },
+  "coverage_260": {
+    "type": "word",
+    "sourceId": "coverage_260",
+    "textPt": "avenida",
+    "textEn": "avenue",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_260.wav",
+      "female": "audio/ptbr/female/coverage_260.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_260.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_260.wav"
+    }
+  },
+  "coverage_261": {
+    "type": "word",
+    "sourceId": "coverage_261",
+    "textPt": "prédio",
+    "textEn": "building",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_261.wav",
+      "female": "audio/ptbr/female/coverage_261.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_261.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_261.wav"
+    }
+  },
+  "coverage_262": {
+    "type": "word",
+    "sourceId": "coverage_262",
+    "textPt": "passe",
+    "textEn": "go past / pass",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_262.wav",
+      "female": "audio/ptbr/female/coverage_262.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_262.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_262.wav"
+    }
+  },
+  "coverage_263": {
+    "type": "word",
+    "sourceId": "coverage_263",
+    "textPt": "terceira",
+    "textEn": "third (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_263.wav",
+      "female": "audio/ptbr/female/coverage_263.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_263.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_263.wav"
+    }
+  },
+  "coverage_264": {
+    "type": "word",
+    "sourceId": "coverage_264",
+    "textPt": "erro",
+    "textEn": "mistake",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_264.wav",
+      "female": "audio/ptbr/female/coverage_264.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_264.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_264.wav"
+    }
+  },
+  "coverage_265": {
+    "type": "word",
+    "sourceId": "coverage_265",
+    "textPt": "descer",
+    "textEn": "to get off / to go down",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_265.wav",
+      "female": "audio/ptbr/female/coverage_265.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_265.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_265.wav"
+    }
+  },
+  "coverage_266": {
+    "type": "word",
+    "sourceId": "coverage_266",
+    "textPt": "Central",
+    "textEn": "Central",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_266.wav",
+      "female": "audio/ptbr/female/coverage_266.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_266.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_266.wav"
+    }
+  },
+  "coverage_267": {
+    "type": "word",
+    "sourceId": "coverage_267",
+    "textPt": "linha",
+    "textEn": "line",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_267.wav",
+      "female": "audio/ptbr/female/coverage_267.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_267.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_267.wav"
+    }
+  },
+  "coverage_268": {
+    "type": "word",
+    "sourceId": "coverage_268",
+    "textPt": "Maracanã",
+    "textEn": "Maracana",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_268.wav",
+      "female": "audio/ptbr/female/coverage_268.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_268.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_268.wav"
+    }
+  },
+  "coverage_269": {
+    "type": "word",
+    "sourceId": "coverage_269",
+    "textPt": "fechou",
+    "textEn": "closed",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_269.wav",
+      "female": "audio/ptbr/female/coverage_269.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_269.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_269.wav"
+    }
+  },
+  "coverage_270": {
+    "type": "word",
+    "sourceId": "coverage_270",
+    "textPt": "passa",
+    "textEn": "passes",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_270.wav",
+      "female": "audio/ptbr/female/coverage_270.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_270.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_270.wav"
+    }
+  },
+  "coverage_271": {
+    "type": "word",
+    "sourceId": "coverage_271",
+    "textPt": "baldeação",
+    "textEn": "transfer",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_271.wav",
+      "female": "audio/ptbr/female/coverage_271.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_271.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_271.wav"
+    }
+  },
+  "coverage_272": {
+    "type": "word",
+    "sourceId": "coverage_272",
+    "textPt": "Uber",
+    "textEn": "Uber",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_272.wav",
+      "female": "audio/ptbr/female/coverage_272.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_272.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_272.wav"
+    }
+  },
+  "coverage_273": {
+    "type": "word",
+    "sourceId": "coverage_273",
+    "textPt": "parar",
+    "textEn": "to stop",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_273.wav",
+      "female": "audio/ptbr/female/coverage_273.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_273.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_273.wav"
+    }
+  },
+  "coverage_274": {
+    "type": "word",
+    "sourceId": "coverage_274",
+    "textPt": "pedi",
+    "textEn": "I asked / ordered",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_274.wav",
+      "female": "audio/ptbr/female/coverage_274.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_274.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_274.wav"
+    }
+  },
+  "coverage_275": {
+    "type": "word",
+    "sourceId": "coverage_275",
+    "textPt": "aplicativo",
+    "textEn": "app",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_275.wav",
+      "female": "audio/ptbr/female/coverage_275.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_275.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_275.wav"
+    }
+  },
+  "coverage_276": {
+    "type": "word",
+    "sourceId": "coverage_276",
+    "textPt": "posto",
+    "textEn": "station / post",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_276.wav",
+      "female": "audio/ptbr/female/coverage_276.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_276.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_276.wav"
+    }
+  },
+  "coverage_277": {
+    "type": "word",
+    "sourceId": "coverage_277",
+    "textPt": "gasolina",
+    "textEn": "gasoline",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_277.wav",
+      "female": "audio/ptbr/female/coverage_277.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_277.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_277.wav"
+    }
+  },
+  "coverage_278": {
+    "type": "word",
+    "sourceId": "coverage_278",
+    "textPt": "estacionar",
+    "textEn": "to park",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_278.wav",
+      "female": "audio/ptbr/female/coverage_278.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_278.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_278.wav"
+    }
+  },
+  "coverage_279": {
+    "type": "word",
+    "sourceId": "coverage_279",
+    "textPt": "estacionamento",
+    "textEn": "parking lot",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_279.wav",
+      "female": "audio/ptbr/female/coverage_279.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_279.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_279.wav"
+    }
+  },
+  "coverage_280": {
+    "type": "word",
+    "sourceId": "coverage_280",
+    "textPt": "limite",
+    "textEn": "limit",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_280.wav",
+      "female": "audio/ptbr/female/coverage_280.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_280.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_280.wav"
+    }
+  },
+  "coverage_281": {
+    "type": "word",
+    "sourceId": "coverage_281",
+    "textPt": "velocidade",
+    "textEn": "speed",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_281.wav",
+      "female": "audio/ptbr/female/coverage_281.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_281.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_281.wav"
+    }
+  },
+  "coverage_282": {
+    "type": "word",
+    "sourceId": "coverage_282",
+    "textPt": "nesta",
+    "textEn": "in this / on this (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_282.wav",
+      "female": "audio/ptbr/female/coverage_282.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_282.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_282.wav"
+    }
+  },
+  "coverage_283": {
+    "type": "word",
+    "sourceId": "coverage_283",
+    "textPt": "certa",
+    "textEn": "correct / right (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_283.wav",
+      "female": "audio/ptbr/female/coverage_283.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_283.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_283.wav"
+    }
+  },
+  "coverage_284": {
+    "type": "word",
+    "sourceId": "coverage_284",
+    "textPt": "avise",
+    "textEn": "let me know / inform me",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_284.wav",
+      "female": "audio/ptbr/female/coverage_284.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_284.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_284.wav"
+    }
+  },
+  "coverage_285": {
+    "type": "word",
+    "sourceId": "coverage_285",
+    "textPt": "estreita",
+    "textEn": "narrow (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_285.wav",
+      "female": "audio/ptbr/female/coverage_285.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_285.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_285.wav"
+    }
+  },
+  "coverage_286": {
+    "type": "word",
+    "sourceId": "coverage_286",
+    "textPt": "responder",
+    "textEn": "to answer",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_286.wav",
+      "female": "audio/ptbr/female/coverage_286.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_286.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_286.wav"
+    }
+  },
+  "coverage_287": {
+    "type": "word",
+    "sourceId": "coverage_287",
+    "textPt": "trabalhando",
+    "textEn": "working",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_287.wav",
+      "female": "audio/ptbr/female/coverage_287.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_287.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_287.wav"
+    }
+  },
+  "coverage_288": {
+    "type": "word",
+    "sourceId": "coverage_288",
+    "textPt": "relatório",
+    "textEn": "report",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_288.wav",
+      "female": "audio/ptbr/female/coverage_288.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_288.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_288.wav"
+    }
+  },
+  "coverage_289": {
+    "type": "word",
+    "sourceId": "coverage_289",
+    "textPt": "tarefa",
+    "textEn": "task",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_289.wav",
+      "female": "audio/ptbr/female/coverage_289.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_289.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_289.wav"
+    }
+  },
+  "coverage_290": {
+    "type": "word",
+    "sourceId": "coverage_290",
+    "textPt": "home office",
+    "textEn": "remote work",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_290.wav",
+      "female": "audio/ptbr/female/coverage_290.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_290.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_290.wav"
+    }
+  },
+  "coverage_291": {
+    "type": "word",
+    "sourceId": "coverage_291",
+    "textPt": "entrevista",
+    "textEn": "interview",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_291.wav",
+      "female": "audio/ptbr/female/coverage_291.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_291.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_291.wav"
+    }
+  },
+  "coverage_292": {
+    "type": "word",
+    "sourceId": "coverage_292",
+    "textPt": "chefe",
+    "textEn": "boss",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_292.wav",
+      "female": "audio/ptbr/female/coverage_292.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_292.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_292.wav"
+    }
+  },
+  "coverage_293": {
+    "type": "word",
+    "sourceId": "coverage_293",
+    "textPt": "exigente",
+    "textEn": "demanding",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_293.wav",
+      "female": "audio/ptbr/female/coverage_293.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_293.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_293.wav"
+    }
+  },
+  "coverage_294": {
+    "type": "word",
+    "sourceId": "coverage_294",
+    "textPt": "impressora",
+    "textEn": "printer",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_294.wav",
+      "female": "audio/ptbr/female/coverage_294.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_294.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_294.wav"
+    }
+  },
+  "coverage_295": {
+    "type": "word",
+    "sourceId": "coverage_295",
+    "textPt": "quebrou",
+    "textEn": "broke",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_295.wav",
+      "female": "audio/ptbr/female/coverage_295.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_295.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_295.wav"
+    }
+  },
+  "coverage_296": {
+    "type": "word",
+    "sourceId": "coverage_296",
+    "textPt": "adiada",
+    "textEn": "postponed (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_296.wav",
+      "female": "audio/ptbr/female/coverage_296.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_296.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_296.wav"
+    }
+  },
+  "coverage_297": {
+    "type": "word",
+    "sourceId": "coverage_297",
+    "textPt": "história",
+    "textEn": "history / story",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_297.wav",
+      "female": "audio/ptbr/female/coverage_297.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_297.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_297.wav"
+    }
+  },
+  "coverage_298": {
+    "type": "word",
+    "sourceId": "coverage_298",
+    "textPt": "exame",
+    "textEn": "exam",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_298.wav",
+      "female": "audio/ptbr/female/coverage_298.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_298.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_298.wav"
+    }
+  },
+  "coverage_299": {
+    "type": "word",
+    "sourceId": "coverage_299",
+    "textPt": "professor",
+    "textEn": "teacher / professor",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_299.wav",
+      "female": "audio/ptbr/female/coverage_299.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_299.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_299.wav"
+    }
+  },
+  "coverage_300": {
+    "type": "word",
+    "sourceId": "coverage_300",
+    "textPt": "explicou",
+    "textEn": "explained",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_300.wav",
+      "female": "audio/ptbr/female/coverage_300.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_300.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_300.wav"
+    }
+  },
+  "coverage_301": {
+    "type": "word",
+    "sourceId": "coverage_301",
+    "textPt": "biblioteca",
+    "textEn": "library",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_301.wav",
+      "female": "audio/ptbr/female/coverage_301.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_301.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_301.wav"
+    }
+  },
+  "coverage_302": {
+    "type": "word",
+    "sourceId": "coverage_302",
+    "textPt": "preferida",
+    "textEn": "favorite (fem.)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_302.wav",
+      "female": "audio/ptbr/female/coverage_302.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_302.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_302.wav"
+    }
+  },
+  "coverage_303": {
+    "type": "word",
+    "sourceId": "coverage_303",
+    "textPt": "Administração",
+    "textEn": "business administration",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_303.wav",
+      "female": "audio/ptbr/female/coverage_303.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_303.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_303.wav"
+    }
+  },
+  "coverage_304": {
+    "type": "word",
+    "sourceId": "coverage_304",
+    "textPt": "semestre",
+    "textEn": "semester",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_304.wav",
+      "female": "audio/ptbr/female/coverage_304.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_304.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_304.wav"
+    }
+  },
+  "coverage_305": {
+    "type": "word",
+    "sourceId": "coverage_305",
+    "textPt": "faltei",
+    "textEn": "I missed / I was absent",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_305.wav",
+      "female": "audio/ptbr/female/coverage_305.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_305.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_305.wav"
+    }
+  },
+  "coverage_306": {
+    "type": "word",
+    "sourceId": "coverage_306",
+    "textPt": "TCC",
+    "textEn": "thesis / capstone project",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_306.wav",
+      "female": "audio/ptbr/female/coverage_306.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_306.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_306.wav"
+    }
+  },
+  "coverage_307": {
+    "type": "word",
+    "sourceId": "coverage_307",
+    "textPt": "notas",
+    "textEn": "grades",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_307.wav",
+      "female": "audio/ptbr/female/coverage_307.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_307.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_307.wav"
+    }
+  },
+  "coverage_308": {
+    "type": "word",
+    "sourceId": "coverage_308",
+    "textPt": "saíram",
+    "textEn": "came out / were released",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_308.wav",
+      "female": "audio/ptbr/female/coverage_308.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_308.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_308.wav"
+    }
+  },
+  "coverage_309": {
+    "type": "word",
+    "sourceId": "coverage_309",
+    "textPt": "difícil",
+    "textEn": "difficult",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_309.wav",
+      "female": "audio/ptbr/female/coverage_309.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_309.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_309.wav"
+    }
+  },
+  "coverage_310": {
+    "type": "word",
+    "sourceId": "coverage_310",
+    "textPt": "conciliar",
+    "textEn": "to balance / to reconcile",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_310.wav",
+      "female": "audio/ptbr/female/coverage_310.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_310.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_310.wav"
+    }
+  },
+  "coverage_311": {
+    "type": "word",
+    "sourceId": "coverage_311",
+    "textPt": "marketing",
+    "textEn": "marketing",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_311.wav",
+      "female": "audio/ptbr/female/coverage_311.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_311.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_311.wav"
+    }
+  },
+  "coverage_312": {
+    "type": "word",
+    "sourceId": "coverage_312",
+    "textPt": "digital",
+    "textEn": "digital",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_312.wav",
+      "female": "audio/ptbr/female/coverage_312.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_312.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_312.wav"
+    }
+  },
+  "coverage_313": {
+    "type": "word",
+    "sourceId": "coverage_313",
+    "textPt": "consegui",
+    "textEn": "I got / I managed",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_313.wav",
+      "female": "audio/ptbr/female/coverage_313.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_313.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_313.wav"
+    }
+  },
+  "coverage_314": {
+    "type": "word",
+    "sourceId": "coverage_314",
+    "textPt": "software",
+    "textEn": "software",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_314.wav",
+      "female": "audio/ptbr/female/coverage_314.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_314.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_314.wav"
+    }
+  },
+  "coverage_315": {
+    "type": "word",
+    "sourceId": "coverage_315",
+    "textPt": "computador",
+    "textEn": "computer",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_315.wav",
+      "female": "audio/ptbr/female/coverage_315.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_315.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_315.wav"
+    }
+  },
+  "coverage_316": {
+    "type": "word",
+    "sourceId": "coverage_316",
+    "textPt": "travou",
+    "textEn": "froze / crashed",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_316.wav",
+      "female": "audio/ptbr/female/coverage_316.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_316.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_316.wav"
+    }
+  },
+  "coverage_317": {
+    "type": "word",
+    "sourceId": "coverage_317",
+    "textPt": "estuda",
+    "textEn": "studies",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_317.wav",
+      "female": "audio/ptbr/female/coverage_317.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_317.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_317.wav"
+    }
+  },
+  "coverage_318": {
+    "type": "word",
+    "sourceId": "coverage_318",
+    "textPt": "focar",
+    "textEn": "to focus",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_318.wav",
+      "female": "audio/ptbr/female/coverage_318.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_318.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_318.wav"
+    }
+  },
+  "coverage_319": {
+    "type": "word",
+    "sourceId": "coverage_319",
+    "textPt": "apertado",
+    "textEn": "tight",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_319.wav",
+      "female": "audio/ptbr/female/coverage_319.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_319.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_319.wav"
+    }
+  },
+  "coverage_320": {
+    "type": "word",
+    "sourceId": "coverage_320",
+    "textPt": "formar",
+    "textEn": "to graduate / to form",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_320.wav",
+      "female": "audio/ptbr/female/coverage_320.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_320.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_320.wav"
+    }
+  },
+  "coverage_321": {
+    "type": "word",
+    "sourceId": "coverage_321",
+    "textPt": "começa",
+    "textEn": "starts",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_321.wav",
+      "female": "audio/ptbr/female/coverage_321.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_321.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_321.wav"
+    }
+  },
+  "coverage_322": {
+    "type": "word",
+    "sourceId": "coverage_322",
+    "textPt": "folga",
+    "textEn": "day off",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_322.wav",
+      "female": "audio/ptbr/female/coverage_322.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_322.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_322.wav"
+    }
+  },
+  "coverage_323": {
+    "type": "word",
+    "sourceId": "coverage_323",
+    "textPt": "perder",
+    "textEn": "to lose / to miss",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_323.wav",
+      "female": "audio/ptbr/female/coverage_323.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_323.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_323.wav"
+    }
+  },
+  "coverage_324": {
+    "type": "word",
+    "sourceId": "coverage_324",
+    "textPt": "férias",
+    "textEn": "vacation",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_324.wav",
+      "female": "audio/ptbr/female/coverage_324.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_324.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_324.wav"
+    }
+  },
+  "coverage_325": {
+    "type": "word",
+    "sourceId": "coverage_325",
+    "textPt": "ambiente",
+    "textEn": "environment",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_325.wav",
+      "female": "audio/ptbr/female/coverage_325.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_325.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_325.wav"
+    }
+  },
+  "coverage_326": {
+    "type": "word",
+    "sourceId": "coverage_326",
+    "textPt": "passei",
+    "textEn": "I spent / I passed",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_326.wav",
+      "female": "audio/ptbr/female/coverage_326.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_326.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_326.wav"
+    }
+  },
+  "coverage_327": {
+    "type": "word",
+    "sourceId": "coverage_327",
+    "textPt": "carga",
+    "textEn": "load / workload",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_327.wav",
+      "female": "audio/ptbr/female/coverage_327.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_327.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_327.wav"
+    }
+  },
+  "coverage_328": {
+    "type": "word",
+    "sourceId": "coverage_328",
+    "textPt": "horária",
+    "textEn": "hourly / schedule-related",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_328.wav",
+      "female": "audio/ptbr/female/coverage_328.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_328.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_328.wav"
+    }
+  },
+  "coverage_329": {
+    "type": "word",
+    "sourceId": "coverage_329",
+    "textPt": "temos",
+    "textEn": "we have",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_329.wav",
+      "female": "audio/ptbr/female/coverage_329.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_329.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_329.wav"
+    }
+  },
+  "coverage_330": {
+    "type": "word",
+    "sourceId": "coverage_330",
+    "textPt": "curto",
+    "textEn": "short",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_330.wav",
+      "female": "audio/ptbr/female/coverage_330.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_330.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_330.wav"
+    }
+  },
+  "coverage_331": {
+    "type": "word",
+    "sourceId": "coverage_331",
+    "textPt": "precisamos",
+    "textEn": "we need",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_331.wav",
+      "female": "audio/ptbr/female/coverage_331.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_331.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_331.wav"
+    }
+  },
+  "coverage_332": {
+    "type": "word",
+    "sourceId": "coverage_332",
+    "textPt": "beleza",
+    "textEn": "okay / beauty",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_332.wav",
+      "female": "audio/ptbr/female/coverage_332.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_332.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_332.wav"
+    }
+  },
+  "coverage_333": {
+    "type": "word",
+    "sourceId": "coverage_333",
+    "textPt": "hein",
+    "textEn": "huh / right",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_333.wav",
+      "female": "audio/ptbr/female/coverage_333.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_333.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_333.wav"
+    }
+  },
+  "coverage_334": {
+    "type": "word",
+    "sourceId": "coverage_334",
+    "textPt": "tranquilo",
+    "textEn": "calm / all good",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_334.wav",
+      "female": "audio/ptbr/female/coverage_334.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_334.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_334.wav"
+    }
+  },
+  "coverage_335": {
+    "type": "word",
+    "sourceId": "coverage_335",
+    "textPt": "calor",
+    "textEn": "heat",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_335.wav",
+      "female": "audio/ptbr/female/coverage_335.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_335.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_335.wav"
+    }
+  },
+  "coverage_336": {
+    "type": "word",
+    "sourceId": "coverage_336",
+    "textPt": "chover",
+    "textEn": "to rain",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_336.wav",
+      "female": "audio/ptbr/female/coverage_336.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_336.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_336.wav"
+    }
+  },
+  "coverage_337": {
+    "type": "word",
+    "sourceId": "coverage_337",
+    "textPt": "melhorou",
+    "textEn": "improved / got better",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_337.wav",
+      "female": "audio/ptbr/female/coverage_337.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_337.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_337.wav"
+    }
+  },
+  "coverage_338": {
+    "type": "word",
+    "sourceId": "coverage_338",
+    "textPt": "moro",
+    "textEn": "I live",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_338.wav",
+      "female": "audio/ptbr/female/coverage_338.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_338.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_338.wav"
+    }
+  },
+  "coverage_339": {
+    "type": "word",
+    "sourceId": "coverage_339",
+    "textPt": "plano",
+    "textEn": "plan",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_339.wav",
+      "female": "audio/ptbr/female/coverage_339.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_339.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_339.wav"
+    }
+  },
+  "coverage_340": {
+    "type": "word",
+    "sourceId": "coverage_340",
+    "textPt": "qualquer",
+    "textEn": "any",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_340.wav",
+      "female": "audio/ptbr/female/coverage_340.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_340.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_340.wav"
+    }
+  },
+  "coverage_341": {
+    "type": "word",
+    "sourceId": "coverage_341",
+    "textPt": "livre",
+    "textEn": "free / available",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_341.wav",
+      "female": "audio/ptbr/female/coverage_341.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_341.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_341.wav"
+    }
+  },
+  "coverage_342": {
+    "type": "word",
+    "sourceId": "coverage_342",
+    "textPt": "assistiu",
+    "textEn": "watched",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_342.wav",
+      "female": "audio/ptbr/female/coverage_342.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_342.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_342.wav"
+    }
+  },
+  "coverage_343": {
+    "type": "word",
+    "sourceId": "coverage_343",
+    "textPt": "tipo",
+    "textEn": "type / kind",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_343.wav",
+      "female": "audio/ptbr/female/coverage_343.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_343.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_343.wav"
+    }
+  },
+  "coverage_344": {
+    "type": "word",
+    "sourceId": "coverage_344",
+    "textPt": "curte",
+    "textEn": "likes / is into",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_344.wav",
+      "female": "audio/ptbr/female/coverage_344.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_344.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_344.wav"
+    }
+  },
+  "coverage_345": {
+    "type": "word",
+    "sourceId": "coverage_345",
+    "textPt": "torce",
+    "textEn": "roots / cheers",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_345.wav",
+      "female": "audio/ptbr/female/coverage_345.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_345.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_345.wav"
+    }
+  },
+  "coverage_346": {
+    "type": "word",
+    "sourceId": "coverage_346",
+    "textPt": "time",
+    "textEn": "team",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_346.wav",
+      "female": "audio/ptbr/female/coverage_346.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_346.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_346.wav"
+    }
+  },
+  "coverage_347": {
+    "type": "word",
+    "sourceId": "coverage_347",
+    "textPt": "bebida",
+    "textEn": "drink",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_347.wav",
+      "female": "audio/ptbr/female/coverage_347.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_347.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_347.wav"
+    }
+  },
+  "coverage_348": {
+    "type": "word",
+    "sourceId": "coverage_348",
+    "textPt": "demorei",
+    "textEn": "I took a while",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_348.wav",
+      "female": "audio/ptbr/female/coverage_348.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_348.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_348.wav"
+    }
+  },
+  "coverage_349": {
+    "type": "word",
+    "sourceId": "coverage_349",
+    "textPt": "gostei",
+    "textEn": "I liked",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_349.wav",
+      "female": "audio/ptbr/female/coverage_349.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_349.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_349.wav"
+    }
+  },
+  "coverage_350": {
+    "type": "word",
+    "sourceId": "coverage_350",
+    "textPt": "falou",
+    "textEn": "said / spoke",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_350.wav",
+      "female": "audio/ptbr/female/coverage_350.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_350.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_350.wav"
+    }
+  },
+  "coverage_351": {
+    "type": "word",
+    "sourceId": "coverage_351",
+    "textPt": "pois",
+    "textEn": "well / then / since",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_351.wav",
+      "female": "audio/ptbr/female/coverage_351.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_351.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_351.wav"
+    }
+  },
+  "coverage_352": {
+    "type": "word",
+    "sourceId": "coverage_352",
+    "textPt": "nisso",
+    "textEn": "by the way / in that",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_352.wav",
+      "female": "audio/ptbr/female/coverage_352.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_352.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_352.wav"
+    }
+  },
+  "coverage_353": {
+    "type": "word",
+    "sourceId": "coverage_353",
+    "textPt": "tenha",
+    "textEn": "have (subjunctive)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_353.wav",
+      "female": "audio/ptbr/female/coverage_353.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_353.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_353.wav"
+    }
+  },
+  "coverage_354": {
+    "type": "word",
+    "sourceId": "coverage_354",
+    "textPt": "tiver",
+    "textEn": "have (future subjunctive)",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_354.wav",
+      "female": "audio/ptbr/female/coverage_354.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_354.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_354.wav"
+    }
+  },
+  "coverage_355": {
+    "type": "word",
+    "sourceId": "coverage_355",
+    "textPt": "tempinho",
+    "textEn": "little time",
+    "ptbr": {
+      "male": "audio/ptbr/male/coverage_355.wav",
+      "female": "audio/ptbr/female/coverage_355.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/words/ptbr_male/coverage_355.wav",
+      "ptbr_female": "/audio/words/ptbr_female/coverage_355.wav"
+    }
+  },
   "gemini_food_001": {
     "type": "sentence",
     "sourceId": "gemini_food_001",

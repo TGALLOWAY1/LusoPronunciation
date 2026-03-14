@@ -6,6 +6,7 @@ import generationPipelineConfig from '../config/generationPipeline.config';
 import type { AudioIndex, SentencesData, WordsData, RawSentence, RawWord } from '../src/lib/types';
 import type { EnrichedSentence, EnrichedWord } from '../src/types/contentGeneration';
 import { getPhonemeById } from '../src/lib/phonemeMetadata';
+import { COVERAGE_RAW_WORDS } from '../src/pipeline/coverageWords';
 
 const DIFFICULTIES = [1, 2, 3, 4, 5] as const;
 
@@ -99,12 +100,14 @@ function collectEmptyBuckets(rows: Map<string, BucketRow>): Array<{ category: st
 }
 
 function extractRawWords(data: WordsData): RawWord[] {
-  return data.categories.flatMap(category =>
+  const words = data.categories.flatMap(category =>
     (category.words || []).map(word => ({
       ...word,
       category: category.id,
     }))
   );
+
+  return [...words, ...COVERAGE_RAW_WORDS];
 }
 
 function extractRawSentences(data: SentencesData): RawSentence[] {

@@ -21,6 +21,7 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import type { RawWord, RawSentence, WordsData, SentencesData } from '../lib/types';
 import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
+import { COVERAGE_RAW_WORDS } from './coverageWords';
 
 /**
  * Normalizes text to lowercase for consistent matching.
@@ -65,6 +66,8 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
       });
     }
   }
+
+  rawWords.push(...COVERAGE_RAW_WORDS);
   
   // Normalize: deduplicate by PT text (case-insensitive comparison)
   // Keep the first occurrence
@@ -78,8 +81,9 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
       seen.set(key, word);
       normalized.push(word);
     } else {
-      // Keep first occurrence
-      continue;
+      const existing = seen.get(key)!;
+      const mergedForms = [...new Set([...(existing.forms || []), ...(word.forms || [])])];
+      existing.forms = mergedForms.length > 0 ? mergedForms : undefined;
     }
   }
   

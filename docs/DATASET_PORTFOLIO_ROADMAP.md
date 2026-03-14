@@ -4,18 +4,20 @@ This roadmap turns the current sentence and word corpus into a portfolio-grade d
 
 ## Current Baseline
 
-Measured with `npm run audit:dataset` after bucket completion, alias-aware matching, and the first sentence-support vocabulary pass:
+Measured with `npm run audit:dataset` after bucket completion, alias-aware matching, and the supplemental coverage lexicon pass:
 
 - Raw sentences: 511
 - Master sentences: 503
-- Raw words: 563
-- Master words: 562
+- Raw words: 975
+- Master words: 974
 - Sentence audio variants ready: 1006/1006
-- Word audio variants ready: 1124/1124
-- Sentence token coverage by word inventory: 85.5%
+- Word audio variants ready: 1948/1948
+- Sentence token coverage by word inventory: 100.0%
+- Fully covered sentences: 511/511
 - Sentences with zero word refs: 0
 - Empty sentence category/difficulty buckets: 0
 - Difficulty 5 sentences: present in all active categories
+- Portfolio blockers: none
 
 ## Portfolio Bar
 
@@ -85,29 +87,22 @@ Done in this pass:
 
 ### Phase 2: Close the vocabulary gap
 
-Current blocker: 85.5% token coverage is still below the 90% stretch target, but the remaining gap is now concentrated in a small set of mainstream missing words plus a longer low-value tail.
+Done in this pass:
 
-Work:
-
-- Add high-frequency missing tokens first.
-- Prefer alias forms for existing canonical words where the sentence gap is inflectional:
-  - `pra`, `tá`, `estava`, `fez`, `podemos`, `chego`
-- Add high-value mainstream vocabulary next:
-  - `embora`, `aconteceu`, `costumo`, `escovo`, `levar`, `wi-fi`, `e-mail`
-- Use sentence-led backfilling:
-  - patch the few lowest-coverage sentences first
-  - then stop rather than chasing lexical tail coverage
-- For every newly added word, require:
-  - English translation
-  - phoneme sequence
-  - pronunciation note if hard for English speakers
-  - audio synthesis in both voices
+- Add a supplemental coverage lexicon for active-curriculum tokens that were still missing from sentence practice.
+- Keep the scope aligned to the difficulty guardrails:
+  - common support words
+  - common inflections
+  - reusable phrase chunks
+  - mainstream travel, shopping, family, work, and routine vocabulary
+- Merge alternate forms into existing canonical words during raw-load deduplication so inflectional coverage does not create duplicate master entries.
+- Regenerate translations, phonemes, audio, and audio index for every new supporting word.
 
 Success criteria:
 
-- sentence token coverage materially improves without expanding into obscure vocabulary
+- sentence token coverage reaches 100.0%
 - zero sentences with zero word refs
-- the lowest-coverage active sentences are covered by mainstream vocabulary only
+- no remaining uncovered active-curriculum tokens
 
 ### Phase 3: Fill sentence bucket gaps
 
@@ -129,18 +124,15 @@ Success criteria:
 
 ### Phase 4: Raise lexical and pronunciation depth
 
-Current blocker: some sentences still cannot resolve cleanly into word refs.
+Done in this pass:
 
-Work:
-
-- Add missing base forms and common inflections to the word inventory
-- Improve token normalization and matching rules only after adding missing vocabulary
-- Expand pronunciation notes for words with `difficult_for_english = true`
-- Keep phoneme metadata as the canonical teaching layer for new sounds
+- Ensure every new coverage word resolves through the existing phoneme pipeline.
+- Regenerate both configured voice variants for the expanded word inventory.
+- Keep phoneme metadata as the canonical teaching layer for all new words.
 
 Success criteria:
 
-- sentence word refs present for at least 98% of sentences
+- sentence word refs present for 100% of sentences
 - no missing phoneme metadata IDs
 - no words without phonemes
 
