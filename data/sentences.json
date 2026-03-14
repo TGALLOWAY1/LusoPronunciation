@@ -306,6 +306,18 @@
           "pt": "A feijoada de sábado é tradição.",
           "en": "Saturday's feijoada is a tradition.",
           "difficulty": 2
+        },
+        {
+          "id": "curated_food_051",
+          "pt": "Se eu pedir a sobremesa agora, vocês conseguem trazer o café junto?",
+          "en": "If I order dessert now, can you bring the coffee at the same time?",
+          "difficulty": 4
+        },
+        {
+          "id": "curated_food_052",
+          "pt": "Embora eu goste muito daqui, só volto se o prato vier mais quente e o atendimento for mais rápido.",
+          "en": "Although I like this place a lot, I will only come back if the dish arrives hotter and the service is faster.",
+          "difficulty": 5
         }
       ]
     },
@@ -613,6 +625,12 @@
           "pt": "Nós vamos ficar por uma semana.",
           "en": "We are going to stay for a week.",
           "difficulty": 3
+        },
+        {
+          "id": "curated_travel_051",
+          "pt": "Se o voo mudar de novo, vou precisar cancelar a reserva e pedir outra opção ainda hoje.",
+          "en": "If the flight changes again, I will need to cancel the reservation and ask for another option today.",
+          "difficulty": 5
         }
       ]
     },
@@ -631,7 +649,7 @@
           "id": "gemini_family_friends_002",
           "pt": "Você tem irmãos?",
           "en": "Do you have siblings?",
-          "difficulty": 3
+          "difficulty": 1
         },
         {
           "id": "gemini_family_friends_003",
@@ -920,6 +938,12 @@
           "pt": "O almoço de domingo na casa da minha avó é uma tradição.",
           "en": "Sunday lunch at my grandma's house is a tradition.",
           "difficulty": 4
+        },
+        {
+          "id": "curated_family_friends_051",
+          "pt": "Mesmo quando cada um está ocupado, a gente faz questão de jantar junto para conversar com calma.",
+          "en": "Even when everyone is busy, we make a point of having dinner together to talk calmly.",
+          "difficulty": 5
         }
       ]
     },
@@ -1220,13 +1244,19 @@
           "id": "gemini_daily_routine_049",
           "pt": "Eu ouço música enquanto trabalho.",
           "en": "I listen to music while I work.",
-          "difficulty": 2
+          "difficulty": 1
         },
         {
           "id": "gemini_daily_routine_050",
           "pt": "Eu organizo minha agenda para a semana.",
           "en": "I organize my schedule for the week.",
           "difficulty": 3
+        },
+        {
+          "id": "curated_daily_routine_051",
+          "pt": "Se eu não organizar a manhã na noite anterior, acabo me atrasando e começo o dia sem foco.",
+          "en": "If I do not organize the morning the night before, I end up running late and starting the day without focus.",
+          "difficulty": 5
         }
       ]
     },
@@ -1534,6 +1564,12 @@
           "pt": "Hoje estou me sentindo otimista.",
           "en": "Today I'm feeling optimistic.",
           "difficulty": 2
+        },
+        {
+          "id": "curated_feelings_051",
+          "pt": "Fiquei aliviado quando percebi que o problema, embora sério, ainda tinha solução.",
+          "en": "I felt relieved when I realized that the problem, although serious, still had a solution.",
+          "difficulty": 5
         }
       ]
     },
@@ -1841,6 +1877,12 @@
           "pt": "Você sabe como consertar isso?",
           "en": "Do you know how to fix this?",
           "difficulty": 3
+        },
+        {
+          "id": "curated_questions_051",
+          "pt": "Você poderia me explicar com mais calma por que esse documento precisa ser enviado hoje?",
+          "en": "Could you explain more calmly why this document needs to be sent today?",
+          "difficulty": 5
         }
       ]
     },
@@ -2069,7 +2111,7 @@
           "id": "gemini_shopping_037",
           "pt": "Tem desconto para pagamento à vista?",
           "en": "Is there a discount for paying upfront in cash?",
-          "difficulty": 3
+          "difficulty": 4
         },
         {
           "id": "gemini_shopping_038",
@@ -2148,6 +2190,12 @@
           "pt": "A que horas a loja fecha?",
           "en": "What time does the store close?",
           "difficulty": 3
+        },
+        {
+          "id": "curated_shopping_051",
+          "pt": "Antes de fechar a compra, quero confirmar se a garantia cobre troca por defeito de fabricação.",
+          "en": "Before completing the purchase, I want to confirm whether the warranty covers an exchange for manufacturing defects.",
+          "difficulty": 5
         }
       ]
     },
@@ -2455,6 +2503,12 @@
           "pt": "Por favor, me avise quando for a minha parada.",
           "en": "Please, let me know when it's my stop.",
           "difficulty": 4
+        },
+        {
+          "id": "curated_directions_051",
+          "pt": "Depois que você passar pelo museu, vire à esquerda na rua mais estreita e siga até o fim.",
+          "en": "After you pass the museum, turn left on the narrowest street and continue to the end.",
+          "difficulty": 5
         }
       ]
     },
@@ -2743,7 +2797,7 @@
           "id": "gemini_work_study_047",
           "pt": "Onde você trabalha?",
           "en": "Where do you work?",
-          "difficulty": 3
+          "difficulty": 1
         },
         {
           "id": "gemini_work_study_048",
@@ -2762,6 +2816,12 @@
           "pt": "Temos que trabalhar em equipe para terminar a tempo.",
           "en": "We have to work as a team to finish on time.",
           "difficulty": 4
+        },
+        {
+          "id": "curated_work_study_051",
+          "pt": "Embora o prazo esteja curto, precisamos revisar os dados com cuidado antes da apresentação final.",
+          "en": "Although the deadline is short, we need to review the data carefully before the final presentation.",
+          "difficulty": 5
         }
       ]
     },
@@ -3069,6 +3129,12 @@
           "pt": "Até a próxima!",
           "en": "Until next time!",
           "difficulty": 1
+        },
+        {
+          "id": "curated_small_talk_051",
+          "pt": "Se você tiver um tempinho mais tarde, me conta com calma como foi a viagem.",
+          "en": "If you have a little time later, tell me calmly how the trip went.",
+          "difficulty": 5
         }
       ]
     }

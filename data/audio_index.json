@@ -7349,6 +7349,34 @@
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_food_050.wav"
     }
   },
+  "curated_food_051": {
+    "type": "sentence",
+    "sourceId": "curated_food_051",
+    "textPt": "Se eu pedir a sobremesa agora, vocês conseguem trazer o café junto?",
+    "textEn": "If I order dessert now, can you bring the coffee at the same time?",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_food_051.wav",
+      "female": "audio/ptbr/female/curated_food_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_food_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_food_051.wav"
+    }
+  },
+  "curated_food_052": {
+    "type": "sentence",
+    "sourceId": "curated_food_052",
+    "textPt": "Embora eu goste muito daqui, só volto se o prato vier mais quente e o atendimento for mais rápido.",
+    "textEn": "Although I like this place a lot, I will only come back if the dish arrives hotter and the service is faster.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_food_052.wav",
+      "female": "audio/ptbr/female/curated_food_052.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_food_052.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_food_052.wav"
+    }
+  },
   "gemini_travel_001": {
     "type": "sentence",
     "sourceId": "gemini_travel_001",
@@ -8019,6 +8047,20 @@
     "voices": {
       "ptbr_male": "/audio/sentences/ptbr_male/gemini_travel_050.wav",
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_travel_050.wav"
+    }
+  },
+  "curated_travel_051": {
+    "type": "sentence",
+    "sourceId": "curated_travel_051",
+    "textPt": "Se o voo mudar de novo, vou precisar cancelar a reserva e pedir outra opção ainda hoje.",
+    "textEn": "If the flight changes again, I will need to cancel the reservation and ask for another option today.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_travel_051.wav",
+      "female": "audio/ptbr/female/curated_travel_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_travel_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_travel_051.wav"
     }
   },
   "gemini_family_friends_001": {
@@ -8721,6 +8763,20 @@
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_family_friends_050.wav"
     }
   },
+  "curated_family_friends_051": {
+    "type": "sentence",
+    "sourceId": "curated_family_friends_051",
+    "textPt": "Mesmo quando cada um está ocupado, a gente faz questão de jantar junto para conversar com calma.",
+    "textEn": "Even when everyone is busy, we make a point of having dinner together to talk calmly.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_family_friends_051.wav",
+      "female": "audio/ptbr/female/curated_family_friends_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_family_friends_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_family_friends_051.wav"
+    }
+  },
   "gemini_daily_routine_001": {
     "type": "sentence",
     "sourceId": "gemini_daily_routine_001",
@@ -9419,6 +9475,20 @@
     "voices": {
       "ptbr_male": "/audio/sentences/ptbr_male/gemini_daily_routine_050.wav",
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_daily_routine_050.wav"
+    }
+  },
+  "curated_daily_routine_051": {
+    "type": "sentence",
+    "sourceId": "curated_daily_routine_051",
+    "textPt": "Se eu não organizar a manhã na noite anterior, acabo me atrasando e começo o dia sem foco.",
+    "textEn": "If I do not organize the morning the night before, I end up running late and starting the day without focus.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_daily_routine_051.wav",
+      "female": "audio/ptbr/female/curated_daily_routine_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_daily_routine_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_daily_routine_051.wav"
     }
   },
   "gemini_feelings_001": {
@@ -10121,6 +10191,20 @@
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_feelings_050.wav"
     }
   },
+  "curated_feelings_051": {
+    "type": "sentence",
+    "sourceId": "curated_feelings_051",
+    "textPt": "Fiquei aliviado quando percebi que o problema, embora sério, ainda tinha solução.",
+    "textEn": "I felt relieved when I realized that the problem, although serious, still had a solution.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_feelings_051.wav",
+      "female": "audio/ptbr/female/curated_feelings_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_feelings_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_feelings_051.wav"
+    }
+  },
   "gemini_questions_001": {
     "type": "sentence",
     "sourceId": "gemini_questions_001",
@@ -10807,6 +10891,20 @@
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_questions_050.wav"
     }
   },
+  "curated_questions_051": {
+    "type": "sentence",
+    "sourceId": "curated_questions_051",
+    "textPt": "Você poderia me explicar com mais calma por que esse documento precisa ser enviado hoje?",
+    "textEn": "Could you explain more calmly why this document needs to be sent today?",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_questions_051.wav",
+      "female": "audio/ptbr/female/curated_questions_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_questions_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_questions_051.wav"
+    }
+  },
   "gemini_shopping_004": {
     "type": "sentence",
     "sourceId": "gemini_shopping_004",
@@ -11449,6 +11547,20 @@
     "voices": {
       "ptbr_male": "/audio/sentences/ptbr_male/gemini_shopping_050.wav",
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_shopping_050.wav"
+    }
+  },
+  "curated_shopping_051": {
+    "type": "sentence",
+    "sourceId": "curated_shopping_051",
+    "textPt": "Antes de fechar a compra, quero confirmar se a garantia cobre troca por defeito de fabricação.",
+    "textEn": "Before completing the purchase, I want to confirm whether the warranty covers an exchange for manufacturing defects.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_shopping_051.wav",
+      "female": "audio/ptbr/female/curated_shopping_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_shopping_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_shopping_051.wav"
     }
   },
   "gemini_directions_002": {
@@ -12135,6 +12247,20 @@
     "voices": {
       "ptbr_male": "/audio/sentences/ptbr_male/gemini_directions_050.wav",
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_directions_050.wav"
+    }
+  },
+  "curated_directions_051": {
+    "type": "sentence",
+    "sourceId": "curated_directions_051",
+    "textPt": "Depois que você passar pelo museu, vire à esquerda na rua mais estreita e siga até o fim.",
+    "textEn": "After you pass the museum, turn left on the narrowest street and continue to the end.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_directions_051.wav",
+      "female": "audio/ptbr/female/curated_directions_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_directions_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_directions_051.wav"
     }
   },
   "gemini_work_study_001": {
@@ -12837,6 +12963,20 @@
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_work_study_050.wav"
     }
   },
+  "curated_work_study_051": {
+    "type": "sentence",
+    "sourceId": "curated_work_study_051",
+    "textPt": "Embora o prazo esteja curto, precisamos revisar os dados com cuidado antes da apresentação final.",
+    "textEn": "Although the deadline is short, we need to review the data carefully before the final presentation.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_work_study_051.wav",
+      "female": "audio/ptbr/female/curated_work_study_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_work_study_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_work_study_051.wav"
+    }
+  },
   "gemini_small_talk_001": {
     "type": "sentence",
     "sourceId": "gemini_small_talk_001",
@@ -13535,6 +13675,20 @@
     "voices": {
       "ptbr_male": "/audio/sentences/ptbr_male/gemini_small_talk_050.wav",
       "ptbr_female": "/audio/sentences/ptbr_female/gemini_small_talk_050.wav"
+    }
+  },
+  "curated_small_talk_051": {
+    "type": "sentence",
+    "sourceId": "curated_small_talk_051",
+    "textPt": "Se você tiver um tempinho mais tarde, me conta com calma como foi a viagem.",
+    "textEn": "If you have a little time later, tell me calmly how the trip went.",
+    "ptbr": {
+      "male": "audio/ptbr/male/curated_small_talk_051.wav",
+      "female": "audio/ptbr/female/curated_small_talk_051.wav"
+    },
+    "voices": {
+      "ptbr_male": "/audio/sentences/ptbr_male/curated_small_talk_051.wav",
+      "ptbr_female": "/audio/sentences/ptbr_female/curated_small_talk_051.wav"
     }
   }
 }

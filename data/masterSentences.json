@@ -1323,6 +1323,110 @@
     ]
   },
   {
+    "id": "curated_food_051",
+    "text": "Se eu pedir a sobremesa agora, vocês conseguem trazer o café junto?",
+    "normalizedText": "se eu pedir a sobremesa agora, vocês conseguem trazer o café junto?",
+    "en": "If I order dessert now, can you bring the coffee at the same time?",
+    "category": "food",
+    "difficulty": 4,
+    "hardForEnglish": false,
+    "tags": [
+      "high_syllable_count"
+    ],
+    "cefr": "B1",
+    "difficultyScore": 51,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "food_word_021",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "time_004",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_206",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_193",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "food_word_005",
+        "tokenIndex": 10
+      }
+    ]
+  },
+  {
+    "id": "curated_food_052",
+    "text": "Embora eu goste muito daqui, só volto se o prato vier mais quente e o atendimento for mais rápido.",
+    "normalizedText": "embora eu goste muito daqui, só volto se o prato vier mais quente e o atendimento for mais rápido.",
+    "en": "Although I like this place a lot, I will only come back if the dish arrives hotter and the service is faster.",
+    "category": "food",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 55,
+    "wordRefs": [
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_121",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_036",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_181",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "food_word_025",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "misc_109",
+        "tokenIndex": 11
+      },
+      {
+        "wordId": "adj_012",
+        "tokenIndex": 12
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 13
+      },
+      {
+        "wordId": "misc_109",
+        "tokenIndex": 17
+      }
+    ]
+  },
+  {
     "id": "gemini_travel_001",
     "text": "Eu gostaria de fazer uma reserva.",
     "normalizedText": "eu gostaria de fazer uma reserva.",
@@ -2811,6 +2915,59 @@
     ]
   },
   {
+    "id": "curated_travel_051",
+    "text": "Se o voo mudar de novo, vou precisar cancelar a reserva e pedir outra opção ainda hoje.",
+    "normalizedText": "se o voo mudar de novo, vou precisar cancelar a reserva e pedir outra opção ainda hoje.",
+    "en": "If the flight changes again, I will need to cancel the reservation and ask for another option today.",
+    "category": "travel",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 85,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "adj_006",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_208",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "verb_018",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "travel_word_010",
+        "tokenIndex": 10
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 11
+      },
+      {
+        "wordId": "misc_131",
+        "tokenIndex": 13
+      },
+      {
+        "wordId": "time_001",
+        "tokenIndex": 16
+      }
+    ]
+  },
+  {
     "id": "gemini_family_friends_001",
     "text": "Minha mãe se chama Ana.",
     "normalizedText": "minha mãe se chama ana.",
@@ -2844,7 +3001,7 @@
     "normalizedText": "você tem irmãos?",
     "en": "Do you have siblings?",
     "category": "family_friends",
-    "difficulty": 3,
+    "difficulty": 1,
     "hardForEnglish": true,
     "tags": [
       "has_nasal"
@@ -4534,6 +4691,55 @@
     ]
   },
   {
+    "id": "curated_family_friends_051",
+    "text": "Mesmo quando cada um está ocupado, a gente faz questão de jantar junto para conversar com calma.",
+    "normalizedText": "mesmo quando cada um está ocupado, a gente faz questão de jantar junto para conversar com calma.",
+    "en": "Even when everyone is busy, we make a point of having dinner together to talk calmly.",
+    "category": "family_friends",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 85,
+    "wordRefs": [
+      {
+        "wordId": "misc_159",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "num_001",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_074",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_089",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "food_word_019",
+        "tokenIndex": 11
+      },
+      {
+        "wordId": "misc_137",
+        "tokenIndex": 13
+      },
+      {
+        "wordId": "misc_030",
+        "tokenIndex": 14
+      }
+    ]
+  },
+  {
     "id": "gemini_daily_routine_001",
     "text": "Eu acordo às sete horas todos os dias.",
     "normalizedText": "eu acordo às sete horas todos os dias.",
@@ -6167,7 +6373,7 @@
     "normalizedText": "eu ouço música enquanto trabalho.",
     "en": "I listen to music while I work.",
     "category": "daily_routine",
-    "difficulty": 2,
+    "difficulty": 1,
     "hardForEnglish": true,
     "tags": [
       "has_lh"
@@ -6216,6 +6422,59 @@
       {
         "wordId": "time_005",
         "tokenIndex": 6
+      }
+    ]
+  },
+  {
+    "id": "curated_daily_routine_051",
+    "text": "Se eu não organizar a manhã na noite anterior, acabo me atrasando e começo o dia sem foco.",
+    "normalizedText": "se eu não organizar a manhã na noite anterior, acabo me atrasando e começo o dia sem foco.",
+    "en": "If I do not organize the morning the night before, I end up running late and starting the day without focus.",
+    "category": "daily_routine",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 85,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_075",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "basic_011",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "daily_word_029",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_122",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_111",
+        "tokenIndex": 10
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 12
+      },
+      {
+        "wordId": "misc_171",
+        "tokenIndex": 16
       }
     ]
   },
@@ -7568,6 +7827,35 @@
       {
         "wordId": "misc_172",
         "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "curated_feelings_051",
+    "text": "Fiquei aliviado quando percebi que o problema, embora sério, ainda tinha solução.",
+    "normalizedText": "fiquei aliviado quando percebi que o problema, embora sério, ainda tinha solução.",
+    "en": "I felt relieved when I realized that the problem, although serious, still had a solution.",
+    "category": "feelings",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 81,
+    "wordRefs": [
+      {
+        "wordId": "misc_228",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_159",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_161",
+        "tokenIndex": 4
       }
     ]
   },
@@ -9028,6 +9316,62 @@
     ]
   },
   {
+    "id": "curated_questions_051",
+    "text": "Você poderia me explicar com mais calma por que esse documento precisa ser enviado hoje?",
+    "normalizedText": "você poderia me explicar com mais calma por que esse documento precisa ser enviado hoje?",
+    "en": "Could you explain more calmly why this document needs to be sent today?",
+    "category": "questions",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 55,
+    "wordRefs": [
+      {
+        "wordId": "misc_205",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_224",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_111",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_076",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_109",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_214",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_161",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "misc_226",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "verb_001",
+        "tokenIndex": 12
+      },
+      {
+        "wordId": "time_001",
+        "tokenIndex": 14
+      }
+    ]
+  },
+  {
     "id": "gemini_shopping_004",
     "text": "Onde fica o caixa?",
     "normalizedText": "onde fica o caixa?",
@@ -9871,7 +10215,7 @@
     "normalizedText": "tem desconto para pagamento à vista?",
     "en": "Is there a discount for paying upfront in cash?",
     "category": "shopping",
-    "difficulty": 3,
+    "difficulty": 4,
     "hardForEnglish": false,
     "tags": [],
     "cefr": "A2",
@@ -10222,6 +10566,47 @@
       {
         "wordId": "misc_001",
         "tokenIndex": 3
+      }
+    ]
+  },
+  {
+    "id": "curated_shopping_051",
+    "text": "Antes de fechar a compra, quero confirmar se a garantia cobre troca por defeito de fabricação.",
+    "normalizedText": "antes de fechar a compra, quero confirmar se a garantia cobre troca por defeito de fabricação.",
+    "en": "Before completing the purchase, I want to confirm whether the warranty covers an exchange for manufacturing defects.",
+    "category": "shopping",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 85,
+    "wordRefs": [
+      {
+        "wordId": "misc_014",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "misc_214",
+        "tokenIndex": 12
+      },
+      {
+        "wordId": "misc_241",
+        "tokenIndex": 13
       }
     ]
   },
@@ -11757,6 +12142,82 @@
     ]
   },
   {
+    "id": "curated_directions_051",
+    "text": "Depois que você passar pelo museu, vire à esquerda na rua mais estreita e siga até o fim.",
+    "normalizedText": "depois que você passar pelo museu, vire à esquerda na rua mais estreita e siga até o fim.",
+    "en": "After you pass the museum, turn left on the narrowest street and continue to the end.",
+    "category": "directions",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 55,
+    "wordRefs": [
+      {
+        "wordId": "misc_040",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_161",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_205",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_139",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_232",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_202",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "misc_067",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "misc_122",
+        "tokenIndex": 9
+      },
+      {
+        "wordId": "misc_236",
+        "tokenIndex": 10
+      },
+      {
+        "wordId": "misc_109",
+        "tokenIndex": 11
+      },
+      {
+        "wordId": "misc_058",
+        "tokenIndex": 13
+      },
+      {
+        "wordId": "misc_174",
+        "tokenIndex": 14
+      },
+      {
+        "wordId": "misc_017",
+        "tokenIndex": 15
+      },
+      {
+        "wordId": "misc_082",
+        "tokenIndex": 17
+      }
+    ]
+  },
+  {
     "id": "gemini_work_study_001",
     "text": "Preciso responder uns e-mails agora.",
     "normalizedText": "preciso responder uns e-mails agora.",
@@ -13216,7 +13677,7 @@
     "normalizedText": "onde você trabalha?",
     "en": "Where do you work?",
     "category": "work_study",
-    "difficulty": 3,
+    "difficulty": 1,
     "hardForEnglish": true,
     "tags": [
       "has_lh"
@@ -13343,6 +13804,31 @@
       {
         "wordId": "misc_185",
         "tokenIndex": 8
+      }
+    ]
+  },
+  {
+    "id": "curated_work_study_051",
+    "text": "Embora o prazo esteja curto, precisamos revisar os dados com cuidado antes da apresentação final.",
+    "normalizedText": "embora o prazo esteja curto, precisamos revisar os dados com cuidado antes da apresentação final.",
+    "en": "Although the deadline is short, we need to review the data carefully before the final presentation.",
+    "category": "work_study",
+    "difficulty": 5,
+    "hardForEnglish": true,
+    "tags": [
+      "has_nasal",
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 85,
+    "wordRefs": [
+      {
+        "wordId": "misc_014",
+        "tokenIndex": 11
+      },
+      {
+        "wordId": "misc_057",
+        "tokenIndex": 12
       }
     ]
   },
@@ -14688,6 +15174,62 @@
       {
         "wordId": "misc_156",
         "tokenIndex": 2
+      }
+    ]
+  },
+  {
+    "id": "curated_small_talk_051",
+    "text": "Se você tiver um tempinho mais tarde, me conta com calma como foi a viagem.",
+    "normalizedText": "se você tiver um tempinho mais tarde, me conta com calma como foi a viagem.",
+    "en": "If you have a little time later, tell me calmly how the trip went.",
+    "category": "small_talk",
+    "difficulty": 5,
+    "hardForEnglish": false,
+    "tags": [
+      "high_syllable_count"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 55,
+    "wordRefs": [
+      {
+        "wordId": "misc_169",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_205",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "num_001",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_109",
+        "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_111",
+        "tokenIndex": 7
+      },
+      {
+        "wordId": "food_word_027",
+        "tokenIndex": 8
+      },
+      {
+        "wordId": "misc_027",
+        "tokenIndex": 11
+      },
+      {
+        "wordId": "misc_083",
+        "tokenIndex": 12
+      },
+      {
+        "wordId": "misc_001",
+        "tokenIndex": 13
+      },
+      {
+        "wordId": "travel_word_001",
+        "tokenIndex": 14
       }
     ]
   }
