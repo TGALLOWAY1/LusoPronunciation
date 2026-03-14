@@ -33,6 +33,10 @@ function normalizeText(text: string): string {
   return text.toLowerCase().trim();
 }
 
+function toPathList(pathOrPaths: string | string[]): string[] {
+  return Array.isArray(pathOrPaths) ? pathOrPaths : [pathOrPaths];
+}
+
 /**
  * Loads and normalizes words from the configured JSON file into RawWord array.
  * 
@@ -104,25 +108,27 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
  * @returns Promise resolving to an array of normalized RawSentence entries
  */
 export async function loadRawSentences(config: GenerationPipelineConfig): Promise<RawSentence[]> {
-  const sentencesPath = path.join(process.cwd(), config.paths.rawSentencesJsonPath);
-  
-  console.log(`Loading sentences from: ${sentencesPath}`);
-  const content = await fs.readFile(sentencesPath, 'utf-8');
-  const data: SentencesData = JSON.parse(content);
-  
   const rawSentences: RawSentence[] = [];
-  
-  // Flatten categories and map sentences to RawSentence
-  for (const category of data.categories) {
-    for (const sentence of category.sentences || []) {
-      rawSentences.push({
-        id: sentence.id,
-        pt: sentence.pt.trim(),
-        en: sentence.en.trim(),
-        category: category.id,
-        difficulty: sentence.difficulty as 1 | 2 | 3 | 4 | 5,
-        pronunciation_notes: sentence.pronunciation_notes,
-      });
+
+  for (const relativePath of toPathList(config.paths.rawSentencesJsonPath)) {
+    const sentencesPath = path.join(process.cwd(), relativePath);
+
+    console.log(`Loading sentences from: ${sentencesPath}`);
+    const content = await fs.readFile(sentencesPath, 'utf-8');
+    const data: SentencesData = JSON.parse(content);
+
+    // Flatten categories and map sentences to RawSentence
+    for (const category of data.categories) {
+      for (const sentence of category.sentences || []) {
+        rawSentences.push({
+          id: sentence.id,
+          pt: sentence.pt.trim(),
+          en: sentence.en.trim(),
+          category: category.id,
+          difficulty: sentence.difficulty as 1 | 2 | 3 | 4 | 5,
+          pronunciation_notes: sentence.pronunciation_notes,
+        });
+      }
     }
   }
   

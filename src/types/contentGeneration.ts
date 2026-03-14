@@ -110,7 +110,7 @@ export interface GenerationConfigVoice {
  */
 export interface GenerationPathsConfig {
   rawWordsJsonPath: string;      // e.g., "STATIC DATA/words.json"
-  rawSentencesJsonPath: string;   // e.g., "data/sentences.json"
+  rawSentencesJsonPath: string | string[];   // e.g., "data/sentences.json" or ["data/sentences.json", "data/sentence_expansions/phase5_batch_01.json"]
   masterWordsPath: string;        // e.g., "data/masterWords.json"
   masterSentencesPath: string;    // e.g., "data/masterSentences.json"
   audioBaseDir: string;           // e.g., "public/audio"

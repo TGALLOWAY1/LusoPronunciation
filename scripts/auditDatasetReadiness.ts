@@ -32,6 +32,10 @@ async function loadJson<T>(relativePath: string): Promise<T> {
   return JSON.parse(content) as T;
 }
 
+function toPathList(pathOrPaths: string | string[]): string[] {
+  return Array.isArray(pathOrPaths) ? pathOrPaths : [pathOrPaths];
+}
+
 function normalizeToken(token: string): string {
   return token
     .toLowerCase()
@@ -291,13 +295,17 @@ function analyzeWordRefs(sentences: EnrichedSentence[], words: EnrichedWord[]) {
 
 async function main() {
   const rawWordsData = await loadJson<WordsData>(generationPipelineConfig.paths.rawWordsJsonPath);
-  const rawSentencesData = await loadJson<SentencesData>(generationPipelineConfig.paths.rawSentencesJsonPath);
+  const rawSentenceDataSets = await Promise.all(
+    toPathList(generationPipelineConfig.paths.rawSentencesJsonPath).map(relativePath =>
+      loadJson<SentencesData>(relativePath)
+    )
+  );
   const masterWords = await loadJson<EnrichedWord[]>(generationPipelineConfig.paths.masterWordsPath);
   const masterSentences = await loadJson<EnrichedSentence[]>(generationPipelineConfig.paths.masterSentencesPath);
   const audioIndex = await loadJson<AudioIndex>(generationPipelineConfig.paths.audioIndexPath);
 
   const rawWords = extractRawWords(rawWordsData);
-  const rawSentences = extractRawSentences(rawSentencesData);
+  const rawSentences = rawSentenceDataSets.flatMap(extractRawSentences);
 
   const rawSentenceBuckets = toBucketRows(rawSentences);
   const masterSentenceBuckets = toBucketRows(masterSentences);
