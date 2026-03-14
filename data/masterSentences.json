@@ -270,6 +270,14 @@
     "difficultyScore": 42,
     "wordRefs": [
       {
+        "wordId": "misc_072",
+        "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_365",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_244",
         "tokenIndex": 3
       }
@@ -436,6 +444,10 @@
       {
         "wordId": "adj_001",
         "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_366",
+        "tokenIndex": 1
       }
     ]
   },
@@ -768,8 +780,20 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_352",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_074",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_353",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_354",
+        "tokenIndex": 4
       }
     ]
   },
@@ -790,8 +814,16 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_367",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "food_word_007",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_368",
+        "tokenIndex": 3
       }
     ]
   },
@@ -946,8 +978,16 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_369",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_074",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_370",
+        "tokenIndex": 3
       }
     ]
   },
@@ -1448,6 +1488,10 @@
     "cefr": "B2",
     "difficultyScore": 55,
     "wordRefs": [
+      {
+        "wordId": "misc_345",
+        "tokenIndex": 0
+      },
       {
         "wordId": "misc_075",
         "tokenIndex": 1
@@ -2549,8 +2593,16 @@
     "difficultyScore": 12,
     "wordRefs": [
       {
+        "wordId": "misc_379",
+        "tokenIndex": 0
+      },
+      {
         "wordId": "verb_012",
         "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_380",
+        "tokenIndex": 3
       }
     ]
   },
@@ -2681,12 +2733,24 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_381",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_074",
         "tokenIndex": 2
       },
       {
+        "wordId": "misc_245",
+        "tokenIndex": 3
+      },
+      {
         "wordId": "misc_125",
         "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_382",
+        "tokenIndex": 5
       }
     ]
   },
@@ -5256,6 +5320,10 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_348",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_040",
         "tokenIndex": 4
       },
@@ -5485,6 +5553,10 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_349",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_115",
         "tokenIndex": 2
       },
@@ -5658,6 +5730,10 @@
         "tokenIndex": 1
       },
       {
+        "wordId": "daily_word_020",
+        "tokenIndex": 3
+      },
+      {
         "wordId": "time_001",
         "tokenIndex": 4
       }
@@ -5716,6 +5792,10 @@
       {
         "wordId": "misc_075",
         "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_347",
+        "tokenIndex": 1
       },
       {
         "wordId": "daily_word_007",
@@ -6233,6 +6313,10 @@
       {
         "wordId": "misc_127",
         "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_387",
+        "tokenIndex": 5
       }
     ]
   },
@@ -6364,6 +6448,10 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_349",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_137",
         "tokenIndex": 4
       },
@@ -6466,6 +6554,10 @@
         "tokenIndex": 1
       },
       {
+        "wordId": "misc_348",
+        "tokenIndex": 2
+      },
+      {
         "wordId": "misc_014",
         "tokenIndex": 5
       }
@@ -6556,6 +6648,10 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_347",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "daily_word_002",
         "tokenIndex": 2
       },
@@ -6596,6 +6692,10 @@
       {
         "wordId": "misc_058",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_396",
+        "tokenIndex": 4
       }
     ]
   },
@@ -7319,6 +7419,10 @@
       {
         "wordId": "misc_161",
         "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_346",
+        "tokenIndex": 4
       }
     ]
   },
@@ -7455,6 +7559,14 @@
       {
         "wordId": "misc_111",
         "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_362",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_363",
+        "tokenIndex": 3
       }
     ]
   },
@@ -8091,6 +8203,10 @@
       {
         "wordId": "misc_161",
         "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_364",
+        "tokenIndex": 1
       }
     ]
   },
@@ -8317,6 +8433,18 @@
       {
         "wordId": "misc_111",
         "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_391",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_392",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_393",
+        "tokenIndex": 6
       }
     ]
   },
@@ -8370,8 +8498,16 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_397",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_159",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_398",
+        "tokenIndex": 3
       },
       {
         "wordId": "misc_161",
@@ -8382,12 +8518,24 @@
         "tokenIndex": 6
       },
       {
+        "wordId": "misc_345",
+        "tokenIndex": 7
+      },
+      {
         "wordId": "misc_341",
         "tokenIndex": 8
       },
       {
         "wordId": "misc_278",
         "tokenIndex": 9
+      },
+      {
+        "wordId": "verb_003",
+        "tokenIndex": 10
+      },
+      {
+        "wordId": "misc_399",
+        "tokenIndex": 11
       }
     ]
   },
@@ -9636,6 +9784,10 @@
       {
         "wordId": "misc_074",
         "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_087",
+        "tokenIndex": 5
       }
     ]
   },
@@ -9750,6 +9902,10 @@
       {
         "wordId": "misc_161",
         "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_346",
+        "tokenIndex": 2
       },
       {
         "wordId": "misc_016",
@@ -10504,6 +10660,14 @@
       {
         "wordId": "misc_128",
         "tokenIndex": 0
+      },
+      {
+        "wordId": "verb_014",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_371",
+        "tokenIndex": 3
       }
     ]
   },
@@ -10522,6 +10686,10 @@
       {
         "wordId": "misc_208",
         "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_349",
+        "tokenIndex": 1
       },
       {
         "wordId": "misc_071",
@@ -10726,6 +10894,10 @@
       {
         "wordId": "misc_074",
         "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_087",
+        "tokenIndex": 6
       }
     ]
   },
@@ -11120,6 +11292,18 @@
       {
         "wordId": "verb_009",
         "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_372",
+        "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_373",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_374",
+        "tokenIndex": 5
       }
     ]
   },
@@ -11138,6 +11322,14 @@
       {
         "wordId": "misc_255",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "verb_010",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_375",
+        "tokenIndex": 4
       },
       {
         "wordId": "misc_256",
@@ -11162,8 +11354,16 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_376",
+        "tokenIndex": 1
+      },
+      {
         "wordId": "misc_071",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "misc_377",
+        "tokenIndex": 3
       }
     ]
   },
@@ -11208,6 +11408,14 @@
       {
         "wordId": "misc_075",
         "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_350",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_351",
+        "tokenIndex": 2
       }
     ]
   },
@@ -11717,6 +11925,10 @@
     "difficultyScore": 21,
     "wordRefs": [
       {
+        "wordId": "misc_388",
+        "tokenIndex": 0
+      },
+      {
         "wordId": "misc_001",
         "tokenIndex": 1
       },
@@ -11727,6 +11939,10 @@
       {
         "wordId": "misc_122",
         "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_389",
+        "tokenIndex": 4
       }
     ]
   },
@@ -11845,8 +12061,16 @@
     "difficultyScore": 18,
     "wordRefs": [
       {
+        "wordId": "misc_358",
+        "tokenIndex": 2
+      },
+      {
         "wordId": "misc_058",
         "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_359",
+        "tokenIndex": 4
       },
       {
         "wordId": "misc_337",
@@ -12270,6 +12494,10 @@
         "tokenIndex": 1
       },
       {
+        "wordId": "misc_349",
+        "tokenIndex": 2
+      },
+      {
         "wordId": "misc_137",
         "tokenIndex": 3
       },
@@ -12590,6 +12818,14 @@
       {
         "wordId": "misc_152",
         "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_360",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_361",
+        "tokenIndex": 3
       }
     ]
   },
@@ -12708,8 +12944,16 @@
         "tokenIndex": 2
       },
       {
+        "wordId": "verb_004",
+        "tokenIndex": 3
+      },
+      {
         "wordId": "misc_122",
         "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_390",
+        "tokenIndex": 5
       }
     ]
   },
@@ -13343,8 +13587,16 @@
     "difficultyScore": 48,
     "wordRefs": [
       {
+        "wordId": "misc_312",
+        "tokenIndex": 0
+      },
+      {
         "wordId": "misc_114",
         "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_383",
+        "tokenIndex": 2
       },
       {
         "wordId": "misc_137",
@@ -13353,6 +13605,10 @@
       {
         "wordId": "misc_282",
         "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_384",
+        "tokenIndex": 5
       }
     ]
   },
@@ -13541,6 +13797,10 @@
       {
         "wordId": "verb_004",
         "tokenIndex": 5
+      },
+      {
+        "wordId": "misc_345",
+        "tokenIndex": 6
       }
     ]
   },
@@ -13947,8 +14207,20 @@
         "tokenIndex": 0
       },
       {
+        "wordId": "misc_283",
+        "tokenIndex": 1
+      },
+      {
+        "wordId": "misc_355",
+        "tokenIndex": 2
+      },
+      {
         "wordId": "misc_059",
         "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_356",
+        "tokenIndex": 4
       }
     ]
   },
@@ -13973,12 +14245,20 @@
         "tokenIndex": 1
       },
       {
+        "wordId": "misc_394",
+        "tokenIndex": 2
+      },
+      {
         "wordId": "time_006",
         "tokenIndex": 3
       },
       {
         "wordId": "misc_052",
         "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_395",
+        "tokenIndex": 5
       }
     ]
   },
@@ -14091,12 +14371,20 @@
         "tokenIndex": 1
       },
       {
+        "wordId": "misc_385",
+        "tokenIndex": 2
+      },
+      {
         "wordId": "misc_122",
         "tokenIndex": 3
       },
       {
         "wordId": "misc_117",
         "tokenIndex": 4
+      },
+      {
+        "wordId": "misc_386",
+        "tokenIndex": 5
       }
     ]
   },
@@ -14747,8 +15035,24 @@
     "difficultyScore": 85,
     "wordRefs": [
       {
+        "wordId": "misc_345",
+        "tokenIndex": 0
+      },
+      {
         "wordId": "misc_274",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "verb_002",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_400",
+        "tokenIndex": 6
+      },
+      {
+        "wordId": "misc_401",
+        "tokenIndex": 8
       },
       {
         "wordId": "misc_292",
@@ -16022,8 +16326,20 @@
     "difficultyScore": 21,
     "wordRefs": [
       {
+        "wordId": "verb_008",
+        "tokenIndex": 0
+      },
+      {
         "wordId": "misc_205",
         "tokenIndex": 2
+      },
+      {
+        "wordId": "verb_009",
+        "tokenIndex": 3
+      },
+      {
+        "wordId": "misc_357",
+        "tokenIndex": 5
       },
       {
         "wordId": "time_003",
@@ -16162,6 +16478,10 @@
       {
         "wordId": "misc_169",
         "tokenIndex": 0
+      },
+      {
+        "wordId": "misc_378",
+        "tokenIndex": 1
       }
     ]
   },

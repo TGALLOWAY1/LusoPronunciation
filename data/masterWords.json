@@ -379,7 +379,8 @@
     "forms": [
       "estava",
       "estamos",
-      "estão"
+      "estão",
+      "esteja"
     ],
     "en": "to be (temporary/location)",
     "category": "core_verbs",
@@ -403,6 +404,9 @@
     "id": "verb_003",
     "text": "ter",
     "normalizedText": "ter",
+    "forms": [
+      "tinha"
+    ],
     "en": "to have",
     "category": "core_verbs",
     "partOfSpeech": "verb",
@@ -423,6 +427,9 @@
     "id": "verb_004",
     "text": "ir",
     "normalizedText": "ir",
+    "forms": [
+      "indo"
+    ],
     "en": "to go",
     "category": "core_verbs",
     "partOfSpeech": "verb",
@@ -516,6 +523,9 @@
     "id": "verb_008",
     "text": "falar",
     "normalizedText": "falar",
+    "forms": [
+      "falando"
+    ],
     "en": "to speak",
     "category": "core_verbs",
     "partOfSpeech": "verb",
@@ -539,7 +549,8 @@
     "text": "ver",
     "normalizedText": "ver",
     "forms": [
-      "vê"
+      "vê",
+      "viu"
     ],
     "en": "to see",
     "category": "core_verbs",
@@ -561,6 +572,9 @@
     "id": "verb_010",
     "text": "dar",
     "normalizedText": "dar",
+    "forms": [
+      "deu"
+    ],
     "en": "to give",
     "category": "core_verbs",
     "partOfSpeech": "verb",
@@ -651,7 +665,8 @@
     "text": "ficar",
     "normalizedText": "ficar",
     "forms": [
-      "ficou"
+      "ficou",
+      "ficam"
     ],
     "en": "to stay / to become",
     "category": "core_verbs",
@@ -3989,6 +4004,9 @@
     "id": "daily_word_020",
     "text": "reunião",
     "normalizedText": "reunião",
+    "forms": [
+      "reuniões"
+    ],
     "en": "meeting",
     "category": "daily_routine",
     "partOfSpeech": "noun",
@@ -6632,6 +6650,9 @@
     "id": "misc_072",
     "text": "estou",
     "normalizedText": "estou",
+    "forms": [
+      "tô"
+    ],
     "en": "I am",
     "category": "misc_common_words",
     "partOfSpeech": "verb",
@@ -6965,6 +6986,9 @@
     "id": "misc_087",
     "text": "funcionar",
     "normalizedText": "funcionar",
+    "forms": [
+      "funcionando"
+    ],
     "en": "to work / to function",
     "category": "misc_common_words",
     "partOfSpeech": "verb",
@@ -10460,6 +10484,9 @@
     "id": "misc_245",
     "text": "incluído",
     "normalizedText": "incluído",
+    "forms": [
+      "incluída"
+    ],
     "en": "included",
     "category": "misc_common_words",
     "partOfSpeech": "adjective",
@@ -11322,6 +11349,9 @@
     "id": "misc_283",
     "text": "aula",
     "normalizedText": "aula",
+    "forms": [
+      "aulas"
+    ],
     "en": "class / lesson",
     "category": "misc_common_words",
     "partOfSpeech": "noun",
@@ -12011,7 +12041,8 @@
     "text": "mandar",
     "normalizedText": "mandar",
     "forms": [
-      "manda"
+      "manda",
+      "mandei"
     ],
     "en": "to send",
     "category": "misc_common_words",
@@ -12771,5 +12802,1427 @@
     "tags": [],
     "cefr": "A1",
     "difficultyScore": 6
+  },
+  {
+    "id": "misc_345",
+    "text": "embora",
+    "normalizedText": "embora",
+    "en": "although / even though / away",
+    "category": "misc_common_words",
+    "partOfSpeech": "conjunction",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "em-BO-ra; stress on 'bo'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "EH",
+      "M",
+      "B",
+      "OW",
+      "R_TAP",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 12
+  },
+  {
+    "id": "misc_346",
+    "text": "acontecer",
+    "normalizedText": "acontecer",
+    "forms": [
+      "aconteceu"
+    ],
+    "en": "to happen",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "a-con-te-SER; final 'r' is guttural.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "AA",
+      "K",
+      "OW",
+      "N",
+      "T",
+      "EH",
+      "EH",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 38
+  },
+  {
+    "id": "misc_347",
+    "text": "costumar",
+    "normalizedText": "costumar",
+    "forms": [
+      "costumo"
+    ],
+    "en": "to usually / to tend to",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "cos-tu-MAR; stress on 'mar'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "K",
+      "OW",
+      "S",
+      "T",
+      "UW",
+      "M",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 16
+  },
+  {
+    "id": "misc_348",
+    "text": "escovar",
+    "normalizedText": "escovar",
+    "forms": [
+      "escovo"
+    ],
+    "en": "to brush",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "es-co-VAR; stress on 'var'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "EH",
+      "S",
+      "K",
+      "OW",
+      "V",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 14
+  },
+  {
+    "id": "misc_349",
+    "text": "levar",
+    "normalizedText": "levar",
+    "forms": [
+      "levo"
+    ],
+    "en": "to take / to carry",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "le-VAR; stress on 'var'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "L",
+      "EH",
+      "V",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 10
+  },
+  {
+    "id": "misc_350",
+    "text": "calçar",
+    "normalizedText": "calçar",
+    "forms": [
+      "calço"
+    ],
+    "en": "to wear (shoes) / to fit",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "cal-SAR; 'ç' sounds like 's'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "K",
+      "AA",
+      "L",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 12
+  },
+  {
+    "id": "misc_351",
+    "text": "quarenta",
+    "normalizedText": "quarenta",
+    "en": "forty",
+    "category": "misc_common_words",
+    "partOfSpeech": "number",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "qua-REN-ta; stress on 'ren'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "UW",
+      "AA",
+      "R_TAP",
+      "EH",
+      "N",
+      "T",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 16
+  },
+  {
+    "id": "misc_352",
+    "text": "janta",
+    "normalizedText": "janta",
+    "en": "dinner",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 1,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "JAN-ta; nasal first syllable.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "JH",
+      "AA",
+      "N",
+      "T",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 10
+  },
+  {
+    "id": "misc_353",
+    "text": "quase",
+    "normalizedText": "quase",
+    "en": "almost",
+    "category": "misc_common_words",
+    "partOfSpeech": "adverb",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "QUA-se; the first syllable is stressed.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "UW",
+      "AA",
+      "S",
+      "EH"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 10
+  },
+  {
+    "id": "misc_354",
+    "text": "pronto",
+    "normalizedText": "pronto",
+    "forms": [
+      "pronta"
+    ],
+    "en": "ready",
+    "category": "misc_common_words",
+    "partOfSpeech": "adjective",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "PRON-to; nasal 'on'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "P",
+      "R_TAP",
+      "OW",
+      "N",
+      "T",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 12
+  },
+  {
+    "id": "misc_355",
+    "text": "voltar",
+    "normalizedText": "voltar",
+    "forms": [
+      "voltam"
+    ],
+    "en": "to return / to come back",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "vol-TAR; stress on 'tar'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "V",
+      "OW",
+      "L",
+      "T",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 12
+  },
+  {
+    "id": "misc_356",
+    "text": "agosto",
+    "normalizedText": "agosto",
+    "en": "August",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "a-GOS-to; stress on 'gos'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "AA",
+      "G",
+      "OW",
+      "S",
+      "T",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 12
+  },
+  {
+    "id": "misc_357",
+    "text": "jogo",
+    "normalizedText": "jogo",
+    "en": "game / match",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "JO-go; 'j' sounds like 'zh'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "JH",
+      "OW",
+      "G",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 28
+  },
+  {
+    "id": "misc_358",
+    "text": "banco",
+    "normalizedText": "banco",
+    "en": "bank / bench",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "BAN-co; nasal 'ban'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "B",
+      "AA",
+      "N",
+      "K",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 30
+  },
+  {
+    "id": "misc_359",
+    "text": "continuar",
+    "normalizedText": "continuar",
+    "forms": [
+      "continue"
+    ],
+    "en": "to continue",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "con-ti-nu-AR; stress on the end.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "K",
+      "OW",
+      "N",
+      "T",
+      "IY",
+      "N",
+      "UW",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 18
+  },
+  {
+    "id": "misc_360",
+    "text": "encher",
+    "normalizedText": "encher",
+    "en": "to fill",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "en-SHER; nasal 'en' and 'ch' like 'sh'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "EH",
+      "N",
+      "CH",
+      "EH",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 32
+  },
+  {
+    "id": "misc_361",
+    "text": "tanque",
+    "normalizedText": "tanque",
+    "en": "tank",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "TAN-que; nasal 'tan'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "T",
+      "AA",
+      "N",
+      "UW",
+      "EH"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 32
+  },
+  {
+    "id": "misc_362",
+    "text": "irritar",
+    "normalizedText": "irritar",
+    "forms": [
+      "irrita"
+    ],
+    "en": "to annoy / to irritate",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "i-ri-TAR; stress on 'tar'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "IY",
+      "R_TAP",
+      "IY",
+      "T",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [
+      "contains_rr"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 44
+  },
+  {
+    "id": "misc_363",
+    "text": "profundamente",
+    "normalizedText": "profundamente",
+    "en": "deeply",
+    "category": "misc_common_words",
+    "partOfSpeech": "adverb",
+    "difficulty": 4,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "pro-fun-da-MEN-te; stress on 'men'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "P",
+      "R_TAP",
+      "OW",
+      "F",
+      "UW",
+      "N",
+      "D",
+      "AA",
+      "M",
+      "EH",
+      "N",
+      "T",
+      "EH"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 26
+  },
+  {
+    "id": "misc_364",
+    "text": "alívio",
+    "normalizedText": "alívio",
+    "en": "relief",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "a-LÍ-vio; stress on the accented 'í'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "AA",
+      "L",
+      "IY",
+      "V",
+      "IY",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 32
+  },
+  {
+    "id": "misc_365",
+    "text": "morrer",
+    "normalizedText": "morrer",
+    "forms": [
+      "morrendo"
+    ],
+    "en": "to die / to be dying",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "mo-RRER; double 'rr' is guttural.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "M",
+      "OW",
+      "R_TAP",
+      "EH",
+      "R_TAP"
+    ],
+    "tags": [
+      "contains_rr"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 42
+  },
+  {
+    "id": "misc_366",
+    "text": "apetite",
+    "normalizedText": "apetite",
+    "en": "appetite",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "a-pe-TI-te; stress on 'ti'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "AA",
+      "P",
+      "EH",
+      "T",
+      "IY",
+      "T",
+      "EH"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 14
+  },
+  {
+    "id": "misc_367",
+    "text": "preferir",
+    "normalizedText": "preferir",
+    "forms": [
+      "prefiro"
+    ],
+    "en": "to prefer",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "pre-fe-RIR; stress on the end.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "P",
+      "R_TAP",
+      "EH",
+      "F",
+      "EH",
+      "R_TAP",
+      "IY",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 16
+  },
+  {
+    "id": "misc_368",
+    "text": "natural",
+    "normalizedText": "natural",
+    "en": "natural",
+    "category": "misc_common_words",
+    "partOfSpeech": "adjective",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "na-tu-RAL; stress on 'ral'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "N",
+      "AA",
+      "T",
+      "UW",
+      "R_TAP",
+      "AA",
+      "L"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 14
+  },
+  {
+    "id": "misc_369",
+    "text": "sopa",
+    "normalizedText": "sopa",
+    "en": "soup",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 1,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "SO-pa; first syllable is stressed.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "S",
+      "OW",
+      "P",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 8
+  },
+  {
+    "id": "misc_370",
+    "text": "fria",
+    "normalizedText": "fria",
+    "en": "cold (fem.)",
+    "category": "misc_common_words",
+    "partOfSpeech": "adjective",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "FRI-a; two clear syllables.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "F",
+      "R_TAP",
+      "IY",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 8
+  },
+  {
+    "id": "misc_371",
+    "text": "provador",
+    "normalizedText": "provador",
+    "forms": [
+      "provadores"
+    ],
+    "en": "fitting room",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "pro-va-DOR; stress on 'dor'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "P",
+      "R_TAP",
+      "OW",
+      "V",
+      "AA",
+      "D",
+      "OW",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 16
+  },
+  {
+    "id": "misc_372",
+    "text": "duzentos",
+    "normalizedText": "duzentos",
+    "en": "two hundred",
+    "category": "misc_common_words",
+    "partOfSpeech": "number",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "du-ZEN-tos; stress on 'zen'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "D",
+      "UW",
+      "Z",
+      "EH",
+      "N",
+      "T",
+      "OW",
+      "S"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 16
+  },
+  {
+    "id": "misc_373",
+    "text": "grama",
+    "normalizedText": "grama",
+    "forms": [
+      "gramas"
+    ],
+    "en": "gram",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "GRA-ma; first syllable is stressed.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "G",
+      "R_TAP",
+      "AA",
+      "M",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 10
+  },
+  {
+    "id": "misc_374",
+    "text": "queijo",
+    "normalizedText": "queijo",
+    "en": "cheese",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "QUEI-jo; 'j' sounds like 'zh'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "UW",
+      "EH",
+      "IY",
+      "JH",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 32
+  },
+  {
+    "id": "misc_375",
+    "text": "oitenta",
+    "normalizedText": "oitenta",
+    "en": "eighty",
+    "category": "misc_common_words",
+    "partOfSpeech": "number",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "oi-TEN-ta; stress on 'ten'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "OW",
+      "IY",
+      "T",
+      "EH",
+      "N",
+      "T",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 14
+  },
+  {
+    "id": "misc_376",
+    "text": "experimentar",
+    "normalizedText": "experimentar",
+    "en": "to try on / to try out",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 4,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "ex-pe-ri-men-TAR; stress on the end.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "EH",
+      "P",
+      "EH",
+      "R_TAP",
+      "IY",
+      "M",
+      "EH",
+      "N",
+      "T",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 24
+  },
+  {
+    "id": "misc_377",
+    "text": "tênis",
+    "normalizedText": "tênis",
+    "en": "sneakers / tennis shoes",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "TÊ-nis; closed stressed 'ê'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "T",
+      "EH",
+      "N",
+      "IY",
+      "S"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 30
+  },
+  {
+    "id": "misc_378",
+    "text": "cuidar",
+    "normalizedText": "cuidar",
+    "forms": [
+      "cuida"
+    ],
+    "en": "to take care",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "cui-DAR; stress on 'dar'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "K",
+      "UW",
+      "IY",
+      "D",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 12
+  },
+  {
+    "id": "misc_379",
+    "text": "adorar",
+    "normalizedText": "adorar",
+    "forms": [
+      "adorei"
+    ],
+    "en": "to love / to adore",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "a-do-RAR; stress on 'rar'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "AA",
+      "D",
+      "OW",
+      "R_TAP",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 12
+  },
+  {
+    "id": "misc_380",
+    "text": "Brasil",
+    "normalizedText": "brasil",
+    "en": "Brazil",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "bra-ZIL; stress on the last syllable.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "B",
+      "R_TAP",
+      "AA",
+      "S",
+      "IY",
+      "L"
+    ],
+    "tags": [
+      "proper_noun"
+    ],
+    "cefr": "B1",
+    "difficultyScore": 12
+  },
+  {
+    "id": "misc_381",
+    "text": "gorjeta",
+    "normalizedText": "gorjeta",
+    "en": "tip",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "gor-JE-ta; 'j' sounds like 'zh'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "G",
+      "OW",
+      "R_TAP",
+      "JH",
+      "EH",
+      "T",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 34
+  },
+  {
+    "id": "misc_382",
+    "text": "serviço",
+    "normalizedText": "serviço",
+    "en": "service",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "ser-VI-so; 'ç' sounds like 's'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "S",
+      "EH",
+      "R_TAP",
+      "V",
+      "IY",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 34
+  },
+  {
+    "id": "misc_383",
+    "text": "currículo",
+    "normalizedText": "currículo",
+    "en": "resume / CV",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 4,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "cur-RÍ-cu-lo; stress on the accented 'rí'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "K",
+      "UW",
+      "R_TAP",
+      "IY",
+      "K",
+      "UW",
+      "L",
+      "OW"
+    ],
+    "tags": [
+      "contains_rr"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 48
+  },
+  {
+    "id": "misc_384",
+    "text": "vaga",
+    "normalizedText": "vaga",
+    "en": "opening / position",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "VA-ga; first syllable is stressed.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "V",
+      "AA",
+      "G",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 8
+  },
+  {
+    "id": "misc_385",
+    "text": "estágio",
+    "normalizedText": "estágio",
+    "en": "internship",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "es-TÁ-gio; stress on the accented 'tá'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "EH",
+      "S",
+      "T",
+      "AA",
+      "G",
+      "IY",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 34
+  },
+  {
+    "id": "misc_386",
+    "text": "área",
+    "normalizedText": "área",
+    "en": "area / field",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "Á-re-a; three clear syllables.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "AA",
+      "R_TAP",
+      "EH",
+      "AH"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 28
+  },
+  {
+    "id": "misc_387",
+    "text": "redes sociais",
+    "normalizedText": "redes sociais",
+    "en": "social media",
+    "category": "misc_common_words",
+    "partOfSpeech": "phrase",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "RE-des so-ci-AIS; stress on 'ais'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "R_TAP",
+      "EH",
+      "D",
+      "EH",
+      "S",
+      "S",
+      "OW",
+      "IY",
+      "AA",
+      "IY",
+      "S"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 26
+  },
+  {
+    "id": "misc_388",
+    "text": "atravessar",
+    "normalizedText": "atravessar",
+    "forms": [
+      "atravesse"
+    ],
+    "en": "to cross",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "a-tra-ves-SAR; stress on the end.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "AA",
+      "T",
+      "R_TAP",
+      "AA",
+      "V",
+      "EH",
+      "S",
+      "S",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 20
+  },
+  {
+    "id": "misc_389",
+    "text": "faixa de pedestres",
+    "normalizedText": "faixa de pedestres",
+    "en": "crosswalk",
+    "category": "misc_common_words",
+    "partOfSpeech": "phrase",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "FAI-sha dji pe-DES-tres; stress on 'des'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "F",
+      "AA",
+      "IY",
+      "AA",
+      "D",
+      "EH",
+      "P",
+      "EH",
+      "D",
+      "EH",
+      "S",
+      "T",
+      "R_TAP",
+      "EH",
+      "S"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 30
+  },
+  {
+    "id": "misc_390",
+    "text": "direção",
+    "normalizedText": "direção",
+    "en": "direction",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "di-re-ÇÃO; nasal final 'ão'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "D",
+      "IY",
+      "R_TAP",
+      "EH",
+      "AN_NASAL",
+      "OW"
+    ],
+    "tags": [
+      "nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 49
+  },
+  {
+    "id": "misc_391",
+    "text": "sentir",
+    "normalizedText": "sentir",
+    "forms": [
+      "senti"
+    ],
+    "en": "to feel",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "sen-TIR; nasal 'sen'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "S",
+      "EH",
+      "N",
+      "T",
+      "IY",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 32
+  },
+  {
+    "id": "misc_392",
+    "text": "ofendido",
+    "normalizedText": "ofendido",
+    "en": "offended",
+    "category": "misc_common_words",
+    "partOfSpeech": "adjective",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "o-fen-DI-do; stress on 'di'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "OW",
+      "F",
+      "EH",
+      "N",
+      "D",
+      "IY",
+      "D",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 16
+  },
+  {
+    "id": "misc_393",
+    "text": "comentário",
+    "normalizedText": "comentário",
+    "en": "comment",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "co-men-TÁ-rio; stress on the accented 'tá'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "K",
+      "OW",
+      "M",
+      "EH",
+      "N",
+      "T",
+      "AA",
+      "R_TAP",
+      "IY",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 40
+  },
+  {
+    "id": "misc_394",
+    "text": "último",
+    "normalizedText": "último",
+    "en": "last / final",
+    "category": "misc_common_words",
+    "partOfSpeech": "adjective",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "ÚL-ti-mo; stress on the accented 'úl'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "UW",
+      "L",
+      "T",
+      "IY",
+      "M",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 32
+  },
+  {
+    "id": "misc_395",
+    "text": "ensino médio",
+    "normalizedText": "ensino médio",
+    "en": "high school",
+    "category": "misc_common_words",
+    "partOfSpeech": "phrase",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "en-SI-no MÉ-dio; stress on 'mé'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "EH",
+      "N",
+      "S",
+      "IY",
+      "N",
+      "OW",
+      "M",
+      "EH",
+      "D",
+      "IY",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B2",
+    "difficultyScore": 24
+  },
+  {
+    "id": "misc_396",
+    "text": "sonho",
+    "normalizedText": "sonho",
+    "forms": [
+      "sonhos"
+    ],
+    "en": "dream",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "SON-yo; 'nh' sounds like 'ny'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "S",
+      "OW",
+      "NH",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 30
+  },
+  {
+    "id": "misc_397",
+    "text": "aliviado",
+    "normalizedText": "aliviado",
+    "en": "relieved",
+    "category": "misc_common_words",
+    "partOfSpeech": "adjective",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "a-li-vi-A-do; stress on 'a'.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "AA",
+      "L",
+      "IY",
+      "V",
+      "IY",
+      "AA",
+      "D",
+      "OW"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 16
+  },
+  {
+    "id": "misc_398",
+    "text": "perceber",
+    "normalizedText": "perceber",
+    "forms": [
+      "percebi"
+    ],
+    "en": "to notice / to realize",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 3,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "per-ce-BER; stress on the end.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "P",
+      "EH",
+      "R_TAP",
+      "EH",
+      "B",
+      "EH",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 16
+  },
+  {
+    "id": "misc_399",
+    "text": "solução",
+    "normalizedText": "solução",
+    "en": "solution",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 3,
+    "difficultForEnglish": true,
+    "pronunciationNotes": "so-lu-ÇÃO; nasal final 'ão'.",
+    "englishDifficultyFlag": true,
+    "phonemes": [
+      "S",
+      "OW",
+      "L",
+      "UW",
+      "AN_NASAL",
+      "OW"
+    ],
+    "tags": [
+      "nasal"
+    ],
+    "cefr": "B2",
+    "difficultyScore": 49
+  },
+  {
+    "id": "misc_400",
+    "text": "revisar",
+    "normalizedText": "revisar",
+    "en": "to review",
+    "category": "misc_common_words",
+    "partOfSpeech": "verb",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "re-vi-ZAR; stress on the end.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "R_TAP",
+      "EH",
+      "V",
+      "IY",
+      "S",
+      "AA",
+      "R_TAP"
+    ],
+    "tags": [],
+    "cefr": "B1",
+    "difficultyScore": 14
+  },
+  {
+    "id": "misc_401",
+    "text": "dados",
+    "normalizedText": "dados",
+    "en": "data",
+    "category": "misc_common_words",
+    "partOfSpeech": "noun",
+    "difficulty": 2,
+    "difficultForEnglish": false,
+    "pronunciationNotes": "DA-dos; first syllable is stressed.",
+    "englishDifficultyFlag": false,
+    "phonemes": [
+      "D",
+      "AA",
+      "D",
+      "OW",
+      "S"
+    ],
+    "tags": [],
+    "cefr": "A2",
+    "difficultyScore": 10
   }
 ]

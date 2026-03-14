@@ -4,18 +4,18 @@ This roadmap turns the current sentence and word corpus into a portfolio-grade d
 
 ## Current Baseline
 
-Measured with `npm run audit:dataset` after category preservation and audio regeneration:
+Measured with `npm run audit:dataset` after bucket completion, alias-aware matching, and the first sentence-support vocabulary pass:
 
-- Raw sentences: 500
-- Master sentences: 492
-- Raw words: 434
-- Master words: 433
-- Sentence audio variants ready: 984/984
-- Word audio variants ready: 866/866
-- Sentence token coverage by word inventory: 72.5%
-- Sentences with zero word refs: 22
-- Empty sentence category/difficulty buckets: 15
-- Difficulty 5 sentences: 0
+- Raw sentences: 511
+- Master sentences: 503
+- Raw words: 563
+- Master words: 562
+- Sentence audio variants ready: 1006/1006
+- Word audio variants ready: 1124/1124
+- Sentence token coverage by word inventory: 85.5%
+- Sentences with zero word refs: 0
+- Empty sentence category/difficulty buckets: 0
+- Difficulty 5 sentences: present in all active categories
 
 ## Portfolio Bar
 
@@ -33,6 +33,29 @@ The dataset is portfolio-ready only when all of the following are true:
 - Sentence word refs are present for at least 98% of sentences
 - No sentence difficulty level is globally empty
 - No category/difficulty bucket is empty for the active curriculum
+
+## Difficulty Guardrails
+
+Difficulty should stay within the normal handling range of Azure TTS and mainstream LLM translation/support.
+
+- Level 1 to 3:
+  - frequent everyday vocabulary
+  - short to medium sentences
+  - plain present/past/future usage
+- Level 4:
+  - denser everyday vocabulary
+  - longer clauses
+  - common contractions and connected speech
+- Level 5:
+  - still mainstream and conversational
+  - can include subordinate clauses, conditionals, polite formality, and a moderate amount of abstraction
+  - must avoid literary phrasing, regional edge cases, rare idioms, tongue-twister phonotactics, or domain-specialist terminology
+
+Operational cap:
+
+- Do not add hard content just to raise lexical coverage.
+- Prefer high-frequency support words, common inflections, and reusable phrase chunks over obscure one-off vocabulary.
+- If a token is missing but only appears in a fringe sentence, rewrite or deprioritize the sentence instead of expanding the inventory around it.
 
 ## Target Corpus
 
@@ -62,12 +85,18 @@ Done in this pass:
 
 ### Phase 2: Close the vocabulary gap
 
-Current blocker: 72.5% token coverage is too low.
+Current blocker: 85.5% token coverage is still below the 90% stretch target, but the remaining gap is now concentrated in a small set of mainstream missing words plus a longer low-value tail.
 
 Work:
 
-- Add high-frequency missing tokens first:
-  - `qual`, `pra`, `vai`, `ele`, `ja`, `seu`, `ela`, `nos`, `sempre`, `ta`
+- Add high-frequency missing tokens first.
+- Prefer alias forms for existing canonical words where the sentence gap is inflectional:
+  - `pra`, `tá`, `estava`, `fez`, `podemos`, `chego`
+- Add high-value mainstream vocabulary next:
+  - `embora`, `aconteceu`, `costumo`, `escovo`, `levar`, `wi-fi`, `e-mail`
+- Use sentence-led backfilling:
+  - patch the few lowest-coverage sentences first
+  - then stop rather than chasing lexical tail coverage
 - For every newly added word, require:
   - English translation
   - phoneme sequence
@@ -76,16 +105,17 @@ Work:
 
 Success criteria:
 
-- sentence token coverage at or above 90%
-- fewer than 5 sentences with zero word refs
+- sentence token coverage materially improves without expanding into obscure vocabulary
+- zero sentences with zero word refs
+- the lowest-coverage active sentences are covered by mainstream vocabulary only
 
 ### Phase 3: Fill sentence bucket gaps
 
-Current blocker: 15 empty sentence category/difficulty buckets and no level 5 content.
+Current blocker was structural and is now resolved. The active curriculum has no empty sentence category/difficulty buckets.
 
 Work:
 
-- Define a real difficulty rubric before adding content
+- Use the difficulty guardrails above before adding content
 - Backfill category/difficulty cells systematically
 - Prefer manually curated additions over bulk generation
 - Treat repeated PT strings across categories as one of:
@@ -95,7 +125,7 @@ Work:
 Success criteria:
 
 - zero empty sentence buckets for the active curriculum
-- at least 10 curated level 5 sentences per category
+- level 5 remains mainstream, teachable, and machine-friendly
 
 ### Phase 4: Raise lexical and pronunciation depth
 
