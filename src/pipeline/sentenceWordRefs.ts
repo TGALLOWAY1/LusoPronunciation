@@ -18,7 +18,9 @@ function normalizeToken(token: string): string {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-    .replace(/[^\w\s]/g, ''); // Remove punctuation
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
@@ -27,22 +29,67 @@ function normalizeToken(token: string): string {
  * @param text - The sentence text
  * @returns Array of tokens with their positions
  */
-function tokenizeSentence(text: string): Array<{ text: string; tokenIndex: number }> {
-  const tokens: Array<{ text: string; tokenIndex: number }> = [];
-  const words = text.split(/\s+/).filter(w => w.length > 0);
-  
-  for (let i = 0; i < words.length; i++) {
-    // Remove punctuation from token for matching
-    const cleanToken = words[i].replace(/[^\w\u00C0-\u017F]/g, '');
-    if (cleanToken.length > 0) {
-      tokens.push({
-        text: cleanToken,
-        tokenIndex: i,
-      });
+function tokenizeSentence(text: string): Array<{
+  text: string;
+  normalized: string;
+  tokenIndex: number;
+  startChar: number;
+  endChar: number;
+}> {
+  const tokens: Array<{
+    text: string;
+    normalized: string;
+    tokenIndex: number;
+    startChar: number;
+    endChar: number;
+  }> = [];
+
+  const matches = text.matchAll(/[\p{L}\p{N}]+/gu);
+  let tokenIndex = 0;
+
+  for (const match of matches) {
+    const textValue = match[0];
+    const normalized = normalizeToken(textValue);
+
+    if (!normalized) {
+      continue;
     }
+
+    const startChar = match.index ?? 0;
+    tokens.push({
+      text: textValue,
+      normalized,
+      tokenIndex,
+      startChar,
+      endChar: startChar + textValue.length,
+    });
+    tokenIndex += 1;
   }
-  
+
   return tokens;
+}
+
+function createWordLookup<T extends Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>>(words: T[]): {
+  wordMap: Map<string, T>;
+  maxPhraseLength: number;
+} {
+  const wordMap = new Map<string, T>();
+  let maxPhraseLength = 1;
+
+  for (const word of words) {
+    const normalized = normalizeToken(word.normalizedText || word.text);
+    if (!normalized) {
+      continue;
+    }
+
+    if (!wordMap.has(normalized)) {
+      wordMap.set(normalized, word);
+    }
+
+    maxPhraseLength = Math.max(maxPhraseLength, normalized.split(' ').length);
+  }
+
+  return { wordMap, maxPhraseLength };
 }
 
 /**
@@ -62,43 +109,43 @@ export function computeSentenceWordRefs(
   sentences: EnrichedSentence[],
   words: EnrichedWord[]
 ): EnrichedSentence[] {
-  // Create a lookup map of normalized word text to EnrichedWord
-  const wordMap = new Map<string, EnrichedWord>();
-  for (const word of words) {
-    const normalized = word.normalizedText || normalizeToken(word.text);
-    // If multiple words have the same normalized form, keep the first one
-    if (!wordMap.has(normalized)) {
-      wordMap.set(normalized, word);
-    }
-  }
+  const { wordMap, maxPhraseLength } = createWordLookup(words);
 
   // Process each sentence
   return sentences.map(sentence => {
-    const normalizedText = sentence.normalizedText || normalizeToken(sentence.text);
-    const tokens = tokenizeSentence(normalizedText);
-    
+    const tokens = tokenizeSentence(sentence.text);
     const wordRefs: Array<{ wordId: string; tokenIndex: number }> = [];
-    
-    // Match tokens to words
-    for (const token of tokens) {
-      const normalizedToken = normalizeToken(token.text);
-      const matchedWord = wordMap.get(normalizedToken);
-      
-      if (matchedWord) {
+
+    for (let index = 0; index < tokens.length;) {
+      let matched = false;
+      const maxWindow = Math.min(maxPhraseLength, tokens.length - index);
+
+      for (let phraseLength = maxWindow; phraseLength >= 1; phraseLength--) {
+        const candidate = tokens
+          .slice(index, index + phraseLength)
+          .map(token => token.normalized)
+          .join(' ');
+        const matchedWord = wordMap.get(candidate);
+
+        if (!matchedWord) {
+          continue;
+        }
+
         wordRefs.push({
           wordId: matchedWord.id,
-          tokenIndex: token.tokenIndex,
+          tokenIndex: tokens[index].tokenIndex,
         });
-      } else {
-        // Gracefully handle unmatched tokens - just skip them
-        // Could optionally log a warning in development mode
-        if (process.env.NODE_ENV === 'development') {
-          // Optional: uncomment for debugging
-          // console.debug(`No match found for token: "${token.text}" in sentence: "${sentence.text}"`);
-        }
+
+        index += phraseLength;
+        matched = true;
+        break;
+      }
+
+      if (!matched) {
+        index += 1;
       }
     }
-    
+
     return {
       ...sentence,
       wordRefs,
@@ -119,64 +166,36 @@ export function buildWordRefs(
   words: Array<Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>>
 ): Array<{ wordId: string; tokenIndex: number; startChar: number; endChar: number }> {
   const wordRefs: Array<{ wordId: string; tokenIndex: number; startChar: number; endChar: number }> = [];
-  
-  // Create a lookup map of normalized word text to source word metadata.
-  const wordMap = new Map<string, Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'>>();
-  for (const word of words) {
-    const normalized = word.normalizedText || normalizeToken(word.text);
-    // If multiple words have the same normalized form, keep the first one
-    if (!wordMap.has(normalized)) {
-      wordMap.set(normalized, word);
-    }
-  }
+  const { wordMap, maxPhraseLength } = createWordLookup(words);
+  const tokens = tokenizeSentence(sentence);
 
-  // Tokenize sentence: split on whitespace and punctuation, but keep track of positions
-  const tokens: Array<{ text: string; startChar: number; endChar: number }> = [];
-  let currentStart = 0;
-  let inWord = false;
+  for (let index = 0; index < tokens.length;) {
+    let matched = false;
+    const maxWindow = Math.min(maxPhraseLength, tokens.length - index);
 
-  for (let i = 0; i < sentence.length; i++) {
-    const char = sentence[i];
-    const isWordChar = /[\w\u00C0-\u017F]/.test(char); // Word char including accented letters
+    for (let phraseLength = maxWindow; phraseLength >= 1; phraseLength--) {
+      const windowTokens = tokens.slice(index, index + phraseLength);
+      const candidate = windowTokens.map(token => token.normalized).join(' ');
+      const matchedWord = wordMap.get(candidate);
 
-    if (isWordChar && !inWord) {
-      // Start of a new word
-      currentStart = i;
-      inWord = true;
-    } else if (!isWordChar && inWord) {
-      // End of a word
-      tokens.push({
-        text: sentence.substring(currentStart, i),
-        startChar: currentStart,
-        endChar: i,
-      });
-      inWord = false;
-    }
-  }
+      if (!matchedWord) {
+        continue;
+      }
 
-  // Handle word at end of sentence
-  if (inWord) {
-    tokens.push({
-      text: sentence.substring(currentStart),
-      startChar: currentStart,
-      endChar: sentence.length,
-    });
-  }
-
-  // Match tokens to words
-  for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
-    const token = tokens[tokenIndex];
-    const normalizedToken = normalizeToken(token.text);
-    
-    const matchedWord = wordMap.get(normalizedToken);
-    
-    if (matchedWord) {
       wordRefs.push({
         wordId: matchedWord.id,
-        tokenIndex,
-        startChar: token.startChar,
-        endChar: token.endChar,
+        tokenIndex: windowTokens[0].tokenIndex,
+        startChar: windowTokens[0].startChar,
+        endChar: windowTokens[windowTokens.length - 1].endChar,
       });
+
+      index += phraseLength;
+      matched = true;
+      break;
+    }
+
+    if (!matched) {
+      index += 1;
     }
   }
 
