@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import path from 'path';
 import { existsSync } from 'fs';
 import { config } from 'dotenv';
+import helmet from 'helmet';
 import { connectMongo } from './db/mongoClient';
 import healthRouter from './routes/health';
 import pronunciationRouter, { legacyPronunciationAssessmentRouter } from './routes/pronunciationAssessment';
@@ -14,14 +15,20 @@ import {
   pronunciationRateLimitMiddleware,
 } from './middleware/pronunciationSecurity';
 import { requireAuth } from './middleware/auth';
+import {
+  logInviteCodeReadiness,
+  validateRequiredLaunchEnvVars,
+} from './config/startupChecks';
 
 // Load environment variables
 config();
 
 const app: Express = express();
 const PORT = process.env.PORT || 4000;
+const nonApiSpaRoutePattern = /^(?!\/api(?:\/|$)).*/;
 
 // Middleware
+app.use(helmet());
 app.use(express.json());
 
 // Routes
@@ -62,7 +69,7 @@ if (existsSync(distPath)) {
   }));
 
   // SPA fallback — serve index.html for all non-API routes
-  app.get('*', (_req, res) => {
+  app.get(nonApiSpaRoutePattern, (_req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
   });
 } else {
@@ -82,10 +89,13 @@ if (existsSync(distPath)) {
  */
 async function startServer(): Promise<void> {
   try {
+    validateRequiredLaunchEnvVars();
+
     // Connect to MongoDB
     console.log('[Server] Connecting to MongoDB...');
     await connectMongo();
     console.log('[Server] MongoDB connected successfully');
+    await logInviteCodeReadiness();
 
     // Start listening
     app.listen(PORT, () => {
