@@ -40,11 +40,20 @@ npm install
 npm run dev
 ```
 
-### 3. (Optional) Start backend API server
+### 3. Start backend API server
+
+This is required for authentication, pronunciation scoring, and server-backed persistence.
 
 ```bash
 npm run dev:server
 ```
+
+Required local env vars for the full app:
+
+- `MONGODB_URI`
+- `JWT_SECRET`
+- `AZURE_SPEECH_KEY`
+- `AZURE_SPEECH_REGION`
 
 ## Testing
 
@@ -63,3 +72,22 @@ npm run screenshots:readme
 ```
 
 This writes PNGs to `docs/assets/readme/`.
+
+## Deployment
+
+Recommended launch target: **Railway**.
+
+Production build and start:
+
+```bash
+npm run build
+npm run start
+```
+
+Invite-gated launch flow:
+
+```bash
+npm run invite:seed -- --code=LAUNCH-ACCESS --maxUses=25
+```
+
+If you want open signup instead, set `REQUIRE_INVITE_CODE=false` in the deployed environment.
