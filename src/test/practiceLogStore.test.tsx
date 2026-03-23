@@ -43,14 +43,31 @@ describe('practiceLogStore', () => {
     <PracticeLogStoreProvider>{children}</PracticeLogStoreProvider>
   );
 
+  async function startSession(
+    store: ReturnType<typeof usePracticeLogStore>,
+    mode: 'sentences' | 'words' | 'mixed'
+  ): Promise<string> {
+    let sessionId = '';
+    await act(async () => {
+      sessionId = await store.startSession(mode);
+    });
+    return sessionId;
+  }
+
+  async function endSession(
+    store: ReturnType<typeof usePracticeLogStore>,
+    sessionId: string
+  ): Promise<void> {
+    await act(async () => {
+      await store.endSession(sessionId);
+    });
+  }
+
   describe('startSession and endSession', () => {
-    it('should create a session with correct mode', () => {
+    it('should create a session with correct mode', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
-      act(() => {
-        sessionId = result.current.startSession('sentences');
-      });
+      const sessionId = await startSession(result.current, 'sentences');
 
       expect(sessionId).toBeDefined();
       expect(typeof sessionId).toBe('string');
@@ -63,23 +80,18 @@ describe('practiceLogStore', () => {
       expect(sessions[0].totalAttempts).toBe(0);
     });
 
-    it('should end session and calculate duration', () => {
+    it('should end session and calculate duration', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
       const startTime = new Date('2024-01-01T10:00:00Z');
       vi.setSystemTime(startTime);
 
-      act(() => {
-        sessionId = result.current.startSession('words');
-      });
+      const sessionId = await startSession(result.current, 'words');
 
       const endTime = new Date('2024-01-01T10:05:00Z'); // 5 minutes later
       vi.setSystemTime(endTime);
 
-      act(() => {
-        result.current.endSession(sessionId);
-      });
+      await endSession(result.current, sessionId);
 
       const sessions = result.current.getAllSessions();
       expect(sessions).toHaveLength(1);
@@ -88,13 +100,10 @@ describe('practiceLogStore', () => {
       expect(sessions[0].durationSeconds).toBe(300); // 5 minutes = 300 seconds
     });
 
-    it('should update session metrics when ending with attempts', () => {
+    it('should update session metrics when ending with attempts', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
-      act(() => {
-        sessionId = result.current.startSession('mixed');
-      });
+      const sessionId = await startSession(result.current, 'mixed');
 
       // Log some attempts
       act(() => {
@@ -118,9 +127,7 @@ describe('practiceLogStore', () => {
         });
       });
 
-      act(() => {
-        result.current.endSession(sessionId);
-      });
+      await endSession(result.current, sessionId);
 
       const sessions = result.current.getAllSessions();
       expect(sessions[0].totalAttempts).toBe(2);
@@ -132,13 +139,10 @@ describe('practiceLogStore', () => {
   });
 
   describe('logSentenceAttempt', () => {
-    it('should create attempt with generated ID, userId, and createdAt', () => {
+    it('should create attempt with generated ID, userId, and createdAt', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
-      act(() => {
-        sessionId = result.current.startSession('sentences');
-      });
+      const sessionId = await startSession(result.current, 'sentences');
 
       const fixedTime = new Date('2024-01-01T12:00:00Z');
       vi.setSystemTime(fixedTime);
@@ -169,13 +173,10 @@ describe('practiceLogStore', () => {
       expect(attempts[0]).toEqual(attempt);
     });
 
-    it('should handle multiple attempts for same sentence', () => {
+    it('should handle multiple attempts for same sentence', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
-      act(() => {
-        sessionId = result.current.startSession('sentences');
-      });
+      const sessionId = await startSession(result.current, 'sentences');
 
       act(() => {
         result.current.logSentenceAttempt({
@@ -207,13 +208,10 @@ describe('practiceLogStore', () => {
   });
 
   describe('logWordAttempt', () => {
-    it('should create attempt with generated ID, userId, and createdAt', () => {
+    it('should create attempt with generated ID, userId, and createdAt', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
-      act(() => {
-        sessionId = result.current.startSession('words');
-      });
+      const sessionId = await startSession(result.current, 'words');
 
       const fixedTime = new Date('2024-01-01T12:00:00Z');
       vi.setSystemTime(fixedTime);
@@ -244,16 +242,11 @@ describe('practiceLogStore', () => {
   });
 
   describe('selectors', () => {
-    it('should get attempts by session ID', () => {
+    it('should get attempts by session ID', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let session1: string;
-      let session2: string;
-
-      act(() => {
-        session1 = result.current.startSession('sentences');
-        session2 = result.current.startSession('words');
-      });
+      const session1 = await startSession(result.current, 'sentences');
+      const session2 = await startSession(result.current, 'words');
 
       act(() => {
         result.current.logSentenceAttempt({
@@ -285,7 +278,7 @@ describe('practiceLogStore', () => {
       expect(session2Attempts.words).toHaveLength(1);
     });
 
-    it('should get last N sessions', () => {
+    it('should get last N sessions', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
       const times = [
@@ -295,14 +288,12 @@ describe('practiceLogStore', () => {
       ];
 
       const sessionIds: string[] = [];
-      act(() => {
-        vi.setSystemTime(times[0]);
-        sessionIds.push(result.current.startSession('sentences'));
-        vi.setSystemTime(times[1]);
-        sessionIds.push(result.current.startSession('words'));
-        vi.setSystemTime(times[2]);
-        sessionIds.push(result.current.startSession('mixed'));
-      });
+      vi.setSystemTime(times[0]);
+      sessionIds.push(await startSession(result.current, 'sentences'));
+      vi.setSystemTime(times[1]);
+      sessionIds.push(await startSession(result.current, 'words'));
+      vi.setSystemTime(times[2]);
+      sessionIds.push(await startSession(result.current, 'mixed'));
 
       const last2 = result.current.getLastNSessions(2);
       expect(last2).toHaveLength(2);
@@ -315,13 +306,10 @@ describe('practiceLogStore', () => {
       expect(last2[1].startedAt).toBe(times[1].toISOString());
     });
 
-    it('should get recent attempts', () => {
+    it('should get recent attempts', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
-      act(() => {
-        sessionId = result.current.startSession('mixed');
-      });
+      const sessionId = await startSession(result.current, 'mixed');
 
       const times = [
         new Date('2024-01-01T10:00:00Z'),
@@ -374,12 +362,11 @@ describe('practiceLogStore', () => {
   });
 
   describe('localStorage persistence', () => {
-    it('should persist state to localStorage', () => {
+    it('should persist state to localStorage', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
+      const sessionId = await startSession(result.current, 'sentences');
       act(() => {
-        sessionId = result.current.startSession('sentences');
         result.current.logSentenceAttempt({
           sessionId,
           sentenceId: 'sent1',
@@ -468,13 +455,10 @@ describe('practiceLogStore', () => {
   });
 
   describe('edge cases', () => {
-    it('should handle logging attempts before session ends', () => {
+    it('should handle logging attempts before session ends', async () => {
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
-      let sessionId: string;
-      act(() => {
-        sessionId = result.current.startSession('sentences');
-      });
+      const sessionId = await startSession(result.current, 'sentences');
 
       // Log attempts before ending session
       act(() => {
@@ -494,25 +478,21 @@ describe('practiceLogStore', () => {
       expect(result.current.getAllSentenceAttempts()).toHaveLength(1);
 
       // End session
-      act(() => {
-        result.current.endSession(sessionId);
-      });
+      await endSession(result.current, sessionId);
 
       // Session should have correct metrics
       const sessions = result.current.getAllSessions();
       expect(sessions[0].totalAttempts).toBe(1);
     });
 
-    it('should handle ending non-existent session gracefully', () => {
+    it('should handle ending non-existent session gracefully', async () => {
       // Suppress console.warn for this test
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const { result } = renderHook(() => usePracticeLogStore(), { wrapper });
 
       // Should not throw
-      act(() => {
-        result.current.endSession('non-existent-session');
-      });
+      await endSession(result.current, 'non-existent-session');
 
       expect(result.current.getAllSessions()).toHaveLength(0);
 
@@ -520,4 +500,3 @@ describe('practiceLogStore', () => {
     });
   });
 });
-

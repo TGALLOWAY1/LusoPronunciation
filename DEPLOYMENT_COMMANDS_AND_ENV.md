@@ -48,20 +48,14 @@ Important: this is currently a placeholder script and does **not** run a real li
 Recommended pre-launch gates:
 
 ```bash
-npm run test:phase04
+npm test -- --run
 ```
+
+Deploy-critical browser smoke test:
 
 ```bash
 npm run e2e:phase04
 ```
-
-Current generic test command:
-
-```bash
-npm test -- --run
-```
-
-Important: this command is currently failing and should not be used as the release gate until fixed.
 
 ### Build
 
@@ -186,14 +180,13 @@ Recommended for production:
 
 ## Recommended Release Gate
 
-Use this sequence after fixes are in place:
+Use this sequence before deployment:
 
 ```bash
 npm ci
 npm run build
-npm run test:phase04
+npm test -- --run
 npm run e2e:phase04
-npm run start
 ```
 
 Then perform one real staging smoke test before public launch.

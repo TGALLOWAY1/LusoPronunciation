@@ -65,6 +65,12 @@ npm run e2e:phase04
 npm run verify:phase04
 ```
 
+### Full repo verification
+
+```bash
+npm test -- --run
+```
+
 ### Capture fresh README screenshots
 
 ```bash

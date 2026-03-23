@@ -6,16 +6,30 @@ import * as phonemeMetadata from '@/lib/phonemeMetadata';
 
 // Mock the phoneme metadata module
 vi.mock('@/lib/phonemeMetadata', () => ({
-  getPhonemeMetadata: vi.fn(),
+  getPhonemeById: vi.fn(),
 }));
 
 describe('PhonemeChip', () => {
   const mockMetadata = {
+    id: 'AA',
     ipa: 'ɑ',
-    description: 'Open back unrounded vowel',
-    englishExamples: ['father', 'spa'],
-    portugueseExamples: ['pá'],
-    notes: 'Like a in pai but more open.',
+    type: 'vowel',
+    category: 'open',
+    difficulty: 1,
+    englishApprox: 'Open back unrounded vowel',
+    articulation: 'Tongue low and back.',
+    acousticDescription: 'Low F1 vowel.',
+    commonMistakes: [],
+    teachingTips: ['Like a in pai but more open.'],
+    minimalPairs: [],
+    exampleWords: [
+      {
+        pt: 'pá',
+        ipa: 'pa',
+        stressPattern: '1',
+        english: 'father',
+      },
+    ],
   };
 
   beforeEach(() => {
@@ -23,37 +37,37 @@ describe('PhonemeChip', () => {
   });
 
   it('should render without error', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     render(<PhonemeChip symbol="aa" />);
     expect(screen.getByText('aa')).toBeInTheDocument();
   });
 
   it('should display ARPABET symbol', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     render(<PhonemeChip symbol="aa" />);
     expect(screen.getByText('aa')).toBeInTheDocument();
   });
 
   it('should display IPA symbol when metadata is available', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     render(<PhonemeChip symbol="aa" />);
     expect(screen.getByText('/ɑ/')).toBeInTheDocument();
   });
 
   it('should display score when provided', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     render(<PhonemeChip symbol="aa" score={85} />);
     expect(screen.getByText('(85)')).toBeInTheDocument();
   });
 
   it('should round score correctly', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     render(<PhonemeChip symbol="aa" score={85.7} />);
     expect(screen.getByText('(86)')).toBeInTheDocument();
   });
 
   it('should handle missing metadata gracefully', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(undefined);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(undefined);
     render(<PhonemeChip symbol="xyz" />);
     expect(screen.getByText('xyz')).toBeInTheDocument();
     // Should not show IPA when metadata is missing
@@ -61,7 +75,7 @@ describe('PhonemeChip', () => {
   });
 
   it('should show tooltip text in title attribute', async () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     const { container } = render(<PhonemeChip symbol="aa" score={85} />);
     const chip = container.querySelector('span[title]');
     expect(chip).toHaveAttribute('title');
@@ -72,7 +86,7 @@ describe('PhonemeChip', () => {
   });
 
   it('should show "No metadata available" in tooltip when metadata is missing', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(undefined);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(undefined);
     const { container } = render(<PhonemeChip symbol="xyz" />);
     // Find the span with the title attribute (the inner span with cursor-help class)
     const chip = container.querySelector('span[title]');
@@ -81,7 +95,7 @@ describe('PhonemeChip', () => {
   });
 
   it('should apply correct styling classes for score', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     const { container } = render(<PhonemeChip symbol="aa" score={95} />);
     const chip = container.querySelector('span span');
     // Should have score-based color classes
@@ -89,7 +103,7 @@ describe('PhonemeChip', () => {
   });
 
   it('should apply default styling when score is not provided', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     const { container } = render(<PhonemeChip symbol="aa" />);
     const chip = container.querySelector('span span');
     // Should have default gray styling
@@ -97,7 +111,7 @@ describe('PhonemeChip', () => {
   });
 
   it('should handle empty symbol gracefully', () => {
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(undefined);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(undefined);
     const { container } = render(<PhonemeChip symbol="" />);
     // Component should render without crashing
     const chip = container.querySelector('span span');
@@ -106,7 +120,7 @@ describe('PhonemeChip', () => {
 
   it('should display tooltip on hover', async () => {
     const user = userEvent.setup();
-    vi.mocked(phonemeMetadata.getPhonemeMetadata).mockReturnValue(mockMetadata);
+    vi.mocked(phonemeMetadata.getPhonemeById).mockReturnValue(mockMetadata);
     render(<PhonemeChip symbol="aa" score={85} />);
     
     const chip = screen.getByText('aa').closest('span');
@@ -120,4 +134,3 @@ describe('PhonemeChip', () => {
     }
   });
 });
-

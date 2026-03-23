@@ -9,6 +9,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setupTests.ts'],
     css: true,
+    exclude: ['e2e/**', 'dist/**', 'node_modules/**'],
   },
   resolve: {
     alias: {
@@ -16,4 +17,3 @@ export default defineConfig({
     },
   },
 });
-
