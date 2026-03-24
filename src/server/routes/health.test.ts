@@ -22,7 +22,7 @@ describe('buildHealthResponse', () => {
     });
   });
 
-  it('returns 503 when MongoDB is disconnected', async () => {
+  it('returns 200 with ok:false when MongoDB is disconnected', async () => {
     const mongoStatus: MongoStatus = {
       connected: false,
       readyState: 0,
@@ -30,7 +30,7 @@ describe('buildHealthResponse', () => {
 
     const response = await buildHealthResponse(async () => mongoStatus);
 
-    expect(response.statusCode).toBe(503);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
       ok: false,
       error: 'MongoDB is not connected.',
@@ -38,12 +38,12 @@ describe('buildHealthResponse', () => {
     });
   });
 
-  it('returns 500 when MongoDB status lookup throws', async () => {
+  it('returns 200 with error when MongoDB status lookup throws', async () => {
     const response = await buildHealthResponse(async () => {
       throw new Error('status lookup failed');
     });
 
-    expect(response.statusCode).toBe(500);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
       ok: false,
       error: 'status lookup failed',
