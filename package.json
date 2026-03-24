@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Personal Pronunciation Trainer For Brazilian Portuguese",
   "engines": {
-    "node": ">=22"
+    "node": "22.x"
   },
   "scripts": {
     "dev": "vite",
