@@ -2,6 +2,9 @@
   "name": "lusopronounce",
   "version": "1.0.0",
   "description": "A Personal Pronunciation Trainer For Brazilian Portuguese",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite",
     "dev:server": "tsx src/server/app.ts",
