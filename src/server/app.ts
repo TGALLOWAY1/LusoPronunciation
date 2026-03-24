@@ -85,9 +85,15 @@ if (existsSync(distPath)) {
 
 /**
  * Starts the Express server
- * Connects to MongoDB first, then starts listening
+ * Starts listening first (so health checks can respond), then connects to MongoDB
  */
 async function startServer(): Promise<void> {
+  // Start listening immediately so Railway health checks can reach the server
+  app.listen(PORT, () => {
+    console.log(`[Server] Server running on http://localhost:${PORT}`);
+    console.log(`[Server] Health check: http://localhost:${PORT}/api/health`);
+  });
+
   try {
     validateRequiredLaunchEnvVars();
 
@@ -96,15 +102,9 @@ async function startServer(): Promise<void> {
     await connectMongo();
     console.log('[Server] MongoDB connected successfully');
     await logInviteCodeReadiness();
-
-    // Start listening
-    app.listen(PORT, () => {
-      console.log(`[Server] Server running on http://localhost:${PORT}`);
-      console.log(`[Server] Health check: http://localhost:${PORT}/api/health`);
-    });
   } catch (error) {
-    console.error('[Server] Failed to start server:', error);
-    process.exit(1);
+    console.error('[Server] Failed to connect to MongoDB:', error);
+    // Don't exit — keep the server running so health checks can report the error
   }
 }
 
@@ -119,8 +119,13 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-// Start the server
-if (require.main === module) {
+// Start the server when run directly (not imported for testing)
+// Use argv check as fallback since require.main === module can be unreliable with tsx
+const isDirectRun =
+  (typeof require !== 'undefined' && require.main === module) ||
+  process.argv[1]?.replace(/\.ts$/, '').endsWith('server/app');
+
+if (isDirectRun) {
   startServer().catch((error) => {
     console.error('[Server] Fatal error:', error);
     process.exit(1);
