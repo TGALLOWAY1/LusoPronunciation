@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+.env.local
+.git
+playwright-report
+test-results
+venv
+__pycache__
+.DS_Store
+*.tsbuildinfo
