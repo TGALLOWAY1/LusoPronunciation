@@ -15,28 +15,21 @@ export async function buildHealthResponse(
   try {
     const mongoStatus = await getStatus();
 
-    if (!mongoStatus.connected) {
-      return {
-        statusCode: 503,
-        body: {
-          ok: false,
-          error: 'MongoDB is not connected.',
-          mongo: mongoStatus,
-        },
-      };
-    }
-
+    // Always return 200 for liveness (Railway health check).
+    // The response body still reports MongoDB status for observability.
     return {
       statusCode: 200,
       body: {
-        ok: true,
+        ok: mongoStatus.connected,
         mongo: mongoStatus,
+        ...(!mongoStatus.connected && { error: 'MongoDB is not connected.' }),
       },
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    // Still return 200 so the deploy isn't killed — report the error in the body
     return {
-      statusCode: 500,
+      statusCode: 200,
       body: {
         ok: false,
         error: errorMessage,
