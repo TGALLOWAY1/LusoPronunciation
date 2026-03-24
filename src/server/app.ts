@@ -119,13 +119,13 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-// Start the server when run directly (not imported for testing)
-// Use argv check as fallback since require.main === module can be unreliable with tsx
-const isDirectRun =
-  (typeof require !== 'undefined' && require.main === module) ||
-  process.argv[1]?.replace(/\.ts$/, '').endsWith('server/app');
+// Start the server when run directly (not imported for testing).
+// Vitest sets NODE_ENV or VITEST env vars; tsx doesn't reliably support
+// require.main === module, so we check argv and env to decide.
+const isTestImport =
+  process.env.VITEST === 'true' || process.env.NODE_ENV === 'test';
 
-if (isDirectRun) {
+if (!isTestImport) {
   startServer().catch((error) => {
     console.error('[Server] Fatal error:', error);
     process.exit(1);
