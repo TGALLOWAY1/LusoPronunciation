@@ -329,7 +329,10 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       // POST to API endpoint
       const fetchHeaders: Record<string, string> = {};
       const authHeaderValue = getAuthHeader();
-      if (authHeaderValue) fetchHeaders['Authorization'] = authHeaderValue;
+      if (!authHeaderValue) {
+        throw new Error('Please log in to use pronunciation assessment.');
+      }
+      fetchHeaders['Authorization'] = authHeaderValue;
 
       const response = await fetch('/api/pronunciation/assessment', {
         method: 'POST',

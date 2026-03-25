@@ -14,6 +14,7 @@ import RecentSessions from '../pages/RecentSessions';
 import AuthPage from '../pages/AuthPage';
 import OAuthCallbackPage from '../pages/OAuthCallbackPage';
 import { isAuthenticated, pingSpeechServiceHealth } from '@/api/auth';
+import RequireAuth from '@/components/auth/RequireAuth';
 
 // Dev-only pages — lazy loaded and tree-shaken from production bundle
 const PronunciationFixtures = lazy(() => import('../pages/dev/pronunciation-fixtures'));
@@ -25,13 +26,13 @@ function AppRoutes() {
     <BrowserRouter>
       <AppLayout>
         <Routes>
-          <Route path="/" element={<UserDashboardPage />} />
+          <Route path="/" element={<RequireAuth><UserDashboardPage /></RequireAuth>} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<OAuthCallbackPage />} />
-          <Route path="/practice/sentence" element={<SentencePractice />} />
-          <Route path="/practice/word" element={<WordPractice />} />
-          <Route path="/review" element={<Review />} />
-          <Route path="/sessions" element={<RecentSessions />} />
+          <Route path="/practice/sentence" element={<RequireAuth><SentencePractice /></RequireAuth>} />
+          <Route path="/practice/word" element={<RequireAuth><WordPractice /></RequireAuth>} />
+          <Route path="/review" element={<RequireAuth><Review /></RequireAuth>} />
+          <Route path="/sessions" element={<RequireAuth><RecentSessions /></RequireAuth>} />
           {import.meta.env.DEV && (
             <>
               <Route path="/dev/pronunciation-fixtures" element={<Suspense fallback={null}><PronunciationFixtures /></Suspense>} />

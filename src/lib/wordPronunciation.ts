@@ -32,7 +32,10 @@ export async function scoreWordPronunciation(
   // POST to API endpoint (same endpoint as sentences)
   const headers: Record<string, string> = {};
   const authHeader = getAuthHeader();
-  if (authHeader) headers['Authorization'] = authHeader;
+  if (!authHeader) {
+    throw new Error('Please log in to use pronunciation assessment.');
+  }
+  headers['Authorization'] = authHeader;
 
   const response = await fetch('/api/pronunciation/assessment', {
     method: 'POST',
