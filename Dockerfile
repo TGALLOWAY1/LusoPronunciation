@@ -17,6 +17,9 @@ FROM node:22-slim
 
 WORKDIR /app
 
+# Install CA certificates for TLS connections (required for MongoDB Atlas)
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+
 # Install production dependencies only
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
