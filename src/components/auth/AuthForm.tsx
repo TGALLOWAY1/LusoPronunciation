@@ -1,5 +1,5 @@
-import { useState, FormEvent } from 'react';
-import { register, login, type AuthResponse } from '@/api/auth';
+import { useState, useEffect, FormEvent } from 'react';
+import { register, login, devLogin, fetchAuthProviders, type AuthResponse } from '@/api/auth';
 import type { User } from '@/shared/types';
 
 interface AuthFormProps {
@@ -35,6 +35,11 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState<string | null>(oauthError || null);
   const [loading, setLoading] = useState(false);
+  const [providers, setProviders] = useState<string[]>(['email']);
+
+  useEffect(() => {
+    fetchAuthProviders().then(setProviders);
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -70,24 +75,56 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
         </div>
       )}
 
-      {/* OAuth Buttons */}
-      <div className="space-y-3 mb-6">
-        <a
-          href="/api/auth/oauth/github"
-          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
-        >
-          <GitHubIcon />
-          Continue with GitHub
-        </a>
+      {/* Dev Quick Login */}
+      {providers.includes('dev') && (
+        <div className="mb-6">
+          <button
+            type="button"
+            disabled={loading}
+            onClick={async () => {
+              setError(null);
+              setLoading(true);
+              try {
+                const response = await devLogin();
+                onSuccess(response.user);
+              } catch (err) {
+                setError(err instanceof Error ? err.message : 'Dev login failed');
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors disabled:opacity-50"
+          >
+            Quick Dev Login
+          </button>
+          <p className="text-xs text-gray-400 text-center mt-1">Development mode only</p>
+        </div>
+      )}
 
-        <a
-          href="/api/auth/oauth/linkedin"
-          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-[#0A66C2] text-white rounded-md hover:bg-[#004182] transition-colors"
-        >
-          <LinkedInIcon />
-          Continue with LinkedIn
-        </a>
-      </div>
+      {/* OAuth Buttons */}
+      {(providers.includes('github') || providers.includes('linkedin')) && (
+        <div className="space-y-3 mb-6">
+          {providers.includes('github') && (
+            <a
+              href="/api/auth/oauth/github"
+              className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
+            >
+              <GitHubIcon />
+              Continue with GitHub
+            </a>
+          )}
+
+          {providers.includes('linkedin') && (
+            <a
+              href="/api/auth/oauth/linkedin"
+              className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-[#0A66C2] text-white rounded-md hover:bg-[#004182] transition-colors"
+            >
+              <LinkedInIcon />
+              Continue with LinkedIn
+            </a>
+          )}
+        </div>
+      )}
 
       {/* Divider */}
       <div className="relative mb-6">
