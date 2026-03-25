@@ -33,7 +33,21 @@ const nonApiSpaRoutePattern = /^(?!\/api(?:\/|$)).*/;
 app.set('trust proxy', 1);
 
 // Middleware
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "blob:"],
+        mediaSrc: ["'self'", "blob:"],
+        connectSrc: ["'self'", "blob:"],
+        workerSrc: ["'self'", "blob:"],
+      },
+    },
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 
