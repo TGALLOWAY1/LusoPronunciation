@@ -169,6 +169,43 @@ export async function pingSpeechServiceHealth(): Promise<void> {
 }
 
 /**
+ * Fetch available auth providers from the server
+ */
+export async function fetchAuthProviders(): Promise<string[]> {
+  try {
+    const response = await fetch('/api/auth/providers');
+    if (!response.ok) return ['email'];
+    const data = await response.json() as { providers: string[] };
+    return data.providers;
+  } catch {
+    return ['email'];
+  }
+}
+
+/**
+ * Dev-mode quick login (non-production only)
+ */
+export async function devLogin(): Promise<AuthResponse> {
+  const response = await fetch('/api/auth/dev-login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+    throw new Error(errorData.message || errorData.error || `HTTP ${response.status}`);
+  }
+
+  const data: AuthResponse = await response.json();
+
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+  }
+
+  return data;
+}
+
+/**
  * Handle OAuth callback — stores the token received from the server redirect
  */
 export function handleOAuthCallback(token: string): void {

@@ -239,4 +239,58 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * GET /api/auth/providers
+ *
+ * Returns which auth providers are available (OAuth configured, dev login, etc.)
+ */
+router.get('/providers', (_req: Request, res: Response) => {
+  const providers: string[] = ['email'];
+
+  if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+    providers.push('github');
+  }
+  if (process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET) {
+    providers.push('linkedin');
+  }
+  if (process.env.NODE_ENV !== 'production') {
+    providers.push('dev');
+  }
+
+  res.json({ providers });
+});
+
+/**
+ * POST /api/auth/dev-login
+ *
+ * Quick-login for development/testing — creates or finds a dev user and returns a token.
+ * Disabled in production.
+ */
+router.post('/dev-login', async (_req: Request, res: Response) => {
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).json({ error: 'Not found' });
+  }
+
+  try {
+    const devEmail = 'dev@lusopronunciation.local';
+
+    let userDoc = await UserModel.findOne({ email: devEmail });
+    if (!userDoc) {
+      userDoc = await UserModel.create({
+        email: devEmail,
+        displayName: 'Dev User',
+        passwordHash: await bcrypt.hash('devdev', 10),
+      });
+    }
+
+    const token = generateToken(userDoc._id.toString(), userDoc.email);
+    const user = mapUserDocToDto(userDoc);
+
+    res.json({ token, user });
+  } catch (error) {
+    console.error('[Auth] Dev login error:', error);
+    res.status(500).json({ error: 'Dev login failed' });
+  }
+});
+
 export default router;
