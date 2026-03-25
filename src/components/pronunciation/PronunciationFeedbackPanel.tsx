@@ -89,7 +89,15 @@ export default function PronunciationFeedbackPanel({
   useEffect(() => {
     setPracticeMode('textOnly');
     setShowEnglish(false);
+    setSelectedWord(null);
   }, [sentenceText]);
+
+  // Auto-select the first word when scoring results arrive
+  useEffect(() => {
+    if (words && words.length > 0 && hasAttempts && !selectedWord) {
+      setSelectedWord(words[0]);
+    }
+  }, [words, hasAttempts]); // intentionally omit selectedWord to avoid re-selecting after user clears
 
   // Log practice mode when it changes (for debugging and future scoring integration)
   useEffect(() => {
