@@ -89,7 +89,14 @@ export function pronunciationCorsMiddleware(req: Request, res: Response, next: N
     return;
   }
 
-  if (!allowedOrigins.has(requestOrigin)) {
+  // Allow same-origin requests: when the app serves both frontend and API
+  // from the same host (e.g. Railway), the Origin will match the Host header.
+  const host = req.header('host');
+  const isSameOrigin =
+    host &&
+    (requestOrigin === `https://${host}` || requestOrigin === `http://${host}`);
+
+  if (!isSameOrigin && !allowedOrigins.has(requestOrigin)) {
     speechLog('warn', 'Pronunciation request blocked by CORS policy', {
       requestId,
       statusClass: '4xx',
