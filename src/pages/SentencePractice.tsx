@@ -12,7 +12,6 @@ import type { AttemptScore } from '@/types/pronunciation';
 import { stopAllAudio } from '@/hooks/useAudioPlayer';
 import { getDifficultyLabel } from '@/utils/difficultyLabels';
 import LivePracticeSection from '@/components/practice/LivePracticeSection';
-import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import ScoreHistory from '@/components/practice/ScoreHistory';
 import AttemptHistory from '@/components/practice/AttemptHistory';
 import SentenceFeedback from '@/components/practice/SentenceFeedback';
@@ -359,11 +358,6 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
         {/* Main content area - Single column layout */}
         {currentSentence ? (
           <div className="max-w-6xl mx-auto space-y-6 mb-6">
-            {/* Score Banner - appears above sentence after submission */}
-            {selectedAttempt && (
-              <ScoringPanel currentAttempt={selectedAttempt} variant="banner" />
-            )}
-
             {/* Main sentence practice area */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <div className="mb-4 flex items-center justify-between">

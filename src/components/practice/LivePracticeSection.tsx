@@ -3,6 +3,7 @@ import type { Sentence } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import { useLivePronunciationPractice } from '@/hooks/useLivePronunciationPractice';
 import { PronunciationFeedbackPanel, type PronunciationFeedbackPanelProps } from '@/components/pronunciation';
+import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import NextStepCoachingCard from '@/components/practice/NextStepCoachingCard';
 import {
   adaptWordScoresToNormalized,
@@ -236,13 +237,14 @@ export default function LivePracticeSection({
   const recordingFileExists = Boolean(audioUrl);
 
   // UI rendering is driven from the centralized attempt lifecycle state.
+  const isScoredState = attemptState === 'scored';
   const isReadyToRecord = attemptState === 'idle' || (!recordingFileExists && attemptState !== 'recording');
   const isRecordingInProgress = attemptState === 'recording' || isRecording;
   const isReviewState =
     recordingFileExists &&
+    !isScoredState &&
     (attemptState === 'recorded' ||
       attemptState === 'submitting' ||
-      attemptState === 'scored' ||
       attemptState === 'error' ||
       attemptState === 'canceled');
 
@@ -311,7 +313,7 @@ export default function LivePracticeSection({
             />
           )}
 
-          {/* State 3: Review - Two buttons side-by-side */}
+          {/* State 3: Review (pre-submit) - Two buttons side-by-side */}
           {isReviewState && (
             <>
               {/* Secondary Button (Left): Reset/Retry */}
@@ -389,7 +391,28 @@ export default function LivePracticeSection({
               </button>
             </>
           )}
+
+          {/* State 4: Scored - Record again button */}
+          {isScoredState && (
+            <PremiumRecordButton
+              isRecording={false}
+              onClick={() => {
+                resetRecording();
+                // Small delay to ensure state resets before starting
+                setTimeout(() => startRecording(), 0);
+              }}
+              disabled={false}
+              size="lg"
+            />
+          )}
         </div>
+
+        {/* "Try again" label under mic button in scored state */}
+        {isScoredState && (
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+            Tap to try again
+          </p>
+        )}
 
         {submitting && (
           <div className="flex justify-center">
@@ -409,7 +432,16 @@ export default function LivePracticeSection({
         )}
       </div>
 
-      {attemptState === 'scored' && coachingSuggestion && (
+      {/* Scoring Results - shown immediately after assessment */}
+      {isScoredState && currentAttempt && (
+        <ScoringPanel currentAttempt={currentAttempt} variant="banner" />
+      )}
+
+      {/* Pronunciation Feedback Panel */}
+      <PronunciationFeedbackPanel {...panelProps} />
+
+      {/* Coaching suggestion - shown below results as a helpful hint */}
+      {isScoredState && coachingSuggestion && (
         <NextStepCoachingCard
           suggestion={coachingSuggestion}
           drillOpen={isDrillOpen}
@@ -417,9 +449,6 @@ export default function LivePracticeSection({
           onRetrySentence={handleRetrySentenceFromDrill}
         />
       )}
-
-      {/* Pronunciation Feedback Panel */}
-      <PronunciationFeedbackPanel {...panelProps} />
     </div>
   );
 }
