@@ -12,6 +12,7 @@ export default function OAuthCallbackPage() {
 
     if (error) {
       const messages: Record<string, string> = {
+        invalid_state: 'Login session expired or was tampered with. Please try again.',
         missing_code: 'OAuth authorization was cancelled or failed.',
         token_exchange_failed: 'Failed to verify your account with the provider.',
         no_email: 'No email address found on your account. Please use a provider with a verified email.',

@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { Router, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserModel } from '../models/UserModel';
@@ -19,7 +20,35 @@ function generateToken(userId: string, email: string): string {
 }
 
 function getAppOrigin(): string {
-  return process.env.APP_ORIGIN || `http://localhost:3000`;
+  return process.env.APP_ORIGIN || 'http://localhost:3000';
+}
+
+/** Generate a cryptographically random state nonce and set it as an HttpOnly cookie. */
+function setStateCookie(res: Response, provider: string): string {
+  const state = crypto.randomBytes(32).toString('hex');
+  res.cookie(`oauth_state_${provider}`, state, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 10 * 60 * 1000, // 10 minutes
+    path: `/api/auth/oauth/${provider}/callback`,
+  });
+  return state;
+}
+
+/** Validate the state param against the cookie and clear it. Returns true if valid. */
+function validateState(req: Request, res: Response, provider: string): boolean {
+  const stateParam = req.query.state;
+  const cookieName = `oauth_state_${provider}`;
+  const stateCookie = req.cookies?.[cookieName];
+
+  // Clear the cookie regardless
+  res.clearCookie(cookieName, { path: `/api/auth/oauth/${provider}/callback` });
+
+  if (!stateParam || !stateCookie || stateParam !== stateCookie) {
+    return false;
+  }
+  return true;
 }
 
 // ──────────────── GitHub OAuth ────────────────
@@ -30,11 +59,14 @@ router.get('/github', (_req: Request, res: Response) => {
     return res.status(500).json({ error: 'GitHub OAuth not configured' });
   }
 
-  const redirectUri = `${process.env.APP_ORIGIN || ''}/api/auth/oauth/github/callback`;
+  const appOrigin = getAppOrigin();
+  const state = setStateCookie(res, 'github');
+  const redirectUri = `${appOrigin}/api/auth/oauth/github/callback`;
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
     scope: 'user:email',
+    state,
   });
 
   res.redirect(`https://github.com/login/oauth/authorize?${params.toString()}`);
@@ -44,11 +76,18 @@ router.get('/github/callback', async (req: Request, res: Response) => {
   const { code } = req.query;
   const appOrigin = getAppOrigin();
 
+  // Validate CSRF state nonce
+  if (!validateState(req, res, 'github')) {
+    return res.redirect(`${appOrigin}/auth?error=invalid_state`);
+  }
+
   if (!code || typeof code !== 'string') {
     return res.redirect(`${appOrigin}/auth?error=missing_code`);
   }
 
   try {
+    const redirectUri = `${appOrigin}/api/auth/oauth/github/callback`;
+
     // Exchange code for access token
     const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
@@ -60,6 +99,7 @@ router.get('/github/callback', async (req: Request, res: Response) => {
         client_id: process.env.GITHUB_CLIENT_ID,
         client_secret: process.env.GITHUB_CLIENT_SECRET,
         code,
+        redirect_uri: redirectUri,
       }),
     });
 
@@ -80,7 +120,7 @@ router.get('/github/callback', async (req: Request, res: Response) => {
       avatar_url: string | null;
     };
 
-    // Fetch email if not public
+    // Fetch verified email — only accept verified addresses
     let email = githubUser.email;
     if (!email) {
       const emailsResponse = await fetch('https://api.github.com/user/emails', {
@@ -91,8 +131,9 @@ router.get('/github/callback', async (req: Request, res: Response) => {
         primary: boolean;
         verified: boolean;
       }>;
-      const primary = emails.find((e) => e.primary && e.verified);
-      email = primary?.email || emails[0]?.email || null;
+      const verifiedEmails = emails.filter((e) => e.verified);
+      const primary = verifiedEmails.find((e) => e.primary);
+      email = primary?.email || verifiedEmails[0]?.email || null;
     }
 
     if (!email) {
@@ -142,12 +183,15 @@ router.get('/linkedin', (_req: Request, res: Response) => {
     return res.status(500).json({ error: 'LinkedIn OAuth not configured' });
   }
 
-  const redirectUri = `${process.env.APP_ORIGIN || ''}/api/auth/oauth/linkedin/callback`;
+  const appOrigin = getAppOrigin();
+  const state = setStateCookie(res, 'linkedin');
+  const redirectUri = `${appOrigin}/api/auth/oauth/linkedin/callback`;
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: clientId,
     redirect_uri: redirectUri,
     scope: 'openid profile email',
+    state,
   });
 
   res.redirect(`https://www.linkedin.com/oauth/v2/authorization?${params.toString()}`);
@@ -157,12 +201,17 @@ router.get('/linkedin/callback', async (req: Request, res: Response) => {
   const { code } = req.query;
   const appOrigin = getAppOrigin();
 
+  // Validate CSRF state nonce
+  if (!validateState(req, res, 'linkedin')) {
+    return res.redirect(`${appOrigin}/auth?error=invalid_state`);
+  }
+
   if (!code || typeof code !== 'string') {
     return res.redirect(`${appOrigin}/auth?error=missing_code`);
   }
 
   try {
-    const redirectUri = `${process.env.APP_ORIGIN || ''}/api/auth/oauth/linkedin/callback`;
+    const redirectUri = `${appOrigin}/api/auth/oauth/linkedin/callback`;
 
     // Exchange code for access token
     const tokenResponse = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {

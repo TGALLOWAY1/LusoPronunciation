@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import path from 'path';
 import { existsSync } from 'fs';
 import { config } from 'dotenv';
+import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { connectMongo } from './db/mongoClient';
 import healthRouter from './routes/health';
@@ -30,6 +31,7 @@ const nonApiSpaRoutePattern = /^(?!\/api(?:\/|$)).*/;
 
 // Middleware
 app.use(helmet());
+app.use(cookieParser());
 app.use(express.json());
 
 // Routes
