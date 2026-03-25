@@ -1,4 +1,5 @@
 import type { DifficultyStats } from '@/lib/types';
+import { getDifficultyLabel } from '@/utils/difficultyLabels';
 
 interface DifficultyBreakdownChartProps {
   data: DifficultyStats[];
@@ -20,16 +21,12 @@ export default function DifficultyBreakdownChart({ data }: DifficultyBreakdownCh
   // Get color for difficulty level
   const getDifficultyColor = (difficulty: number): string => {
     switch (difficulty) {
-      case 1:
-        return 'bg-emerald-500 dark:bg-emerald-600';
       case 2:
         return 'bg-sky-500 dark:bg-sky-600';
       case 3:
         return 'bg-amber-500 dark:bg-amber-600';
       case 4:
         return 'bg-orange-500 dark:bg-orange-600';
-      case 5:
-        return 'bg-rose-500 dark:bg-rose-600';
       default:
         return 'bg-gray-500 dark:bg-gray-600';
     }
@@ -38,16 +35,12 @@ export default function DifficultyBreakdownChart({ data }: DifficultyBreakdownCh
   // Get text color for difficulty level
   const getDifficultyTextColor = (difficulty: number): string => {
     switch (difficulty) {
-      case 1:
-        return 'text-emerald-700 dark:text-emerald-300';
       case 2:
         return 'text-sky-700 dark:text-sky-300';
       case 3:
         return 'text-amber-700 dark:text-amber-300';
       case 4:
         return 'text-orange-700 dark:text-orange-300';
-      case 5:
-        return 'text-rose-700 dark:text-rose-300';
       default:
         return 'text-gray-700 dark:text-gray-300';
     }
@@ -75,7 +68,7 @@ export default function DifficultyBreakdownChart({ data }: DifficultyBreakdownCh
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <span className={`text-sm font-semibold ${getDifficultyTextColor(stat.difficulty)} min-w-[100px]`}>
-                    Difficulty {stat.difficulty}
+                    {getDifficultyLabel(stat.difficulty) ?? `Difficulty ${stat.difficulty}`}
                   </span>
                   <span className="text-xs text-gray-500 dark:text-gray-400">
                     {totalAttempts} {totalAttempts === 1 ? 'attempt' : 'attempts'}

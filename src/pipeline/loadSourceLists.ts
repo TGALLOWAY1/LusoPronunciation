@@ -64,7 +64,7 @@ export async function loadRawWords(config: GenerationPipelineConfig): Promise<Ra
         en: word.en.trim(),
         pos: word.pos,
         category: category.id,
-        difficulty: word.difficulty as 1 | 2 | 3 | 4 | 5,
+        difficulty: word.difficulty as 2 | 3 | 4,
         difficult_for_english: word.difficult_for_english,
         pronunciation_notes: word.pronunciation_notes,
       });
@@ -125,7 +125,7 @@ export async function loadRawSentences(config: GenerationPipelineConfig): Promis
           pt: sentence.pt.trim(),
           en: sentence.en.trim(),
           category: category.id,
-          difficulty: sentence.difficulty as 1 | 2 | 3 | 4 | 5,
+          difficulty: sentence.difficulty as 2 | 3 | 4,
           pronunciation_notes: sentence.pronunciation_notes,
         });
       }

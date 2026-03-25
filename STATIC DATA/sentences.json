@@ -1,777 +1,776 @@
 {
-    "language_pair": "en-pt-BR",
-    "version": "1.0",
-    "categories": [
-      {
-        "id": "food",
-        "label_en": "Food & Eating",
-        "label_pt": "Comida e Refeições",
-        "sentences": [
-          {
-            "id": "food_001",
-            "en": "I'm hungry, what do you want to eat?",
-            "pt": "Estou com fome, o que você quer comer?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘Estou’ has nasalized 'om'; stress in ‘você’ is on 'cê'."
-          },
-          {
-            "id": "food_002",
-            "en": "Is there anything vegan on the menu?",
-            "pt": "Tem alguma coisa vegana no cardápio?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘nh’ sound in ‘alguma’ is soft; ‘cardápio’ stress on 'dá'."
-          },
-          {
-            "id": "food_003",
-            "en": "I don't eat meat, only fish and vegetables.",
-            "pt": "Eu não como carne, só peixe e legumes.",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘ão’ in ‘não’; ‘peixe’ sounds like ‘PAY-shee’."
-          },
-          {
-            "id": "food_004",
-            "en": "Can I see the menu, please?",
-            "pt": "Posso ver o cardápio, por favor?",
-            "difficulty": 1,
-            "pronunciation_notes": "‘Posso’ stress on first syllable; ‘por favor’ with open 'o' in ‘por’."
-          },
-          {
-            "id": "food_005",
-            "en": "The food is delicious, thank you.",
-            "pt": "A comida está deliciosa, obrigado.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘deliciosa’ stress on 'o'; say ‘bri’ in ‘obrigado’ like ‘bree’."
-          },
-          {
-            "id": "food_006",
-            "en": "I'd like a glass of water without ice.",
-            "pt": "Eu gostaria de um copo de água sem gelo.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘água’ has stressed ‘á’; ‘gelo’ sounds like ‘zhe-lo’."
-          },
-          {
-            "id": "food_007",
-            "en": "Can you bring the bill, please?",
-            "pt": "Você pode trazer a conta, por favor?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘conta’ with nasal ‘on’; ‘trazer’ with soft ‘z’ sound."
-          },
-          {
-            "id": "food_008",
-            "en": "Do you have any snacks or something small to eat?",
-            "pt": "Você tem algum lanche ou alguma coisa pequena para comer?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘lanche’ sounds like ‘lãn-shee’; nasal in first syllable."
-          },
-          {
-            "id": "food_009",
-            "en": "I usually skip breakfast.",
-            "pt": "Eu geralmente pulo o café da manhã.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘geralmente’ with soft ‘g’ (like ‘j’); nasal ‘ã’ in ‘manhã’."
-          },
-          {
-            "id": "food_010",
-            "en": "This is too spicy for me.",
-            "pt": "Isso é muito apimentado para mim.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Isso’ like ‘EE-su’; ‘apimentado’ stress on 'ta'."
-          }
-        ]
-      },
-      {
-        "id": "travel",
-        "label_en": "Travel",
-        "label_pt": "Viagem",
-        "sentences": [
-          {
-            "id": "travel_001",
-            "en": "Where is the bus station?",
-            "pt": "Onde fica a rodoviária?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Onde’ with nasal ‘on’; ‘rodoviária’ stress on 'á'."
-          },
-          {
-            "id": "travel_002",
-            "en": "What time does the train leave?",
-            "pt": "Que horas o trem sai?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘trem’ has nasal ‘em’; ‘horas’ with silent ‘h’."
-          },
-          {
-            "id": "travel_003",
-            "en": "I need to go to the airport.",
-            "pt": "Eu preciso ir para o aeroporto.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘preciso’ stress on 'si'; ‘aeroporto’ said as ‘a-eh-ro-por-to’."
-          },
-          {
-            "id": "travel_004",
-            "en": "Is it safe to walk around here at night?",
-            "pt": "É seguro andar por aqui à noite?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘seguro’ stress on 'gu'; ‘noite’ like ‘NOY-chee’."
-          },
-          {
-            "id": "travel_005",
-            "en": "How long does the trip take?",
-            "pt": "Quanto tempo demora a viagem?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Quanto’ with nasal ‘an’; ‘viagem’ ends with soft ‘zhẽ’."
-          },
-          {
-            "id": "travel_006",
-            "en": "I have a reservation at this hotel.",
-            "pt": "Eu tenho uma reserva neste hotel.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘tenho’ has ‘nh’ sound; ‘hotel’ stress on 'tel'."
-          },
-          {
-            "id": "travel_007",
-            "en": "Can you recommend a cool place to visit?",
-            "pt": "Você pode recomendar um lugar legal para visitar?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘recomendar’ with guttural ‘r’ at the end; ‘legal’ like ‘leh-GAL’."
-          },
-          {
-            "id": "travel_008",
-            "en": "I think I'm on the wrong bus.",
-            "pt": "Acho que estou no ônibus errado.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Acho’ like ‘AH-shoo’; ‘ônibus’ stress on 'ô'."
-          },
-          {
-            "id": "travel_009",
-            "en": "Is it far from here?",
-            "pt": "É longe daqui?",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘on’ in ‘longe’; final ‘ge’ like ‘zhee’."
-          },
-          {
-            "id": "travel_010",
-            "en": "I love traveling by train.",
-            "pt": "Eu adoro viajar de trem.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘adoro’ stress on second syllable; ‘viajar’ ends with guttural ‘r’."
-          }
-        ]
-      },
-      {
-        "id": "family_friends",
-        "label_en": "Family & Friends",
-        "label_pt": "Família e Amigos",
-        "sentences": [
-          {
-            "id": "fam_001",
-            "en": "My family is very important to me.",
-            "pt": "Minha família é muito importante para mim.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘nh’ in ‘minha’; nasal ‘im’ in ‘importante’ and ‘mim’."
-          },
-          {
-            "id": "fam_002",
-            "en": "I have two sisters and one brother.",
-            "pt": "Eu tenho duas irmãs e um irmão.",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘ão’ in ‘irmão’; plural ‘irmãs’ has open 'ã'."
-          },
-          {
-            "id": "fam_003",
-            "en": "Are you close with your parents?",
-            "pt": "Você é próximo dos seus pais?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘próximo’ stress on 'pró'; ‘pais’ like ‘pa-is’."
-          },
-          {
-            "id": "fam_004",
-            "en": "My best friend lives in another city.",
-            "pt": "Meu melhor amigo mora em outra cidade.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘melhor’ with ‘lh’ sound; ‘mora’ stress on 'mo'."
-          },
-          {
-            "id": "fam_005",
-            "en": "I'm meeting my friends for dinner tonight.",
-            "pt": "Vou encontrar meus amigos para jantar hoje à noite.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘encontrar’ has nasal ‘en’; ‘jantar’ with guttural final ‘r’."
-          },
-          {
-            "id": "fam_006",
-            "en": "Do you have any siblings?",
-            "pt": "Você tem irmãos?",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘ãos’ in ‘irmãos’ (plural of ‘irmão’)."
-          },
-          {
-            "id": "fam_007",
-            "en": "I miss my family a lot.",
-            "pt": "Sinto muita saudade da minha família.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘saudade’ stress on 'da'; ‘minha’ with ‘nh’ sound."
-          },
-          {
-            "id": "fam_008",
-            "en": "My parents are divorced.",
-            "pt": "Meus pais são divorciados.",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘ão’ in ‘são’; ‘divorciados’ with soft ‘c’ (like ‘s’)."
-          },
-          {
-            "id": "fam_009",
-            "en": "We like to spend Sundays together.",
-            "pt": "A gente gosta de passar os domingos juntos.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘gosta’ stress on 'gos'; ‘domingos’ with nasal ‘in’."
-          },
-          {
-            "id": "fam_010",
-            "en": "I get along really well with my sister.",
-            "pt": "Eu me dou muito bem com a minha irmã.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘irmã’ with nasal ‘ã’; ‘dou’ like ‘doh’."
-          }
-        ]
-      },
-      {
-        "id": "daily_routine",
-        "label_en": "Daily Routine",
-        "label_pt": "Rotina Diária",
-        "sentences": [
-          {
-            "id": "daily_001",
-            "en": "I usually wake up around seven.",
-            "pt": "Eu geralmente acordo por volta das sete.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘geralmente’ soft ‘g’ (like ‘j’); ‘acordo’ stress on 'cor'."
-          },
-          {
-            "id": "daily_002",
-            "en": "I drink coffee before starting work.",
-            "pt": "Eu tomo café antes de começar a trabalhar.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘café’ stress on 'fé'; infinitive ‘trabalhar’ with ‘lh’."
-          },
-          {
-            "id": "daily_003",
-            "en": "I take a shower after the gym.",
-            "pt": "Eu tomo banho depois da academia.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘banho’ has ‘nh’ sound; ‘academia’ stress on 'mi'."
-          },
-          {
-            "id": "daily_004",
-            "en": "I work from home most days.",
-            "pt": "Eu trabalho de casa na maioria dos dias.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘trabalho’ with ‘lh’; ‘maioria’ stress on 'ri'."
-          },
-          {
-            "id": "daily_005",
-            "en": "At night I like to read or watch series.",
-            "pt": "À noite eu gosto de ler ou assistir séries.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘noite’ like ‘NOY-chee’; plural ‘séries’ with open 'é'."
-          },
-          {
-            "id": "daily_006",
-            "en": "I need to clean the house this weekend.",
-            "pt": "Eu preciso limpar a casa neste fim de semana.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘limpar’ final guttural ‘r’; nasal ‘im’ in ‘fim’."
-          },
-          {
-            "id": "daily_007",
-            "en": "Sometimes I work late.",
-            "pt": "Às vezes eu trabalho até tarde.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘vezes’ like ‘VE-zes’; ‘tarde’ final ‘de’ like ‘jee’."
-          },
-          {
-            "id": "daily_008",
-            "en": "I try to go running three times a week.",
-            "pt": "Eu tento correr três vezes por semana.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘correr’ with strong ‘rr’; ‘três’ has closed ‘ê’."
-          },
-          {
-            "id": "daily_009",
-            "en": "I usually cook at home.",
-            "pt": "Eu geralmente cozinho em casa.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘cozinho’ with ‘nh’; nasal ‘em’ in ‘em casa’."
-          },
-          {
-            "id": "daily_010",
-            "en": "I go to bed very late.",
-            "pt": "Eu vou dormir muito tarde.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘dormir’ final ‘r’ is guttural; ‘muito’ like ‘MOOY-to’."
-          }
-        ]
-      },
-      {
-        "id": "feelings",
-        "label_en": "Feelings & Emotions",
-        "label_pt": "Sentimentos e Emoções",
-        "sentences": [
-          {
-            "id": "feel_001",
-            "en": "I'm really tired today.",
-            "pt": "Eu estou muito cansado hoje.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘cansado’ stress on 'sa'; ‘hoje’ like ‘ô-zhee’."
-          },
-          {
-            "id": "feel_002",
-            "en": "I'm very happy to be here.",
-            "pt": "Eu estou muito feliz de estar aqui.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘feliz’ stress on 'liz'; final ‘z’ is ‘s’ sound."
-          },
-          {
-            "id": "feel_003",
-            "en": "I'm a little anxious about tomorrow.",
-            "pt": "Eu estou um pouco ansioso com o amanhã.",
-            "difficulty": 4,
-            "pronunciation_notes": "Nasal ‘ã’ in ‘amanhã’; ‘ansioso’ stress on 'o'."
-          },
-          {
-            "id": "feel_004",
-            "en": "I'm frustrated because I don't understand.",
-            "pt": "Estou frustrado porque eu não entendo.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘frustrado’ stress on 'tra'; nasal ‘ão’ in ‘não’."
-          },
-          {
-            "id": "feel_005",
-            "en": "I'm feeling much better now.",
-            "pt": "Estou me sentindo bem melhor agora.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘sentindo’ with nasal ‘in’; ‘melhor’ has ‘lh’."
-          },
-          {
-            "id": "feel_006",
-            "en": "I get nervous when I speak in Portuguese.",
-            "pt": "Eu fico nervoso quando falo em português.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘português’ closed ‘ês’; stress on last syllable."
-          },
-          {
-            "id": "feel_007",
-            "en": "Sometimes I feel a bit insecure.",
-            "pt": "Às vezes eu me sinto um pouco inseguro.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘inseguro’ stress on 'gu'; nasal ‘um’ in ‘um pouco’."
-          },
-          {
-            "id": "feel_008",
-            "en": "I'm grateful for your help.",
-            "pt": "Eu sou grato pela sua ajuda.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘grato’ stress on 'gra'; ‘ajuda’ like ‘a-ZHU-da’."
-          },
-          {
-            "id": "feel_009",
-            "en": "I'm a bit embarrassed.",
-            "pt": "Estou um pouco envergonhado.",
-            "difficulty": 4,
-            "pronunciation_notes": "Nasal ‘ão’ in related forms; ‘envergonhado’ has ‘nh’ and guttural ‘r’."
-          },
-          {
-            "id": "feel_010",
-            "en": "I'm excited about this trip.",
-            "pt": "Estou empolgado com essa viagem.",
-            "difficulty": 4,
-            "pronunciation_notes": "Nasal ‘em’ in ‘estou em-’; ‘viagem’ ends with nasal ‘ẽ’."
-          }
-        ]
-      },
-      {
-        "id": "questions_help",
-        "label_en": "Questions & Asking for Help",
-        "label_pt": "Perguntas e Pedidos de Ajuda",
-        "sentences": [
-          {
-            "id": "help_001",
-            "en": "Can you help me, please?",
-            "pt": "Você pode me ajudar, por favor?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘ajudar’ like ‘a-zhu-DAR’; final 'r' guttural."
-          },
-          {
-            "id": "help_002",
-            "en": "Could you repeat that more slowly?",
-            "pt": "Você pode repetir mais devagar?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘repetir’ stress on last syllable; ‘devagar’ final 'gar' like ‘gar’ in ‘garage’."
-          },
-          {
-            "id": "help_003",
-            "en": "I didn't understand, can you explain again?",
-            "pt": "Eu não entendi, você pode explicar de novo?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘ão’ in ‘não’; ‘entendi’ stress on 'di'."
-          },
-          {
-            "id": "help_004",
-            "en": "How do you say this in Portuguese?",
-            "pt": "Como se fala isso em português?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘português’ closed ‘ês’; ‘fala’ stress on 'fa'."
-          },
-          {
-            "id": "help_005",
-            "en": "What does this word mean?",
-            "pt": "O que essa palavra quer dizer?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘palavra’ stress on 'la'; ‘quer’ sounds like ‘ker’."
-          },
-          {
-            "id": "help_006",
-            "en": "Can you write it down for me?",
-            "pt": "Você pode escrever para mim?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘escrever’: initial ‘es’ pronounced ‘is’; final 'ver' like ‘vehr’."
-          },
-          {
-            "id": "help_007",
-            "en": "Sorry, I didn't hear you.",
-            "pt": "Desculpa, eu não te ouvi.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Desculpa’ stress on 'cul'; ‘ouvi’ like ‘oh-VEE’."
-          },
-          {
-            "id": "help_008",
-            "en": "Is this correct?",
-            "pt": "Isso está certo?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘certo’ with soft 'c' (like ‘sér-to’)."
-          },
-          {
-            "id": "help_009",
-            "en": "What should I do now?",
-            "pt": "O que eu devo fazer agora?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘devo’ stress on 'de'; ‘fazer’ like ‘fa-ZER’."
-          },
-          {
-            "id": "help_010",
-            "en": "Can I ask you a question?",
-            "pt": "Posso te fazer uma pergunta?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘pergunta’ stress on 'gun'; nasal 'un'."
-          }
-        ]
-      },
-      {
-        "id": "shopping_money",
-        "label_en": "Shopping & Money",
-        "label_pt": "Compras e Dinheiro",
-        "sentences": [
-          {
-            "id": "shop_001",
-            "en": "How much does this cost?",
-            "pt": "Quanto custa isso?",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; ‘custa’ like ‘KUS-ta’."
-          },
-          {
-            "id": "shop_002",
-            "en": "Do you accept credit card?",
-            "pt": "Vocês aceitam cartão de crédito?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘cartão’ nasal ‘ão’; ‘crédito’ stress on 'cré'."
-          },
-          {
-            "id": "shop_003",
-            "en": "Can I pay in cash?",
-            "pt": "Posso pagar em dinheiro?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘em’; ‘dinheiro’ with ‘nh’ and ‘ei’ like ‘nay’."
-          },
-          {
-            "id": "shop_004",
-            "en": "Do you have this in another size?",
-            "pt": "Você tem isso em outro tamanho?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘tamanho’ with ‘nh’; stress on 'ma'."
-          },
-          {
-            "id": "shop_005",
-            "en": "I'm just looking, thank you.",
-            "pt": "Eu só estou dando uma olhada, obrigado.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘olhada’ with ‘lh’; ‘só’ open 'ó'."
-          },
-          {
-            "id": "shop_006",
-            "en": "Is there any discount in cash?",
-            "pt": "Tem algum desconto à vista?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘desconto’: nasal ‘on’; ‘vista’ like ‘VEES-ta’."
-          },
-          {
-            "id": "shop_007",
-            "en": "Where is the supermarket?",
-            "pt": "Onde fica o supermercado?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘on’ in ‘onde’; ‘supermercado’ stress on 'ca'."
-          },
-          {
-            "id": "shop_008",
-            "en": "I need to buy some groceries.",
-            "pt": "Eu preciso comprar algumas coisas no mercado.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘comprar’ final guttural ‘r’; ‘algumas’ nasal ‘un’. "
-          },
-          {
-            "id": "shop_009",
-            "en": "Can I return this if it doesn't work?",
-            "pt": "Posso trocar isso se não funcionar?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘trocar’ with final ‘r’; ‘funcionar’ with ‘ç’ like ‘s’."
-          },
-          {
-            "id": "shop_010",
-            "en": "It's too expensive for me.",
-            "pt": "É muito caro para mim.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘caro’ open 'a'; ‘mim’ nasal 'im'."
-          }
-        ]
-      },
-      {
-        "id": "directions_transport",
-        "label_en": "Directions & Transport",
-        "label_pt": "Direções e Transporte",
-        "sentences": [
-          {
-            "id": "dir_001",
-            "en": "Turn right at the next corner.",
-            "pt": "Vire à direita na próxima esquina.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘direita’ like ‘jee-RAY-ta’; ‘próxima’ stress on 'pró'."
-          },
-          {
-            "id": "dir_002",
-            "en": "Go straight and then turn left.",
-            "pt": "Siga em frente e depois vire à esquerda.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘esquerda’ with ‘sk’ sound; nasal ‘em’ in ‘em frente’."
-          },
-          {
-            "id": "dir_003",
-            "en": "Where is the nearest subway station?",
-            "pt": "Onde fica a estação de metrô mais próxima?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘estação’ nasal ‘ão’; ‘metrô’ stress on last syllable."
-          },
-          {
-            "id": "dir_004",
-            "en": "Can I walk there, or is it better to take a bus?",
-            "pt": "Dá para ir a pé ou é melhor pegar um ônibus?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘a pé’ with open ‘é’; ‘ônibus’ stress on 'ô'."
-          },
-          {
-            "id": "dir_005",
-            "en": "I'm a bit lost.",
-            "pt": "Eu estou um pouco perdido.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘perdido’ with guttural ‘r’; nasal 'um'."
-          },
-          {
-            "id": "dir_006",
-            "en": "Is there a bus stop close by?",
-            "pt": "Tem um ponto de ônibus perto daqui?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘ponto’ nasal ‘on’; ‘ônibus’ stress on 'ô'."
-          },
-          {
-            "id": "dir_007",
-            "en": "How long does it take by car?",
-            "pt": "Quanto tempo leva de carro?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; ‘carro’ with strong ‘rr’."
-          },
-          {
-            "id": "dir_008",
-            "en": "Is there a lot of traffic now?",
-            "pt": "Tem muito trânsito agora?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘trânsito’ nasal ‘ãn’; ‘agora’ stress on 'go'."
-          },
-          {
-            "id": "dir_009",
-            "en": "I missed my bus.",
-            "pt": "Eu perdi o meu ônibus.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘perdi’ stress on 'di'; ‘ônibus’ with closed 'ô'."
-          },
-          {
-            "id": "dir_010",
-            "en": "Can you show me on the map?",
-            "pt": "Você pode me mostrar no mapa?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘mostrar’ final ‘r’; ‘mapa’ stress on 'ma'."
-          }
-        ]
-      },
-      {
-        "id": "work_study",
-        "label_en": "Work & Study",
-        "label_pt": "Trabalho e Estudos",
-        "sentences": [
-          {
-            "id": "work_001",
-            "en": "I work from nine to five.",
-            "pt": "Eu trabalho das nove às cinco.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘trabalho’ with ‘lh’; ‘cinco’ like ‘SEEN-co’."
-          },
-          {
-            "id": "work_002",
-            "en": "I have a meeting in the morning.",
-            "pt": "Eu tenho uma reunião de manhã.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘reunião’ nasal ‘ão’; ‘manhã’ nasal ‘ã’."
-          },
-          {
-            "id": "work_003",
-            "en": "I study Portuguese every day.",
-            "pt": "Eu estudo português todos os dias.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘português’ closed ‘ês’; stress on last syllable."
-          },
-          {
-            "id": "work_004",
-            "en": "I need to finish this project today.",
-            "pt": "Eu preciso terminar este projeto hoje.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘terminar’ final ‘r’; ‘projeto’ like ‘pro-ZHE-to’."
-          },
-          {
-            "id": "work_005",
-            "en": "Where do you work?",
-            "pt": "Você trabalha onde?",
-            "difficulty": 2,
-            "pronunciation_notes": "‘trabalha’ with ‘lh’; stress on 'ba'."
-          },
-          {
-            "id": "work_006",
-            "en": "I'm looking for a new job.",
-            "pt": "Estou procurando um trabalho novo.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘procurando’ stress on 'ran'; nasal 'um'."
-          },
-          {
-            "id": "work_007",
-            "en": "I have an exam next week.",
-            "pt": "Eu tenho uma prova na semana que vem.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘prova’ stress on 'pro'; ‘semana’ stress on 'ma'."
-          },
-          {
-            "id": "work_008",
-            "en": "I work remotely most of the time.",
-            "pt": "Eu trabalho remotamente na maior parte do tempo.",
-            "difficulty": 4,
-            "pronunciation_notes": "‘remotamente’ stress on 'men'; ‘trabalho’ with ‘lh’."
-          },
-          {
-            "id": "work_009",
-            "en": "I'm taking an online course.",
-            "pt": "Eu estou fazendo um curso online.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘curso’ like ‘KOOR-so’; ‘online’ often pronounced close to English."
-          },
-          {
-            "id": "work_010",
-            "en": "I need a break.",
-            "pt": "Eu preciso de uma pausa.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘pausa’ like ‘PAW-za’; z like ‘z’."
-          }
-        ]
-      },
-      {
-        "id": "small_talk_social",
-        "label_en": "Small Talk & Social",
-        "label_pt": "Conversas Informais",
-        "sentences": [
-          {
-            "id": "social_001",
-            "en": "Hi, how are you?",
-            "pt": "Oi, tudo bem?",
-            "difficulty": 1,
-            "pronunciation_notes": "‘Oi’ like ‘oy’; ‘bem’ nasal 'ẽ'."
-          },
-          {
-            "id": "social_002",
-            "en": "Nice to meet you.",
-            "pt": "Prazer em te conhecer.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘Prazer’ stress on 'zer'; ‘conhecer’ with ‘nh’."
-          },
-          {
-            "id": "social_003",
-            "en": "Where are you from?",
-            "pt": "De onde você é?",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal 'on' in ‘onde’; ‘você’ stress on 'cê'."
-          },
-          {
-            "id": "social_004",
-            "en": "How long have you lived here?",
-            "pt": "Há quanto tempo você mora aqui?",
-            "difficulty": 3,
-            "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; 'mora' stress on 'mo'."
-          },
-          {
-            "id": "social_005",
-            "en": "What do you like to do for fun?",
-            "pt": "O que você gosta de fazer para se divertir?",
-            "difficulty": 4,
-            "pronunciation_notes": "‘divertir’ final ‘tir’ like ‘cheer’; stress on last syllable."
-          },
-          {
-            "id": "social_006",
-            "en": "I really like this city.",
-            "pt": "Eu gosto muito desta cidade.",
-            "difficulty": 2,
-            "pronunciation_notes": "‘cidade’ like ‘see-DA-djee’."
-          },
-          {
-            "id": "social_007",
-            "en": "Do you have any plans for the weekend?",
-            "pt": "Você tem planos para o fim de semana?",
-            "difficulty": 3,
-            "pronunciation_notes": "‘planos’ stress on 'pla'; nasal ‘im’ in ‘fim’."
-          },
-          {
-            "id": "social_008",
-            "en": "It was great talking to you.",
-            "pt": "Foi muito bom conversar com você.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘conversar’ final ‘sar’; nasal ‘ão’ in related forms."
-          },
-          {
-            "id": "social_009",
-            "en": "Let's keep in touch.",
-            "pt": "Vamos manter contato.",
-            "difficulty": 3,
-            "pronunciation_notes": "‘manter’ final ‘ter’ like ‘tehr’; ‘contato’ stress on 'ta'."
-          },
-          {
-            "id": "social_010",
-            "en": "Have a good weekend!",
-            "pt": "Bom fim de semana!",
-            "difficulty": 2,
-            "pronunciation_notes": "Nasal ‘om’ in ‘bom’; ‘fim’ nasal 'im'."
-          }
-        ]
-      }
-    ]
-  }
-  
+  "language_pair": "en-pt-BR",
+  "version": "1.0",
+  "categories": [
+    {
+      "id": "food",
+      "label_en": "Food & Eating",
+      "label_pt": "Comida e Refeições",
+      "sentences": [
+        {
+          "id": "food_001",
+          "en": "I'm hungry, what do you want to eat?",
+          "pt": "Estou com fome, o que você quer comer?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘Estou’ has nasalized 'om'; stress in ‘você’ is on 'cê'."
+        },
+        {
+          "id": "food_002",
+          "en": "Is there anything vegan on the menu?",
+          "pt": "Tem alguma coisa vegana no cardápio?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘nh’ sound in ‘alguma’ is soft; ‘cardápio’ stress on 'dá'."
+        },
+        {
+          "id": "food_003",
+          "en": "I don't eat meat, only fish and vegetables.",
+          "pt": "Eu não como carne, só peixe e legumes.",
+          "difficulty": 2,
+          "pronunciation_notes": "Nasal ‘ão’ in ‘não’; ‘peixe’ sounds like ‘PAY-shee’."
+        },
+        {
+          "id": "food_004",
+          "en": "Can I see the menu, please?",
+          "pt": "Posso ver o cardápio, por favor?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘Posso’ stress on first syllable; ‘por favor’ with open 'o' in ‘por’."
+        },
+        {
+          "id": "food_005",
+          "en": "The food is delicious, thank you.",
+          "pt": "A comida está deliciosa, obrigado.",
+          "difficulty": 2,
+          "pronunciation_notes": "‘deliciosa’ stress on 'o'; say ‘bri’ in ‘obrigado’ like ‘bree’."
+        },
+        {
+          "id": "food_006",
+          "en": "I'd like a glass of water without ice.",
+          "pt": "Eu gostaria de um copo de água sem gelo.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘água’ has stressed ‘á’; ‘gelo’ sounds like ‘zhe-lo’."
+        },
+        {
+          "id": "food_007",
+          "en": "Can you bring the bill, please?",
+          "pt": "Você pode trazer a conta, por favor?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘conta’ with nasal ‘on’; ‘trazer’ with soft ‘z’ sound."
+        },
+        {
+          "id": "food_008",
+          "en": "Do you have any snacks or something small to eat?",
+          "pt": "Você tem algum lanche ou alguma coisa pequena para comer?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘lanche’ sounds like ‘lãn-shee’; nasal in first syllable."
+        },
+        {
+          "id": "food_009",
+          "en": "I usually skip breakfast.",
+          "pt": "Eu geralmente pulo o café da manhã.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘geralmente’ with soft ‘g’ (like ‘j’); nasal ‘ã’ in ‘manhã’."
+        },
+        {
+          "id": "food_010",
+          "en": "This is too spicy for me.",
+          "pt": "Isso é muito apimentado para mim.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘Isso’ like ‘EE-su’; ‘apimentado’ stress on 'ta'."
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "label_en": "Travel",
+      "label_pt": "Viagem",
+      "sentences": [
+        {
+          "id": "travel_001",
+          "en": "Where is the bus station?",
+          "pt": "Onde fica a rodoviária?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘Onde’ with nasal ‘on’; ‘rodoviária’ stress on 'á'."
+        },
+        {
+          "id": "travel_002",
+          "en": "What time does the train leave?",
+          "pt": "Que horas o trem sai?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘trem’ has nasal ‘em’; ‘horas’ with silent ‘h’."
+        },
+        {
+          "id": "travel_003",
+          "en": "I need to go to the airport.",
+          "pt": "Eu preciso ir para o aeroporto.",
+          "difficulty": 2,
+          "pronunciation_notes": "‘preciso’ stress on 'si'; ‘aeroporto’ said as ‘a-eh-ro-por-to’."
+        },
+        {
+          "id": "travel_004",
+          "en": "Is it safe to walk around here at night?",
+          "pt": "É seguro andar por aqui à noite?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘seguro’ stress on 'gu'; ‘noite’ like ‘NOY-chee’."
+        },
+        {
+          "id": "travel_005",
+          "en": "How long does the trip take?",
+          "pt": "Quanto tempo demora a viagem?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘Quanto’ with nasal ‘an’; ‘viagem’ ends with soft ‘zhẽ’."
+        },
+        {
+          "id": "travel_006",
+          "en": "I have a reservation at this hotel.",
+          "pt": "Eu tenho uma reserva neste hotel.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘tenho’ has ‘nh’ sound; ‘hotel’ stress on 'tel'."
+        },
+        {
+          "id": "travel_007",
+          "en": "Can you recommend a cool place to visit?",
+          "pt": "Você pode recomendar um lugar legal para visitar?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘recomendar’ with guttural ‘r’ at the end; ‘legal’ like ‘leh-GAL’."
+        },
+        {
+          "id": "travel_008",
+          "en": "I think I'm on the wrong bus.",
+          "pt": "Acho que estou no ônibus errado.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘Acho’ like ‘AH-shoo’; ‘ônibus’ stress on 'ô'."
+        },
+        {
+          "id": "travel_009",
+          "en": "Is it far from here?",
+          "pt": "É longe daqui?",
+          "difficulty": 2,
+          "pronunciation_notes": "Nasal ‘on’ in ‘longe’; final ‘ge’ like ‘zhee’."
+        },
+        {
+          "id": "travel_010",
+          "en": "I love traveling by train.",
+          "pt": "Eu adoro viajar de trem.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘adoro’ stress on second syllable; ‘viajar’ ends with guttural ‘r’."
+        }
+      ]
+    },
+    {
+      "id": "family_friends",
+      "label_en": "Family & Friends",
+      "label_pt": "Família e Amigos",
+      "sentences": [
+        {
+          "id": "fam_001",
+          "en": "My family is very important to me.",
+          "pt": "Minha família é muito importante para mim.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘nh’ in ‘minha’; nasal ‘im’ in ‘importante’ and ‘mim’."
+        },
+        {
+          "id": "fam_002",
+          "en": "I have two sisters and one brother.",
+          "pt": "Eu tenho duas irmãs e um irmão.",
+          "difficulty": 3,
+          "pronunciation_notes": "Nasal ‘ão’ in ‘irmão’; plural ‘irmãs’ has open 'ã'."
+        },
+        {
+          "id": "fam_003",
+          "en": "Are you close with your parents?",
+          "pt": "Você é próximo dos seus pais?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘próximo’ stress on 'pró'; ‘pais’ like ‘pa-is’."
+        },
+        {
+          "id": "fam_004",
+          "en": "My best friend lives in another city.",
+          "pt": "Meu melhor amigo mora em outra cidade.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘melhor’ with ‘lh’ sound; ‘mora’ stress on 'mo'."
+        },
+        {
+          "id": "fam_005",
+          "en": "I'm meeting my friends for dinner tonight.",
+          "pt": "Vou encontrar meus amigos para jantar hoje à noite.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘encontrar’ has nasal ‘en’; ‘jantar’ with guttural final ‘r’."
+        },
+        {
+          "id": "fam_006",
+          "en": "Do you have any siblings?",
+          "pt": "Você tem irmãos?",
+          "difficulty": 2,
+          "pronunciation_notes": "Nasal ‘ãos’ in ‘irmãos’ (plural of ‘irmão’)."
+        },
+        {
+          "id": "fam_007",
+          "en": "I miss my family a lot.",
+          "pt": "Sinto muita saudade da minha família.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘saudade’ stress on 'da'; ‘minha’ with ‘nh’ sound."
+        },
+        {
+          "id": "fam_008",
+          "en": "My parents are divorced.",
+          "pt": "Meus pais são divorciados.",
+          "difficulty": 3,
+          "pronunciation_notes": "Nasal ‘ão’ in ‘são’; ‘divorciados’ with soft ‘c’ (like ‘s’)."
+        },
+        {
+          "id": "fam_009",
+          "en": "We like to spend Sundays together.",
+          "pt": "A gente gosta de passar os domingos juntos.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘gosta’ stress on 'gos'; ‘domingos’ with nasal ‘in’."
+        },
+        {
+          "id": "fam_010",
+          "en": "I get along really well with my sister.",
+          "pt": "Eu me dou muito bem com a minha irmã.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘irmã’ with nasal ‘ã’; ‘dou’ like ‘doh’."
+        }
+      ]
+    },
+    {
+      "id": "daily_routine",
+      "label_en": "Daily Routine",
+      "label_pt": "Rotina Diária",
+      "sentences": [
+        {
+          "id": "daily_001",
+          "en": "I usually wake up around seven.",
+          "pt": "Eu geralmente acordo por volta das sete.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘geralmente’ soft ‘g’ (like ‘j’); ‘acordo’ stress on 'cor'."
+        },
+        {
+          "id": "daily_002",
+          "en": "I drink coffee before starting work.",
+          "pt": "Eu tomo café antes de começar a trabalhar.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘café’ stress on 'fé'; infinitive ‘trabalhar’ with ‘lh’."
+        },
+        {
+          "id": "daily_003",
+          "en": "I take a shower after the gym.",
+          "pt": "Eu tomo banho depois da academia.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘banho’ has ‘nh’ sound; ‘academia’ stress on 'mi'."
+        },
+        {
+          "id": "daily_004",
+          "en": "I work from home most days.",
+          "pt": "Eu trabalho de casa na maioria dos dias.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘trabalho’ with ‘lh’; ‘maioria’ stress on 'ri'."
+        },
+        {
+          "id": "daily_005",
+          "en": "At night I like to read or watch series.",
+          "pt": "À noite eu gosto de ler ou assistir séries.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘noite’ like ‘NOY-chee’; plural ‘séries’ with open 'é'."
+        },
+        {
+          "id": "daily_006",
+          "en": "I need to clean the house this weekend.",
+          "pt": "Eu preciso limpar a casa neste fim de semana.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘limpar’ final guttural ‘r’; nasal ‘im’ in ‘fim’."
+        },
+        {
+          "id": "daily_007",
+          "en": "Sometimes I work late.",
+          "pt": "Às vezes eu trabalho até tarde.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘vezes’ like ‘VE-zes’; ‘tarde’ final ‘de’ like ‘jee’."
+        },
+        {
+          "id": "daily_008",
+          "en": "I try to go running three times a week.",
+          "pt": "Eu tento correr três vezes por semana.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘correr’ with strong ‘rr’; ‘três’ has closed ‘ê’."
+        },
+        {
+          "id": "daily_009",
+          "en": "I usually cook at home.",
+          "pt": "Eu geralmente cozinho em casa.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘cozinho’ with ‘nh’; nasal ‘em’ in ‘em casa’."
+        },
+        {
+          "id": "daily_010",
+          "en": "I go to bed very late.",
+          "pt": "Eu vou dormir muito tarde.",
+          "difficulty": 2,
+          "pronunciation_notes": "‘dormir’ final ‘r’ is guttural; ‘muito’ like ‘MOOY-to’."
+        }
+      ]
+    },
+    {
+      "id": "feelings",
+      "label_en": "Feelings & Emotions",
+      "label_pt": "Sentimentos e Emoções",
+      "sentences": [
+        {
+          "id": "feel_001",
+          "en": "I'm really tired today.",
+          "pt": "Eu estou muito cansado hoje.",
+          "difficulty": 2,
+          "pronunciation_notes": "‘cansado’ stress on 'sa'; ‘hoje’ like ‘ô-zhee’."
+        },
+        {
+          "id": "feel_002",
+          "en": "I'm very happy to be here.",
+          "pt": "Eu estou muito feliz de estar aqui.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘feliz’ stress on 'liz'; final ‘z’ is ‘s’ sound."
+        },
+        {
+          "id": "feel_003",
+          "en": "I'm a little anxious about tomorrow.",
+          "pt": "Eu estou um pouco ansioso com o amanhã.",
+          "difficulty": 4,
+          "pronunciation_notes": "Nasal ‘ã’ in ‘amanhã’; ‘ansioso’ stress on 'o'."
+        },
+        {
+          "id": "feel_004",
+          "en": "I'm frustrated because I don't understand.",
+          "pt": "Estou frustrado porque eu não entendo.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘frustrado’ stress on 'tra'; nasal ‘ão’ in ‘não’."
+        },
+        {
+          "id": "feel_005",
+          "en": "I'm feeling much better now.",
+          "pt": "Estou me sentindo bem melhor agora.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘sentindo’ with nasal ‘in’; ‘melhor’ has ‘lh’."
+        },
+        {
+          "id": "feel_006",
+          "en": "I get nervous when I speak in Portuguese.",
+          "pt": "Eu fico nervoso quando falo em português.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘português’ closed ‘ês’; stress on last syllable."
+        },
+        {
+          "id": "feel_007",
+          "en": "Sometimes I feel a bit insecure.",
+          "pt": "Às vezes eu me sinto um pouco inseguro.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘inseguro’ stress on 'gu'; nasal ‘um’ in ‘um pouco’."
+        },
+        {
+          "id": "feel_008",
+          "en": "I'm grateful for your help.",
+          "pt": "Eu sou grato pela sua ajuda.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘grato’ stress on 'gra'; ‘ajuda’ like ‘a-ZHU-da’."
+        },
+        {
+          "id": "feel_009",
+          "en": "I'm a bit embarrassed.",
+          "pt": "Estou um pouco envergonhado.",
+          "difficulty": 4,
+          "pronunciation_notes": "Nasal ‘ão’ in related forms; ‘envergonhado’ has ‘nh’ and guttural ‘r’."
+        },
+        {
+          "id": "feel_010",
+          "en": "I'm excited about this trip.",
+          "pt": "Estou empolgado com essa viagem.",
+          "difficulty": 4,
+          "pronunciation_notes": "Nasal ‘em’ in ‘estou em-’; ‘viagem’ ends with nasal ‘ẽ’."
+        }
+      ]
+    },
+    {
+      "id": "questions_help",
+      "label_en": "Questions & Asking for Help",
+      "label_pt": "Perguntas e Pedidos de Ajuda",
+      "sentences": [
+        {
+          "id": "help_001",
+          "en": "Can you help me, please?",
+          "pt": "Você pode me ajudar, por favor?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘ajudar’ like ‘a-zhu-DAR’; final 'r' guttural."
+        },
+        {
+          "id": "help_002",
+          "en": "Could you repeat that more slowly?",
+          "pt": "Você pode repetir mais devagar?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘repetir’ stress on last syllable; ‘devagar’ final 'gar' like ‘gar’ in ‘garage’."
+        },
+        {
+          "id": "help_003",
+          "en": "I didn't understand, can you explain again?",
+          "pt": "Eu não entendi, você pode explicar de novo?",
+          "difficulty": 3,
+          "pronunciation_notes": "Nasal ‘ão’ in ‘não’; ‘entendi’ stress on 'di'."
+        },
+        {
+          "id": "help_004",
+          "en": "How do you say this in Portuguese?",
+          "pt": "Como se fala isso em português?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘português’ closed ‘ês’; ‘fala’ stress on 'fa'."
+        },
+        {
+          "id": "help_005",
+          "en": "What does this word mean?",
+          "pt": "O que essa palavra quer dizer?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘palavra’ stress on 'la'; ‘quer’ sounds like ‘ker’."
+        },
+        {
+          "id": "help_006",
+          "en": "Can you write it down for me?",
+          "pt": "Você pode escrever para mim?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘escrever’: initial ‘es’ pronounced ‘is’; final 'ver' like ‘vehr’."
+        },
+        {
+          "id": "help_007",
+          "en": "Sorry, I didn't hear you.",
+          "pt": "Desculpa, eu não te ouvi.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘Desculpa’ stress on 'cul'; ‘ouvi’ like ‘oh-VEE’."
+        },
+        {
+          "id": "help_008",
+          "en": "Is this correct?",
+          "pt": "Isso está certo?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘certo’ with soft 'c' (like ‘sér-to’)."
+        },
+        {
+          "id": "help_009",
+          "en": "What should I do now?",
+          "pt": "O que eu devo fazer agora?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘devo’ stress on 'de'; ‘fazer’ like ‘fa-ZER’."
+        },
+        {
+          "id": "help_010",
+          "en": "Can I ask you a question?",
+          "pt": "Posso te fazer uma pergunta?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘pergunta’ stress on 'gun'; nasal 'un'."
+        }
+      ]
+    },
+    {
+      "id": "shopping_money",
+      "label_en": "Shopping & Money",
+      "label_pt": "Compras e Dinheiro",
+      "sentences": [
+        {
+          "id": "shop_001",
+          "en": "How much does this cost?",
+          "pt": "Quanto custa isso?",
+          "difficulty": 2,
+          "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; ‘custa’ like ‘KUS-ta’."
+        },
+        {
+          "id": "shop_002",
+          "en": "Do you accept credit card?",
+          "pt": "Vocês aceitam cartão de crédito?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘cartão’ nasal ‘ão’; ‘crédito’ stress on 'cré'."
+        },
+        {
+          "id": "shop_003",
+          "en": "Can I pay in cash?",
+          "pt": "Posso pagar em dinheiro?",
+          "difficulty": 3,
+          "pronunciation_notes": "Nasal ‘em’; ‘dinheiro’ with ‘nh’ and ‘ei’ like ‘nay’."
+        },
+        {
+          "id": "shop_004",
+          "en": "Do you have this in another size?",
+          "pt": "Você tem isso em outro tamanho?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘tamanho’ with ‘nh’; stress on 'ma'."
+        },
+        {
+          "id": "shop_005",
+          "en": "I'm just looking, thank you.",
+          "pt": "Eu só estou dando uma olhada, obrigado.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘olhada’ with ‘lh’; ‘só’ open 'ó'."
+        },
+        {
+          "id": "shop_006",
+          "en": "Is there any discount in cash?",
+          "pt": "Tem algum desconto à vista?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘desconto’: nasal ‘on’; ‘vista’ like ‘VEES-ta’."
+        },
+        {
+          "id": "shop_007",
+          "en": "Where is the supermarket?",
+          "pt": "Onde fica o supermercado?",
+          "difficulty": 3,
+          "pronunciation_notes": "Nasal ‘on’ in ‘onde’; ‘supermercado’ stress on 'ca'."
+        },
+        {
+          "id": "shop_008",
+          "en": "I need to buy some groceries.",
+          "pt": "Eu preciso comprar algumas coisas no mercado.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘comprar’ final guttural ‘r’; ‘algumas’ nasal ‘un’. "
+        },
+        {
+          "id": "shop_009",
+          "en": "Can I return this if it doesn't work?",
+          "pt": "Posso trocar isso se não funcionar?",
+          "difficulty": 4,
+          "pronunciation_notes": "‘trocar’ with final ‘r’; ‘funcionar’ with ‘ç’ like ‘s’."
+        },
+        {
+          "id": "shop_010",
+          "en": "It's too expensive for me.",
+          "pt": "É muito caro para mim.",
+          "difficulty": 2,
+          "pronunciation_notes": "‘caro’ open 'a'; ‘mim’ nasal 'im'."
+        }
+      ]
+    },
+    {
+      "id": "directions_transport",
+      "label_en": "Directions & Transport",
+      "label_pt": "Direções e Transporte",
+      "sentences": [
+        {
+          "id": "dir_001",
+          "en": "Turn right at the next corner.",
+          "pt": "Vire à direita na próxima esquina.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘direita’ like ‘jee-RAY-ta’; ‘próxima’ stress on 'pró'."
+        },
+        {
+          "id": "dir_002",
+          "en": "Go straight and then turn left.",
+          "pt": "Siga em frente e depois vire à esquerda.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘esquerda’ with ‘sk’ sound; nasal ‘em’ in ‘em frente’."
+        },
+        {
+          "id": "dir_003",
+          "en": "Where is the nearest subway station?",
+          "pt": "Onde fica a estação de metrô mais próxima?",
+          "difficulty": 4,
+          "pronunciation_notes": "‘estação’ nasal ‘ão’; ‘metrô’ stress on last syllable."
+        },
+        {
+          "id": "dir_004",
+          "en": "Can I walk there, or is it better to take a bus?",
+          "pt": "Dá para ir a pé ou é melhor pegar um ônibus?",
+          "difficulty": 4,
+          "pronunciation_notes": "‘a pé’ with open ‘é’; ‘ônibus’ stress on 'ô'."
+        },
+        {
+          "id": "dir_005",
+          "en": "I'm a bit lost.",
+          "pt": "Eu estou um pouco perdido.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘perdido’ with guttural ‘r’; nasal 'um'."
+        },
+        {
+          "id": "dir_006",
+          "en": "Is there a bus stop close by?",
+          "pt": "Tem um ponto de ônibus perto daqui?",
+          "difficulty": 4,
+          "pronunciation_notes": "‘ponto’ nasal ‘on’; ‘ônibus’ stress on 'ô'."
+        },
+        {
+          "id": "dir_007",
+          "en": "How long does it take by car?",
+          "pt": "Quanto tempo leva de carro?",
+          "difficulty": 3,
+          "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; ‘carro’ with strong ‘rr’."
+        },
+        {
+          "id": "dir_008",
+          "en": "Is there a lot of traffic now?",
+          "pt": "Tem muito trânsito agora?",
+          "difficulty": 4,
+          "pronunciation_notes": "‘trânsito’ nasal ‘ãn’; ‘agora’ stress on 'go'."
+        },
+        {
+          "id": "dir_009",
+          "en": "I missed my bus.",
+          "pt": "Eu perdi o meu ônibus.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘perdi’ stress on 'di'; ‘ônibus’ with closed 'ô'."
+        },
+        {
+          "id": "dir_010",
+          "en": "Can you show me on the map?",
+          "pt": "Você pode me mostrar no mapa?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘mostrar’ final ‘r’; ‘mapa’ stress on 'ma'."
+        }
+      ]
+    },
+    {
+      "id": "work_study",
+      "label_en": "Work & Study",
+      "label_pt": "Trabalho e Estudos",
+      "sentences": [
+        {
+          "id": "work_001",
+          "en": "I work from nine to five.",
+          "pt": "Eu trabalho das nove às cinco.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘trabalho’ with ‘lh’; ‘cinco’ like ‘SEEN-co’."
+        },
+        {
+          "id": "work_002",
+          "en": "I have a meeting in the morning.",
+          "pt": "Eu tenho uma reunião de manhã.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘reunião’ nasal ‘ão’; ‘manhã’ nasal ‘ã’."
+        },
+        {
+          "id": "work_003",
+          "en": "I study Portuguese every day.",
+          "pt": "Eu estudo português todos os dias.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘português’ closed ‘ês’; stress on last syllable."
+        },
+        {
+          "id": "work_004",
+          "en": "I need to finish this project today.",
+          "pt": "Eu preciso terminar este projeto hoje.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘terminar’ final ‘r’; ‘projeto’ like ‘pro-ZHE-to’."
+        },
+        {
+          "id": "work_005",
+          "en": "Where do you work?",
+          "pt": "Você trabalha onde?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘trabalha’ with ‘lh’; stress on 'ba'."
+        },
+        {
+          "id": "work_006",
+          "en": "I'm looking for a new job.",
+          "pt": "Estou procurando um trabalho novo.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘procurando’ stress on 'ran'; nasal 'um'."
+        },
+        {
+          "id": "work_007",
+          "en": "I have an exam next week.",
+          "pt": "Eu tenho uma prova na semana que vem.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘prova’ stress on 'pro'; ‘semana’ stress on 'ma'."
+        },
+        {
+          "id": "work_008",
+          "en": "I work remotely most of the time.",
+          "pt": "Eu trabalho remotamente na maior parte do tempo.",
+          "difficulty": 4,
+          "pronunciation_notes": "‘remotamente’ stress on 'men'; ‘trabalho’ with ‘lh’."
+        },
+        {
+          "id": "work_009",
+          "en": "I'm taking an online course.",
+          "pt": "Eu estou fazendo um curso online.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘curso’ like ‘KOOR-so’; ‘online’ often pronounced close to English."
+        },
+        {
+          "id": "work_010",
+          "en": "I need a break.",
+          "pt": "Eu preciso de uma pausa.",
+          "difficulty": 2,
+          "pronunciation_notes": "‘pausa’ like ‘PAW-za’; z like ‘z’."
+        }
+      ]
+    },
+    {
+      "id": "small_talk_social",
+      "label_en": "Small Talk & Social",
+      "label_pt": "Conversas Informais",
+      "sentences": [
+        {
+          "id": "social_001",
+          "en": "Hi, how are you?",
+          "pt": "Oi, tudo bem?",
+          "difficulty": 2,
+          "pronunciation_notes": "‘Oi’ like ‘oy’; ‘bem’ nasal 'ẽ'."
+        },
+        {
+          "id": "social_002",
+          "en": "Nice to meet you.",
+          "pt": "Prazer em te conhecer.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘Prazer’ stress on 'zer'; ‘conhecer’ with ‘nh’."
+        },
+        {
+          "id": "social_003",
+          "en": "Where are you from?",
+          "pt": "De onde você é?",
+          "difficulty": 2,
+          "pronunciation_notes": "Nasal 'on' in ‘onde’; ‘você’ stress on 'cê'."
+        },
+        {
+          "id": "social_004",
+          "en": "How long have you lived here?",
+          "pt": "Há quanto tempo você mora aqui?",
+          "difficulty": 3,
+          "pronunciation_notes": "Nasal ‘an’ in ‘quanto’; 'mora' stress on 'mo'."
+        },
+        {
+          "id": "social_005",
+          "en": "What do you like to do for fun?",
+          "pt": "O que você gosta de fazer para se divertir?",
+          "difficulty": 4,
+          "pronunciation_notes": "‘divertir’ final ‘tir’ like ‘cheer’; stress on last syllable."
+        },
+        {
+          "id": "social_006",
+          "en": "I really like this city.",
+          "pt": "Eu gosto muito desta cidade.",
+          "difficulty": 2,
+          "pronunciation_notes": "‘cidade’ like ‘see-DA-djee’."
+        },
+        {
+          "id": "social_007",
+          "en": "Do you have any plans for the weekend?",
+          "pt": "Você tem planos para o fim de semana?",
+          "difficulty": 3,
+          "pronunciation_notes": "‘planos’ stress on 'pla'; nasal ‘im’ in ‘fim’."
+        },
+        {
+          "id": "social_008",
+          "en": "It was great talking to you.",
+          "pt": "Foi muito bom conversar com você.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘conversar’ final ‘sar’; nasal ‘ão’ in related forms."
+        },
+        {
+          "id": "social_009",
+          "en": "Let's keep in touch.",
+          "pt": "Vamos manter contato.",
+          "difficulty": 3,
+          "pronunciation_notes": "‘manter’ final ‘ter’ like ‘tehr’; ‘contato’ stress on 'ta'."
+        },
+        {
+          "id": "social_010",
+          "en": "Have a good weekend!",
+          "pt": "Bom fim de semana!",
+          "difficulty": 2,
+          "pronunciation_notes": "Nasal ‘om’ in ‘bom’; ‘fim’ nasal 'im'."
+        }
+      ]
+    }
+  ]
+}

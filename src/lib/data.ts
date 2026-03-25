@@ -60,13 +60,13 @@ function transformEnrichedSentence(
 ): Sentence {
   const audioId = enriched.id; // Sentence IDs match audio IDs in index
   
-  // Map difficultyScore to Difficulty (1-5 scale)
-  // If difficultyScore is provided, map it to 1-5 range
-  // Otherwise default to 3 (middle difficulty)
+  // Map difficultyScore to Difficulty (2-4 scale: Easy, Medium, Hard)
+  // If difficultyScore is provided, map it to 2-4 range
+  // Otherwise default to 3 (Medium)
   let difficulty: Difficulty = 3;
   if (enriched.difficultyScore !== undefined) {
     // Map 0-100 score to 1-5 scale
-    difficulty = Math.max(1, Math.min(5, Math.round((enriched.difficultyScore / 100) * 4) + 1)) as Difficulty;
+    difficulty = Math.max(2, Math.min(4, Math.round((enriched.difficultyScore / 100) * 2) + 2)) as Difficulty;
   }
   
   return {
@@ -126,13 +126,13 @@ function transformEnrichedWord(
 ): Word {
   const audioId = enriched.id; // Word IDs match audio IDs in index
   
-  // Map difficultyScore to Difficulty (1-5 scale)
-  // If difficultyScore is provided, map it to 1-5 range
-  // Otherwise default to 3 (middle difficulty)
+  // Map difficultyScore to Difficulty (2-4 scale: Easy, Medium, Hard)
+  // If difficultyScore is provided, map it to 2-4 range
+  // Otherwise default to 3 (Medium)
   let difficulty: Difficulty = 3;
   if (enriched.difficultyScore !== undefined) {
     // Map 0-100 score to 1-5 scale
-    difficulty = Math.max(1, Math.min(5, Math.round((enriched.difficultyScore / 100) * 4) + 1)) as Difficulty;
+    difficulty = Math.max(2, Math.min(4, Math.round((enriched.difficultyScore / 100) * 2) + 2)) as Difficulty;
   }
   
   return {

@@ -4,7 +4,7 @@ type CoverageWordSpec = {
   pt: string;
   en: string;
   forms?: string[];
-  difficulty?: 1 | 2 | 3 | 4 | 5;
+  difficulty?: 2 | 3 | 4;
   difficultForEnglish?: boolean;
 };
 
@@ -366,13 +366,13 @@ const COVERAGE_WORD_SPECS: CoverageWordSpec[] = [
   { pt: 'tempinho', en: 'little time' },
 ];
 
-function inferDifficulty(text: string, override?: 1 | 2 | 3 | 4 | 5): 1 | 2 | 3 | 4 | 5 {
+function inferDifficulty(text: string, override?: 2 | 3 | 4): 2 | 3 | 4 {
   if (override) {
     return override;
   }
 
   if (/\d/.test(text)) {
-    return 1;
+    return 2;
   }
 
   if (text.includes(' ') || text.includes('-')) {
@@ -384,7 +384,7 @@ function inferDifficulty(text: string, override?: 1 | 2 | 3 | 4 | 5): 1 | 2 | 3 
   }
 
   if (text.length <= 4) {
-    return 1;
+    return 2;
   }
 
   if (text.length <= 8) {

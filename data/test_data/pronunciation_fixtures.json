@@ -4,7 +4,7 @@
       "id": "phrase_1",
       "phraseNumber": 1,
       "text": "Oi, tudo bem?",
-      "difficulty": 1,
+      "difficulty": 2,
       "audioFile": "data/test_data/Phrase 1 Audio.wav",
       "azureJsonFile": "data/test_data/phrase_1_JSON.json",
       "scores": {
@@ -19,7 +19,7 @@
       "id": "phrase_2",
       "phraseNumber": 2,
       "text": "Posso ver o cardápio, por favor?",
-      "difficulty": 1,
+      "difficulty": 2,
       "audioFile": "data/test_data/Phrase 2 Audio.wav",
       "azureJsonFile": "data/test_data/phrase_2_JSON.json",
       "scores": {

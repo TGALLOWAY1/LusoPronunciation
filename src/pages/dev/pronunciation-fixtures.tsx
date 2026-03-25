@@ -318,11 +318,9 @@ export default function PronunciationFixtures() {
   // Build difficulty options for multiselect
   const difficultyOptions: MultiSelectOption[] = useMemo(() => {
     const difficultyLabels: Record<number, string> = {
-      1: 'Very Easy',
       2: 'Easy',
       3: 'Medium',
       4: 'Hard',
-      5: 'Very Hard',
     };
     return availableDifficulties.map(diff => ({
       value: diff,
@@ -332,8 +330,6 @@ export default function PronunciationFixtures() {
 
   const getDifficultyColor = (difficulty: number): string => {
     switch (difficulty) {
-      case 1:
-        return 'badge-success';
       case 2:
         return 'badge-primary';
       case 3:

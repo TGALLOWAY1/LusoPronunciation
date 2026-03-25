@@ -20,7 +20,7 @@ interface FilterControlsProps {
  * 
  * This component provides multi-select dropdown filters for:
  * - Category: Multiple categories can be selected
- * - Difficulty: Multiple difficulty levels can be selected (Very Easy - Very Hard)
+ * - Difficulty: Multiple difficulty levels can be selected (Easy, Medium, Hard)
  * 
  * The "Current filters" header in SentencePractice displays a read-only summary
  * of the same state managed here.

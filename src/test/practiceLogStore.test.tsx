@@ -120,7 +120,7 @@ describe('practiceLogStore', () => {
         result.current.logWordAttempt({
           sessionId,
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           overallScore: 90,
           accuracyScore: 95,
@@ -221,7 +221,7 @@ describe('practiceLogStore', () => {
         attempt = result.current.logWordAttempt({
           sessionId,
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           overallScore: 90,
           accuracyScore: 95,
@@ -262,7 +262,7 @@ describe('practiceLogStore', () => {
         result.current.logWordAttempt({
           sessionId: session2,
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           overallScore: 90,
           accuracyScore: 95,
@@ -334,7 +334,7 @@ describe('practiceLogStore', () => {
         result.current.logWordAttempt({
           sessionId,
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           overallScore: 80,
           accuracyScore: 85,

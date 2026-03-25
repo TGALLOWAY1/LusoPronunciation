@@ -24,7 +24,7 @@ export interface Word {
   forms?: string[];        // Alternate sentence surface forms
   translationEn: string;   // "bread"
   categories: CategoryId[]; // e.g. ["foods"]
-  difficulty: 1 | 2 | 3 | 4 | 5;
+  difficulty: 2 | 3 | 4;
   trickyFeature?: string;  // "nasal ão", "rr", "lh", etc.
   notes?: string;          // Any extra tips for me
   audioId?: string;        // Points to audio_index.json (e.g., "word_001")
@@ -43,7 +43,7 @@ export interface Sentence {
   id: SentenceId;          // e.g. "sent_001"
   textPt: string;          // "Eu gosto de pão com queijo."
   translationEn?: string;  // "I like bread with cheese."
-  difficulty: 1 | 2 | 3 | 4 | 5;
+  difficulty: 2 | 3 | 4;
   categories: CategoryId[]; // e.g. ["foods"]
   tags?: string[];         // ["nasal", "present-tense"]
   wordIds?: WordId[];      // Optional linkage to Word entries

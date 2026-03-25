@@ -8,7 +8,7 @@ import type { EnrichedSentence, EnrichedWord } from '../src/types/contentGenerat
 import { getPhonemeById } from '../src/lib/phonemeMetadata';
 import { COVERAGE_RAW_WORDS } from '../src/pipeline/coverageWords';
 
-const DIFFICULTIES = [1, 2, 3, 4, 5] as const;
+const DIFFICULTIES = [2, 3, 4] as const;
 
 type DifficultyValue = (typeof DIFFICULTIES)[number];
 
@@ -331,8 +331,8 @@ async function main() {
   if (masterSentenceEmptyBuckets.length > 0) {
     blockers.push(`Master sentences still have ${masterSentenceEmptyBuckets.length} empty category/difficulty buckets.`);
   }
-  if (!masterSentences.some(sentence => sentence.difficulty === 5)) {
-    blockers.push('Master sentences have no difficulty-5 content.');
+  if (!masterSentences.some(sentence => sentence.difficulty === 4)) {
+    blockers.push('Master sentences have no difficulty-4 (Hard) content.');
   }
   if (wordAudioCoverage.missingAudioVariants.length > 0 || sentenceAudioCoverage.missingAudioVariants.length > 0) {
     blockers.push('Audio is incomplete for the current master dataset.');

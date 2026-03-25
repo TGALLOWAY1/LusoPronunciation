@@ -43,10 +43,10 @@ describe('Pronunciation Parsing', () => {
     });
 
     it('should get fixtures by difficulty', () => {
-      const difficulty1 = getFixturesByDifficulty(1);
-      expect(difficulty1).toBeInstanceOf(Array);
-      difficulty1.forEach((fixture) => {
-        expect(fixture.difficulty).toBe(1);
+      const difficulty2 = getFixturesByDifficulty(2);
+      expect(difficulty2).toBeInstanceOf(Array);
+      difficulty2.forEach((fixture) => {
+        expect(fixture.difficulty).toBe(2);
       });
     });
 
