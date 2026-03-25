@@ -85,6 +85,9 @@ export default function PronunciationFeedbackPanel({
   // Refs for audio elements to enable stopping from parent
   const sentenceAudioRef = useRef<HTMLAudioElement>(null);
 
+  // Check if we have attempts
+  const hasAttempts = attempts && attempts.length > 0 && currentAttempt !== null;
+
   // Reset practice mode when sentence changes (use sentenceText as key)
   useEffect(() => {
     setPracticeMode('textOnly');
@@ -165,9 +168,6 @@ export default function PronunciationFeedbackPanel({
 
   // Note: Practice word handler removed - practice functionality will be on
   // dedicated Practice Words page. See BACKLOG.md for future implementation.
-
-  // Check if we have attempts
-  const hasAttempts = attempts && attempts.length > 0 && currentAttempt !== null;
 
   const tokenWordScores = useMemo(() => {
     const tokens = sentenceText.trim().split(/\s+/);
