@@ -1,4 +1,5 @@
 import type { DifficultyAverage } from '@/lib/pronunciationAggregationUtils';
+import type { Difficulty } from '@/lib/types';
 import { getDifficultyLabel } from '@/utils/difficultyLabels';
 
 interface DifficultyScoreBarChartProps {
@@ -60,7 +61,7 @@ export default function DifficultyScoreBarChart({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className={`text-sm font-medium ${getDifficultyTextColor(item.difficulty)}`}>
-                    {getDifficultyLabel(item.difficulty) ?? `Difficulty ${item.difficulty}`}
+                    {getDifficultyLabel(item.difficulty as Difficulty) ?? `Difficulty ${item.difficulty}`}
                   </span>
                   {hasData ? (
                     <span className="text-xs text-gray-500 dark:text-gray-400">
