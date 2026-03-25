@@ -38,14 +38,13 @@ export async function register(
   email: string,
   password: string,
   displayName?: string,
-  inviteCode?: string
 ): Promise<AuthResponse> {
   const response = await fetch('/api/auth/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password, displayName, inviteCode }),
+    body: JSON.stringify({ email, password, displayName }),
   });
 
   if (!response.ok) {
@@ -166,6 +165,15 @@ export async function pingSpeechServiceHealth(): Promise<void> {
       httpStatus: null,
       message: error instanceof Error ? error.message : 'Speech service health check failed.',
     });
+  }
+}
+
+/**
+ * Handle OAuth callback — stores the token received from the server redirect
+ */
+export function handleOAuthCallback(token: string): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
   }
 }
 

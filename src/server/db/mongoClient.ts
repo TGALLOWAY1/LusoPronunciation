@@ -59,22 +59,38 @@ class MongoClient {
 
     this.isConnecting = true;
 
-    try {
-      console.log('[MongoDB] Connecting to MongoDB...');
-      this.connection = await mongoose.connect(uri, {
-        serverSelectionTimeoutMS: 5000,
-      });
+    const maxRetries = 3;
+    const redactedUri = uri.replace(/:([^@/]+)@/, ':****@');
+    console.log(`[MongoDB] Connecting to ${redactedUri}`);
 
-      const db = this.connection.connection;
-      console.log(`[MongoDB] Successfully connected to ${db.host}/${db.name}`);
-    } catch (error) {
-      this.isConnecting = false;
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('[MongoDB] Connection failed:', errorMessage);
-      throw new Error(`Failed to connect to MongoDB: ${errorMessage}`);
-    } finally {
-      this.isConnecting = false;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`[MongoDB] Connection attempt ${attempt}/${maxRetries}...`);
+        this.connection = await mongoose.connect(uri, {
+          serverSelectionTimeoutMS: 30000,
+          connectTimeoutMS: 30000,
+          socketTimeoutMS: 45000,
+        });
+
+        const db = this.connection.connection;
+        console.log(`[MongoDB] Successfully connected to ${db.host}/${db.name}`);
+        this.isConnecting = false;
+        return;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error(`[MongoDB] Attempt ${attempt}/${maxRetries} failed:`, errorMessage);
+
+        if (attempt < maxRetries) {
+          const delay = attempt * 2000;
+          console.log(`[MongoDB] Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        } else {
+          this.isConnecting = false;
+          throw new Error(`Failed to connect to MongoDB: ${errorMessage}`);
+        }
+      }
     }
+    this.isConnecting = false;
   }
 
   /**

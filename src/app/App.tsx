@@ -12,6 +12,7 @@ import WordPractice from '../pages/WordPractice';
 import Review from '../pages/Review';
 import RecentSessions from '../pages/RecentSessions';
 import AuthPage from '../pages/AuthPage';
+import OAuthCallbackPage from '../pages/OAuthCallbackPage';
 import { isAuthenticated, pingSpeechServiceHealth } from '@/api/auth';
 
 // Dev-only pages — lazy loaded and tree-shaken from production bundle
@@ -26,6 +27,7 @@ function AppRoutes() {
         <Routes>
           <Route path="/" element={<UserDashboardPage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/callback" element={<OAuthCallbackPage />} />
           <Route path="/practice/sentence" element={<SentencePractice />} />
           <Route path="/practice/word" element={<WordPractice />} />
           <Route path="/review" element={<Review />} />

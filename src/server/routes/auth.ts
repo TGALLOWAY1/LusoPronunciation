@@ -202,6 +202,14 @@ router.post('/login', async (req: Request, res: Response) => {
       });
     }
 
+    // OAuth-only users cannot log in with email/password
+    if (!userDoc.passwordHash) {
+      return res.status(401).json({
+        error: 'OAuth account',
+        message: `This account uses ${userDoc.oauthProvider || 'social'} login. Please sign in with that provider.`,
+      });
+    }
+
     // Compare password
     const isPasswordValid = await bcrypt.compare(password, userDoc.passwordHash);
     if (!isPasswordValid) {
