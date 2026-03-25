@@ -57,7 +57,7 @@ export function enrichWords(
       en: raw.en.trim(), // Preserve English translation
       category: inferCategory(raw.category, text),
       partOfSpeech: raw.pos,
-      difficulty: raw.difficulty, // Preserve difficulty (1-5 scale)
+      difficulty: Math.max(2, Math.min(4, raw.difficulty)) as 2 | 3 | 4,
       difficultForEnglish: raw.difficult_for_english,
       pronunciationNotes: raw.pronunciation_notes, // Preserve pronunciation notes
       englishDifficultyFlag: raw.difficult_for_english, // Alias for backward compatibility
@@ -110,7 +110,7 @@ export function enrichSentences(
       normalizedText,
       en: raw.en.trim(), // Preserve English translation
       category: inferCategory(raw.category, text),
-      difficulty: raw.difficulty, // Preserve difficulty (1-5 scale)
+      difficulty: Math.max(2, Math.min(4, raw.difficulty)) as 2 | 3 | 4,
       pronunciationNotes: raw.pronunciation_notes, // Preserve pronunciation notes
       hardForEnglish,
     };

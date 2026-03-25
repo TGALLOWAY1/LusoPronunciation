@@ -65,7 +65,7 @@ function transformEnrichedSentence(
   // Otherwise default to 3 (Medium)
   let difficulty: Difficulty = 3;
   if (enriched.difficultyScore !== undefined) {
-    // Map 0-100 score to 1-5 scale
+    // Map 0-100 score to 2-4 scale
     difficulty = Math.max(2, Math.min(4, Math.round((enriched.difficultyScore / 100) * 2) + 2)) as Difficulty;
   }
   
@@ -131,7 +131,7 @@ function transformEnrichedWord(
   // Otherwise default to 3 (Medium)
   let difficulty: Difficulty = 3;
   if (enriched.difficultyScore !== undefined) {
-    // Map 0-100 score to 1-5 scale
+    // Map 0-100 score to 2-4 scale
     difficulty = Math.max(2, Math.min(4, Math.round((enriched.difficultyScore / 100) * 2) + 2)) as Difficulty;
   }
   

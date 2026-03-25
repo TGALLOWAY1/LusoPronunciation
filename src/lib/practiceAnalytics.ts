@@ -539,7 +539,7 @@ export function computeUserGlobalStats(
  * @param wordAttempts - Array of word practice attempts
  * @param sentenceProgress - Optional sentence progress map for known counts
  * @param wordProgress - Optional word progress map for known counts
- * @returns Array of DifficultyStats, one per difficulty level (1-5)
+ * @returns Array of DifficultyStats, one per difficulty level (2-4)
  */
 export function computeDifficultyStats(
   sentenceAttempts: SentencePracticeAttempt[],

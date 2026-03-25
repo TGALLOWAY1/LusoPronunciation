@@ -74,7 +74,7 @@ function toBucketRows<T extends { category?: string; difficulty: number }>(
     const categoryId = item.category || 'uncategorized';
     const row = rows.get(categoryId) ?? {
       count: 0,
-      byDifficulty: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+      byDifficulty: { 2: 0, 3: 0, 4: 0 },
     };
 
     row.count += 1;

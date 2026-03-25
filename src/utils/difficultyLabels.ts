@@ -12,7 +12,7 @@ export const DIFFICULTY_LABELS: Record<Difficulty, string> = {
 
 /**
  * Get the display label for a difficulty level.
- * @param difficulty - The difficulty level (1-5) or null
+ * @param difficulty - The difficulty level (2-4) or null
  * @returns The label string, or null if difficulty is null
  */
 export function getDifficultyLabel(difficulty: Difficulty | null): string | null {
