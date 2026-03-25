@@ -71,6 +71,7 @@ describe('useLivePronunciationPractice telemetry', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     window.localStorage.clear();
+    window.localStorage.setItem('luso_auth_token', 'test-token');
     vi.stubGlobal('fetch', vi.fn());
     vi.mocked(analyzeAudioBlob).mockResolvedValue({
       durationMs: 1200,

@@ -76,7 +76,10 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       // POST to API endpoint
       const headers: Record<string, string> = {};
       const authHeaderValue = getAuthHeader();
-      if (authHeaderValue) headers['Authorization'] = authHeaderValue;
+      if (!authHeaderValue) {
+        throw new Error('Please log in to use pronunciation assessment.');
+      }
+      headers['Authorization'] = authHeaderValue;
 
       const response = await fetch('/api/pronunciation/assessment', {
         method: 'POST',
