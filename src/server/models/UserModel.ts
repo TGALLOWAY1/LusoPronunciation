@@ -28,7 +28,6 @@ const UserSchema = new Schema<IUserDocument>(
       unique: true,
       lowercase: true,
       trim: true,
-      index: true,
     },
     passwordHash: {
       type: String,
@@ -51,9 +50,6 @@ const UserSchema = new Schema<IUserDocument>(
     timestamps: true, // Adds createdAt and updatedAt automatically
   }
 );
-
-// Indexes
-UserSchema.index({ email: 1 });
 
 /**
  * User model
