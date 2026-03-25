@@ -253,7 +253,7 @@ router.get('/providers', (_req: Request, res: Response) => {
   if (process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET) {
     providers.push('linkedin');
   }
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.ENABLE_DEV_LOGIN === 'true') {
     providers.push('dev');
   }
 
@@ -264,10 +264,10 @@ router.get('/providers', (_req: Request, res: Response) => {
  * POST /api/auth/dev-login
  *
  * Quick-login for development/testing — creates or finds a dev user and returns a token.
- * Disabled in production.
+ * Requires ENABLE_DEV_LOGIN=true to be explicitly set.
  */
 router.post('/dev-login', async (_req: Request, res: Response) => {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.ENABLE_DEV_LOGIN !== 'true') {
     return res.status(404).json({ error: 'Not found' });
   }
 
