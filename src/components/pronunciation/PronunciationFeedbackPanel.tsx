@@ -85,11 +85,22 @@ export default function PronunciationFeedbackPanel({
   // Refs for audio elements to enable stopping from parent
   const sentenceAudioRef = useRef<HTMLAudioElement>(null);
 
+  // Check if we have attempts
+  const hasAttempts = attempts && attempts.length > 0 && currentAttempt !== null;
+
   // Reset practice mode when sentence changes (use sentenceText as key)
   useEffect(() => {
     setPracticeMode('textOnly');
     setShowEnglish(false);
+    setSelectedWord(null);
   }, [sentenceText]);
+
+  // Auto-select the first word when scoring results arrive
+  useEffect(() => {
+    if (words && words.length > 0 && hasAttempts && !selectedWord) {
+      setSelectedWord(words[0]);
+    }
+  }, [words, hasAttempts]); // intentionally omit selectedWord to avoid re-selecting after user clears
 
   // Log practice mode when it changes (for debugging and future scoring integration)
   useEffect(() => {
@@ -157,9 +168,6 @@ export default function PronunciationFeedbackPanel({
 
   // Note: Practice word handler removed - practice functionality will be on
   // dedicated Practice Words page. See BACKLOG.md for future implementation.
-
-  // Check if we have attempts
-  const hasAttempts = attempts && attempts.length > 0 && currentAttempt !== null;
 
   const tokenWordScores = useMemo(() => {
     const tokens = sentenceText.trim().split(/\s+/);

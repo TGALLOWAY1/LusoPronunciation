@@ -4,7 +4,6 @@ import {
   LayoutDashboard,
   AlignLeft,
   CaseSensitive,
-  Layers,
   History as HistoryIcon,
   BarChart3,
 } from 'lucide-react';
@@ -19,7 +18,6 @@ const sectionLabels: Record<string, string> = {
   '/': 'Dashboard',
   '/practice/sentence': 'Sentence Practice',
   '/practice/word': 'Word Practice',
-  '/review': 'Review Queue',
   '/sessions': 'Recent Sessions',
   '/dev/analytics': 'Dev Analytics',
   '/dev/metrics': 'Dev Metrics',
@@ -70,17 +68,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
               <span className="flex items-center gap-2">
                 <CaseSensitive size={18} />
                 Words
-              </span>
-            </Link>
-            <Link
-              to="/review"
-              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                location.pathname === '/review' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <Layers size={18} />
-                Review
               </span>
             </Link>
             <Link

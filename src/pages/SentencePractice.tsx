@@ -12,13 +12,58 @@ import type { AttemptScore } from '@/types/pronunciation';
 import { stopAllAudio } from '@/hooks/useAudioPlayer';
 import { getDifficultyLabel } from '@/utils/difficultyLabels';
 import LivePracticeSection from '@/components/practice/LivePracticeSection';
-import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import ScoreHistory from '@/components/practice/ScoreHistory';
 import AttemptHistory from '@/components/practice/AttemptHistory';
 import SentenceFeedback from '@/components/practice/SentenceFeedback';
 import FilterControls from '@/components/practice/FilterControls';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import PageTransition from '@/components/common/PageTransition';
+
+/**
+ * Audio player with error handling for expired blob URLs.
+ */
+function RecordingPlayer({
+  url,
+  timestamp,
+  formatTimestamp,
+}: {
+  url: string;
+  timestamp?: string;
+  formatTimestamp: (iso: string) => string;
+}) {
+  const [hasError, setHasError] = useState(false);
+
+  // Reset error state when URL changes
+  useEffect(() => {
+    setHasError(false);
+  }, [url]);
+
+  if (hasError) {
+    return (
+      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+        <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
+          Recording expired. Audio is only available during the current session.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      <audio
+        controls
+        src={url}
+        className="w-full"
+        onError={() => setHasError(true)}
+      />
+      {timestamp && (
+        <p className="text-xs text-gray-600 dark:text-gray-400">
+          Recording from {formatTimestamp(timestamp)}
+        </p>
+      )}
+    </div>
+  );
+}
 
 /**
  * Feat 15: Sentence difficulty ratings ('Easy/Good/Hard') were removed.
@@ -359,11 +404,6 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
         {/* Main content area - Single column layout */}
         {currentSentence ? (
           <div className="max-w-6xl mx-auto space-y-6 mb-6">
-            {/* Score Banner - appears above sentence after submission */}
-            {selectedAttempt && (
-              <ScoringPanel currentAttempt={selectedAttempt} variant="banner" />
-            )}
-
             {/* Main sentence practice area */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <div className="mb-4 flex items-center justify-between">
@@ -423,6 +463,7 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
                       sentence={currentSentence}
                       attempts={selectedAttemptArray}
                       currentAttempt={selectedAttempt}
+                      hideHeaderContent={false}
                       className="mt-0"
                     />
                   </div>
@@ -433,22 +474,19 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
                       Selected Attempt Recording
                     </h3>
                     {selectedRecordingUrl ? (
-                      <div className="space-y-2">
-                        <audio
-                          controls
-                          src={selectedRecordingUrl}
-                          className="w-full"
-                        />
-                        {selectedAttemptId && sentenceAttempts.find(a => a.attemptId === selectedAttemptId) && (
-                          <p className="text-xs text-gray-600 dark:text-gray-400">
-                            Recording from {formatAttemptTimestamp(sentenceAttempts.find(a => a.attemptId === selectedAttemptId)!.createdAt)}
-                          </p>
-                        )}
-                      </div>
+                      <RecordingPlayer
+                        url={selectedRecordingUrl}
+                        timestamp={
+                          selectedAttemptId
+                            ? sentenceAttempts.find(a => a.attemptId === selectedAttemptId)?.createdAt
+                            : undefined
+                        }
+                        formatTimestamp={formatAttemptTimestamp}
+                      />
                     ) : (
                       <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
                         <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-                          {selectedAttemptId 
+                          {selectedAttemptId
                             ? 'No recording available for this attempt.'
                             : 'Record this sentence to play back your pronunciation here.'}
                         </p>

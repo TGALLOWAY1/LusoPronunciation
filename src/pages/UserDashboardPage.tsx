@@ -165,32 +165,21 @@ export default function UserDashboardPage() {
   }, [sessions, sentenceAttempts, wordAttempts, sentences.length, words.length, loading, categories, wordStats]);
 
   // Convert DifficultyStats to DifficultyAverage format for DifficultyScoreBarChart
-  // Include all difficulty levels (1-5) even if they have no data
+  // Only include valid difficulty levels (2=Easy, 3=Medium, 4=Hard)
   const difficultyAveragesForBarChart = useMemo((): DifficultyAverage[] => {
-    const allDifficulties: DifficultyAverage[] = [];
-    
-    // Always show all 5 difficulty levels
-    for (let d = 1; d <= 5; d++) {
+    const validDifficulties = [2, 3, 4];
+    return validDifficulties.map((d) => {
       const stat = analytics?.difficultyStats?.find(s => s.difficulty === d);
-      
+
       if (stat && stat.avgOverallScore !== undefined && (stat.sentenceAttempts > 0 || stat.wordAttempts > 0)) {
-        // Has data
-        allDifficulties.push({
+        return {
           difficulty: d,
           averageScore: stat.avgOverallScore,
           count: stat.sentenceAttempts + stat.wordAttempts,
-        });
-      } else {
-        // No data, but still show the difficulty level with 0
-        allDifficulties.push({
-          difficulty: d,
-          averageScore: 0,
-          count: 0,
-        });
+        };
       }
-    }
-    
-    return allDifficulties;
+      return { difficulty: d, averageScore: 0, count: 0 };
+    });
   }, [analytics?.difficultyStats]);
 
   // Calculate today's stats

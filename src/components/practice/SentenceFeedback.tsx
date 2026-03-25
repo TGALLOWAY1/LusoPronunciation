@@ -28,6 +28,8 @@ export interface SentenceFeedbackProps {
   fallbackDifficulty?: number;
   /** Optional className for outer wrapper */
   className?: string;
+  /** If true, hides sentence text/translation/difficulty/audio (default: true for backward compat) */
+  hideHeaderContent?: boolean;
 }
 
 
@@ -48,6 +50,7 @@ function SentenceFeedback({
   fallbackTranslation,
   fallbackDifficulty,
   className,
+  hideHeaderContent = true,
 }: SentenceFeedbackProps) {
   const { selectedVoice } = useSettingsStore();
   const canonicalWordMap = useCanonicalWordMap();
@@ -108,7 +111,7 @@ function SentenceFeedback({
     words: enrichedWords.length > 0 ? enrichedWords : undefined,
     title: undefined, // No title for practice page
     showDevControls: false,
-    hideHeaderContent: true, // Hide sentence text/translation/difficulty/audio since SentenceCard shows them above
+    hideHeaderContent, // When true, hides sentence text/translation/difficulty/audio (caller provides them)
   }), [attempts, currentAttempt, sentenceText, translationText, difficulty, wordAudios, enrichedWords]);
 
   // Always render the panel - it will handle empty state internally

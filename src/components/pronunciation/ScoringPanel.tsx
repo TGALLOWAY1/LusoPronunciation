@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
 
 interface ScoringPanelProps {
@@ -321,6 +321,23 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
   const completenessTheme = completeness !== null ? getScoreColor(completeness) : null;
   const prosodyTheme = prosody !== null ? getScoreColor(prosody) : null;
 
+  // Animate bars from 0 to actual value on mount / attempt change
+  const [animated, setAnimated] = useState(false);
+  const attemptIdRef = useRef(currentAttempt.attemptId);
+
+  useEffect(() => {
+    // Reset animation when attempt changes
+    if (attemptIdRef.current !== currentAttempt.attemptId) {
+      attemptIdRef.current = currentAttempt.attemptId;
+      setAnimated(false);
+    }
+    // Trigger grow animation after first paint
+    const id = requestAnimationFrame(() => setAnimated(true));
+    return () => cancelAnimationFrame(id);
+  }, [currentAttempt.attemptId]);
+
+  const barWidth = (value: number) => animated ? `${value}%` : '0%';
+
   // Render horizontal banner variant
   if (variant === 'banner') {
     return (
@@ -337,8 +354,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden border-2 border-gray-400 dark:border-gray-500 shadow-sm">
               <div
-                className={`h-full transition-all duration-500 ${overallTheme.bg}`}
-                style={{ width: `${overall}%` }}
+                className={`h-full transition-all duration-700 ease-out ${overallTheme.bg}`}
+                style={{ width: barWidth(overall) }}
               />
             </div>
           </div>
@@ -351,8 +368,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
               <div
-                className={`h-full transition-all duration-500 ${accuracyTheme.bg}`}
-                style={{ width: `${accuracy}%` }}
+                className={`h-full transition-all duration-700 ease-out delay-100 ${accuracyTheme.bg}`}
+                style={{ width: barWidth(accuracy) }}
               />
             </div>
           </div>
@@ -366,8 +383,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                 <div
-                  className={`h-full transition-all duration-500 ${fluencyTheme?.bg ?? ''}`}
-                  style={{ width: `${fluency}%` }}
+                  className={`h-full transition-all duration-700 ease-out delay-200 ${fluencyTheme?.bg ?? ''}`}
+                  style={{ width: barWidth(fluency) }}
                 />
               </div>
             </div>
@@ -390,8 +407,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                 <div
-                  className={`h-full transition-all duration-500 ${completenessTheme?.bg ?? ''}`}
-                  style={{ width: `${completeness}%` }}
+                  className={`h-full transition-all duration-700 ease-out delay-300 ${completenessTheme?.bg ?? ''}`}
+                  style={{ width: barWidth(completeness) }}
                 />
               </div>
             </div>
@@ -445,8 +462,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
           <div
-            className={`h-full transition-all duration-500 ${overallTheme.bg}`}
-            style={{ width: `${overall}%` }}
+            className={`h-full transition-all duration-700 ease-out ${overallTheme.bg}`}
+            style={{ width: barWidth(overall) }}
           />
         </div>
       </div>
@@ -463,8 +480,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
             <div
-              className={`h-full transition-all duration-500 ${accuracyTheme.bg}`}
-              style={{ width: `${accuracy}%` }}
+              className={`h-full transition-all duration-700 ease-out delay-100 ${accuracyTheme.bg}`}
+              style={{ width: barWidth(accuracy) }}
             />
           </div>
         </div>
@@ -480,8 +497,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${fluencyTheme?.bg ?? ''}`}
-                style={{ width: `${fluency}%` }}
+                className={`h-full transition-all duration-700 ease-out delay-200 ${fluencyTheme?.bg ?? ''}`}
+                style={{ width: barWidth(fluency) }}
               />
             </div>
           </div>
@@ -498,8 +515,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${completenessTheme?.bg ?? ''}`}
-                style={{ width: `${completeness}%` }}
+                className={`h-full transition-all duration-700 ease-out delay-300 ${completenessTheme?.bg ?? ''}`}
+                style={{ width: barWidth(completeness) }}
               />
             </div>
           </div>
@@ -516,8 +533,8 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${prosodyTheme?.bg ?? ''}`}
-                style={{ width: `${prosody}%` }}
+                className={`h-full transition-all duration-700 ease-out delay-[400ms] ${prosodyTheme?.bg ?? ''}`}
+                style={{ width: barWidth(prosody) }}
               />
             </div>
           </div>
