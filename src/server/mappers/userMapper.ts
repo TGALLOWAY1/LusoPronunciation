@@ -9,6 +9,8 @@ export function mapUserDocToDto(doc: IUserDocument): User {
     id: doc._id.toString(),
     email: doc.email,
     displayName: doc.displayName,
+    avatarUrl: doc.avatarUrl,
+    oauthProvider: doc.oauthProvider,
     createdAt: doc.createdAt.toISOString(),
     settings: doc.settings,
   };

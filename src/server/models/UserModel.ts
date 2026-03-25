@@ -6,8 +6,11 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 export interface IUserDocument extends Document {
   _id: mongoose.Types.ObjectId;
   email: string;
-  passwordHash: string;
+  passwordHash?: string;
   displayName?: string;
+  oauthProvider?: 'github' | 'linkedin';
+  oauthId?: string;
+  avatarUrl?: string;
   settings?: {
     language?: string;
     theme?: 'light' | 'dark' | 'auto';
@@ -31,11 +34,21 @@ const UserSchema = new Schema<IUserDocument>(
     },
     passwordHash: {
       type: String,
-      required: true,
+      required: false,
     },
     displayName: {
       type: String,
       trim: true,
+    },
+    oauthProvider: {
+      type: String,
+      enum: ['github', 'linkedin'],
+    },
+    oauthId: {
+      type: String,
+    },
+    avatarUrl: {
+      type: String,
     },
     settings: {
       language: String,

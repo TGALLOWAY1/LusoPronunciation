@@ -7,6 +7,7 @@ import { connectMongo } from './db/mongoClient';
 import healthRouter from './routes/health';
 import pronunciationRouter, { legacyPronunciationAssessmentRouter } from './routes/pronunciationAssessment';
 import authRouter from './routes/auth';
+import oauthRouter from './routes/oauth';
 import practiceRouter from './routes/practice';
 import migrationRouter from './routes/migration';
 import flashcardsRouter from './routes/flashcards';
@@ -34,6 +35,7 @@ app.use(express.json());
 // Routes
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/auth/oauth', oauthRouter);
 app.use('/api', practiceRouter);
 app.use('/api/migrate', migrationRouter);
 app.use('/api/flashcards', flashcardsRouter);
