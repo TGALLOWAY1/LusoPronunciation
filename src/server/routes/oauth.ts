@@ -1,7 +1,6 @@
 import { Router, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserModel } from '../models/UserModel';
-import { mapUserDocToDto } from '../mappers/userMapper';
 
 const router = Router();
 
