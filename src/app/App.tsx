@@ -9,7 +9,6 @@ import LocalStorageMigrator from '../features/migration/LocalStorageMigrator';
 import UserDashboardPage from '../pages/UserDashboardPage';
 import SentencePractice from '../pages/SentencePractice';
 import WordPractice from '../pages/WordPractice';
-import Review from '../pages/Review';
 import RecentSessions from '../pages/RecentSessions';
 import AuthPage from '../pages/AuthPage';
 import OAuthCallbackPage from '../pages/OAuthCallbackPage';
@@ -31,7 +30,6 @@ function AppRoutes() {
           <Route path="/auth/callback" element={<OAuthCallbackPage />} />
           <Route path="/practice/sentence" element={<RequireAuth><SentencePractice /></RequireAuth>} />
           <Route path="/practice/word" element={<RequireAuth><WordPractice /></RequireAuth>} />
-          <Route path="/review" element={<RequireAuth><Review /></RequireAuth>} />
           <Route path="/sessions" element={<RequireAuth><RecentSessions /></RequireAuth>} />
           {import.meta.env.DEV && (
             <>

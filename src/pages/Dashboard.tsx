@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { useProgressStore } from '@/state/progressStore';
 import { loadAllSentences, loadAllWords, loadAllCategories } from '@/lib/data';
 import type { Sentence, Word, Category } from '@/lib/types';
@@ -12,7 +11,7 @@ import ErrorMessage from '@/components/common/ErrorMessage';
 import { getLastPracticeMode } from '@/lib/storage';
 
 export default function Dashboard() {
-  const { getDueCount, getProgressEntry, entries, storageError } = useProgressStore();
+  const { getProgressEntry, entries, storageError } = useProgressStore();
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [words, setWords] = useState<Word[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -20,7 +19,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const dueCount = getDueCount();
+
 
   useEffect(() => {
     async function loadData() {
@@ -244,27 +243,6 @@ export default function Dashboard() {
 
       {/* Continue Practice Card */}
       <ContinuePracticeCard lastMode={lastPracticeMode} />
-
-      {/* Review Queue Card */}
-      {dueCount > 0 && (
-        <Link
-          to="/review"
-          className="block bg-gradient-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-lg shadow-lg p-6 text-white hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
-        >
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-            <div>
-              <h3 className="text-xl font-bold mb-1">Review Queue</h3>
-              <p className="text-orange-50">
-                {dueCount} {dueCount === 1 ? 'item' : 'items'} due for review
-              </p>
-            </div>
-            <span className="text-4xl">🔄</span>
-          </div>
-          <div className="flex items-center text-sm font-medium">
-            Start Review →
-          </div>
-        </Link>
-      )}
 
       {/* Categories Section */}
       <div>

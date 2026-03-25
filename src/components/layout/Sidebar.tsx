@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   AlignLeft,
   CaseSensitive,
-  Layers,
   History as HistoryIcon,
   BarChart3,
 } from 'lucide-react';
@@ -19,7 +18,6 @@ const navItems: NavItem[] = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/practice/sentence', label: 'Practice Sentences', icon: AlignLeft },
   { path: '/practice/word', label: 'Practice Words', icon: CaseSensitive },
-  { path: '/review', label: 'Review Queue', icon: Layers },
   { path: '/sessions', label: 'History', icon: HistoryIcon },
 ];
 
