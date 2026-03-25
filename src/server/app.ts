@@ -29,10 +29,23 @@ const app: Express = express();
 const PORT = process.env.PORT || 4000;
 const nonApiSpaRoutePattern = /^(?!\/api(?:\/|$)).*/;
 
+// Trust Railway's reverse proxy (required for correct req.ip, req.protocol)
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
+
+// Request logging (lightweight — method, path, status, duration)
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`[HTTP] ${req.method} ${req.path} ${res.statusCode} ${duration}ms`);
+  });
+  next();
+});
 
 // Routes
 app.use('/api/health', healthRouter);
@@ -88,6 +101,14 @@ if (existsSync(distPath)) {
     });
   });
 }
+
+// Global error handler — catch middleware/route errors and return 500 instead of crashing
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error('[Server] Unhandled route error:', err.message, err.stack);
+  if (!res.headersSent) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 /**
  * Starts the Express server

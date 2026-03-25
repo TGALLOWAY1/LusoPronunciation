@@ -33,6 +33,5 @@ COPY data ./data
 # Copy tsconfig files needed by tsx at runtime
 COPY tsconfig.json tsconfig.node.json ./
 
-EXPOSE 4000
-
+# PORT is injected by Railway at runtime (default 8080); do not hardcode EXPOSE
 CMD ["npm", "start"]
