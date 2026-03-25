@@ -3,7 +3,7 @@
  * These types represent the raw data structure before transformation.
  */
 
-export type Difficulty = 1 | 2 | 3 | 4 | 5;
+export type Difficulty = 2 | 3 | 4;
 
 // ============================================================================
 // Practice Logging and Progress Analytics Types
@@ -15,7 +15,7 @@ export type Difficulty = 1 | 2 | 3 | 4 | 5;
 export type SentenceId = string;
 export type WordId = string;
 export type PhonemeId = string;
-export type DifficultyLevel = Difficulty; // Alias for 1 | 2 | 3 | 4 | 5
+export type DifficultyLevel = Difficulty; // Alias for 2 | 3 | 4
 export type ContentCategory = string; // Category ID (e.g., "food", "travel")
 
 /**

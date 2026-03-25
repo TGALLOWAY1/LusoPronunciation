@@ -15,7 +15,7 @@ describe('PhonemeChip', () => {
     ipa: 'ɑ',
     type: 'vowel',
     category: 'open',
-    difficulty: 1,
+    difficulty: 2,
     englishApprox: 'Open back unrounded vowel',
     articulation: 'Tongue low and back.',
     acousticDescription: 'Low F1 vowel.',

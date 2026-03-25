@@ -5,16 +5,14 @@ import type { Difficulty } from '@/lib/types';
  * Used by FilterControls and SentencePractice to ensure consistent labels.
  */
 export const DIFFICULTY_LABELS: Record<Difficulty, string> = {
-  1: 'Very Easy',
   2: 'Easy',
   3: 'Medium',
   4: 'Hard',
-  5: 'Very Hard',
 };
 
 /**
  * Get the display label for a difficulty level.
- * @param difficulty - The difficulty level (1-5) or null
+ * @param difficulty - The difficulty level (2-4) or null
  * @returns The label string, or null if difficulty is null
  */
 export function getDifficultyLabel(difficulty: Difficulty | null): string | null {
@@ -30,11 +28,9 @@ export function getDifficultyLabel(difficulty: Difficulty | null): string | null
  */
 export function getDifficultyOptions(): { value: Difficulty; label: string }[] {
   return [
-    { value: 1, label: DIFFICULTY_LABELS[1] },
     { value: 2, label: DIFFICULTY_LABELS[2] },
     { value: 3, label: DIFFICULTY_LABELS[3] },
     { value: 4, label: DIFFICULTY_LABELS[4] },
-    { value: 5, label: DIFFICULTY_LABELS[5] },
   ];
 }
 

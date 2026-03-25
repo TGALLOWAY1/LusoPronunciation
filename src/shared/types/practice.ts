@@ -128,7 +128,7 @@ export interface SentencePracticeAttempt {
   userId: string;
   sessionId: string;
   sentenceId: string;
-  difficulty: 1 | 2 | 3 | 4 | 5;
+  difficulty: 2 | 3 | 4;
   category: string;
   createdAt: string;
   overallScore: number;
@@ -156,7 +156,7 @@ export interface WordPracticeAttempt {
   userId: string;
   sessionId: string;
   wordId: string;
-  difficulty: 1 | 2 | 3 | 4 | 5;
+  difficulty: 2 | 3 | 4;
   category: string;
   createdAt: string;
   overallScore: number;

@@ -127,30 +127,26 @@ function parseCSVLine(line: string): string[] {
  * Infers difficulty level from sentence characteristics.
  * Simple heuristic: length and complexity indicators.
  */
-function inferDifficulty(pt: string, en: string): 1 | 2 | 3 | 4 | 5 {
+function inferDifficulty(pt: string, en: string): 2 | 3 | 4 {
   const ptWords = pt.split(/\s+/).filter(w => w.length > 0).length;
   const enWords = en.split(/\s+/).filter(w => w.length > 0).length;
   const avgWords = (ptWords + enWords) / 2;
-  
+
   // Check for complex features
-  const hasComplexFeatures = 
+  const hasComplexFeatures =
     pt.includes('?') || // Questions
     pt.includes(',') || // Multiple clauses
     pt.includes('que') || // Relative clauses
     pt.includes('quando') || // Temporal clauses
     pt.includes('porque') || // Causal clauses
     avgWords > 10; // Long sentences
-  
-  if (avgWords <= 4 && !hasComplexFeatures) {
-    return 1; // Very simple
-  } else if (avgWords <= 6 && !hasComplexFeatures) {
-    return 2; // Simple
+
+  if (avgWords <= 6 && !hasComplexFeatures) {
+    return 2; // Easy
   } else if (avgWords <= 8 || (avgWords <= 6 && hasComplexFeatures)) {
-    return 3; // Intermediate
-  } else if (avgWords <= 12 || (avgWords <= 8 && hasComplexFeatures)) {
-    return 4; // Advanced
+    return 3; // Medium
   } else {
-    return 5; // Very advanced
+    return 4; // Hard
   }
 }
 

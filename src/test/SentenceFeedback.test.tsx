@@ -72,7 +72,7 @@ describe('SentenceFeedback', () => {
     const sentence = {
       textPt: 'Oi',
       translationEn: 'Hi',
-      difficulty: 1,
+      difficulty: 2,
     } as any;
 
     render(
@@ -94,7 +94,7 @@ describe('SentenceFeedback', () => {
       currentAttempt: mockAttempt,
       sentenceText: 'Oi',
       translationText: 'Hi',
-      difficulty: 1,
+      difficulty: 2,
       hideHeaderContent: true,
       showDevControls: false,
       wordAudios: [

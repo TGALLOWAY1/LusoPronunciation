@@ -113,7 +113,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           sentenceId: 'sent1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 90,
@@ -126,7 +126,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           sentenceId: 'sent2',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 70,
@@ -139,7 +139,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           sentenceId: 'sent3',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 50,
@@ -282,7 +282,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session2',
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(5),
           overallScore: 90,
@@ -467,7 +467,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           sentenceId: 'sent1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 90,
@@ -480,7 +480,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           sentenceId: 'sent2',
-          difficulty: 2,
+          difficulty: 3,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 80,
@@ -493,7 +493,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           sentenceId: 'sent3',
-          difficulty: 2,
+          difficulty: 3,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 70,
@@ -509,7 +509,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 85,
@@ -527,19 +527,19 @@ describe('practiceAnalytics', () => {
         wordProgress.perWord
       );
 
-      expect(stats).toHaveLength(5); // One for each difficulty level 1-5
-
-      const difficulty1 = stats.find((s) => s.difficulty === 1);
-      expect(difficulty1).toBeDefined();
-      expect(difficulty1?.sentenceAttempts).toBe(1);
-      expect(difficulty1?.wordAttempts).toBe(1);
-      expect(difficulty1?.avgOverallScore).toBeCloseTo(87.5, 1); // (90 + 85) / 2
+      expect(stats).toHaveLength(3); // One for each difficulty level 2-4
 
       const difficulty2 = stats.find((s) => s.difficulty === 2);
       expect(difficulty2).toBeDefined();
-      expect(difficulty2?.sentenceAttempts).toBe(2);
-      expect(difficulty2?.wordAttempts).toBe(0);
-      expect(difficulty2?.avgOverallScore).toBe(75); // (80 + 70) / 2
+      expect(difficulty2?.sentenceAttempts).toBe(1);
+      expect(difficulty2?.wordAttempts).toBe(1);
+      expect(difficulty2?.avgOverallScore).toBeCloseTo(87.5, 1); // (90 + 85) / 2
+
+      const difficulty3 = stats.find((s) => s.difficulty === 3);
+      expect(difficulty3).toBeDefined();
+      expect(difficulty3?.sentenceAttempts).toBe(2);
+      expect(difficulty3?.wordAttempts).toBe(0);
+      expect(difficulty3?.avgOverallScore).toBe(75); // (80 + 70) / 2
     });
   });
 
@@ -632,7 +632,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 75,
@@ -669,7 +669,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 50,
@@ -681,7 +681,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           wordId: 'word2',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 75,
@@ -693,7 +693,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session1',
           wordId: 'word3',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 90,
@@ -813,7 +813,7 @@ describe('practiceAnalytics', () => {
           userId: 'test-user',
           sessionId: 'session2',
           wordId: 'word1',
-          difficulty: 1,
+          difficulty: 2,
           category: 'food',
           createdAt: createDate(1),
           overallScore: 85,

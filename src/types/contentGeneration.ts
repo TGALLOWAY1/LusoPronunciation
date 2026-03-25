@@ -137,7 +137,7 @@ export interface EnrichedWord {
   baseForm?: string;                 // Optional base/infinitive form
   category: string;                  // Category ID
   partOfSpeech: string;              // Part of speech
-  difficulty: 1 | 2 | 3 | 4 | 5;    // Difficulty level (1-5 scale, required for UI)
+  difficulty: 2 | 3 | 4;    // Difficulty level (2-4: Easy/Medium/Hard)
   difficultForEnglish: boolean;      // Whether this word is difficult for English speakers
   pronunciationNotes?: string;       // Pronunciation guidance notes (optional)
   englishDifficultyFlag?: boolean;   // Alias for difficultForEnglish (kept for backward compatibility)
@@ -160,7 +160,7 @@ export interface EnrichedSentence {
   normalizedText: string;          // Normalized version for matching
   en: string;                      // English translation (required for UI)
   category: string;                 // Category ID
-  difficulty: 1 | 2 | 3 | 4 | 5;   // Difficulty level (1-5 scale, required for UI)
+  difficulty: 2 | 3 | 4;   // Difficulty level (2-4: Easy/Medium/Hard)
   pronunciationNotes?: string;     // Pronunciation guidance notes (optional)
   tags?: string[];                 // Additional tags
   hardForEnglish?: boolean;        // Whether this sentence is hard for English speakers

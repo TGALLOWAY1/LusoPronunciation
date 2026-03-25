@@ -40,7 +40,7 @@ describe('enrichItems category preservation', () => {
         pt: 'hotel',
         en: 'hotel',
         pos: 'noun',
-        difficulty: 1 as const,
+        difficulty: 2 as const,
         difficult_for_english: false,
       },
     ];

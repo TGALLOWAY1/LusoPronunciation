@@ -38,11 +38,9 @@ export default function SentencePractice() {
   // selectedAttemptId determines which attempt's scoring + recording are shown
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
 const difficultyBadgeClasses: Record<Difficulty, string> = {
-  1: 'badge-success',
   2: 'badge-primary',
   3: 'badge-warning',
   4: 'badge-danger',
-  5: 'badge-danger',
 };
 
 // Active tab in main panel: 'practice' or 'history'

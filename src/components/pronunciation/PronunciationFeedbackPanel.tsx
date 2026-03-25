@@ -102,8 +102,6 @@ export default function PronunciationFeedbackPanel({
 
   const getDifficultyColor = (difficulty: number): string => {
     switch (difficulty) {
-      case 1:
-        return 'badge-success';
       case 2:
         return 'badge-primary';
       case 3:

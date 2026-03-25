@@ -539,7 +539,7 @@ export function computeUserGlobalStats(
  * @param wordAttempts - Array of word practice attempts
  * @param sentenceProgress - Optional sentence progress map for known counts
  * @param wordProgress - Optional word progress map for known counts
- * @returns Array of DifficultyStats, one per difficulty level (1-5)
+ * @returns Array of DifficultyStats, one per difficulty level (2-4)
  */
 export function computeDifficultyStats(
   sentenceAttempts: SentencePracticeAttempt[],
@@ -551,8 +551,8 @@ export function computeDifficultyStats(
     sentenceAttempts[0]?.userId || wordAttempts[0]?.userId || 'local_user';
   const difficultyMap = new Map<DifficultyLevel, { sentences: SentencePracticeAttempt[]; words: WordPracticeAttempt[] }>();
 
-  // Initialize all difficulty levels
-  for (let d = 1; d <= 5; d++) {
+  // Initialize all difficulty levels (2=Easy, 3=Medium, 4=Hard)
+  for (let d = 2; d <= 4; d++) {
     difficultyMap.set(d as DifficultyLevel, { sentences: [], words: [] });
   }
 
@@ -572,7 +572,7 @@ export function computeDifficultyStats(
   // Build stats for each difficulty
   const stats: DifficultyStats[] = [];
 
-  for (let d = 1; d <= 5; d++) {
+  for (let d = 2; d <= 4; d++) {
     const difficulty = d as DifficultyLevel;
     const { sentences, words } = difficultyMap.get(difficulty) || { sentences: [], words: [] };
 
