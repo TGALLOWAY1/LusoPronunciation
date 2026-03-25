@@ -66,7 +66,14 @@ async function enableE2EMediaScenario(
   }, mediaScenario);
 }
 
+async function seedAuthToken(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    localStorage.setItem('luso_auth_token', 'e2e-test-token');
+  });
+}
+
 async function goToSentencePractice(page: Page): Promise<void> {
+  await seedAuthToken(page);
   await page.goto('/practice/sentence');
   await expect(page.getByRole('heading', { name: 'Sentence Practice' })).toBeVisible();
 }
