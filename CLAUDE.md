@@ -95,6 +95,10 @@ Key directories:
 - Centralized error taxonomy via `ERROR_CLASS` enum
 - Telemetry recording for failures via `attemptMetrics.ts`
 
+### Keeping FEATURES.md in Sync
+
+When adding, modifying, or removing user-facing functionality, update `FEATURES.md` at the project root to reflect the change. This includes new features, renamed or restructured features, and removed features. Keep descriptions concise (one to two sentences). Do not document internal refactors or implementation details that have no user-visible effect.
+
 ### Commit Style
 
 ```
