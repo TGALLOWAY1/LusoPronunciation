@@ -1,99 +1,158 @@
 # LusoPronounce
 
-LusoPronounce is a Brazilian Portuguese pronunciation trainer.
+A browser-based Brazilian Portuguese pronunciation trainer that scores your speech word-by-word using Azure Speech Service and coaches you with targeted minimal-pair drills.
 
-The app provides sentence and word practice, pronunciation scoring feedback, attempt history, and coaching to help English speakers improve pronunciation with targeted repetition.
+<!-- TODO: Replace this static hero with a short GIF showing a full record → score → coaching cycle -->
+<img width="1289" height="1274" alt="LusoPronounce sentence practice" src="https://github.com/user-attachments/assets/eb5fcdd1-ab7e-41ff-a015-dd4f973b0e6f" />
 
-## Main Screen
+## Why this project exists
 
-### Sentence Practice
-<img width="1289" height="1274" alt="image" src="https://github.com/user-attachments/assets/eb5fcdd1-ab7e-41ff-a015-dd4f973b0e6f" />
+English speakers learning Brazilian Portuguese rarely get fast, phoneme-level feedback. Most apps grade at the sentence level and miss the sound confusions that matter most in PT-BR: nasalization, `r`/`rr`, `lh`/`nh`, `tch`/`ti`, open vs. close vowels. LusoPronounce closes that loop — record a sentence, get per-word and per-phoneme scores in seconds, and receive deterministic coaching on what to drill next.
 
+## What it does
 
-## Core Features
+- Record a sentence or word in the browser and get back word-by-word accuracy, fluency, completeness, and prosody scores
+- Expand any word to see phoneme-level breakdowns with IPA and error-type tags
+- Surface actionable coaching suggestions after each attempt, including minimal-pair drills tuned to the learner's confusion patterns
+- Track progress via a spaced-repetition queue, weak-phoneme analysis, and a 7-day performance dashboard
 
-- Live recording and pronunciation assessment for sentence practice
-- Word-by-word and phrase-level scoring feedback
-- Client quality gate for short/silent recordings
-- Cancel/retry handling for in-flight assessment
-- Coaching and minimal-pair drill suggestions after scored attempts
-- Local attempt history, trend views, and recent session summaries
+## Why it is technically interesting
 
-## Tech Stack
+- **Full browser → server → Azure audio pipeline.** MediaRecorder captures webm/opus; the Express backend transcodes to 16 kHz / 16-bit / mono WAV with `ffmpeg-static` (`src/server/lib/audioConversion.ts`) before handing it to the Azure Speech SDK for assessment.
+- **Deterministic coaching engine.** `src/lib/coaching/coachingEngine.ts` turns raw Azure scores into next-step suggestions. `confusionDetection.ts` identifies PT-BR sound confusions and `minimalPairs.ptbr.ts` serves targeted drills.
+- **Client-side quality gates.** `src/lib/audioQuality.ts` rejects silent or too-short takes using RMS energy + duration checks before an upload is ever sent.
+- **Stale-response protection.** `useLivePronunciationPractice` tags each assessment request with an ID so cancelled or superseded attempts can't overwrite newer results.
+- **SM-2 spaced repetition tied to pronunciation scores.** Flashcard scheduling uses real assessment outcomes, not just self-rating.
 
-- React + TypeScript + Vite
-- Express server for pronunciation endpoints
-- Vitest for unit/contract testing
-- Playwright for deterministic browser e2e coverage
+## Architecture overview
 
-## Local Development
+```
+Browser (MediaRecorder, webm/opus)
+        │
+        ▼
+Vite dev proxy  ──►  Express /api/pronunciation/assessment
+                              │
+                              ▼
+                      ffmpeg transcode (WAV 16 kHz mono)
+                              │
+                              ▼
+                      Azure Speech SDK  ──►  word + phoneme scores
+                              │
+                              ▼
+                      Coaching engine  ──►  React UI (hooks + context)
+```
 
-### 1. Install dependencies
+- **Frontend**: React 19 + TypeScript 5.9 + Vite 7, Tailwind CSS 3.4, React Router, feature-based components in `src/components/`, business logic in `src/hooks/`, global state via React Context in `src/state/`.
+- **Backend**: Express 5 on Node 22, Mongoose 9 for MongoDB, JWT auth with an optional invite-code gate, CORS + Helmet + per-user rate limits on the pronunciation endpoint.
+- **Testing**: Vitest for unit and contract tests; Playwright for end-to-end flows (organized by phase under `e2e/`).
+
+## Key features
+
+- **Pronunciation assessment** — live recording, word + phoneme scores, sentence-level accuracy/fluency/completeness/prosody
+- **Coaching** — confusion detection and minimal-pair drills for PT-BR sound pairs
+- **Sentence practice** — category/difficulty browser, native male/female audio, slow playback, attempt history with sparklines
+- **Word practice** — pronunciation, text MC (PT↔EN), listening MC, self-rating, list/drill/weak-words views
+- **Spaced repetition** — SM-2 flashcard scheduling linked to pronunciation scores
+- **Dashboard** — 7-day performance charts, weak-phoneme surfacing, due-for-review queue, category breakdown
+- **Auth** — email + password, GitHub and LinkedIn OAuth, optional invite-code gating
+
+See [`FEATURES.md`](./FEATURES.md) for the full list.
+
+## Demo
+
+<!-- TODO: Add the live Railway URL here once deployed, or delete this section -->
+
+## Local setup
+
+Requires Node 22.x.
 
 ```bash
 npm install
+cp .env.example .env       # fill in the values listed below
+npm run dev                # frontend on http://localhost:3000
+npm run dev:server         # backend  on http://localhost:4000
 ```
 
-### 2. Start the app
+The Vite dev server proxies `/api` requests to the backend automatically.
+
+Common commands:
 
 ```bash
-npm run dev
+npm test -- --run          # run all unit + contract tests once
+npm run verify:phase04     # targeted unit tests + Playwright e2e
+npm run build              # typecheck + production build
+npm run screenshots:readme # regenerate the PNGs in docs/assets/readme/
 ```
 
-### 3. Start backend API server
+## Environment variables
 
-This is required for authentication, pronunciation scoring, and server-backed persistence.
+Copy `.env.example` to `.env` and set the required values.
 
-```bash
-npm run dev:server
-```
+**Required**
 
-Required local env vars for the full app:
+| Variable              | Purpose                                             |
+|-----------------------|-----------------------------------------------------|
+| `AZURE_SPEECH_KEY`    | Azure Cognitive Services Speech subscription key    |
+| `AZURE_SPEECH_REGION` | Azure region (e.g. `eastus`, `brazilsouth`)         |
+| `MONGODB_URI`         | MongoDB connection string (Atlas or local)          |
+| `JWT_SECRET`          | Secret for signing JWT auth tokens                  |
 
-- `MONGODB_URI`
-- `JWT_SECRET`
-- `AZURE_SPEECH_KEY`
-- `AZURE_SPEECH_REGION`
+**Optional**
 
-## Testing
+| Variable                                         | Purpose                                               |
+|--------------------------------------------------|-------------------------------------------------------|
+| `REQUIRE_INVITE_CODE`                            | Gate registration behind an invite code (default off) |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`      | GitHub OAuth                                          |
+| `LINKEDIN_CLIENT_ID` / `LINKEDIN_CLIENT_SECRET`  | LinkedIn OAuth                                        |
+| `APP_ORIGIN`                                     | Public URL used for OAuth redirects                   |
+| `SPEECH_RATE_LIMIT_*`, `SPEECH_MAX_UPLOAD_BYTES` | Tune rate limits and upload cap                       |
+| `AUDIO_CONVERT_TIMEOUT_MS`                       | ffmpeg timeout (default 12 s)                         |
 
-### Targeted Phase 0-4 verification
-
-```bash
-npm run test:phase04
-npm run e2e:phase04
-npm run verify:phase04
-```
-
-### Full repo verification
-
-```bash
-npm test -- --run
-```
-
-### Capture fresh README screenshots
-
-```bash
-npm run screenshots:readme
-```
-
-This writes PNGs to `docs/assets/readme/`.
+See [`.env.example`](./.env.example) for the full list.
 
 ## Deployment
 
-Recommended launch target: **Railway**.
-
-Production build and start:
+Target platform: **Railway**. Railway auto-detects Node and sets `PORT`.
 
 ```bash
 npm run build
-npm run start
+npm start
 ```
 
-Invite-gated launch flow:
+For a gated launch, seed at least one invite code before going live:
 
 ```bash
 npm run invite:seed -- --code=LAUNCH-ACCESS --maxUses=25
 ```
 
-If you want open signup instead, set `REQUIRE_INVITE_CODE=false` in the deployed environment.
+Set `REQUIRE_INVITE_CODE=false` in the deployed environment for open signup.
+
+## Screenshots
+
+<!-- TODO: Refresh screenshots via `npm run screenshots:readme` if the UI has changed -->
+
+| | |
+|---|---|
+| **Sentence Practice** | **Word Practice** |
+| ![Sentence practice](docs/assets/readme/sentence-practice.png) | ![Word practice](docs/assets/readme/word-practice.png) |
+| **Dashboard** | **Recent Sessions** |
+| ![Dashboard](docs/assets/readme/dashboard.png) | ![Recent sessions](docs/assets/readme/recent-sessions.png) |
+| **Review Queue** | |
+| ![Review queue](docs/assets/readme/review-queue.png) | |
+
+## Limitations
+
+- CEFR-level estimation is not yet wired up (`src/lib/practiceAnalytics.ts` TODO)
+- Pass threshold is currently hardcoded at 70 inside the card components
+- Audio uploads are capped at 10 MB (tunable via `SPEECH_MAX_UPLOAD_BYTES`)
+- No true offline mode — sessions dual-write to `localStorage` for resilience, but Azure assessment requires connectivity
+- Azure Speech Service costs scale with usage; there is no bundled on-device fallback
+
+## Future work
+
+- Virtual scrolling for lists over ~500 items (see `docs/PERFORMANCE_NOTES.md`)
+- IndexedDB-backed storage for larger datasets
+- Service worker for offline practice of previously fetched content
+- Configurable per-user pass thresholds
+- Deeper phoneme-score extraction from Azure's raw response
+- CEFR-level auto-estimation from aggregate scores
