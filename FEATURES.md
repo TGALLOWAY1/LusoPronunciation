@@ -33,19 +33,17 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Pronunciation Score Linking** — Flashcard review outcomes are tied to pronunciation assessment scores for data-driven scheduling.
 - **Due Queue** — API endpoint returns flashcards due for review, ordered by due date.
 
-## Dashboard & Analytics
+## Progress & Review
 
-- **Today's Summary** — Daily metrics including practice count, daily streak, and sentence/word coverage.
-- **7-Day Performance Charts** — Rolling charts for overall score, accuracy, and fluency trends over the past week.
-- **Difficulty Analysis** — Bar chart and scatter plot showing performance broken down by content difficulty level.
-- **Category Breakdown** — Table view of progress across content categories.
-- **Weak Phonemes** — Highlights phonemes that need the most practice based on recent scores.
-- **Items Needing Review** — Surfaces sentences and words that are due for re-practice.
+- **Progress Page** — Lightweight page with three hero metrics (today's practice time, current streak, items due for review), a weekly trend chart, and top weak phonemes with action links.
+- **Review Page** — Tabbed interface with a Review Queue (SRS-driven items) and Recent Attempts timeline. Queue shows progress bar and item-by-item navigation with difficulty rating. Attempts list shows scores with "Practice again" links.
+- **Review Queue Algorithm** — Score-weighted review queue (`buildReviewQueue`) ranks items by `(1 - bestScore/100) * recencyWeight`, filtering items below a configurable threshold (default 80).
+- **Completion Moments** — Animated confirmation when the review queue is cleared, linking back to practice.
+- **Momentum Strip** — Compact header strip on the Practice page showing current streak, today's attempt count vs daily target, and review-due badge.
 
 ## Session Tracking
 
 - **Automatic Sessions** — Practice sessions are auto-started and auto-ended with duration calculation and attempt logging.
-- **Recent Sessions View** — Dedicated page listing past sessions grouped by date with summary stats.
 - **Dual-Write Persistence** — Sessions are written to both localStorage (offline resilience) and the MongoDB backend.
 
 ## Authentication & Security
@@ -64,11 +62,14 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 
 ## UI & Accessibility
 
+- **Practice-First Navigation** — Four-item navigation (Practice, Review, Progress, Settings). Practice is the default landing page with Sentences/Words tabs.
 - **Responsive Layout** — Sidebar navigation on desktop, top navigation bar on mobile.
 - **Dark Mode** — Full dark theme support via Tailwind CSS.
 - **Keyboard Navigation** — Arrow keys navigate between sentences and words in practice views.
-- **Voice Preference** — Toggle between male and female native audio voices; preference is persisted.
+- **Voice Preference** — Toggle between male and female native audio voices; persisted in Settings page.
+- **Resume Practice** — Header button to resume practice from any non-practice page, remembering last practice mode.
 - **Category & Difficulty Filters** — Multi-select filter chips on practice pages for narrowing content.
+- **Shared Layout Primitives** — PageScaffold, MetricTile, ActionPanel, and ChartContainer components for consistent page structure.
 - **Error Handling** — React ErrorBoundary at the app root, centralized error taxonomy (`ERROR_CLASS` enum), and safe error payloads in API responses.
 - **Local Storage Management** — Audio cache capped at 1.5 MB with graceful handling when storage is full.
 
