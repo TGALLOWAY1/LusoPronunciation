@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AlignLeft, CaseSensitive } from 'lucide-react';
+import { usePracticeLogStore } from '@/state/practiceLogStore';
+import { useProgressStore } from '@/state/progressStore';
+import { computeUserGlobalStats } from '@/lib/practiceAnalytics';
+import MomentumStrip from '@/components/common/MomentumStrip';
 import SentencePractice from './SentencePractice';
 import WordPractice from './WordPractice';
 
@@ -12,6 +16,28 @@ export default function PracticePage() {
   const initialTab: PracticeTab = paramTab === 'words' ? 'words' : 'sentences';
   const [activeTab, setActiveTab] = useState<PracticeTab>(initialTab);
 
+  const { sessions, sentenceAttempts, wordAttempts } = usePracticeLogStore();
+  const { getDueCount } = useProgressStore();
+  const dueCount = getDueCount();
+
+  const streak = useMemo(() => {
+    if (sessions.length === 0) return 0;
+    // Lightweight streak calc — reuse computeUserGlobalStats only when sessions exist
+    const stats = computeUserGlobalStats(sessions, sentenceAttempts, wordAttempts, 0, 0);
+    return stats.currentDailyStreak;
+  }, [sessions, sentenceAttempts, wordAttempts]);
+
+  const todayAttempts = useMemo(() => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const sentenceCount = sentenceAttempts.filter(
+      (a) => new Date(a.createdAt).toISOString().split('T')[0] === todayStr,
+    ).length;
+    const wordCount = wordAttempts.filter(
+      (a) => new Date(a.createdAt).toISOString().split('T')[0] === todayStr,
+    ).length;
+    return sentenceCount + wordCount;
+  }, [sentenceAttempts, wordAttempts]);
+
   function handleTabChange(tab: PracticeTab) {
     setActiveTab(tab);
     setSearchParams(tab === 'sentences' ? {} : { tab }, { replace: true });
@@ -19,6 +45,15 @@ export default function PracticePage() {
 
   return (
     <div>
+      {/* Momentum strip */}
+      <div className="mb-4">
+        <MomentumStrip
+          streak={streak}
+          todayAttempts={todayAttempts}
+          dueCount={dueCount}
+        />
+      </div>
+
       {/* Tab bar */}
       <div className="flex gap-1 mb-6 border-b border-gray-200 dark:border-gray-700">
         <button
