@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
 import { ProgressStoreProvider } from '../state/progressStore';
 import { SettingsStoreProvider } from '../state/settingsStore';
@@ -6,10 +6,10 @@ import { PracticeLogStoreProvider } from '../state/practiceLogStore';
 import AppLayout from '../components/layout/AppLayout';
 import { ErrorBoundary } from '../components/common/ErrorBoundary';
 import LocalStorageMigrator from '../features/migration/LocalStorageMigrator';
-import UserDashboardPage from '../pages/UserDashboardPage';
-import SentencePractice from '../pages/SentencePractice';
-import WordPractice from '../pages/WordPractice';
-import RecentSessions from '../pages/RecentSessions';
+import PracticePage from '../pages/PracticePage';
+import ProgressPage from '../pages/ProgressPage';
+import Review from '../pages/Review';
+import SettingsPage from '../pages/SettingsPage';
 import AuthPage from '../pages/AuthPage';
 import OAuthCallbackPage from '../pages/OAuthCallbackPage';
 import { isAuthenticated, pingSpeechServiceHealth } from '@/api/auth';
@@ -25,13 +25,15 @@ function AppRoutes() {
     <BrowserRouter>
       <AppLayout>
         <Routes>
-          <Route path="/" element={<RequireAuth><SentencePractice /></RequireAuth>} />
+          <Route path="/" element={<RequireAuth><PracticePage /></RequireAuth>} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<OAuthCallbackPage />} />
-          <Route path="/practice/sentence" element={<RequireAuth><SentencePractice /></RequireAuth>} />
-          <Route path="/practice/word" element={<RequireAuth><WordPractice /></RequireAuth>} />
-          <Route path="/sessions" element={<RequireAuth><RecentSessions /></RequireAuth>} />
-          <Route path="/progress" element={<RequireAuth><UserDashboardPage /></RequireAuth>} />
+          <Route path="/practice/sentence" element={<Navigate to="/" replace />} />
+          <Route path="/practice/word" element={<Navigate to="/?tab=words" replace />} />
+          <Route path="/review" element={<RequireAuth><Review /></RequireAuth>} />
+          <Route path="/sessions" element={<Navigate to="/review" replace />} />
+          <Route path="/progress" element={<RequireAuth><ProgressPage /></RequireAuth>} />
+          <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
           {import.meta.env.DEV && (
             <>
               <Route path="/dev/pronunciation-fixtures" element={<Suspense fallback={null}><PronunciationFixtures /></Suspense>} />

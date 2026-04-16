@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
-  AlignLeft,
-  History as HistoryIcon,
+  BookOpen,
+  RotateCcw,
   BarChart3,
+  Settings,
 } from 'lucide-react';
 import type { ComponentType } from 'react';
 
@@ -13,9 +14,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { path: '/', label: 'Practice', icon: AlignLeft },
-  { path: '/sessions', label: 'Review', icon: HistoryIcon },
+  { path: '/', label: 'Practice', icon: BookOpen },
+  { path: '/review', label: 'Review', icon: RotateCcw },
   { path: '/progress', label: 'Progress', icon: BarChart3 },
+  { path: '/settings', label: 'Settings', icon: Settings },
 ];
 
 // Dev-only navigation items
