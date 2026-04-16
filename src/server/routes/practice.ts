@@ -48,11 +48,10 @@ router.post('/practice-sessions', requireAuth, async (req: AuthenticatedRequest,
     const session = mapPracticeSessionDocToDto(sessionDoc);
     res.status(201).json(session);
   } catch (error) {
-    console.error('[Practice] Error creating session:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[Practice] Error creating session:', error instanceof Error ? error.message : error);
     res.status(500).json({
       error: 'Failed to create practice session',
-      message: errorMessage,
+      message: 'An unexpected error occurred.',
     });
   }
 });
@@ -104,11 +103,10 @@ router.patch(
       const session = mapPracticeSessionDocToDto(sessionDoc);
       res.json(session);
     } catch (error) {
-      console.error('[Practice] Error completing session:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('[Practice] Error completing session:', error instanceof Error ? error.message : error);
       res.status(500).json({
         error: 'Failed to complete practice session',
-        message: errorMessage,
+        message: 'An unexpected error occurred.',
       });
     }
   }
@@ -255,11 +253,10 @@ router.post('/pronunciation-attempts', requireAuth, async (req: AuthenticatedReq
     const attempt = mapPronunciationAttemptDocToDto(attemptDoc);
     res.status(201).json(attempt);
   } catch (error) {
-    console.error('[Practice] Error creating attempt:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[Practice] Error creating attempt:', error instanceof Error ? error.message : error);
     res.status(500).json({
       error: 'Failed to create pronunciation attempt',
-      message: errorMessage,
+      message: 'An unexpected error occurred.',
     });
   }
 });
@@ -290,6 +287,9 @@ router.get('/pronunciation-attempts', requireAuth, async (req: AuthenticatedRequ
     };
 
     if (contentId) {
+      if (typeof contentId !== 'string' || contentId.length > 128) {
+        return res.status(400).json({ error: 'Invalid contentId' });
+      }
       query.contentId = contentId;
     }
 
@@ -312,11 +312,10 @@ router.get('/pronunciation-attempts', requireAuth, async (req: AuthenticatedRequ
       offset,
     });
   } catch (error) {
-    console.error('[Practice] Error fetching attempts:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[Practice] Error fetching attempts:', error instanceof Error ? error.message : error);
     res.status(500).json({
       error: 'Failed to fetch pronunciation attempts',
-      message: errorMessage,
+      message: 'An unexpected error occurred.',
     });
   }
 });

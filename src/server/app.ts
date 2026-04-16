@@ -15,8 +15,10 @@ import flashcardsRouter from './routes/flashcards';
 import {
   pronunciationCorsMiddleware,
   pronunciationRateLimitMiddleware,
+  pronunciationDailyQuotaMiddleware,
 } from './middleware/pronunciationSecurity';
 import { requireAuth } from './middleware/auth';
+import { createRateLimit, parsePositiveIntEnv } from './middleware/rateLimit';
 import {
   logInviteCodeReadiness,
   validateRequiredLaunchEnvVars,
@@ -32,7 +34,10 @@ const nonApiSpaRoutePattern = /^(?!\/api(?:\/|$)).*/;
 // Trust Railway's reverse proxy (required for correct req.ip, req.protocol)
 app.set('trust proxy', 1);
 
-// Middleware
+// Disable the X-Powered-By header (helmet also does this, belt-and-suspenders).
+app.disable('x-powered-by');
+
+// ──────────────── Security headers (Helmet) ────────────────
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -40,16 +45,48 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:", "blob:"],
-        mediaSrc: ["'self'", "blob:"],
-        connectSrc: ["'self'", "blob:"],
-        workerSrc: ["'self'", "blob:"],
+        imgSrc: ["'self'", 'data:', 'blob:'],
+        mediaSrc: ["'self'", 'blob:'],
+        connectSrc: ["'self'", 'blob:'],
+        workerSrc: ["'self'", 'blob:'],
+        frameAncestors: ["'none'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
       },
+    },
+    crossOriginEmbedderPolicy: false, // MediaRecorder/WAV blobs need this off
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    strictTransportSecurity: {
+      maxAge: 63072000, // 2 years
+      includeSubDomains: true,
+      preload: false, // flip to true only if you intend to submit to the HSTS preload list
     },
   })
 );
 app.use(cookieParser());
-app.use(express.json());
+
+// ──────────────── Body size limits ────────────────
+//
+// Explicit limits prevent "JSON bomb" DoS. We keep defaults tight; the
+// migration endpoint gets a larger override configured at its own route.
+const GLOBAL_JSON_LIMIT = process.env.JSON_BODY_LIMIT || '128kb';
+const MIGRATION_JSON_LIMIT = process.env.MIGRATION_JSON_LIMIT || '2mb';
+app.use(express.json({ limit: GLOBAL_JSON_LIMIT }));
+app.use(express.urlencoded({ extended: false, limit: GLOBAL_JSON_LIMIT }));
+
+// ──────────────── Global per-IP rate limit ────────────────
+//
+// Baseline limit applied to every `/api/*` request. Route-specific limiters
+// still run on top. This exists so that routes that *aren't* individually
+// limited can't be spammed without bound.
+const globalApiLimit = createRateLimit({
+  name: 'api:global',
+  windowMs: parsePositiveIntEnv(process.env.GLOBAL_API_WINDOW_MS, 60 * 1000),
+  max: parsePositiveIntEnv(process.env.GLOBAL_API_MAX, 120),
+  message: 'Too many requests. Please slow down.',
+});
+app.use('/api', globalApiLimit);
 
 // Request logging (lightweight — method, path, status, duration)
 app.use((req, res, next) => {
@@ -61,18 +98,24 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// ──────────────── Routes ────────────────
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/auth/oauth', oauthRouter);
 app.use('/api', practiceRouter);
-app.use('/api/migrate', migrationRouter);
+// Migration endpoint: auth enforced by route handlers; override JSON limit here.
+app.use(
+  '/api/migrate',
+  express.json({ limit: MIGRATION_JSON_LIMIT }),
+  migrationRouter
+);
 app.use('/api/flashcards', flashcardsRouter);
 app.use(
   '/api/pronunciation',
   pronunciationCorsMiddleware,
   requireAuth,
   pronunciationRateLimitMiddleware,
+  pronunciationDailyQuotaMiddleware,
   pronunciationRouter
 );
 app.use(
@@ -80,6 +123,7 @@ app.use(
   pronunciationCorsMiddleware,
   requireAuth,
   pronunciationRateLimitMiddleware,
+  pronunciationDailyQuotaMiddleware,
   legacyPronunciationAssessmentRouter
 );
 
@@ -116,11 +160,19 @@ if (existsSync(distPath)) {
   });
 }
 
-// Global error handler — catch middleware/route errors and return 500 instead of crashing
-app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+// ──────────────── Global error handler ────────────────
+//
+// Never leak stack traces or raw error.message to the client. Log server-side,
+// return a generic message. Request ID can be correlated in logs.
+app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  const requestId = (req.header('x-request-id') || '').toString();
   console.error('[Server] Unhandled route error:', err.message, err.stack);
   if (!res.headersSent) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'An unexpected error occurred.',
+      ...(requestId ? { requestId } : {}),
+    });
   }
 });
 
@@ -130,6 +182,23 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
  */
 async function startServer(): Promise<void> {
   console.log(`[Server] Starting on port ${PORT} (HOST: 0.0.0.0)...`);
+
+  // Hard-stop on unsafe production configs. We refuse to boot with obvious
+  // foot-guns enabled.
+  if (process.env.NODE_ENV === 'production') {
+    if (process.env.ENABLE_DEV_LOGIN === 'true') {
+      console.error(
+        '[Server] ENABLE_DEV_LOGIN=true is not allowed in production. Aborting.'
+      );
+      process.exit(1);
+    }
+    if (process.env.SPEECH_DEBUG && /^(1|true|yes|on)$/i.test(process.env.SPEECH_DEBUG)) {
+      console.warn(
+        '[Server] SPEECH_DEBUG is enabled in production. This dumps full Azure payloads to disk — ' +
+        'disable unless actively investigating an incident.'
+      );
+    }
+  }
 
   // Start listening immediately so Railway health checks can reach the server
   // Explicitly bind to 0.0.0.0 — required for Railway's proxy to reach the app

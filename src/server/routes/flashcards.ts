@@ -76,7 +76,7 @@ router.get('/due', requireAuth, async (req: AuthenticatedRequest, res: Response)
     res.json(dtos);
   } catch (error) {
     console.error('[Flashcards] Error fetching due cards:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage = 'An unexpected error occurred.';
     res.status(500).json({
       error: 'Failed to fetch due flashcards',
       message: errorMessage,
@@ -173,7 +173,7 @@ router.post('/review', requireAuth, async (req: AuthenticatedRequest, res: Respo
     res.json(dto);
   } catch (error) {
     console.error('[Flashcards] Error reviewing card:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage = 'An unexpected error occurred.';
     res.status(500).json({
       error: 'Failed to review flashcard',
       message: errorMessage,
@@ -240,7 +240,7 @@ router.post('/ensure', requireAuth, async (req: AuthenticatedRequest, res: Respo
     res.json(dto);
   } catch (error) {
     console.error('[Flashcards] Error ensuring flashcard:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage = 'An unexpected error occurred.';
     res.status(500).json({
       error: 'Failed to ensure flashcard',
       message: errorMessage,

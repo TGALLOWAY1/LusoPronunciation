@@ -1,6 +1,8 @@
 import type { NextFunction, Request, Response } from 'express';
 import { ERROR_CLASS } from '../../lib/errorTaxonomy';
 import { speechLog } from '../utils/speechDebug';
+import { createDailyQuota } from './dailyQuota';
+import { parsePositiveIntEnv } from './rateLimit';
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'http://localhost:3000',
@@ -12,6 +14,11 @@ const DEFAULT_ALLOWED_ORIGINS = [
 const DEFAULT_RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000;
 const DEFAULT_RATE_LIMIT_MAX_REQUESTS = 20;
 
+// Daily quota ceiling — the big one. Caps how much Azure spend a single
+// principal (user or IP) can drive per UTC day, regardless of how they pace
+// their requests.
+const DEFAULT_DAILY_QUOTA = 200;
+
 type RateLimitEntry = {
   count: number;
   resetAt: number;
@@ -20,21 +27,8 @@ type RateLimitEntry = {
 const pronunciationRateLimitStore = new Map<string, RateLimitEntry>();
 let lastRateLimitCleanupAt = 0;
 
-function parsePositiveIntEnvValue(rawValue: string | undefined, fallback: number): number {
-  if (!rawValue) {
-    return fallback;
-  }
-
-  const parsed = Number.parseInt(rawValue, 10);
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    return fallback;
-  }
-
-  return parsed;
-}
-
 function readConfiguredOrigins(): Set<string> {
-  const allowlist = new Set(DEFAULT_ALLOWED_ORIGINS);
+  const allowlist = new Set<string>();
   const rawAllowlist =
     process.env.SPEECH_CORS_ALLOWED_ORIGINS ||
     process.env.CORS_ALLOWED_ORIGINS ||
@@ -46,6 +40,17 @@ function readConfiguredOrigins(): Set<string> {
     .map((origin) => origin.trim())
     .filter(Boolean)
     .forEach((origin) => allowlist.add(origin));
+
+  // Only add the dev defaults when not in production, so prod can never
+  // accidentally accept requests from localhost origins.
+  if (process.env.NODE_ENV !== 'production') {
+    DEFAULT_ALLOWED_ORIGINS.forEach((o) => allowlist.add(o));
+  }
+
+  // APP_ORIGIN (used by OAuth) is implicitly trusted.
+  if (process.env.APP_ORIGIN) {
+    allowlist.add(process.env.APP_ORIGIN.trim());
+  }
 
   return allowlist;
 }
@@ -80,6 +85,9 @@ export function pronunciationCorsMiddleware(req: Request, res: Response, next: N
   const allowedOrigins = readConfiguredOrigins();
 
   // Allow requests with no Origin header (CLI/server-to-server/same-origin requests).
+  // Browsers always send Origin for cross-origin; absence typically means
+  // same-origin fetch, curl, or the Vite preview. This does not weaken CORS
+  // policy — it just skips setting CORS headers.
   if (!requestOrigin) {
     if (req.method === 'OPTIONS') {
       res.status(204).end();
@@ -89,8 +97,7 @@ export function pronunciationCorsMiddleware(req: Request, res: Response, next: N
     return;
   }
 
-  // Allow same-origin requests: when the app serves both frontend and API
-  // from the same host (e.g. Railway), the Origin will match the Host header.
+  // Same-origin: the browser sends Origin matching Host.
   const host = req.header('host');
   const isSameOrigin =
     host &&
@@ -109,12 +116,12 @@ export function pronunciationCorsMiddleware(req: Request, res: Response, next: N
     return;
   }
 
-  const requestedHeaders =
-    req.header('access-control-request-headers') || 'Content-Type, Authorization, X-Request-Id';
+  // Pin Access-Control-Allow-Headers to a known list — never reflect the
+  // browser's Access-Control-Request-Headers unconditionally.
   res.setHeader('Access-Control-Allow-Origin', requestOrigin);
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', requestedHeaders);
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Request-Id');
   res.setHeader('Access-Control-Max-Age', '600');
 
   if (req.method === 'OPTIONS') {
@@ -127,11 +134,11 @@ export function pronunciationCorsMiddleware(req: Request, res: Response, next: N
 
 export function pronunciationRateLimitMiddleware(req: Request, res: Response, next: NextFunction): void {
   const requestId = req.header('x-request-id') || 'unknown';
-  const windowMs = parsePositiveIntEnvValue(
+  const windowMs = parsePositiveIntEnv(
     process.env.SPEECH_RATE_LIMIT_WINDOW_MS,
     DEFAULT_RATE_LIMIT_WINDOW_MS
   );
-  const maxRequests = parsePositiveIntEnvValue(
+  const maxRequests = parsePositiveIntEnv(
     process.env.SPEECH_RATE_LIMIT_MAX_REQUESTS,
     DEFAULT_RATE_LIMIT_MAX_REQUESTS
   );
@@ -173,3 +180,15 @@ export function pronunciationRateLimitMiddleware(req: Request, res: Response, ne
   });
   next();
 }
+
+/**
+ * Daily quota gate. Runs AFTER requireAuth so it keys on user id. This is the
+ * cost ceiling that matters most: an attacker with unlimited IPs still can't
+ * drive unlimited Azure spend through any one account.
+ */
+export const pronunciationDailyQuotaMiddleware = createDailyQuota({
+  name: 'pronunciation:daily',
+  max: parsePositiveIntEnv(process.env.SPEECH_DAILY_QUOTA, DEFAULT_DAILY_QUOTA),
+  message:
+    'You have reached the daily pronunciation assessment limit. The quota resets at 00:00 UTC.',
+});
