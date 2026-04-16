@@ -1,19 +1,11 @@
 import { useSettingsStore } from '@/state/settingsStore';
+import PageScaffold from '@/components/common/PageScaffold';
 
 export default function SettingsPage() {
   const { selectedVoice, setSelectedVoice } = useSettingsStore();
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-          Settings
-        </h1>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Audio and voice preferences
-        </p>
-      </div>
-
+    <PageScaffold title="Settings" subtitle="Audio and voice preferences" maxWidth="2xl">
       {/* Voice Preference */}
       <section className="card">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
@@ -56,6 +48,6 @@ export default function SettingsPage() {
           has permission to use the microphone.
         </p>
       </section>
-    </div>
+    </PageScaffold>
   );
 }

@@ -1,11 +1,15 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { Clock, Flame, ClipboardList } from 'lucide-react';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useProgressStore } from '@/state/progressStore';
 import { loadAllSentences, loadAllWords } from '@/lib/data';
 import { computeUserGlobalStats, computePhonemeStats } from '@/lib/practiceAnalytics';
-import SummaryCard from '@/components/dashboard/SummaryCard';
 import Rolling7DayChart from '@/components/dashboard/Rolling7DayChart';
+import PageScaffold from '@/components/common/PageScaffold';
+import MetricTile from '@/components/common/MetricTile';
+import ActionPanel from '@/components/common/ActionPanel';
+import ChartContainer from '@/components/common/ChartContainer';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import ErrorMessage from '@/components/common/ErrorMessage';
 
@@ -61,7 +65,6 @@ export default function ProgressPage() {
     );
   }, [sessions]);
 
-  // Weak phonemes (top 3)
   const weakPhonemes = useMemo(() => {
     if (sentenceAttempts.length === 0 && wordAttempts.length === 0) return [];
     return computePhonemeStats(sentenceAttempts, wordAttempts)
@@ -70,17 +73,14 @@ export default function ProgressPage() {
       .slice(0, 3);
   }, [sentenceAttempts, wordAttempts]);
 
-  // Rolling 7-day overall score data
   const rolling7DayData = useMemo(() => {
     const now = new Date();
     const days: Array<{ date: string; values: number[] }> = [];
-
     for (let i = 6; i >= 0; i--) {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
       date.setHours(0, 0, 0, 0);
       const dateStr = date.toISOString().split('T')[0];
-
       const dayScores = [
         ...sentenceAttempts.filter(
           (a) => new Date(a.createdAt).toISOString().split('T')[0] === dateStr,
@@ -89,7 +89,6 @@ export default function ProgressPage() {
           (a) => new Date(a.createdAt).toISOString().split('T')[0] === dateStr,
         ),
       ].map((a) => a.overallScore);
-
       days.push({ date: dateStr, values: dayScores });
     }
     return days;
@@ -97,18 +96,19 @@ export default function ProgressPage() {
 
   const dueCount = getDueCount();
   const hasData = sessions.length > 0 || sentenceAttempts.length > 0 || wordAttempts.length > 0;
+  const hasChartData = rolling7DayData.some((d) => d.values.length > 0);
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <PageScaffold title="Progress" subtitle="Your pronunciation practice at a glance">
         <LoadingSpinner message="Loading progress..." />
-      </div>
+      </PageScaffold>
     );
   }
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <PageScaffold title="Progress" subtitle="Your pronunciation practice at a glance">
         <ErrorMessage
           title="Failed to Load Data"
           message={error}
@@ -123,12 +123,12 @@ export default function ProgressPage() {
               });
           }}
         />
-      </div>
+      </PageScaffold>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-8">
+    <PageScaffold title="Progress" subtitle="Your pronunciation practice at a glance">
       {storageError && (
         <ErrorMessage
           title="Storage Full"
@@ -136,71 +136,52 @@ export default function ProgressPage() {
         />
       )}
 
-      {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-          Progress
-        </h1>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Your pronunciation practice at a glance
-        </p>
-      </div>
-
-      {/* CTA Block */}
-      <Link
-        to="/"
-        className="block bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-600 dark:to-primary-700 rounded-lg shadow-lg p-6 text-white hover:shadow-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-      >
-        <div className="flex items-center justify-between gap-4 mb-2">
-          <h3 className="text-xl font-bold">
-            {hasData ? 'Continue Practicing' : 'Start Practicing'}
-          </h3>
-          <span className="text-3xl">&#9654;</span>
-        </div>
-        <p className="text-primary-50">
-          {dueCount > 0
+      {/* CTA */}
+      <ActionPanel
+        heading={hasData ? 'Continue Practicing' : 'Start Practicing'}
+        description={
+          dueCount > 0
             ? `You have ${dueCount} item${dueCount === 1 ? '' : 's'} due for review.`
-            : 'Keep improving your Brazilian Portuguese pronunciation.'}
-        </p>
-      </Link>
+            : 'Keep improving your Brazilian Portuguese pronunciation.'
+        }
+        primaryAction={{ label: 'Go to Practice', to: '/' }}
+        secondaryAction={dueCount > 0 ? { label: 'Review Items', to: '/review' } : undefined}
+      />
 
       {/* Hero Metrics */}
       {hasData && (
-        <section className="card">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            At a Glance
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <SummaryCard
-              title="Today's Practice"
-              value={`${todayMinutes} min`}
-              icon="&#9201;"
-              description="Practice time today"
-            />
-            <SummaryCard
-              title="Current Streak"
-              value={userStats?.currentDailyStreak ?? 0}
-              icon="&#128293;"
-              description="Days in a row"
-            />
-            <SummaryCard
-              title="Items Due"
-              value={dueCount}
-              icon="&#128221;"
-              description="Ready for review"
-            />
-          </div>
-        </section>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <MetricTile
+            label="Today's Practice"
+            value={`${todayMinutes} min`}
+            icon={Clock}
+            description="Practice time today"
+          />
+          <MetricTile
+            label="Current Streak"
+            value={userStats?.currentDailyStreak ?? 0}
+            icon={Flame}
+            description="Days in a row"
+          />
+          <MetricTile
+            label="Items Due"
+            value={dueCount}
+            icon={ClipboardList}
+            description="Ready for review"
+            action={dueCount > 0 ? { label: 'Start review', to: '/review' } : undefined}
+          />
+        </div>
       )}
 
       {/* Weekly Trend Chart */}
       {hasData && (
-        <section className="card">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Weekly Trend
-          </h2>
+        <ChartContainer
+          title="Weekly Trend"
+          isEmpty={!hasChartData}
+          emptyMessage="Practice some sentences or words to see your weekly trend."
+        >
           <Rolling7DayChart title="Overall Score" data={rolling7DayData} />
-        </section>
+        </ChartContainer>
       )}
 
       {/* Weak Phonemes */}
@@ -236,6 +217,6 @@ export default function ProgressPage() {
           </div>
         </section>
       )}
-    </div>
+    </PageScaffold>
   );
 }

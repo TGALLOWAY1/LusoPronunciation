@@ -10,6 +10,7 @@ import NavigationButtons from '@/components/practice/NavigationButtons';
 import DifficultyButtons, { type DifficultyRating } from '@/components/practice/DifficultyButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import PageTransition from '@/components/common/PageTransition';
+import PageScaffold from '@/components/common/PageScaffold';
 import { stopAllAudio } from '@/hooks/useAudioPlayer';
 
 type ReviewTab = 'queue' | 'recent';
@@ -175,30 +176,25 @@ export default function Review() {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [activeTab, currentIndex, allDueItems.length, handlePrevious, handleNext]);
 
+  const dueCount = getDueCount();
+
+  const subtitle = loading
+    ? 'Loading...'
+    : dueCount > 0
+      ? `${dueCount} item${dueCount === 1 ? '' : 's'} need${dueCount === 1 ? 's' : ''} review today`
+      : 'All caught up — no items due for review';
+
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <PageScaffold title="Review" subtitle={subtitle}>
         <LoadingSpinner message="Loading review data..." />
-      </div>
+      </PageScaffold>
     );
   }
 
-  const dueCount = getDueCount();
-
   return (
     <PageTransition>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        {/* Page header with summary */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-            Review
-          </h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {dueCount > 0
-              ? `${dueCount} item${dueCount === 1 ? '' : 's'} need${dueCount === 1 ? 's' : ''} review today`
-              : 'All caught up — no items due for review'}
-          </p>
-        </div>
+      <PageScaffold title="Review" subtitle={subtitle}>
 
         {/* Tabs */}
         <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700">
@@ -376,7 +372,7 @@ export default function Review() {
             )}
           </>
         )}
-      </div>
+      </PageScaffold>
     </PageTransition>
   );
 }
