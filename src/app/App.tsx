@@ -25,12 +25,13 @@ function AppRoutes() {
     <BrowserRouter>
       <AppLayout>
         <Routes>
-          <Route path="/" element={<RequireAuth><UserDashboardPage /></RequireAuth>} />
+          <Route path="/" element={<RequireAuth><SentencePractice /></RequireAuth>} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<OAuthCallbackPage />} />
           <Route path="/practice/sentence" element={<RequireAuth><SentencePractice /></RequireAuth>} />
           <Route path="/practice/word" element={<RequireAuth><WordPractice /></RequireAuth>} />
           <Route path="/sessions" element={<RequireAuth><RecentSessions /></RequireAuth>} />
+          <Route path="/progress" element={<RequireAuth><UserDashboardPage /></RequireAuth>} />
           {import.meta.env.DEV && (
             <>
               <Route path="/dev/pronunciation-fixtures" element={<Suspense fallback={null}><PronunciationFixtures /></Suspense>} />

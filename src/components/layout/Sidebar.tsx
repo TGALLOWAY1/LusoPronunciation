@@ -1,8 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
-  LayoutDashboard,
   AlignLeft,
-  CaseSensitive,
   History as HistoryIcon,
   BarChart3,
 } from 'lucide-react';
@@ -15,10 +13,9 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/practice/sentence', label: 'Practice Sentences', icon: AlignLeft },
-  { path: '/practice/word', label: 'Practice Words', icon: CaseSensitive },
-  { path: '/sessions', label: 'History', icon: HistoryIcon },
+  { path: '/', label: 'Practice', icon: AlignLeft },
+  { path: '/sessions', label: 'Review', icon: HistoryIcon },
+  { path: '/progress', label: 'Progress', icon: BarChart3 },
 ];
 
 // Dev-only navigation items
@@ -37,7 +34,9 @@ export default function Sidebar() {
     <aside className="bg-gray-900 dark:bg-gray-950 text-white w-64 min-h-screen p-4 sm:p-6 shadow-lg">
       <nav className="space-y-2">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive = item.path === '/'
+            ? location.pathname === '/' || location.pathname.startsWith('/practice')
+            : location.pathname === item.path;
           const Icon = item.icon;
           return (
             <Link

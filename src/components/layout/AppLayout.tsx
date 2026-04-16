@@ -1,9 +1,7 @@
 import { ReactNode } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import {
-  LayoutDashboard,
   AlignLeft,
-  CaseSensitive,
   History as HistoryIcon,
   BarChart3,
 } from 'lucide-react';
@@ -15,10 +13,11 @@ interface AppLayoutProps {
 }
 
 const sectionLabels: Record<string, string> = {
-  '/': 'Dashboard',
-  '/practice/sentence': 'Sentence Practice',
-  '/practice/word': 'Word Practice',
-  '/sessions': 'Recent Sessions',
+  '/': 'Practice',
+  '/practice/sentence': 'Practice',
+  '/practice/word': 'Practice — Words',
+  '/sessions': 'Review',
+  '/progress': 'Progress',
   '/dev/analytics': 'Dev Analytics',
   '/dev/metrics': 'Dev Metrics',
 };
@@ -40,34 +39,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
             <Link
               to="/"
               className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                location.pathname === '/' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <LayoutDashboard size={18} />
-                Dashboard
-              </span>
-            </Link>
-            <Link
-              to="/practice/sentence"
-              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                location.pathname === '/practice/sentence' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+                location.pathname === '/' || location.pathname.startsWith('/practice') ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
               }`}
             >
               <span className="flex items-center gap-2">
                 <AlignLeft size={18} />
-                Sentences
-              </span>
-            </Link>
-            <Link
-              to="/practice/word"
-              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                location.pathname === '/practice/word' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <CaseSensitive size={18} />
-                Words
+                Practice
               </span>
             </Link>
             <Link
@@ -78,7 +55,18 @@ export default function AppLayout({ children }: AppLayoutProps) {
             >
               <span className="flex items-center gap-2">
                 <HistoryIcon size={18} />
-                History
+                Review
+              </span>
+            </Link>
+            <Link
+              to="/progress"
+              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                location.pathname === '/progress' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <BarChart3 size={18} />
+                Progress
               </span>
             </Link>
             {/* Dev-only navigation items */}
