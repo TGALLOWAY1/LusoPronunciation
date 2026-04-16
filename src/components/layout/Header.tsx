@@ -13,7 +13,7 @@ export default function Header({ currentSection }: HeaderProps) {
 
   const isPracticePage = location.pathname === '/' || location.pathname.startsWith('/practice');
   const lastMode = getLastPracticeMode();
-  const resumePath = lastMode === 'word' ? '/practice/word' : '/';
+  const resumePath = lastMode === 'word' ? '/?tab=words' : '/';
 
   return (
     <>

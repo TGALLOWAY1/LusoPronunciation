@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import {
-  AlignLeft,
-  History as HistoryIcon,
+  BookOpen,
+  RotateCcw,
   BarChart3,
+  Settings,
 } from 'lucide-react';
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -15,9 +16,11 @@ interface AppLayoutProps {
 const sectionLabels: Record<string, string> = {
   '/': 'Practice',
   '/practice/sentence': 'Practice',
-  '/practice/word': 'Practice — Words',
+  '/practice/word': 'Practice',
+  '/review': 'Review',
   '/sessions': 'Review',
   '/progress': 'Progress',
+  '/settings': 'Settings',
   '/dev/analytics': 'Dev Analytics',
   '/dev/metrics': 'Dev Metrics',
 };
@@ -43,18 +46,18 @@ export default function AppLayout({ children }: AppLayoutProps) {
               }`}
             >
               <span className="flex items-center gap-2">
-                <AlignLeft size={18} />
+                <BookOpen size={18} />
                 Practice
               </span>
             </Link>
             <Link
-              to="/sessions"
+              to="/review"
               className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                location.pathname === '/sessions' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+                location.pathname === '/review' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
               }`}
             >
               <span className="flex items-center gap-2">
-                <HistoryIcon size={18} />
+                <RotateCcw size={18} />
                 Review
               </span>
             </Link>
@@ -67,6 +70,17 @@ export default function AppLayout({ children }: AppLayoutProps) {
               <span className="flex items-center gap-2">
                 <BarChart3 size={18} />
                 Progress
+              </span>
+            </Link>
+            <Link
+              to="/settings"
+              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                location.pathname === '/settings' ? 'bg-primary-500' : 'bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <Settings size={18} />
+                Settings
               </span>
             </Link>
             {/* Dev-only navigation items */}
