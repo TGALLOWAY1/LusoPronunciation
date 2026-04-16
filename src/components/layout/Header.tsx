@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import VoiceSettings from '@/components/common/VoiceSettings';
+import { getLastPracticeMode } from '@/lib/storage';
 
 interface HeaderProps {
   currentSection?: string;
@@ -7,6 +9,11 @@ interface HeaderProps {
 
 export default function Header({ currentSection }: HeaderProps) {
   const [showSettings, setShowSettings] = useState(false);
+  const location = useLocation();
+
+  const isPracticePage = location.pathname === '/' || location.pathname.startsWith('/practice');
+  const lastMode = getLastPracticeMode();
+  const resumePath = lastMode === 'word' ? '/practice/word' : '/';
 
   return (
     <>
@@ -22,6 +29,14 @@ export default function Header({ currentSection }: HeaderProps) {
               <div className="text-base sm:text-lg font-medium text-gray-700 dark:text-gray-300">
                 {currentSection}
               </div>
+            )}
+            {!isPracticePage && (
+              <Link
+                to={resumePath}
+                className="btn btn-primary btn-sm"
+              >
+                Resume Practice
+              </Link>
             )}
             <button
               onClick={() => setShowSettings(true)}

@@ -5,7 +5,7 @@ interface ContinuePracticeCardProps {
 }
 
 export default function ContinuePracticeCard({ lastMode }: ContinuePracticeCardProps) {
-  const href = lastMode === 'word' ? '/practice/words' : '/practice/sentences';
+  const href = lastMode === 'word' ? '/practice/word' : '/practice/sentence';
   const label = lastMode === 'word' ? 'Continue Word Practice' : 'Continue Sentence Practice';
   const description =
     lastMode === 'word'
