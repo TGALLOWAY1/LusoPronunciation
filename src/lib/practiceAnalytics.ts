@@ -894,3 +894,96 @@ export function computeUxDiagnostics(
   };
 }
 
+// ---- Review Queue ----
+
+export interface ReviewQueueItem {
+  itemId: string;
+  itemType: 'sentence' | 'word';
+  bestScore: number;
+  lastAttemptAt: string;
+  attemptCount: number;
+  reviewPriority: number;
+}
+
+/**
+ * Build a review queue from low-score attempts, weighted by recency.
+ *
+ * Algorithm:
+ *  1. Group attempts by item (sentence / word).
+ *  2. For each item keep the best score and most recent attempt date.
+ *  3. Compute reviewPriority = (1 - bestScore/100) * recencyWeight,
+ *     where recencyWeight decays logarithmically over `recencyWeightDays`.
+ *  4. Filter to items whose best score < scoreThreshold.
+ *  5. Return top `maxItems` sorted by reviewPriority descending.
+ */
+export function buildReviewQueue(
+  sentenceAttempts: SentencePracticeAttempt[],
+  wordAttempts: WordPracticeAttempt[],
+  options?: {
+    maxItems?: number;
+    recencyWeightDays?: number;
+    scoreThreshold?: number;
+  },
+): ReviewQueueItem[] {
+  const maxItems = options?.maxItems ?? 20;
+  const recencyWeightDays = options?.recencyWeightDays ?? 7;
+  const scoreThreshold = options?.scoreThreshold ?? 80;
+
+  const now = Date.now();
+  const decayMs = recencyWeightDays * 24 * 60 * 60 * 1000;
+
+  // Accumulator keyed by "sentence:<id>" or "word:<id>"
+  const items = new Map<
+    string,
+    { itemId: string; itemType: 'sentence' | 'word'; bestScore: number; lastAttemptAt: number; attemptCount: number }
+  >();
+
+  function ingest(
+    itemId: string,
+    itemType: 'sentence' | 'word',
+    score: number,
+    createdAt: string,
+  ) {
+    const key = `${itemType}:${itemId}`;
+    const ts = new Date(createdAt).getTime();
+    const existing = items.get(key);
+    if (existing) {
+      existing.bestScore = Math.max(existing.bestScore, score);
+      existing.lastAttemptAt = Math.max(existing.lastAttemptAt, ts);
+      existing.attemptCount += 1;
+    } else {
+      items.set(key, { itemId, itemType, bestScore: score, lastAttemptAt: ts, attemptCount: 1 });
+    }
+  }
+
+  for (const a of sentenceAttempts) {
+    ingest(a.sentenceId, 'sentence', a.overallScore, a.createdAt);
+  }
+  for (const a of wordAttempts) {
+    ingest(a.wordId, 'word', a.overallScore, a.createdAt);
+  }
+
+  const queue: ReviewQueueItem[] = [];
+  for (const item of items.values()) {
+    if (item.bestScore >= scoreThreshold) continue;
+
+    const ageFraction = Math.min((now - item.lastAttemptAt) / decayMs, 1);
+    // Higher weight for more recent items (1 = just practiced, approaches 0 as age → decayMs)
+    const recencyWeight = 1 - ageFraction * 0.5; // range [0.5, 1]
+    const scoreFactor = 1 - item.bestScore / 100; // lower score → higher factor
+    const reviewPriority = scoreFactor * recencyWeight;
+
+    queue.push({
+      itemId: item.itemId,
+      itemType: item.itemType,
+      bestScore: item.bestScore,
+      lastAttemptAt: new Date(item.lastAttemptAt).toISOString(),
+      attemptCount: item.attemptCount,
+      reviewPriority,
+    });
+  }
+
+  queue.sort((a, b) => b.reviewPriority - a.reviewPriority);
+  return queue.slice(0, maxItems);
+}
+

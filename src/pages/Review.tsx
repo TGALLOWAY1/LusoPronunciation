@@ -11,6 +11,7 @@ import DifficultyButtons, { type DifficultyRating } from '@/components/practice/
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import PageTransition from '@/components/common/PageTransition';
 import PageScaffold from '@/components/common/PageScaffold';
+import CompletionMoment from '@/components/common/CompletionMoment';
 import { stopAllAudio } from '@/hooks/useAudioPlayer';
 
 type ReviewTab = 'queue' | 'recent';
@@ -229,17 +230,11 @@ export default function Review() {
         {activeTab === 'queue' && (
           <>
             {totalDue === 0 ? (
-              <div className="card text-center py-10">
-                <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
-                  All caught up!
-                </p>
-                <p className="text-gray-500 dark:text-gray-500 mb-6">
-                  No items due for review right now.
-                </p>
-                <Link to="/" className="btn btn-primary">
-                  Practice New Items
-                </Link>
-              </div>
+              <CompletionMoment
+                message="All caught up!"
+                metric="No items due for review right now."
+                action={{ label: 'Practice New Items', to: '/' }}
+              />
             ) : (
               <>
                 {/* Progress bar */}
