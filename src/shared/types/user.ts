@@ -8,7 +8,7 @@ export interface User {
   email: string;
   displayName?: string;
   avatarUrl?: string;
-  oauthProvider?: 'github' | 'linkedin';
+  oauthProvider?: 'github' | 'linkedin' | 'google';
   createdAt: string; // ISO timestamp
   settings?: UserSettings;
 }

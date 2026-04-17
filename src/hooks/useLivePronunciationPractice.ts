@@ -128,6 +128,9 @@ export type UseLivePronunciationPracticeResult = {
   rawAzureResponse: any | null; // raw response for currentAttempt
   allRawAzureResponses: Map<string, any>; // all raw responses keyed by attempt id
 
+  // Daily quota (read from X-Quota-* response headers; null until first call)
+  dailyQuota: { limit: number; remaining: number } | null;
+
   // Actions
   submitAttempt: (
     sentenceId: string,
@@ -167,6 +170,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
   const [attemptState, setAttemptState] = useState<AttemptLifecycleState>('idle');
   const [attempts, setAttempts] = useState<AttemptScore[]>([]);
   const [allRawAzureResponses, setAllRawAzureResponses] = useState<Map<string, any>>(new Map());
+  const [dailyQuota, setDailyQuota] = useState<{ limit: number; remaining: number } | null>(null);
 
   // AbortController for canceling in-flight requests
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -345,6 +349,18 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       const latencyMs = Math.max(0, Math.round(responseReceivedAt - submitStartedAt));
       attemptTelemetry.clientTimingsMs.submitToResponseMs = latencyMs;
       attemptTelemetry.requestId = response.headers.get('X-Request-Id');
+
+      // Capture daily-quota headers emitted by the dailyQuota middleware.
+      // Present on both successful and rate-limited responses.
+      const quotaLimitHeader = response.headers.get('X-Quota-Limit');
+      const quotaRemainingHeader = response.headers.get('X-Quota-Remaining');
+      if (quotaLimitHeader && quotaRemainingHeader) {
+        const limit = Number(quotaLimitHeader);
+        const remaining = Number(quotaRemainingHeader);
+        if (Number.isFinite(limit) && Number.isFinite(remaining)) {
+          setDailyQuota({ limit, remaining: Math.max(0, remaining) });
+        }
+      }
 
       // Check if request was aborted
       if (abortController.signal.aborted || activeRequestIdRef.current !== requestId) {
@@ -647,6 +663,9 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     currentAttempt,
     rawAzureResponse,
     allRawAzureResponses,
+
+    // Daily quota (from X-Quota-* response headers, null until first call)
+    dailyQuota,
 
     // Actions
     submitAttempt,

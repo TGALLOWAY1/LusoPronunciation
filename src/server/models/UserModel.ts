@@ -8,7 +8,7 @@ export interface IUserDocument extends Document {
   email: string;
   passwordHash?: string;
   displayName?: string;
-  oauthProvider?: 'github' | 'linkedin';
+  oauthProvider?: 'github' | 'linkedin' | 'google';
   oauthId?: string;
   avatarUrl?: string;
   settings?: {
@@ -42,7 +42,7 @@ const UserSchema = new Schema<IUserDocument>(
     },
     oauthProvider: {
       type: String,
-      enum: ['github', 'linkedin'],
+      enum: ['github', 'linkedin', 'google'],
     },
     oauthId: {
       type: String,
