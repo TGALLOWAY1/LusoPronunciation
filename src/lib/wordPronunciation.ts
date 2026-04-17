@@ -7,6 +7,7 @@
 
 import type { AttemptScore } from '@/types/pronunciation';
 import { getAuthHeader } from '@/api/auth';
+import { buildApiUrl } from '@/api/apiUrl';
 
 /**
  * Scores word pronunciation using the shared pronunciation assessment API.
@@ -37,7 +38,7 @@ export async function scoreWordPronunciation(
   }
   headers['Authorization'] = authHeader;
 
-  const response = await fetch('/api/pronunciation/assessment', {
+  const response = await fetch(buildApiUrl('/api/pronunciation/assessment'), {
     method: 'POST',
     headers,
     body: formData,

@@ -79,3 +79,6 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **CI/CD** — GitHub Actions pipeline runs on push/PR to `main` and `develop`: install, build, unit tests, and Playwright e2e.
 - **Deployment** — Railway-targeted with static SPA serving and aggressive caching.
 - **Database** — MongoDB via Mongoose with singleton connection, retry logic, and connection health reporting.
+- **Fail-fast Startup** — Production boots refuse to bind the port when required environment variables or the MongoDB connection are missing, so the app never appears "up" with broken core flows.
+- **Readiness Probe** — `/api/health` reports MongoDB and Azure Speech configuration state alongside liveness, making deploy issues observable without calling Azure.
+- **Configurable API Origin** — `VITE_API_BASE_URL` and `CSP_CONNECT_SRC` let the SPA target a separate backend origin when needed; default same-origin deploys remain zero-config.

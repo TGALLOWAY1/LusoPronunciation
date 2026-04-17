@@ -38,6 +38,14 @@ app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
 // ──────────────── Security headers (Helmet) ────────────────
+// Extra origins allowed in the CSP connect-src directive. Only needed when the
+// frontend and backend live on different origins (e.g. SPA on Vercel + API on
+// Railway). Same-origin deploys leave CSP_CONNECT_SRC unset.
+const extraConnectSrc = (process.env.CSP_CONNECT_SRC || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter((origin) => origin.length > 0);
+
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -47,7 +55,7 @@ app.use(
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", 'data:', 'blob:'],
         mediaSrc: ["'self'", 'blob:'],
-        connectSrc: ["'self'", 'blob:'],
+        connectSrc: ["'self'", 'blob:', ...extraConnectSrc],
         workerSrc: ["'self'", 'blob:'],
         frameAncestors: ["'none'"],
         objectSrc: ["'none'"],
@@ -182,10 +190,11 @@ app.use((err: Error, req: express.Request, res: express.Response, _next: express
  */
 async function startServer(): Promise<void> {
   console.log(`[Server] Starting on port ${PORT} (HOST: 0.0.0.0)...`);
+  const isProduction = process.env.NODE_ENV === 'production';
 
   // Hard-stop on unsafe production configs. We refuse to boot with obvious
   // foot-guns enabled.
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction) {
     if (process.env.ENABLE_DEV_LOGIN === 'true') {
       console.error(
         '[Server] ENABLE_DEV_LOGIN=true is not allowed in production. Aborting.'
@@ -197,6 +206,18 @@ async function startServer(): Promise<void> {
         '[Server] SPEECH_DEBUG is enabled in production. This dumps full Azure payloads to disk — ' +
         'disable unless actively investigating an incident.'
       );
+    }
+
+    // Fail fast on missing required env vars before binding the port. Stops
+    // the app from appearing "up" while core flows are broken.
+    try {
+      validateRequiredLaunchEnvVars();
+    } catch (error) {
+      console.error(
+        '[Server] Refusing to start:',
+        error instanceof Error ? error.message : error
+      );
+      process.exit(1);
     }
   }
 
@@ -213,7 +234,11 @@ async function startServer(): Promise<void> {
   });
 
   try {
-    validateRequiredLaunchEnvVars();
+    if (!isProduction) {
+      // Dev: tolerate a partially-configured .env so developers can boot the
+      // server without all secrets. Production already validated above.
+      validateRequiredLaunchEnvVars();
+    }
 
     // Connect to MongoDB
     console.log('[Server] Connecting to MongoDB...');
@@ -222,7 +247,12 @@ async function startServer(): Promise<void> {
     await logInviteCodeReadiness();
   } catch (error) {
     console.error('[Server] Failed to connect to MongoDB:', error);
-    // Don't exit — keep the server running so health checks can report the error
+    if (isProduction) {
+      // In production a bad Mongo connection means auth, progress, and invite
+      // gating are all broken — fail loudly so the deploy is retried.
+      process.exit(1);
+    }
+    // Dev: keep the server running so health checks can report the error.
   }
 }
 

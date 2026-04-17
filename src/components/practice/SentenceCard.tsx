@@ -9,6 +9,7 @@ import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import PremiumRecordButton from '@/components/common/PremiumRecordButton';
 import { getAuthHeader } from '@/api/auth';
+import { buildApiUrl } from '@/api/apiUrl';
 
 interface SentenceCardProps {
   sentence: Sentence;
@@ -81,7 +82,7 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
       }
       headers['Authorization'] = authHeaderValue;
 
-      const response = await fetch('/api/pronunciation/assessment', {
+      const response = await fetch(buildApiUrl('/api/pronunciation/assessment'), {
         method: 'POST',
         headers,
         body: formData,
