@@ -230,6 +230,14 @@ function convertLegacyWordAttempt(
  * 
  * Returns: { importedSessions, importedAttempts, skippedSessions, skippedAttempts, errors }
  */
+// Bound the migration payload. A real user migrating their local history will
+// always be well below these numbers. Anything larger is either corrupt data
+// or abuse. Keep these conservative — the route writes once per user per
+// device, there is no legitimate reason to raise them without a case.
+const MAX_MIGRATION_SESSIONS = 5_000;
+const MAX_MIGRATION_SENTENCE_ATTEMPTS = 50_000;
+const MAX_MIGRATION_WORD_ATTEMPTS = 50_000;
+
 router.post('/local-storage', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const userId = req.user!.id;
@@ -263,6 +271,20 @@ router.post('/local-storage', requireAuth, async (req: AuthenticatedRequest, res
       return res.status(400).json({
         error: 'Invalid payload',
         message: 'wordAttempts must be an array',
+      });
+    }
+
+    if (
+      payload.sessions.length > MAX_MIGRATION_SESSIONS ||
+      payload.sentenceAttempts.length > MAX_MIGRATION_SENTENCE_ATTEMPTS ||
+      payload.wordAttempts.length > MAX_MIGRATION_WORD_ATTEMPTS
+    ) {
+      console.warn(
+        `[Migration] Rejected oversized payload user=${userId} sessions=${payload.sessions.length} sentences=${payload.sentenceAttempts.length} words=${payload.wordAttempts.length}`
+      );
+      return res.status(413).json({
+        error: 'Payload too large',
+        message: 'Migration payload exceeds allowed item counts.',
       });
     }
 
@@ -372,11 +394,10 @@ router.post('/local-storage', requireAuth, async (req: AuthenticatedRequest, res
 
     res.json(result);
   } catch (error) {
-    console.error('[Migration] Migration error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[Migration] Migration error:', error instanceof Error ? error.message : error);
     res.status(500).json({
       error: 'Migration failed',
-      message: errorMessage,
+      message: 'An unexpected error occurred during migration.',
     });
   }
 });

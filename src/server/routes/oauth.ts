@@ -168,7 +168,19 @@ router.get('/github/callback', async (req: Request, res: Response) => {
     }
 
     const token = generateToken(userDoc._id.toString(), userDoc.email);
-    res.redirect(`${appOrigin}/auth/callback?token=${encodeURIComponent(token)}`);
+    // Hand the token to the SPA via a short-lived HttpOnly cookie instead of
+    // embedding it in the redirect URL. Putting a JWT in a query string leaks
+    // it through Referer headers, server logs, and browser history. The SPA
+    // reads the cookie on /auth/callback via a single same-origin fetch that
+    // returns the token in the response body and then clears the cookie.
+    res.cookie('oauth_handoff', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 2 * 60 * 1000, // 2 minutes — just enough for the SPA to pick it up
+      path: '/api/auth/oauth/handoff',
+    });
+    res.redirect(`${appOrigin}/auth/callback`);
   } catch (error) {
     console.error('[OAuth] GitHub callback error:', error);
     res.redirect(`${appOrigin}/auth?error=server_error`);
@@ -274,11 +286,38 @@ router.get('/linkedin/callback', async (req: Request, res: Response) => {
     }
 
     const token = generateToken(userDoc._id.toString(), userDoc.email);
-    res.redirect(`${appOrigin}/auth/callback?token=${encodeURIComponent(token)}`);
+    // Hand the token to the SPA via a short-lived HttpOnly cookie instead of
+    // embedding it in the redirect URL. Putting a JWT in a query string leaks
+    // it through Referer headers, server logs, and browser history. The SPA
+    // reads the cookie on /auth/callback via a single same-origin fetch that
+    // returns the token in the response body and then clears the cookie.
+    res.cookie('oauth_handoff', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 2 * 60 * 1000, // 2 minutes — just enough for the SPA to pick it up
+      path: '/api/auth/oauth/handoff',
+    });
+    res.redirect(`${appOrigin}/auth/callback`);
   } catch (error) {
     console.error('[OAuth] LinkedIn callback error:', error);
     res.redirect(`${appOrigin}/auth?error=server_error`);
   }
+});
+
+// ──────────────── Token handoff ────────────────
+//
+// Single-use endpoint: the SPA fetches this on /auth/callback to retrieve the
+// token that OAuth deposited in an HttpOnly cookie, then the server clears
+// the cookie. This keeps the JWT out of URLs/Referer/history while still
+// letting client JS store it in localStorage for subsequent API calls.
+router.get('/handoff', (req: Request, res: Response) => {
+  const token = req.cookies?.oauth_handoff;
+  res.clearCookie('oauth_handoff', { path: '/api/auth/oauth/handoff' });
+  if (!token || typeof token !== 'string') {
+    return res.status(401).json({ error: 'No pending OAuth session' });
+  }
+  res.json({ token });
 });
 
 export default router;

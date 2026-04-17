@@ -813,6 +813,46 @@ const upload = multer({
 
 export const pronunciationUploadMiddleware = upload.single('audio');
 
+const ALLOWED_AUDIO_MIME_TYPES = new Set<string>([
+  'audio/wav',
+  'audio/wave',
+  'audio/x-wav',
+  'audio/webm',
+  'audio/ogg',
+  'audio/mpeg', // mp3
+  'audio/mp4',
+  'audio/x-m4a',
+  'audio/aac',
+  'application/octet-stream', // some browsers ship MediaRecorder blobs this way
+]);
+
+/**
+ * Magic-byte sniff. Prevents trivial "rename .exe to .wav" abuse and catches
+ * payloads where the MIME header lies. We accept a short list of real audio
+ * container signatures — anything else is rejected before we spawn ffmpeg or
+ * call Azure.
+ */
+function looksLikeAudioBuffer(buf: Buffer): boolean {
+  if (buf.length < 12) return false;
+  // RIFF....WAVE
+  if (buf.slice(0, 4).toString('ascii') === 'RIFF' && buf.slice(8, 12).toString('ascii') === 'WAVE') {
+    return true;
+  }
+  // WebM / Matroska: EBML header 0x1A 0x45 0xDF 0xA3
+  if (buf[0] === 0x1a && buf[1] === 0x45 && buf[2] === 0xdf && buf[3] === 0xa3) return true;
+  // Ogg
+  if (buf.slice(0, 4).toString('ascii') === 'OggS') return true;
+  // ID3 (mp3)
+  if (buf.slice(0, 3).toString('ascii') === 'ID3') return true;
+  // MP3 frame sync
+  if (buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0) return true;
+  // ISO BMFF (mp4/m4a): "....ftyp"
+  if (buf.slice(4, 8).toString('ascii') === 'ftyp') return true;
+  // AAC ADTS sync: 0xFFF
+  if (buf[0] === 0xff && (buf[1] & 0xf0) === 0xf0) return true;
+  return false;
+}
+
 export async function handlePronunciationAssessmentExpress(req: ExpressRequest, res: ExpressResponse): Promise<void> {
   const requestId = (req.header('x-request-id') || randomUUID()).toString();
   const startedAt = Date.now();
@@ -820,6 +860,24 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
   const convertTimeoutMs = getAudioConvertTimeoutMs();
   let clientDisconnected = false;
   let killActiveConversion: (() => void) | null = null;
+
+  // Pre-gate on content-length: reject obviously-oversized uploads before
+  // multer buffers the whole thing into memory.
+  const declaredLengthHeader = req.header('content-length');
+  if (declaredLengthHeader) {
+    const declaredLength = Number.parseInt(declaredLengthHeader, 10);
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_PRONUNCIATION_UPLOAD_BYTES * 2) {
+      speechLog('warn', 'Pronunciation upload rejected: content-length too large', {
+        requestId,
+        statusClass: '4xx',
+      });
+      res.setHeader('X-Request-Id', requestId);
+      res.status(413).json(
+        buildSafeErrorPayload(413, requestId, ERROR_CLASS.serverPayloadTooLarge)
+      );
+      return;
+    }
+  }
 
   const markClientDisconnected = (): void => {
     if (res.writableEnded) {
@@ -848,7 +906,13 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
     const referenceText = req.body.referenceText;
     const language = req.body.language;
 
-    if (!sentenceId || typeof sentenceId !== 'string') {
+    // Reject unknown/oversized text fields up front — these are echoed back to
+    // Azure in a header and in the URL, so they have a real cost if abused.
+    const MAX_SENTENCE_ID_LENGTH = 128;
+    const MAX_REFERENCE_TEXT_LENGTH = 500;
+    const MAX_LANGUAGE_LENGTH = 16;
+
+    if (!sentenceId || typeof sentenceId !== 'string' || sentenceId.length > MAX_SENTENCE_ID_LENGTH) {
       res.status(400).json({
         error: 'Missing or invalid sentenceId',
         message: 'sentenceId is required.',
@@ -858,20 +922,69 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
       return;
     }
 
-    if (!referenceText || typeof referenceText !== 'string') {
+    if (
+      !referenceText ||
+      typeof referenceText !== 'string' ||
+      referenceText.length > MAX_REFERENCE_TEXT_LENGTH
+    ) {
       res.status(400).json({
         error: 'Missing or invalid referenceText',
-        message: 'referenceText is required.',
+        message: 'referenceText is required and must be under 500 characters.',
         requestId,
         errorClass: ERROR_CLASS.serverUnknown,
       });
       return;
     }
 
-    if (!language || typeof language !== 'string') {
+    if (
+      !language ||
+      typeof language !== 'string' ||
+      language.length > MAX_LANGUAGE_LENGTH ||
+      !/^[a-zA-Z]{2,3}(-[a-zA-Z0-9]{2,8})?$/.test(language)
+    ) {
       res.status(400).json({
         error: 'Missing or invalid language',
-        message: 'language is required.',
+        message: 'language is required (BCP-47 tag, e.g. "pt-BR").',
+        requestId,
+        errorClass: ERROR_CLASS.serverUnknown,
+      });
+      return;
+    }
+
+    // MIME + magic-byte gate. Don't hand ffmpeg a file we can't verify as an
+    // audio container of a known type.
+    const uploadedMime = (req.file.mimetype || '').toLowerCase().split(';')[0].trim();
+    if (uploadedMime && !ALLOWED_AUDIO_MIME_TYPES.has(uploadedMime)) {
+      speechLog('warn', 'Pronunciation upload rejected: unsupported MIME type', {
+        requestId,
+        statusClass: '4xx',
+      });
+      res.setHeader('X-Request-Id', requestId);
+      res.status(415).json({
+        error: 'Unsupported audio type',
+        message: 'Audio upload must be a supported audio format.',
+        requestId,
+        errorClass: ERROR_CLASS.serverUnknown,
+      });
+      return;
+    }
+
+    // Strict magic-byte check. Default-on in production; opt-in in dev so
+    // unit tests can exercise the "synthesized bad bytes fall through to
+    // Azure fallback" codepath without hitting this gate.
+    const strictSignatureCheck =
+      process.env.SPEECH_STRICT_AUDIO_SIGNATURE === 'true' ||
+      (process.env.NODE_ENV === 'production' &&
+        process.env.SPEECH_STRICT_AUDIO_SIGNATURE !== 'false');
+    if (strictSignatureCheck && !looksLikeAudioBuffer(req.file.buffer)) {
+      speechLog('warn', 'Pronunciation upload rejected: bytes do not match known audio signature', {
+        requestId,
+        statusClass: '4xx',
+      });
+      res.setHeader('X-Request-Id', requestId);
+      res.status(415).json({
+        error: 'Unsupported audio type',
+        message: 'Uploaded file does not appear to be a valid audio recording.',
         requestId,
         errorClass: ERROR_CLASS.serverUnknown,
       });
