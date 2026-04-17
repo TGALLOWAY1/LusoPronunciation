@@ -329,6 +329,9 @@ router.get('/providers', providersLimit, (_req: Request, res: Response) => {
   if (process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET) {
     providers.push('linkedin');
   }
+  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    providers.push('google');
+  }
   // Dev login is only advertised in non-production, even if the flag is set.
   if (process.env.ENABLE_DEV_LOGIN === 'true' && process.env.NODE_ENV !== 'production') {
     providers.push('dev');

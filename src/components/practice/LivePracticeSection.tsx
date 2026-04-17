@@ -88,6 +88,7 @@ export default function LivePracticeSection({
     rawAzureResponse,
     submitAttempt,
     cancelAnalysis,
+    dailyQuota,
   } = useLivePronunciationPractice();
 
   // Notify parent of current attempt changes
@@ -288,17 +289,45 @@ export default function LivePracticeSection({
     resetRecording();
   }, [coachingSuggestion, resetRecording]);
 
+  const quotaExhausted = Boolean(dailyQuota) && dailyQuota!.remaining <= 0;
+  const quotaLow =
+    Boolean(dailyQuota) && dailyQuota!.remaining > 0 && dailyQuota!.remaining <= 5;
+
   return (
     <div className="space-y-6">
       {/* Dynamic Recording Controls */}
       <div className="space-y-4">
+        {dailyQuota && (
+          <div className="flex justify-center">
+            <span
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${
+                quotaExhausted
+                  ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
+                  : quotaLow
+                    ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200'
+                    : 'bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300'
+              }`}
+              title={`Daily limit resets at 00:00 UTC. Limit: ${dailyQuota.limit}.`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  quotaExhausted ? 'bg-red-500' : quotaLow ? 'bg-amber-500' : 'bg-emerald-500'
+                }`}
+                aria-hidden="true"
+              />
+              {quotaExhausted
+                ? 'Daily limit reached — resets at 00:00 UTC'
+                : `${dailyQuota.remaining} of ${dailyQuota.limit} attempts left today`}
+            </span>
+          </div>
+        )}
         <div className="flex items-center justify-center gap-4">
           {/* State 1: Ready to Record - Single large red mic button */}
           {isReadyToRecord && (
             <PremiumRecordButton
               isRecording={false}
               onClick={startRecording}
-              disabled={submitting}
+              disabled={submitting || quotaExhausted}
               size="lg"
             />
           )}

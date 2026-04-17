@@ -57,8 +57,19 @@ In each provider's developer console, add the production callback:
   `${APP_ORIGIN}/api/auth/oauth/github/callback`
 - LinkedIn OAuth app → **Redirect URLs**:
   `${APP_ORIGIN}/api/auth/oauth/linkedin/callback`
+- Google Cloud Console → **APIs & Services → Credentials → OAuth 2.0 Client IDs**:
+  - Application type: **Web application**
+  - Authorized JavaScript origins: `${APP_ORIGIN}`
+  - Authorized redirect URI: `${APP_ORIGIN}/api/auth/oauth/google/callback`
+  - On the **OAuth consent screen** page: set user type to **External**, add your email as a test user while the app is in Testing, and request scopes `openid`, `email`, `profile`.
 
-Set `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` / `LINKEDIN_CLIENT_ID` / `LINKEDIN_CLIENT_SECRET` in Railway. Skip either provider you don't want to expose.
+Set the corresponding client ID / secret pair in Railway for each provider you want to expose:
+
+- `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`
+- `LINKEDIN_CLIENT_ID` / `LINKEDIN_CLIENT_SECRET`
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`
+
+Buttons only appear on the login page for providers whose env vars are set — skip any provider you don't want live.
 
 ## 6. Update the README demo link
 

@@ -305,6 +305,127 @@ router.get('/linkedin/callback', async (req: Request, res: Response) => {
   }
 });
 
+// ──────────────── Google OAuth ────────────────
+
+router.get('/google', (_req: Request, res: Response) => {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  if (!clientId) {
+    return res.status(500).json({ error: 'Google OAuth not configured' });
+  }
+
+  const appOrigin = getAppOrigin();
+  const state = setStateCookie(res, 'google');
+  const redirectUri = `${appOrigin}/api/auth/oauth/google/callback`;
+  const params = new URLSearchParams({
+    response_type: 'code',
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    scope: 'openid email profile',
+    state,
+    // Always show the account chooser so a user switching between Google
+    // accounts doesn't get silently logged in as the wrong one.
+    prompt: 'select_account',
+  });
+
+  res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+});
+
+router.get('/google/callback', async (req: Request, res: Response) => {
+  const { code } = req.query;
+  const appOrigin = getAppOrigin();
+
+  if (!validateState(req, res, 'google')) {
+    return res.redirect(`${appOrigin}/auth?error=invalid_state`);
+  }
+
+  if (!code || typeof code !== 'string') {
+    return res.redirect(`${appOrigin}/auth?error=missing_code`);
+  }
+
+  try {
+    const redirectUri = `${appOrigin}/api/auth/oauth/google/callback`;
+
+    const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: redirectUri,
+        client_id: process.env.GOOGLE_CLIENT_ID!,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+      }),
+    });
+
+    const tokenData = (await tokenResponse.json()) as {
+      access_token?: string;
+      error?: string;
+    };
+    if (!tokenData.access_token) {
+      console.error('[OAuth] Google token exchange failed:', tokenData.error);
+      return res.redirect(`${appOrigin}/auth?error=token_exchange_failed`);
+    }
+
+    const userInfoResponse = await fetch(
+      'https://openidconnect.googleapis.com/v1/userinfo',
+      {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` },
+      }
+    );
+    const googleUser = (await userInfoResponse.json()) as {
+      sub: string;
+      email?: string;
+      email_verified?: boolean;
+      name?: string;
+      picture?: string;
+    };
+
+    // Only accept verified Google accounts. Unverified means the user could
+    // have signed up with an email they don't actually control.
+    if (!googleUser.email || googleUser.email_verified === false) {
+      return res.redirect(`${appOrigin}/auth?error=no_email`);
+    }
+    const email = googleUser.email;
+
+    let userDoc = await UserModel.findOne({
+      $or: [
+        { oauthProvider: 'google', oauthId: googleUser.sub },
+        { email: email.toLowerCase() },
+      ],
+    });
+
+    if (userDoc) {
+      if (!userDoc.oauthProvider) {
+        userDoc.oauthProvider = 'google';
+        userDoc.oauthId = googleUser.sub;
+        userDoc.avatarUrl = googleUser.picture || undefined;
+        await userDoc.save();
+      }
+    } else {
+      userDoc = await UserModel.create({
+        email: email.toLowerCase(),
+        oauthProvider: 'google',
+        oauthId: googleUser.sub,
+        displayName: googleUser.name || undefined,
+        avatarUrl: googleUser.picture || undefined,
+      });
+    }
+
+    const token = generateToken(userDoc._id.toString(), userDoc.email);
+    res.cookie('oauth_handoff', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 2 * 60 * 1000,
+      path: '/api/auth/oauth/handoff',
+    });
+    res.redirect(`${appOrigin}/auth/callback`);
+  } catch (error) {
+    console.error('[OAuth] Google callback error:', error);
+    res.redirect(`${appOrigin}/auth?error=server_error`);
+  }
+});
+
 // ──────────────── Token handoff ────────────────
 //
 // Single-use endpoint: the SPA fetches this on /auth/callback to retrieve the

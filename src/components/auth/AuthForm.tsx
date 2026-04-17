@@ -28,6 +28,29 @@ function LinkedInIcon() {
   );
 }
 
+function GoogleIcon() {
+  return (
+    <svg className="w-5 h-5" viewBox="0 0 20 20" aria-hidden="true">
+      <path
+        fill="#EA4335"
+        d="M10 4.167c1.475 0 2.798.508 3.84 1.5l2.875-2.875C14.95 1.133 12.625.167 10 .167 6.133.167 2.8 2.383 1.175 5.617l3.35 2.6C5.308 5.842 7.458 4.167 10 4.167z"
+      />
+      <path
+        fill="#4285F4"
+        d="M19.608 10.217c0-.7-.058-1.375-.167-2.017H10v3.833h5.383c-.233 1.25-.942 2.308-2.008 3.017l3.25 2.517c1.9-1.758 2.983-4.342 2.983-7.35z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M4.525 11.783A5.986 5.986 0 014.167 10c0-.617.108-1.217.3-1.783l-3.35-2.6A9.957 9.957 0 00.167 10c0 1.617.383 3.142 1.05 4.492l3.308-2.709z"
+      />
+      <path
+        fill="#34A853"
+        d="M10 19.833c2.7 0 4.967-.892 6.625-2.425l-3.25-2.517c-.9.6-2.058.958-3.375.958-2.542 0-4.692-1.675-5.475-3.95l-3.308 2.709C2.8 17.617 6.133 19.833 10 19.833z"
+      />
+    </svg>
+  );
+}
+
 export default function AuthForm({ onSuccess, initialMode = 'login', oauthError }: AuthFormProps) {
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   const [email, setEmail] = useState('');
@@ -102,8 +125,20 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
       )}
 
       {/* OAuth Buttons */}
-      {(providers.includes('github') || providers.includes('linkedin')) && (
+      {(providers.includes('github') ||
+        providers.includes('linkedin') ||
+        providers.includes('google')) && (
         <div className="space-y-3 mb-6">
+          {providers.includes('google') && (
+            <a
+              href="/api/auth/oauth/google"
+              className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-white text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              <GoogleIcon />
+              Continue with Google
+            </a>
+          )}
+
           {providers.includes('github') && (
             <a
               href="/api/auth/oauth/github"
