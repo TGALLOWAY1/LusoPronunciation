@@ -60,7 +60,14 @@ See [`FEATURES.md`](./FEATURES.md) for the full list.
 
 ## Demo
 
-<!-- TODO: Add the live Railway URL here once deployed, or delete this section -->
+**Live:** _<add your Railway URL here once deployed>_
+**Invite code:** `LAUNCH-ACCESS` (capped — comment on the launch post for a spare)
+
+### Try it in 60 seconds
+
+1. Sign up with the invite code above.
+2. Pick any sentence on the Practice tab and hit record — read the Portuguese line aloud.
+3. Stop recording and watch the per-word + phoneme feedback render in a couple of seconds.
 
 ## Local setup
 

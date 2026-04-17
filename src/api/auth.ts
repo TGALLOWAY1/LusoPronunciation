@@ -10,6 +10,7 @@ import {
 } from '@/lib/attemptMetrics';
 import { ERROR_CLASS, isErrorClass } from '@/lib/errorTaxonomy';
 import { writeSpeechServiceHealthRecord } from '@/lib/speechServiceHealth';
+import { buildApiUrl } from './apiUrl';
 
 const AUTH_TOKEN_KEY = 'luso_auth_token';
 
@@ -39,7 +40,7 @@ export async function register(
   password: string,
   displayName?: string,
 ): Promise<AuthResponse> {
-  const response = await fetch('/api/auth/register', {
+  const response = await fetch(buildApiUrl('/api/auth/register'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -66,7 +67,7 @@ export async function register(
  * Login with email and password
  */
 export async function login(email: string, password: string): Promise<AuthResponse> {
-  const response = await fetch('/api/auth/login', {
+  const response = await fetch(buildApiUrl('/api/auth/login'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -173,7 +174,7 @@ export async function pingSpeechServiceHealth(): Promise<void> {
  */
 export async function fetchAuthProviders(): Promise<string[]> {
   try {
-    const response = await fetch('/api/auth/providers');
+    const response = await fetch(buildApiUrl('/api/auth/providers'));
     if (!response.ok) return ['email'];
     const data = await response.json() as { providers: string[] };
     return data.providers;
@@ -186,7 +187,7 @@ export async function fetchAuthProviders(): Promise<string[]> {
  * Dev-mode quick login (non-production only)
  */
 export async function devLogin(): Promise<AuthResponse> {
-  const response = await fetch('/api/auth/dev-login', {
+  const response = await fetch(buildApiUrl('/api/auth/dev-login'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -249,7 +250,8 @@ export function getAuthHeader(): string | null {
 }
 
 /**
- * Fetch wrapper that automatically adds auth header
+ * Fetch wrapper that automatically adds the auth header and rewrites
+ * relative `/api/...` URLs against `VITE_API_BASE_URL` when configured.
  */
 export async function authenticatedFetch(
   url: string,
@@ -262,7 +264,9 @@ export async function authenticatedFetch(
     headers.set('Authorization', authHeader);
   }
 
-  return fetch(url, {
+  const resolvedUrl = url.startsWith('/') ? buildApiUrl(url) : url;
+
+  return fetch(resolvedUrl, {
     ...options,
     headers,
   });

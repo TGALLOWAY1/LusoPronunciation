@@ -14,6 +14,7 @@ import {
 import { ERROR_CLASS, isErrorClass } from '@/lib/errorTaxonomy';
 import { writeSpeechServiceHealthRecord } from '@/lib/speechServiceHealth';
 import { getAuthHeader } from '@/api/auth';
+import { buildApiUrl } from '@/api/apiUrl';
 
 /**
  * Response type from the pronunciation assessment API
@@ -330,11 +331,11 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       const fetchHeaders: Record<string, string> = {};
       const authHeaderValue = getAuthHeader();
       if (!authHeaderValue) {
-        throw new Error('Please log in to use pronunciation assessment.');
+        throw new Error('Your session expired. Please sign in again to keep practicing.');
       }
       fetchHeaders['Authorization'] = authHeaderValue;
 
-      const response = await fetch('/api/pronunciation/assessment', {
+      const response = await fetch(buildApiUrl('/api/pronunciation/assessment'), {
         method: 'POST',
         headers: fetchHeaders,
         body: formData,
@@ -382,7 +383,13 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
             message: errorPayload.message || errorPayload.error || null,
           });
         }
-        throw new Error(errorPayload.message || errorPayload.error || `HTTP ${response.status}`);
+        const friendlyMessage =
+          response.status === 429
+            ? "You've hit the practice limit for now. Take a breather and try again in a bit."
+            : response.status >= 500
+              ? "Our scoring service is having a moment. Please try again."
+              : errorPayload.message || errorPayload.error || "Something went wrong scoring that attempt. Please try again.";
+        throw new Error(friendlyMessage);
       }
 
       // Parse response with better error handling
@@ -396,7 +403,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       } catch (parseError) {
         console.error('Failed to parse response JSON:', parseError);
         // Note: Can't read response.text() again, so we'll use the error message
-        throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}. The server may have returned invalid JSON.`);
+        throw new Error("We got an unexpected response from the scoring service. Please try again.");
       }
 
       const { rawAzure, attemptScore, telemetry } = responseData;
@@ -404,7 +411,7 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
       // Validate response structure
       if (!rawAzure || !attemptScore) {
         console.error('Invalid response structure:', { rawAzure, attemptScore });
-        throw new Error('Invalid response: missing rawAzure or attemptScore');
+        throw new Error("We got an unexpected response from the scoring service. Please try again.");
       }
 
       attemptTelemetry.requestId = telemetry?.requestId ?? attemptTelemetry.requestId;

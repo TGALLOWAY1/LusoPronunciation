@@ -426,8 +426,18 @@ export default function LivePracticeSection({
         )}
 
         {error && (
-          <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-800 dark:text-red-200">
-            {error}
+          <div
+            role="alert"
+            className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-800 dark:text-red-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+          >
+            <span>{error}</span>
+            <button
+              type="button"
+              onClick={resetRecording}
+              className="self-start sm:self-auto px-3 py-1.5 rounded-md border border-red-300 dark:border-red-700 text-xs font-medium bg-white/60 dark:bg-red-950/30 hover:bg-white dark:hover:bg-red-950/50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              Try again
+            </button>
           </div>
         )}
       </div>
