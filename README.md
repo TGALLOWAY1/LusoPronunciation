@@ -16,13 +16,15 @@ English speakers learning Brazilian Portuguese rarely get fast, phoneme-level fe
 - Surface actionable coaching suggestions after each attempt, including minimal-pair drills tuned to the learner's confusion patterns
 - Track progress via a spaced-repetition queue, weak-phoneme analysis, and a 7-day performance dashboard
 
-## Why it is technically interesting
+See [`FEATURES.md`](./FEATURES.md) for the full user-facing feature list.
 
-- **Full browser → server → Azure audio pipeline.** MediaRecorder captures webm/opus; the Express backend transcodes to 16 kHz / 16-bit / mono WAV with `ffmpeg-static` (`src/server/lib/audioConversion.ts`) before handing it to the Azure Speech SDK for assessment.
-- **Deterministic coaching engine.** `src/lib/coaching/coachingEngine.ts` turns raw Azure scores into next-step suggestions. `confusionDetection.ts` identifies PT-BR sound confusions and `minimalPairs.ptbr.ts` serves targeted drills.
-- **Client-side quality gates.** `src/lib/audioQuality.ts` rejects silent or too-short takes using RMS energy + duration checks before an upload is ever sent.
-- **Stale-response protection.** `useLivePronunciationPractice` tags each assessment request with an ID so cancelled or superseded attempts can't overwrite newer results.
-- **SM-2 spaced repetition tied to pronunciation scores.** Flashcard scheduling uses real assessment outcomes, not just self-rating.
+## Tech stack
+
+- **Frontend** — React 19 + TypeScript 5.9, Vite 7, Tailwind CSS 3.4, React Router 7
+- **Backend** — Express 5 on Node 22, Mongoose 9 for MongoDB, JWT auth with optional invite-code gating
+- **Speech** — Microsoft Cognitive Services Speech SDK (pronunciation assessment, TTS)
+- **Testing** — Vitest 4 (unit + contract) + Playwright 1.58 (e2e)
+- **Deployment** — Railway (multi-stage Dockerfile on `node:22-slim`)
 
 ## Architecture overview
 
@@ -42,32 +44,122 @@ Vite dev proxy  ──►  Express /api/pronunciation/assessment
                       Coaching engine  ──►  React UI (hooks + context)
 ```
 
-- **Frontend**: React 19 + TypeScript 5.9 + Vite 7, Tailwind CSS 3.4, React Router, feature-based components in `src/components/`, business logic in `src/hooks/`, global state via React Context in `src/state/`.
-- **Backend**: Express 5 on Node 22, Mongoose 9 for MongoDB, JWT auth with an optional invite-code gate, CORS + Helmet + per-user rate limits on the pronunciation endpoint.
-- **Testing**: Vitest for unit and contract tests; Playwright for end-to-end flows (organized by phase under `e2e/`).
+Deeper architecture notes live in [`docs/architecture/`](./docs/architecture).
 
-## Key features
+## Repository structure
 
-- **Pronunciation assessment** — live recording, word + phoneme scores, sentence-level accuracy/fluency/completeness/prosody
-- **Coaching** — confusion detection and minimal-pair drills for PT-BR sound pairs
-- **Sentence practice** — category/difficulty browser, native male/female audio, slow playback, attempt history with sparklines
-- **Word practice** — pronunciation, text MC (PT↔EN), listening MC, self-rating, list/drill/weak-words views
-- **Spaced repetition** — SM-2 flashcard scheduling linked to pronunciation scores
-- **Dashboard** — 7-day performance charts, weak-phoneme surfacing, due-for-review queue, category breakdown
-- **Auth** — email + password, GitHub and LinkedIn OAuth, optional invite-code gating
+```text
+luso-pronounce/
+├── src/                        # Application source (frontend + backend share one src tree)
+│   ├── app/                    # React root (App.tsx, main.tsx)
+│   ├── pages/                  # Page-level route components
+│   │   └── dev/                # Dev-only lazy-loaded pages (fixtures, metrics, analytics)
+│   ├── components/             # Reusable React components (feature-grouped)
+│   │   ├── auth/               # Auth form, route guards
+│   │   ├── common/             # Generic UI primitives (buttons, panels, spinners, charts)
+│   │   ├── dashboard/          # Dashboard-specific widgets
+│   │   ├── layout/             # Shell components (AppLayout, Sidebar, Header)
+│   │   ├── practice/           # Sentence/word practice UI
+│   │   └── pronunciation/      # Scoring, phoneme panels, word chips, sparklines
+│   ├── features/               # Cross-cutting feature modules (e.g. localStorage migration)
+│   ├── hooks/                  # Recording, assessment, audio playback hooks
+│   ├── state/                  # React Context stores (settings, progress, practice log)
+│   ├── lib/                    # Domain logic (audio quality, coaching, analytics, parsing, data loader)
+│   │   └── coaching/           # Coaching engine, confusion detection, PT-BR minimal pairs
+│   ├── api/                    # Client-side API modules (auth, practice, flashcards)
+│   ├── models/                 # Frontend data models (appData, audio, content, practice, progress, vocab)
+│   ├── pipeline/               # Content generation pipeline logic (enrich, phoneme map, TTS, validate)
+│   ├── config/                 # App runtime configuration (appConfig.ts)
+│   ├── shared/types/           # Types shared between client and server
+│   ├── types/                  # Client-only TypeScript types
+│   ├── utils/                  # Small utilities (audio routing, difficulty labels, drill log)
+│   ├── styles/                 # Global CSS (Tailwind entry)
+│   ├── dev/                    # Dev-only utilities (e2e media mocks)
+│   ├── mock/                   # Static fixtures for unit/UI tests
+│   ├── test/                   # Cross-cutting tests + setupTests.ts
+│   └── server/                 # Express backend
+│       ├── app.ts              # Server entry point
+│       ├── routes/             # /api route handlers
+│       ├── middleware/         # auth, rate limiting, CORS + Helmet
+│       ├── models/             # Mongoose schemas
+│       ├── services/           # Business logic (e.g. SM-2 flashcard scheduler)
+│       ├── mappers/            # DTO mappers
+│       ├── lib/                # Audio conversion, temp workspace, timing
+│       ├── config/             # Startup env validation
+│       ├── db/                 # MongoDB singleton
+│       ├── utils/              # speechDebug, etc.
+│       └── __fixtures__/       # Server-side test audio
+│
+├── data/                       # Static + generated datasets
+│   ├── masterSentences.json    # Canonical enriched sentence corpus (runtime)
+│   ├── masterWords.json        # Canonical enriched word corpus (runtime)
+│   ├── audio_index.json        # audioId → file path map
+│   ├── phoneme_metadata.json   # Canonical phoneme metadata (IPA, tips, minimal pairs)
+│   ├── sentences.json          # Source sentence list (pre-enrichment)
+│   ├── word_practice_synthetic.json
+│   ├── sentence_expansions/    # Phase-5 sentence batches
+│   ├── raw/                    # Upstream generator output (Gemini CSV)
+│   ├── static/                 # Legacy hand-curated source lists (words.json, sentences.json)
+│   ├── test_data/              # Fixed recordings + JSON fixtures for offline testing
+│   ├── debug/                  # Runtime Azure debug samples (gitignored)
+│   └── legacy/                 # Historical/deprecated data kept for reference
+│
+├── audio/                      # Non-web-served source audio (ptbr/male, ptbr/female)
+├── public/                     # Web-served static assets (audio/, index.html assets)
+│   └── audio/                  # Published sentence + word audio served at /audio/*
+│
+├── scripts/                    # Data + audio generation and operational scripts
+│   ├── legacy/                 # Retired scripts kept for historical reference
+│   └── README.md               # Script usage notes
+│
+├── config/                     # Root-level pipeline configuration
+│   └── generationPipeline.config.ts
+│
+├── e2e/                        # Playwright end-to-end tests (phase-organized)
+├── docs/                       # Documentation
+│   ├── architecture/           # UI architecture, routes, audio pipeline, perf, testing
+│   ├── audits/                 # Deployment / security / mobile audit reports
+│   ├── planning/               # Roadmap, backlog, feature plans, TODOs
+│   ├── retrospectives/         # Post-phase write-ups
+│   ├── dev-tools/              # Standalone dev utilities (e.g. audio-check.html)
+│   └── assets/                 # Screenshots used in README / docs
+│
+├── .github/workflows/          # CI pipelines
+├── Dockerfile                  # Multi-stage production image
+├── railway.json / nixpacks.toml
+├── playwright.config.ts
+├── vite.config.ts              # Frontend + path alias @ → src
+├── vitest.config.ts
+├── tsconfig.json
+├── tailwind.config.js / postcss.config.js
+├── package.json
+├── requirements.txt            # Python deps for upstream Gemini generator
+├── FEATURES.md                 # User-facing feature list (kept in sync with code)
+├── CLAUDE.md                   # Agent / contributor instructions
+└── README.md
+```
 
-See [`FEATURES.md`](./FEATURES.md) for the full list.
+### What each major folder is for
 
-## Demo
-
-**Live:** _<add your Railway URL here once deployed>_
-**Invite code:** `LAUNCH-ACCESS` (capped — comment on the launch post for a spare)
-
-### Try it in 60 seconds
-
-1. Sign up with the invite code above.
-2. Pick any sentence on the Practice tab and hit record — read the Portuguese line aloud.
-3. Stop recording and watch the per-word + phoneme feedback render in a couple of seconds.
+| Folder | Purpose |
+| --- | --- |
+| `src/app` | React entry point and root routing shell |
+| `src/pages` | Top-level route components (practice pages, auth, dashboard) |
+| `src/components` | Feature-grouped presentational and container components |
+| `src/features` | Cross-cutting feature modules that don't fit under a single page |
+| `src/hooks` | Reusable business-logic hooks (recording, assessment lifecycle, audio playback) |
+| `src/state` | React Context stores for global app state |
+| `src/lib` | Pure domain logic: audio quality gates, pronunciation parsing, coaching engine, analytics |
+| `src/api` | Client-side HTTP wrappers |
+| `src/pipeline` | Content generation pipeline (used by `npm run generation:pipeline`) |
+| `src/shared/types` | Types shared across client and server |
+| `src/server` | Express backend: routes, middleware, Mongoose models, services |
+| `data/` | Static corpora, generated master datasets, test fixtures, debug dumps |
+| `audio/` | Source-of-truth WAV assets produced by the generation scripts |
+| `public/audio/` | Audio copies served over HTTP |
+| `scripts/` | Data/audio generation, analysis, and ops scripts |
+| `e2e/` | Playwright specs, organized by phase |
+| `docs/` | Documentation, organized by purpose (architecture / audits / planning / retrospectives) |
 
 ## Local setup
 
@@ -82,13 +174,24 @@ npm run dev:server         # backend  on http://localhost:4000
 
 The Vite dev server proxies `/api` requests to the backend automatically.
 
-Common commands:
+### Common commands
 
 ```bash
 npm test -- --run          # run all unit + contract tests once
-npm run verify:phase04     # targeted unit tests + Playwright e2e
+npm run test:phase04       # deploy-critical unit suite
+npm run verify:phase04     # unit tests + Playwright e2e
 npm run build              # typecheck + production build
 npm run screenshots:readme # regenerate the PNGs in docs/assets/readme/
+```
+
+### Data/audio generation
+
+```bash
+npm run generation:pipeline       # full master dataset + audio pipeline
+npm run generate:audio            # legacy audio generator
+npm run audio:words               # word-level TTS generation (male + female)
+npm run audit:dataset             # dataset readiness report
+npm run generate:sentences:stage0 # Gemini CSV → normalized sentences.json
 ```
 
 ## Environment variables
@@ -134,6 +237,16 @@ npm run invite:seed -- --code=LAUNCH-ACCESS --maxUses=25
 
 Set `REQUIRE_INVITE_CODE=false` in the deployed environment for open signup.
 
+Deployment readiness notes and audits live in [`docs/audits/`](./docs/audits).
+
+## Port configuration
+
+| Service                       | Port |
+|-------------------------------|------|
+| Vite frontend (dev)           | 3000 |
+| Express backend               | 4000 |
+| Playwright e2e (Vite)         | 4173 |
+
 ## Screenshots
 
 <!-- TODO: Refresh screenshots via `npm run screenshots:readme` if the UI has changed -->
@@ -157,9 +270,13 @@ Set `REQUIRE_INVITE_CODE=false` in the deployed environment for open signup.
 
 ## Future work
 
-- Virtual scrolling for lists over ~500 items (see `docs/PERFORMANCE_NOTES.md`)
+- Virtual scrolling for lists over ~500 items (see [`docs/architecture/performance-notes.md`](./docs/architecture/performance-notes.md))
 - IndexedDB-backed storage for larger datasets
 - Service worker for offline practice of previously fetched content
 - Configurable per-user pass thresholds
 - Deeper phoneme-score extraction from Azure's raw response
 - CEFR-level auto-estimation from aggregate scores
+
+## Contributing
+
+Contributor and agent instructions live in [`CLAUDE.md`](./CLAUDE.md). Keep [`FEATURES.md`](./FEATURES.md) in sync when adding, renaming, or removing user-facing functionality.

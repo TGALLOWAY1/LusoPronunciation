@@ -103,7 +103,7 @@ function normalizeToken(raw: string): string {
  * Load words.json and extract all word entries
  */
 function loadWords(): WordEntry[] {
-  const wordsPath = path.resolve(__dirname, '..', 'STATIC DATA', 'words.json');
+  const wordsPath = path.resolve(__dirname, '..', 'data', 'static', 'words.json');
   
   if (!fs.existsSync(wordsPath)) {
     throw new Error(`Words file not found: ${wordsPath}`);
@@ -284,7 +284,7 @@ async function main() {
     console.log('='.repeat(60) + '\n');
 
     // Load words
-    console.log('Loading words from STATIC DATA/words.json...');
+    console.log('Loading words from data/static/words.json...');
     const words = loadWords();
     console.log(`Found ${words.length} words\n`);
 

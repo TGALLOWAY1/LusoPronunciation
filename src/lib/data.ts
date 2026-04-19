@@ -22,7 +22,7 @@ import type {
 import { getSentenceAudioUrl, getWordAudioUrl, loadAudioIndex } from './audio';
 import type { AudioIndex } from './types';
 import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
-import { sampleData } from '../data/sampleData';
+import { sampleData } from './sampleData';
 import { buildWordRefs } from '../pipeline/sentenceWordRefs';
 import { CONTENT_SOURCE } from '../config/appConfig';
 
@@ -208,12 +208,12 @@ async function loadCategoryLabels(): Promise<Map<string, { labelEn: string; labe
       return categoryMap;
     }
   } catch {
-    // Fall through to STATIC DATA
+    // Fall through to static data
   }
   
   try {
-    // Fallback to STATIC DATA
-    const response = await fetch('/STATIC DATA/sentences.json');
+    // Fallback to static data
+    const response = await fetch('/data/static/sentences.json');
     if (response.ok) {
       const data: SentencesData = await response.json();
       for (const category of data.categories) {
@@ -315,8 +315,8 @@ export async function loadAllSentences(): Promise<Sentence[]> {
     // Try data/sentences.json first
     let response = await fetch('/data/sentences.json');
     if (!response.ok) {
-      // Fallback to STATIC DATA
-      response = await fetch('/STATIC DATA/sentences.json');
+      // Fallback to static data
+      response = await fetch('/data/static/sentences.json');
       if (!response.ok) {
         throw new Error(`Failed to load sentences.json: ${response.statusText}`);
       }
@@ -494,7 +494,7 @@ export async function loadAllWords(): Promise<Word[]> {
 
   // Fallback to legacy files
   try {
-    const response = await fetch('/STATIC DATA/words.json');
+    const response = await fetch('/data/static/words.json');
     if (!response.ok) {
       throw new Error(`Failed to load words.json: ${response.statusText}`);
     }
@@ -572,7 +572,7 @@ export async function loadAllCategories(): Promise<Category[]> {
 
     let response = await fetch('/data/sentences.json');
     if (!response.ok) {
-      response = await fetch('/STATIC DATA/sentences.json');
+      response = await fetch('/data/static/sentences.json');
       if (!response.ok) {
         throw new Error(`Failed to load categories: ${response.statusText}`);
       }

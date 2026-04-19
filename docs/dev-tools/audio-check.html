@@ -137,7 +137,7 @@
         // Load sentences
         async function loadSentences() {
             try {
-                const response = await fetch('../STATIC DATA/sentences.json');
+                const response = await fetch('../../data/static/sentences.json');
                 if (!response.ok) throw new Error(`Failed to load sentences.json: ${response.statusText}`);
                 const data = await response.json();
                 sentences = [];
@@ -161,7 +161,7 @@
         // Load words
         async function loadWords() {
             try {
-                const response = await fetch('../STATIC DATA/words.json');
+                const response = await fetch('../../data/static/words.json');
                 if (!response.ok) throw new Error(`Failed to load words.json: ${response.statusText}`);
                 const data = await response.json();
                 words = [];

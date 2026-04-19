@@ -108,8 +108,8 @@ function main() {
 
   // Load data files
   console.log('Loading data files...');
-  const wordsData = loadJson<WordsJson>('STATIC DATA/words.json');
-  const sentencesData = loadJson<SentencesJson>('STATIC DATA/sentences.json');
+  const wordsData = loadJson<WordsJson>('data/static/words.json');
+  const sentencesData = loadJson<SentencesJson>('data/static/sentences.json');
   console.log('✅ Data loaded successfully\n');
 
   // Extract all entries

@@ -8,7 +8,7 @@ import { loadRawSentences, loadRawWords } from './loadSourceLists';
 const TEST_CONFIG: GenerationPipelineConfig = {
   voices: [],
   paths: {
-    rawWordsJsonPath: 'STATIC DATA/words.json',
+    rawWordsJsonPath: 'data/static/words.json',
     rawSentencesJsonPath: 'data/sentences.json',
     masterWordsPath: 'data/masterWords.json',
     masterSentencesPath: 'data/masterSentences.json',
@@ -30,9 +30,9 @@ describe('loadSourceLists', () => {
 
   it('appends coverage words and merges duplicate surface forms', async () => {
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'load-source-lists-'));
-    await fs.mkdir(path.join(tempDir, 'STATIC DATA'), { recursive: true });
+    await fs.mkdir(path.join(tempDir, 'data/static'), { recursive: true });
     await fs.writeFile(
-      path.join(tempDir, 'STATIC DATA/words.json'),
+      path.join(tempDir, 'data/static/words.json'),
       JSON.stringify({
         language_pair: 'pt-BR/en-US',
         version: 'test',
