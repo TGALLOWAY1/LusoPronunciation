@@ -6,7 +6,7 @@
  * 
  * Schema Notes:
  * 
- * STATIC DATA/words.json structure:
+ * data/static/words.json structure:
  *   Root: { language_pair, version, categories: [...] }
  *   Category: { id, label_en, label_pt, words: [...] }
  *   Word: { id, pt, en, pos, difficulty, difficult_for_english, pronunciation_notes? }

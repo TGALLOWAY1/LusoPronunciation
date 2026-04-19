@@ -1,5 +1,5 @@
 /**
- * TypeScript types matching the actual JSON schema from STATIC DATA files.
+ * TypeScript types matching the actual JSON schema from data/static files.
  * These types represent the raw data structure before transformation.
  */
 

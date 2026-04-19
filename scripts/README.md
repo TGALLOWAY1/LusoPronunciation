@@ -33,7 +33,7 @@ node scripts/generate_audio.js
 
 ## What It Does
 
-1. **Reads Data**: Loads `STATIC DATA/sentences.json` and `STATIC DATA/words.json`
+1. **Reads Data**: Loads `data/static/sentences.json` and `data/static/words.json`
 
 2. **Generates Audio**: For each sentence and word:
    - Creates male voice audio (pt-BR-AntonioNeural)

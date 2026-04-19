@@ -14,7 +14,7 @@ import type { SyntheticWordPracticeEntry } from '../src/types/wordPractice';
 // Paths
 const DATA_DIR = path.join(__dirname, '../data');
 const TEST_DATA_DIR = path.join(__dirname, '../data/test_data');
-const STATIC_DATA_DIR = path.join(__dirname, '../STATIC DATA');
+const STATIC_DATA_DIR = path.join(__dirname, '../data/static');
 const OUTPUT_FILE = path.join(__dirname, '../data/word_practice_synthetic.json');
 
 // Load phrase_ids.csv to match phrase numbers to sentence text
@@ -55,7 +55,7 @@ interface SentenceEntry {
 }
 
 function loadSentences(): SentenceEntry[] {
-  // Try STATIC DATA first, then data folder
+  // Try data/static first, then data folder
   const paths = [
     path.join(STATIC_DATA_DIR, 'sentences.json'),
     path.join(DATA_DIR, 'sentences.json'),
@@ -70,7 +70,7 @@ function loadSentences(): SentenceEntry[] {
   }
   
   if (!content) {
-    throw new Error('sentences.json not found in STATIC DATA or data folder');
+    throw new Error('sentences.json not found in data/static or data folder');
   }
   
   const data = JSON.parse(content);
@@ -118,7 +118,7 @@ function loadWords(): WordEntry[] {
   }
   
   if (!content) {
-    throw new Error('words.json not found in STATIC DATA or data folder');
+    throw new Error('words.json not found in data/static or data folder');
   }
   
   const data = JSON.parse(content);

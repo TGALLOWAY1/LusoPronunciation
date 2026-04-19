@@ -131,9 +131,9 @@ npm run start            # Start production Express server (serves built fronten
 
 ### Other Key Directories
 
-- `data/` — master JSON datasets, test data, raw/debug artifacts
-- `scripts/` — data generation, audio generation, invite code seeding
-- `docs/` — architecture docs, style guides, route docs, retrospectives
+- `data/` — master JSON datasets, test data, raw/debug artifacts (static source lists live in `data/static/`, legacy/deprecated data in `data/legacy/`)
+- `scripts/` — data generation, audio generation, invite code seeding (`scripts/legacy/` holds retired scripts)
+- `docs/` — documentation, grouped under `architecture/`, `audits/`, `planning/`, `retrospectives/`, and `dev-tools/`
 - `config/` — generation pipeline configuration
 
 ## Testing

@@ -42,7 +42,7 @@ const generationPipelineConfig: GenerationPipelineConfig = {
     },
   ],
   paths: {
-    rawWordsJsonPath: "STATIC DATA/words.json",
+    rawWordsJsonPath: "data/static/words.json",
     rawSentencesJsonPath: [
       "data/sentences.json",
       "data/sentence_expansions/phase5_batch_01.json",
