@@ -385,11 +385,10 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
 
   return (
     <PageTransition>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Sentence Practice</h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+        <h2 className="sr-only">Sentence Practice</h2>
 
         {/* Filter controls */}
-        <div className="mb-6">
         <FilterControls
           categories={categories}
           selectedCategories={selectedCategories}
@@ -399,18 +398,22 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
           currentIndex={currentIndex}
           totalCount={filteredSentences.length}
         />
-        </div>
 
         {/* Main content area - Single column layout */}
         {currentSentence ? (
-          <div className="max-w-6xl mx-auto space-y-6 mb-6">
+          <div className="max-w-6xl mx-auto space-y-4 mb-4">
             {/* Main sentence practice area */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-5">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   <span className={`badge ${difficultyBadgeClasses[currentSentence.difficulty as Difficulty]}`}>
                     Difficulty {currentSentence.difficulty}
                   </span>
+                  {activeTab === 'history' && selectedAttempt?.createdAt && (
+                    <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      {formatAttemptTimestamp(selectedAttempt.createdAt)}
+                    </span>
+                  )}
                 </div>
                 {/* Tabs */}
                 <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
@@ -436,7 +439,7 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
                   </button>
                 </div>
               </div>
-              
+
               {/* Tab Content */}
               {activeTab === 'practice' ? (
                 <LivePracticeSection
@@ -446,33 +449,23 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
                   onRecordingUrlChange={handleRecordingUrlChange}
                 />
               ) : (
-                <div className="mt-4 space-y-4">
-                  {/* Word-by-word breakdown */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                        Word-by-word breakdown
-                      </h3>
-                      {selectedAttempt?.createdAt && (
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          {formatAttemptTimestamp(selectedAttempt.createdAt)}
-                        </span>
-                      )}
-                    </div>
-                    <SentenceFeedback
-                      sentence={currentSentence}
-                      attempts={selectedAttemptArray}
-                      currentAttempt={selectedAttempt}
-                      hideHeaderContent={false}
-                      className="mt-0"
-                    />
-                  </div>
+                <div className="space-y-3">
+                  <SentenceFeedback
+                    sentence={currentSentence}
+                    attempts={selectedAttemptArray}
+                    currentAttempt={selectedAttempt}
+                    hideHeaderContent={false}
+                    showDifficultyBadge={false}
+                    className="mt-0"
+                  />
 
                   {/* Selected Attempt Recording */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                      Selected Attempt Recording
-                    </h3>
+                  <div className="bg-gray-50 dark:bg-gray-700/40 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">
+                        Selected attempt recording
+                      </h3>
+                    </div>
                     {selectedRecordingUrl ? (
                       <RecordingPlayer
                         url={selectedRecordingUrl}
@@ -484,16 +477,14 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
                         formatTimestamp={formatAttemptTimestamp}
                       />
                     ) : (
-                      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-                          {selectedAttemptId
-                            ? 'No recording available for this attempt.'
-                            : 'Record this sentence to play back your pronunciation here.'}
-                        </p>
-                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                        {selectedAttemptId
+                          ? 'No recording available for this attempt.'
+                          : 'Record this sentence to play back your pronunciation here.'}
+                      </p>
                     )}
                   </div>
-                  
+
                   {/* Attempt History */}
                   <AttemptHistory
                     attempts={sentenceAttempts}
@@ -502,9 +493,7 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
                   />
 
                   {/* Score History - Trend chart */}
-                  <div className="mt-6">
-                    <ScoreHistory attempts={sentenceAttempts} />
-                  </div>
+                  <ScoreHistory attempts={sentenceAttempts} />
                 </div>
               )}
             </div>
@@ -513,7 +502,7 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
 
         {/* Navigation buttons */}
         {currentSentence && (
-          <div className="flex flex-col sm:flex-row gap-3 mt-6">
+          <div className="flex flex-col sm:flex-row gap-3 mt-4">
             <button
               onClick={handlePrevious}
               disabled={currentIndex === 0}

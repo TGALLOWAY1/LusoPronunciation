@@ -55,10 +55,10 @@ function FilterControls({
   }, [difficulties]);
 
   return (
-    <div className="card card-compact mb-6 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+    <div className="card card-compact mb-4 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
       {/* Filters section header */}
-      <div className="mb-4 pb-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between gap-4">
-        <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+      <div className="mb-3 flex items-center justify-between gap-4">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
           Filters
         </h3>
         <div className="flex items-center gap-4">
@@ -108,7 +108,7 @@ function FilterControls({
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-4">
         {/* Category filter */}
         <div className="flex-1">
           <MultiSelect

@@ -30,6 +30,8 @@ export interface SentenceFeedbackProps {
   className?: string;
   /** If true, hides sentence text/translation/difficulty/audio (default: true for backward compat) */
   hideHeaderContent?: boolean;
+  /** If true, renders the centered Difficulty badge above the sentence. Defaults to false so callers that already show difficulty elsewhere don't get a duplicate. */
+  showDifficultyBadge?: boolean;
 }
 
 
@@ -51,6 +53,7 @@ function SentenceFeedback({
   fallbackDifficulty,
   className,
   hideHeaderContent = true,
+  showDifficultyBadge = false,
 }: SentenceFeedbackProps) {
   const { selectedVoice } = useSettingsStore();
   const canonicalWordMap = useCanonicalWordMap();
@@ -112,7 +115,8 @@ function SentenceFeedback({
     title: undefined, // No title for practice page
     showDevControls: false,
     hideHeaderContent, // When true, hides sentence text/translation/difficulty/audio (caller provides them)
-  }), [attempts, currentAttempt, sentenceText, translationText, difficulty, wordAudios, enrichedWords]);
+    showDifficultyBadge,
+  }), [attempts, currentAttempt, sentenceText, translationText, difficulty, wordAudios, enrichedWords, hideHeaderContent, showDifficultyBadge]);
 
   // Always render the panel - it will handle empty state internally
   // No card wrapper needed - SentenceCard already provides the card container
