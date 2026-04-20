@@ -4,12 +4,37 @@ import { expect, test, type Page } from '@playwright/test';
 
 const OUTPUT_DIR = path.resolve(process.cwd(), 'docs/assets/linkedin');
 
-const screenMatrix: Array<{
+type Screen = {
   route: string;
   fileName: string;
   readyText: string;
-}> = [
-  { route: '/', fileName: 'dashboard-sentences.png', readyText: 'Sentence Practice' },
+  postNav?: (page: Page) => Promise<void>;
+  fullPage?: boolean;
+};
+
+const screenMatrix: Screen[] = [
+  {
+    route: '/',
+    fileName: 'dashboard-sentences.png',
+    readyText: 'Sentence Practice',
+    // Open the History tab so the phoneme-tip panel renders populated from the
+    // seeded attempt instead of the "Click a word..." empty state. Captured
+    // full-page so branding + sentence + phoneme tips all appear together.
+    postNav: async (page) => {
+      await page.getByRole('button', { name: 'History', exact: true }).click();
+      // Force an attempt to be selected in case the auto-select effect hasn't
+      // yet populated `selectedAttemptId` — click the most recent entry.
+      await page
+        .getByRole('button', { name: /\d+d ago/ })
+        .first()
+        .click();
+      await expect(
+        page.getByRole('heading', { name: /How to pronounce these sounds/i }),
+      ).toBeVisible({ timeout: 10_000 });
+      await page.evaluate(() => window.scrollTo(0, 0));
+    },
+    fullPage: true,
+  },
   { route: '/?tab=words', fileName: 'dashboard-words.png', readyText: 'Word Practice' },
   { route: '/review', fileName: 'review.png', readyText: 'Review' },
   { route: '/progress', fileName: 'progress.png', readyText: 'Progress' },
@@ -54,6 +79,14 @@ function buildSeedPayload() {
     };
   });
 
+  // Word-level scores for the "Estou com fome." sentence so the phoneme panel
+  // can auto-select the first word and enrich it with canonical phonemes.
+  const estouComFomeWordScores = [
+    { token: 'Estou', overallScore: 82, accuracyScore: 84, errorType: 'none' as const },
+    { token: 'com', overallScore: 93, accuracyScore: 95, errorType: 'none' as const },
+    { token: 'fome', overallScore: 76, accuracyScore: 78, errorType: 'mispronounced' as const },
+  ];
+
   const sentenceAttempts = Array.from({ length: 16 }, (_, i) => {
     const sessionIdx = i % sessions.length;
     const sentenceId = sentenceIds[i % sentenceIds.length];
@@ -73,6 +106,7 @@ function buildSeedPayload() {
       prosodyScore: Math.max(60, base - 5),
       passed: base >= 80,
       recordingDurationSeconds: 3 + (i % 4),
+      wordScores: sentenceId === 'gemini_food_001' ? estouComFomeWordScores : undefined,
     };
   });
 
@@ -144,13 +178,8 @@ async function seedAppState(page: Page) {
   );
 }
 
-async function captureRoute(
-  page: Page,
-  route: string,
-  readyText: string,
-  outputPath: string,
-) {
-  await page.goto(route, { waitUntil: 'domcontentloaded' });
+async function captureRoute(page: Page, screen: Screen, outputPath: string) {
+  await page.goto(screen.route, { waitUntil: 'domcontentloaded' });
   await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
 
   await page.addStyleTag({
@@ -160,12 +189,17 @@ async function captureRoute(
 
   const readyTarget = page
     .locator('main')
-    .getByRole('heading', { name: readyText })
+    .getByRole('heading', { name: screen.readyText })
     .first();
   await expect(readyTarget).toBeVisible({ timeout: 15_000 });
   await expect(readyTarget).toHaveCSS('opacity', '1', { timeout: 15_000 });
+
+  if (screen.postNav) {
+    await screen.postNav(page);
+  }
+
   await page.waitForTimeout(300);
-  await page.screenshot({ path: outputPath, fullPage: false });
+  await page.screenshot({ path: outputPath, fullPage: screen.fullPage ?? false });
 }
 
 test.use({
@@ -182,7 +216,7 @@ test.describe('LinkedIn screenshots', () => {
 
     for (const screen of screenMatrix) {
       const outputPath = path.join(OUTPUT_DIR, screen.fileName);
-      await captureRoute(page, screen.route, screen.readyText, outputPath);
+      await captureRoute(page, screen, outputPath);
     }
   });
 });
