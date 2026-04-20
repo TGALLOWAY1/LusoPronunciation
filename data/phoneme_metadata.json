@@ -52,6 +52,11 @@
         "contrast": "/a/ vs /o/"
       }
     ],
+    "englishExamples": [
+      "father",
+      "spa",
+      "calm"
+    ],
     "exampleWords": [
       {
         "pt": "pato",
@@ -126,6 +131,11 @@
         ],
         "contrast": "final vowel /ɐ/ vs /u/"
       }
+    ],
+    "englishExamples": [
+      "cup",
+      "sofa",
+      "above"
     ],
     "exampleWords": [
       {
@@ -203,6 +213,11 @@
         "contrast": "final /i/ vs /ɐ/ (contextual)"
       }
     ],
+    "englishExamples": [
+      "bay",
+      "say",
+      "they"
+    ],
     "exampleWords": [
       {
         "pt": "você",
@@ -278,6 +293,11 @@
         "contrast": "N/A (Consistency check)"
       }
     ],
+    "englishExamples": [
+      "bet",
+      "head",
+      "said"
+    ],
     "exampleWords": [
       {
         "pt": "pé",
@@ -351,6 +371,11 @@
         ],
         "contrast": "/i/ vs /e/"
       }
+    ],
+    "englishExamples": [
+      "see",
+      "machine",
+      "bee"
     ],
     "exampleWords": [
       {
@@ -427,6 +452,11 @@
         "contrast": "/o/ (verb) vs /ɔ/ (noun - tone varies)"
       }
     ],
+    "englishExamples": [
+      "boat",
+      "go",
+      "snow"
+    ],
     "exampleWords": [
       {
         "pt": "avô",
@@ -502,6 +532,11 @@
         "contrast": "N/A"
       }
     ],
+    "englishExamples": [
+      "thought",
+      "law",
+      "caught"
+    ],
     "exampleWords": [
       {
         "pt": "avó",
@@ -575,6 +610,11 @@
         ],
         "contrast": "/u/ vs /o/"
       }
+    ],
+    "englishExamples": [
+      "moon",
+      "blue",
+      "food"
     ],
     "exampleWords": [
       {
@@ -651,6 +691,7 @@
         "contrast": "/ɐ̃/ vs /a/"
       }
     ],
+    "englishExamples": [],
     "exampleWords": [
       {
         "pt": "irmã",
@@ -726,6 +767,7 @@
         "contrast": "nasal /ẽ/ vs oral /ɛ/"
       }
     ],
+    "englishExamples": [],
     "exampleWords": [
       {
         "pt": "tempo",
@@ -801,6 +843,7 @@
         "contrast": "nasal /ĩ/ vs oral /i/"
       }
     ],
+    "englishExamples": [],
     "exampleWords": [
       {
         "pt": "sim",
@@ -876,6 +919,7 @@
         "contrast": "nasal /õ/ vs oral /ɔ/"
       }
     ],
+    "englishExamples": [],
     "exampleWords": [
       {
         "pt": "bom",
@@ -950,6 +994,7 @@
         "contrast": "nasal /ũ/ vs oral /a/"
       }
     ],
+    "englishExamples": [],
     "exampleWords": [
       {
         "pt": "um",
@@ -1002,6 +1047,11 @@
         "contrast": "/p/ vs /f/"
       }
     ],
+    "englishExamples": [
+      "spin",
+      "spit",
+      "spoon"
+    ],
     "exampleWords": [
       {
         "pt": "pão",
@@ -1053,6 +1103,11 @@
         ],
         "contrast": "/b/ vs /v/"
       }
+    ],
+    "englishExamples": [
+      "boy",
+      "bat",
+      "buy"
     ],
     "exampleWords": [
       {
@@ -1108,6 +1163,11 @@
         "contrast": "/t/ vs /d/"
       }
     ],
+    "englishExamples": [
+      "stop",
+      "stay",
+      "still"
+    ],
     "exampleWords": [
       {
         "pt": "tudo",
@@ -1159,6 +1219,11 @@
         ],
         "contrast": "/d/ vs /t/"
       }
+    ],
+    "englishExamples": [
+      "dog",
+      "did",
+      "day"
     ],
     "exampleWords": [
       {
@@ -1213,6 +1278,11 @@
         "contrast": "/k/ vs /g/"
       }
     ],
+    "englishExamples": [
+      "skate",
+      "scan",
+      "scoop"
+    ],
     "exampleWords": [
       {
         "pt": "casa",
@@ -1264,6 +1334,11 @@
         ],
         "contrast": "/g/ vs /k/"
       }
+    ],
+    "englishExamples": [
+      "go",
+      "get",
+      "give"
     ],
     "exampleWords": [
       {
@@ -1317,6 +1392,11 @@
         ],
         "contrast": "Using English loanwords or approximations"
       }
+    ],
+    "englishExamples": [
+      "cheese",
+      "church",
+      "chip"
     ],
     "exampleWords": [
       {
@@ -1372,6 +1452,11 @@
         "contrast": "/dʒ/ vs /tʃ/ (before i/e)"
       }
     ],
+    "englishExamples": [
+      "jeep",
+      "judge",
+      "joy"
+    ],
     "exampleWords": [
       {
         "pt": "dia",
@@ -1423,6 +1508,11 @@
         ],
         "contrast": "/f/ vs /v/"
       }
+    ],
+    "englishExamples": [
+      "fan",
+      "fish",
+      "off"
     ],
     "exampleWords": [
       {
@@ -1477,6 +1567,11 @@
         "contrast": "/v/ vs /f/"
       }
     ],
+    "englishExamples": [
+      "van",
+      "vine",
+      "love"
+    ],
     "exampleWords": [
       {
         "pt": "você",
@@ -1529,6 +1624,11 @@
         ],
         "contrast": "/s/ vs /z/ (spelled ç vs s)"
       }
+    ],
+    "englishExamples": [
+      "sun",
+      "see",
+      "kiss"
     ],
     "exampleWords": [
       {
@@ -1583,6 +1683,11 @@
         "contrast": "/z/ vs /s/"
       }
     ],
+    "englishExamples": [
+      "zoo",
+      "buzz",
+      "easy"
+    ],
     "exampleWords": [
       {
         "pt": "zebra",
@@ -1636,6 +1741,11 @@
         "contrast": "/ʃ/ vs /ʒ/"
       }
     ],
+    "englishExamples": [
+      "shoe",
+      "wish",
+      "ship"
+    ],
     "exampleWords": [
       {
         "pt": "chave",
@@ -1688,6 +1798,11 @@
         ],
         "contrast": "/ʒ/ vs /s/"
       }
+    ],
+    "englishExamples": [
+      "pleasure",
+      "vision",
+      "measure"
     ],
     "exampleWords": [
       {
@@ -1744,6 +1859,11 @@
         "contrast": "/h/ vs /ɾ/"
       }
     ],
+    "englishExamples": [
+      "house",
+      "hat",
+      "hello"
+    ],
     "exampleWords": [
       {
         "pt": "rato",
@@ -1798,6 +1918,11 @@
         "contrast": "/m/ vs /n/"
       }
     ],
+    "englishExamples": [
+      "mom",
+      "man",
+      "him"
+    ],
     "exampleWords": [
       {
         "pt": "mãe",
@@ -1849,6 +1974,11 @@
         ],
         "contrast": "/n/ vs /m/"
       }
+    ],
+    "englishExamples": [
+      "no",
+      "net",
+      "fun"
     ],
     "exampleWords": [
       {
@@ -1905,6 +2035,11 @@
         "contrast": "Contextual contrast"
       }
     ],
+    "englishExamples": [
+      "canyon",
+      "onion",
+      "lasagna"
+    ],
     "exampleWords": [
       {
         "pt": "minha",
@@ -1958,6 +2093,11 @@
         ],
         "contrast": "/l/ vs /h/"
       }
+    ],
+    "englishExamples": [
+      "love",
+      "lip",
+      "let"
     ],
     "exampleWords": [
       {
@@ -2014,6 +2154,11 @@
         "contrast": "/ʎ/ vs /l/"
       }
     ],
+    "englishExamples": [
+      "million",
+      "billion",
+      "stallion"
+    ],
     "exampleWords": [
       {
         "pt": "mulher",
@@ -2068,6 +2213,11 @@
         "contrast": "/ɾ/ vs /h/"
       }
     ],
+    "englishExamples": [
+      "butter",
+      "ladder",
+      "water"
+    ],
     "exampleWords": [
       {
         "pt": "caro",
@@ -2119,6 +2269,11 @@
         ],
         "contrast": "/w/ vs /j/"
       }
+    ],
+    "englishExamples": [
+      "water",
+      "wet",
+      "swing"
     ],
     "exampleWords": [
       {
@@ -2172,6 +2327,11 @@
         ],
         "contrast": "/j/ diphthong vs pure vowel"
       }
+    ],
+    "englishExamples": [
+      "yes",
+      "yellow",
+      "young"
     ],
     "exampleWords": [
       {

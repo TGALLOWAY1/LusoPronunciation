@@ -33,6 +33,7 @@
     "test:phase04": "vitest run src/server/app.test.ts src/server/config/startupChecks.test.ts src/server/routes/health.test.ts src/server/routes/pronunciationAssessment.contract.test.ts src/lib/audioQuality.test.ts src/hooks/useMicrophoneRecorder.test.tsx src/hooks/useLivePronunciationPractice.test.tsx src/hooks/useLivePronunciationPractice.telemetry.test.tsx src/server/lib/audioConversion.test.ts src/lib/metricsPercentiles.test.ts src/api/auth.test.ts src/lib/coaching/coachingEngine.test.ts src/lib/coaching/confusionDetection.test.ts src/components/practice/LivePracticeSection.coaching.test.tsx",
     "e2e:phase04": "playwright test e2e/phase04",
     "screenshots:readme": "playwright test e2e/readme-screenshots.spec.ts --workers=1",
+    "screenshots:linkedin": "playwright test e2e/linkedin-screenshots.spec.ts --workers=1",
     "verify:phase04": "npm run test:phase04 && npm run e2e:phase04",
     "test:watch": "vitest --watch"
   },
