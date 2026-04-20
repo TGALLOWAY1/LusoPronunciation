@@ -386,7 +386,7 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
   return (
     <PageTransition>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-        <h2 className="sr-only">Sentence Practice</h2>
+        <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">Sentence Practice</h2>
 
         {/* Filter controls */}
         <FilterControls
