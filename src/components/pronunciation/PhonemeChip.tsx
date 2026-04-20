@@ -24,7 +24,7 @@ function PhonemeChip({ symbol, score }: PhonemeChipProps) {
   const ipa = metadata?.ipa || '';
   const description = metadata?.englishApprox || metadata?.articulation || '';
   const ptExamples = metadata?.exampleWords?.map(w => w.pt).join(', ') || '';
-  const enExamples = metadata?.exampleWords?.map(w => w.english).join(', ') || '';
+  const enExamples = metadata?.englishExamples?.join(', ') || '';
   const notes = metadata?.teachingTips?.[0] || '';
 
   // Build tooltip text for native title attribute (fallback)

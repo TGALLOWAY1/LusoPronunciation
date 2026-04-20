@@ -46,6 +46,8 @@ export interface PhonemeMeta {
   commonMistakes: string[];
   teachingTips: string[];
   minimalPairs: MinimalPair[];
+  /** Curated English words that demonstrate this phoneme's sound. Empty for phonemes (e.g. nasal vowels) with no clean English equivalent. */
+  englishExamples?: string[];
   exampleWords: ExampleWord[];
 }
 

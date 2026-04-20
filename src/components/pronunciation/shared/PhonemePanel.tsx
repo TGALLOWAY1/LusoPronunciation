@@ -99,8 +99,8 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
               // Build enriched tooltip
               const desc = metadata?.englishApprox || metadata?.articulation || '';
               const ptEx = metadata?.exampleWords?.map(w => w.pt).join(', ') || '';
-              const enEx = metadata?.exampleWords?.map(w => w.english).join(', ') || '';
-              
+              const enEx = metadata?.englishExamples?.join(', ') || '';
+
               let tooltipText = `${phoneme.symbol} • ${phoneme.score}/100`;
               if (metadata) {
                 tooltipText += ` • ${desc}`;
@@ -148,7 +148,7 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
                 const desc = metadata.englishApprox || metadata.articulation || '';
                 const tip = metadata.teachingTips?.[0] || '';
                 const ptEx = metadata.exampleWords?.map(w => w.pt).join(', ') || '';
-                const enEx = metadata.exampleWords?.map(w => w.english).join(', ') || '';
+                const enEx = metadata.englishExamples?.join(', ') || '';
 
                 return (
                   <div
