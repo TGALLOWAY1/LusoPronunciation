@@ -35,6 +35,9 @@ export default function PracticePage() {
     const wordCount = wordAttempts.filter(
       (a) => new Date(a.createdAt).toISOString().split('T')[0] === todayStr,
     ).length;
+    return sentenceCount + wordCount;
+  }, [sentenceAttempts, wordAttempts]);
+
   function handleTabChange(tab: PracticeTab) {
     setActiveTab(tab);
     setSearchParams(tab === 'sentences' ? {} : { tab }, { replace: true });
