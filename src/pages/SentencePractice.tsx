@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef, type ReactNode } from 'react';
 import { setLastPracticeMode } from '@/lib/storage';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useSettingsStore } from '@/state/settingsStore';
@@ -62,7 +62,7 @@ function RecordingPlayer({
   );
 }
 
-export default function SentencePractice() {
+export default function SentencePractice({ headerElement }: { headerElement?: ReactNode }) {
   const { startSession, endSession, getAttemptsBySentenceId } = usePracticeLogStore();
   const { practiceCategories, practiceDifficulties } = useSettingsStore();
   const sessionIdRef = useRef<string | null>(null);
@@ -274,10 +274,12 @@ export default function SentencePractice() {
 
   if (filteredSentences.length === 0) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
-          Sentence Practice
-        </h2>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
+        {headerElement && (
+          <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
+            {headerElement}
+          </div>
+        )}
         <div className="card text-center">
           <p className="text-gray-600 dark:text-gray-400 text-lg">
             No sentences match your current filters.
@@ -292,10 +294,12 @@ export default function SentencePractice() {
 
   return (
     <PageTransition>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-          Sentence Practice
-        </h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+        {headerElement && (
+          <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
+            {headerElement}
+          </div>
+        )}
 
         {currentSentence ? (
           <div className="max-w-6xl mx-auto space-y-6 mb-6">

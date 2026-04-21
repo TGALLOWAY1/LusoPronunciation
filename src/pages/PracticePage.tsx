@@ -43,10 +43,37 @@ export default function PracticePage() {
     setSearchParams(tab === 'sentences' ? {} : { tab }, { replace: true });
   }
 
+  const tabBar = (
+    <div className="flex gap-6 -mb-px">
+      <button
+        onClick={() => handleTabChange('sentences')}
+        className={`flex items-center gap-2 py-2 text-sm font-medium transition-colors border-b-2 ${
+          activeTab === 'sentences'
+            ? 'border-primary-600 text-primary-700 dark:border-primary-400 dark:text-primary-400'
+            : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+        }`}
+      >
+        <AlignLeft size={16} />
+        Sentences
+      </button>
+      <button
+        onClick={() => handleTabChange('words')}
+        className={`flex items-center gap-2 py-2 text-sm font-medium transition-colors border-b-2 ${
+          activeTab === 'words'
+            ? 'border-primary-600 text-primary-700 dark:border-primary-400 dark:text-primary-400'
+            : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+        }`}
+      >
+        <CaseSensitive size={16} />
+        Words
+      </button>
+    </div>
+  );
+
   return (
     <div>
-      {/* Momentum strip */}
-      <div className="mb-4">
+      {/* Mobile-only momentum strip — desktop shows it in the sidebar */}
+      <div className="mb-4 lg:hidden">
         <MomentumStrip
           streak={streak}
           todayAttempts={todayAttempts}
@@ -54,37 +81,11 @@ export default function PracticePage() {
         />
       </div>
 
-      {/* Tab bar */}
-      <div className="flex gap-1 mb-6 border-b border-gray-200 dark:border-gray-700">
-        <button
-          onClick={() => handleTabChange('sentences')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors ${
-            activeTab === 'sentences'
-              ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-          }`}
-        >
-          <AlignLeft size={16} />
-          Sentences
-        </button>
-        <button
-          onClick={() => handleTabChange('words')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors ${
-            activeTab === 'words'
-              ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-          }`}
-        >
-          <CaseSensitive size={16} />
-          Words
-        </button>
-      </div>
-
       {/* Tab content — key forces remount on tab switch so session lifecycle is correct */}
       {activeTab === 'sentences' ? (
-        <SentencePractice key="sentences" />
+        <SentencePractice key="sentences" headerElement={tabBar} />
       ) : (
-        <WordPractice key="words" />
+        <WordPractice key="words" headerElement={tabBar} />
       )}
     </div>
   );

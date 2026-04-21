@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef, type ReactNode } from 'react';
 import { setLastPracticeMode } from '@/lib/storage';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import {
@@ -29,7 +29,7 @@ const DIRECTION_MODE_STORAGE_KEY = 'lusopronounce_direction_mode';
 type PracticeMode = 'pronunciation' | 'text-mcq' | 'listening-mcq';
 type DirectionMode = 'pt-to-en' | 'en-to-pt' | 'mixed';
 
-export default function WordPractice() {
+export default function WordPractice({ headerElement }: { headerElement?: ReactNode }) {
   const { startSession, endSession, logWordAttempt, wordAttempts } = usePracticeLogStore();
   const sessionIdRef = useRef<string | null>(null);
   const [words, setWords] = useState<Word[]>([]);
@@ -394,10 +394,12 @@ export default function WordPractice() {
 
   return (
     <PageTransition>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Word Practice</h2>
-        <div className="flex flex-wrap items-center gap-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+      <div className="flex flex-col sm:flex-row items-end justify-between gap-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="w-full sm:w-auto flex-1">
+          {headerElement}
+        </div>
+        <div className="pb-2">
           <ViewModeToggle mode={viewMode} onModeChange={setViewMode} />
         </div>
       </div>
