@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
 import InteractiveSentenceDisplay from '@/components/practice/InteractiveSentenceDisplay';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { alignUiTokensToAzureWords } from '@/pipeline/sentenceWordRefs';
 import {
   SentenceAudioControls,
   PhonemePanel,
@@ -157,10 +158,8 @@ export default function PronunciationFeedbackPanel({
     setActiveSentenceType(null);
   };
 
-  const handleInteractiveWordClick = (wordData: any, index: number) => {
-    const normalizedWord: NormalizedWordFeedback | undefined =
-      wordData?.normalizedWord ?? words?.[index];
-
+  const handleInteractiveWordClick = (wordData: any) => {
+    const normalizedWord: NormalizedWordFeedback | undefined = wordData?.normalizedWord;
     if (normalizedWord) {
       handleWordSelected(normalizedWord);
     }
@@ -170,16 +169,14 @@ export default function PronunciationFeedbackPanel({
   // dedicated Practice Words page. See BACKLOG.md for future implementation.
 
   const tokenWordScores = useMemo(() => {
-    const tokens = sentenceText.trim().split(/\s+/);
-    return tokens.map((token, index) => {
+    const { uiTokens, azureIndicesPerToken } = alignUiTokensToAzureWords(sentenceText);
+    return uiTokens.map((token, i) => {
+      const azureIndices = azureIndicesPerToken[i];
+      const firstAzureIndex = azureIndices[0];
       const normalizedWord =
-        words?.find((w) => {
-          if (w.index !== undefined) {
-            return w.index === index;
-          }
-          const parsedIndex = Number.isFinite(Number(w.id)) ? Number(w.id) : undefined;
-          return parsedIndex === index;
-        }) ?? (words ? words[index] : undefined);
+        firstAzureIndex === undefined
+          ? undefined
+          : words?.find((w) => w.index === firstAzureIndex) ?? words?.[firstAzureIndex];
 
       return {
         word: token,

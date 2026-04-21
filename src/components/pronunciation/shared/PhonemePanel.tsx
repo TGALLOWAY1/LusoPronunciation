@@ -26,35 +26,6 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
     );
   }
 
-  const getPhonemeColors = (score: number) => {
-    if (score >= 90) {
-      return {
-        bg: 'bg-emerald-100 dark:bg-emerald-900/30',
-        text: 'text-emerald-800 dark:text-emerald-200',
-        border: 'border-emerald-300 dark:border-emerald-700',
-      };
-    }
-    if (score >= 80) {
-      return {
-        bg: 'bg-sky-100 dark:bg-sky-900/30',
-        text: 'text-sky-800 dark:text-sky-200',
-        border: 'border-sky-300 dark:border-sky-700',
-      };
-    }
-    if (score >= 70) {
-      return {
-        bg: 'bg-amber-100 dark:bg-amber-900/30',
-        text: 'text-amber-800 dark:text-amber-200',
-        border: 'border-amber-300 dark:border-amber-700',
-      };
-    }
-    return {
-      bg: 'bg-rose-100 dark:bg-rose-900/30',
-      text: 'text-rose-800 dark:text-rose-200',
-      border: 'border-rose-300 dark:border-rose-700',
-    };
-  };
-
   const problemPhonemes = word.phonemes?.filter(p => p.isProblem) || [];
   const wordScore = word.score ?? word.accuracyScore;
   const wordLevel = word.level || (wordScore >= 90 ? 'excellent' : wordScore >= 80 ? 'good' : wordScore >= 70 ? 'ok' : 'practice');
@@ -85,48 +56,7 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
         )}
       </div>
 
-      {/* Phoneme chips */}
-      {word.phonemes && word.phonemes.length > 0 ? (
-        <div>
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Phonemes:
-          </h4>
-          <div className="flex flex-wrap gap-2">
-            {word.phonemes.map((phoneme, index) => {
-              const colors = getPhonemeColors(phoneme.score);
-              const metadata = getPhonemeById(phoneme.symbol);
-              
-              // Build enriched tooltip
-              const desc = metadata?.englishApprox || metadata?.articulation || '';
-              const ptEx = metadata?.exampleWords?.map(w => w.pt).join(', ') || '';
-              const enEx = metadata?.englishExamples?.join(', ') || '';
-
-              let tooltipText = `${phoneme.symbol} • ${phoneme.score}/100`;
-              if (metadata) {
-                tooltipText += ` • ${desc}`;
-                if (ptEx) {
-                  tooltipText += ` • PT: ${ptEx}`;
-                }
-                if (enEx) {
-                  tooltipText += ` • EN: ${enEx}`;
-                }
-              } else if (phoneme.tip) {
-                tooltipText += ` • ${phoneme.tip}`;
-              }
-              
-              return (
-                <span
-                  key={index}
-                  className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium border transition-transform hover:scale-105 ${colors.bg} ${colors.text} ${colors.border}`}
-                  title={tooltipText}
-                >
-                  {phoneme.symbol}
-                </span>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
+      {(!word.phonemes || word.phonemes.length === 0) && (
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
           <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
             No phoneme data available for this word yet.

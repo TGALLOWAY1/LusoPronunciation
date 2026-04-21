@@ -258,7 +258,7 @@ function AllMetricsInfoIcon({ prosodyAvailable = false }: { prosodyAvailable?: b
  * Provides background, text, and border classes for consistent styling.
  */
 export function getScoreColor(score: number): ScoreTheme {
-  if (score >= 90) {
+  if (score >= 80) {
     return {
       bg: 'bg-emerald-500 dark:bg-emerald-600',
       text: 'text-emerald-800 dark:text-emerald-100',
@@ -266,15 +266,7 @@ export function getScoreColor(score: number): ScoreTheme {
     };
   }
 
-  if (score >= 80) {
-    return {
-      bg: 'bg-sky-500 dark:bg-sky-600',
-      text: 'text-sky-800 dark:text-sky-100',
-      border: 'border-sky-300 dark:border-sky-700',
-    };
-  }
-
-  if (score >= 70) {
+  if (score >= 60) {
     return {
       bg: 'bg-amber-500 dark:bg-amber-600',
       text: 'text-amber-800 dark:text-amber-100',
