@@ -29,7 +29,7 @@ const DIRECTION_MODE_STORAGE_KEY = 'lusopronounce_direction_mode';
 type PracticeMode = 'pronunciation' | 'text-mcq' | 'listening-mcq';
 type DirectionMode = 'pt-to-en' | 'en-to-pt' | 'mixed';
 
-export default function WordPractice() {
+export default function WordPractice({ headerElement }: { headerElement?: React.ReactNode }) {
   const { startSession, endSession, logWordAttempt, wordAttempts } = usePracticeLogStore();
   const sessionIdRef = useRef<string | null>(null);
   const [words, setWords] = useState<Word[]>([]);
@@ -394,13 +394,25 @@ export default function WordPractice() {
 
   return (
     <PageTransition>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Word Practice</h2>
-        <div className="flex flex-wrap items-center gap-3">
-          <ViewModeToggle mode={viewMode} onModeChange={setViewMode} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+        {/* Header containing Tabs and Filter controls */}
+        <div className="flex flex-col xl:flex-row items-end justify-between gap-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="w-full xl:w-auto flex-1">
+            {headerElement}
+          </div>
+          <div className="w-full xl:w-auto flex flex-wrap items-end gap-4 pb-2">
+            <FilterControls
+              categories={categories}
+              selectedCategories={selectedCategories}
+              selectedDifficulties={selectedDifficulties}
+              onCategoryChange={setSelectedCategories}
+              onDifficultyChange={setSelectedDifficulties}
+              directionMode={practiceMode === 'text-mcq' || practiceMode === 'listening-mcq' ? directionMode : undefined}
+              onDirectionModeChange={handleDirectionModeChange}
+            />
+            <ViewModeToggle mode={viewMode} onModeChange={setViewMode} />
+          </div>
         </div>
-      </div>
 
       {/* Global status summary */}
       <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
@@ -457,19 +469,6 @@ export default function WordPractice() {
           </div>
         </div>
       )}
-
-      {/* Filter controls */}
-      <div className="mb-6">
-        <FilterControls
-          categories={categories}
-          selectedCategories={selectedCategories}
-          selectedDifficulties={selectedDifficulties}
-          onCategoryChange={setSelectedCategories}
-          onDifficultyChange={setSelectedDifficulties}
-          directionMode={practiceMode === 'text-mcq' || practiceMode === 'listening-mcq' ? directionMode : undefined}
-          onDirectionModeChange={handleDirectionModeChange}
-        />
-      </div>
 
       {/* Results count - only show for list mode */}
       {viewMode === 'list' && (

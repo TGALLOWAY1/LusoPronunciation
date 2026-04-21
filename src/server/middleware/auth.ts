@@ -44,6 +44,7 @@ export function authMiddleware(
   res: Response,
   next: NextFunction
 ): void {
+
   try {
     // Get token from Authorization header
     const authHeader = req.headers.authorization;

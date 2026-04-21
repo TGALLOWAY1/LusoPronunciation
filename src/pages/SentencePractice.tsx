@@ -69,7 +69,7 @@ function RecordingPlayer({
  * Feat 15: Sentence difficulty ratings ('Easy/Good/Hard') were removed.
  * Progress is tracked by pronunciation attempts and scores instead.
  */
-export default function SentencePractice() {
+export default function SentencePractice({ headerElement }: { headerElement?: React.ReactNode }) {
   const { startSession, endSession, getAttemptsBySentenceId } = usePracticeLogStore();
   const sessionIdRef = useRef<string | null>(null);
   const [sentences, setSentences] = useState<Sentence[]>([]);
@@ -385,20 +385,23 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
 
   return (
     <PageTransition>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Sentence Practice</h2>
-
-        {/* Filter controls */}
-        <div className="mb-6">
-        <FilterControls
-          categories={categories}
-          selectedCategories={selectedCategories}
-          selectedDifficulties={selectedDifficulties}
-          onCategoryChange={setSelectedCategories}
-          onDifficultyChange={setSelectedDifficulties}
-          currentIndex={currentIndex}
-          totalCount={filteredSentences.length}
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+        {/* Header containing Tabs and Filter controls */}
+        <div className="flex flex-col sm:flex-row items-end justify-between gap-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="w-full sm:w-auto flex-1">
+            {headerElement}
+          </div>
+          <div className="w-full sm:w-auto pb-2">
+            <FilterControls
+              categories={categories}
+              selectedCategories={selectedCategories}
+              selectedDifficulties={selectedDifficulties}
+              onCategoryChange={setSelectedCategories}
+              onDifficultyChange={setSelectedDifficulties}
+              currentIndex={currentIndex}
+              totalCount={filteredSentences.length}
+            />
+          </div>
         </div>
 
         {/* Main content area - Single column layout */}
