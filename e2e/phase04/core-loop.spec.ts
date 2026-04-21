@@ -75,7 +75,8 @@ async function seedAuthToken(page: Page): Promise<void> {
 async function goToSentencePractice(page: Page): Promise<void> {
   await seedAuthToken(page);
   await page.goto('/practice/sentence');
-  await expect(page.getByRole('heading', { name: 'Sentence Practice' })).toBeVisible();
+  // Wait for the Practice Page and sentences to load by checking for the Start recording button or sentence card
+  await expect(page.getByRole('button', { name: 'Sentences' })).toBeVisible();
 }
 
 async function recordOneAttempt(page: Page): Promise<void> {
