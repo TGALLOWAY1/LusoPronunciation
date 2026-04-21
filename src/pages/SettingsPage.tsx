@@ -1,11 +1,49 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useSettingsStore } from '@/state/settingsStore';
 import PageScaffold from '@/components/common/PageScaffold';
+import MultiSelect, { type MultiSelectOption } from '@/components/common/MultiSelect';
+import { loadAllCategories } from '@/lib/data';
+import type { Category, Difficulty } from '@/lib/types';
+import { getDifficultyOptions } from '@/utils/difficultyLabels';
 
 export default function SettingsPage() {
-  const { selectedVoice, setSelectedVoice } = useSettingsStore();
+  const {
+    selectedVoice,
+    setSelectedVoice,
+    practiceCategories,
+    setPracticeCategories,
+    practiceDifficulties,
+    setPracticeDifficulties,
+  } = useSettingsStore();
+
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadAllCategories()
+      .then((data) => {
+        if (!cancelled) setCategories(data);
+      })
+      .catch((err) => {
+        console.warn('Failed to load categories for settings:', err);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const categoryOptions: MultiSelectOption[] = useMemo(
+    () => categories.map((c) => ({ value: c.id, label: c.labelEn })),
+    [categories]
+  );
+
+  const difficultyOptions: MultiSelectOption[] = useMemo(
+    () => getDifficultyOptions().map((d) => ({ value: d.value, label: d.label })),
+    []
+  );
 
   return (
-    <PageScaffold title="Settings" subtitle="Audio and voice preferences" maxWidth="2xl">
+    <PageScaffold title="Settings" subtitle="Audio and practice preferences" maxWidth="2xl">
       {/* Voice Preference */}
       <section className="card">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
@@ -35,6 +73,36 @@ export default function SettingsPage() {
           >
             Female
           </button>
+        </div>
+      </section>
+
+      {/* Practice Filters */}
+      <section className="card">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          Practice filters
+        </h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          Filter which sentences appear in Sentence Practice. Leave blank for all.
+        </p>
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex-1">
+            <MultiSelect
+              label="Category"
+              options={categoryOptions}
+              selectedValues={practiceCategories}
+              onChange={(values) => setPracticeCategories(values as string[])}
+              placeholder="All categories"
+            />
+          </div>
+          <div className="flex-1">
+            <MultiSelect
+              label="Difficulty"
+              options={difficultyOptions}
+              selectedValues={practiceDifficulties}
+              onChange={(values) => setPracticeDifficulties(values as Difficulty[])}
+              placeholder="All difficulties"
+            />
+          </div>
         </div>
       </section>
 

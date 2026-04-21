@@ -1,10 +1,9 @@
-import { useMemo, useCallback, useEffect, useRef, useState } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import type { Sentence } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import { useLivePronunciationPractice } from '@/hooks/useLivePronunciationPractice';
 import { PronunciationFeedbackPanel, type PronunciationFeedbackPanelProps } from '@/components/pronunciation';
-import ScoringPanel from '@/components/pronunciation/ScoringPanel';
-import NextStepCoachingCard from '@/components/practice/NextStepCoachingCard';
+import SentenceResultView from '@/components/practice/SentenceResultView';
 import {
   adaptWordScoresToNormalized,
   buildWordAudioVariantsForSentence,
@@ -14,16 +13,14 @@ import {
 import { useSettingsStore } from '@/state/settingsStore';
 import { useCanonicalWordMap } from '@/hooks/useCanonicalWordMap';
 import PremiumRecordButton from '@/components/common/PremiumRecordButton';
-import { buildCoachingSuggestion } from '@/lib/coaching/coachingEngine';
-import { detectConfusionTags } from '@/lib/coaching/confusionDetection';
-import { pickMinimalPairsByTags } from '@/lib/coaching/minimalPairs.ptbr';
-import { appendCoachingTelemetryEvent } from '@/lib/coaching/coachingTelemetry';
 
 export interface LivePracticeSectionProps {
   sentence: Sentence;
   sessionId: string | null;
   onCurrentAttemptChange?: (attempt: AttemptScore | null) => void;
   onRecordingUrlChange?: (url: string | null) => void;
+  activeTab?: 'practice' | 'history';
+  onTabChange?: (tab: 'practice' | 'history') => void;
 }
 
 /**
@@ -36,8 +33,7 @@ function buildSentenceAudioVariants(
   selectedVoice: 'male' | 'female'
 ): NormalizedAudioVariant[] {
   const variants: NormalizedAudioVariant[] = [];
-  
-  // Add native audio variant based on selected voice preference
+
   const nativeAudioUrl = selectedVoice === 'male' ? sentence.audioMaleUrl : sentence.audioFemaleUrl;
   if (nativeAudioUrl) {
     variants.push({
@@ -46,34 +42,27 @@ function buildSentenceAudioVariants(
     });
   }
 
-  // Add user recording if available
   if (userAudioUrl) {
     variants.push({
       type: 'user',
       url: userAudioUrl,
     });
   }
-  
+
   return variants;
 }
 
-/**
- * LivePracticeSection component for recording and assessing pronunciation in real-time.
- * 
- * Uses the useLivePronunciationPractice hook to handle recording, submission, and attempt management.
- * Displays results using PronunciationFeedbackPanel.
- */
-export default function LivePracticeSection({ 
-  sentence, 
+export default function LivePracticeSection({
+  sentence,
   sessionId,
   onCurrentAttemptChange,
   onRecordingUrlChange,
+  activeTab = 'practice',
+  onTabChange,
 }: LivePracticeSectionProps) {
   const { selectedVoice } = useSettingsStore();
   const canonicalWordMap = useCanonicalWordMap();
-  const [isDrillOpen, setIsDrillOpen] = useState(false);
-  const lastShownKeyRef = useRef<string | null>(null);
-  
+
   const {
     isRecording,
     audioUrl,
@@ -91,14 +80,12 @@ export default function LivePracticeSection({
     dailyQuota,
   } = useLivePronunciationPractice();
 
-  // Notify parent of current attempt changes
   useEffect(() => {
     if (onCurrentAttemptChange) {
       onCurrentAttemptChange(currentAttempt);
     }
   }, [currentAttempt, onCurrentAttemptChange]);
 
-  // Notify parent of recording URL changes
   useEffect(() => {
     if (onRecordingUrlChange) {
       onRecordingUrlChange(audioUrl);
@@ -110,35 +97,31 @@ export default function LivePracticeSection({
     resetRecording();
   }, [sentence.id, resetRecording]);
 
-  // Handle submit button click
   const handleSubmit = useCallback(async () => {
-    if (!audioUrl) {
-      return; // Should be disabled, but guard anyway
-    }
+    if (!audioUrl) return;
 
     await submitAttempt(
       sentence.id,
       sentence.textPt,
-      sessionId ? {
-        sessionId,
-        sentenceId: sentence.id,
-        difficulty: sentence.difficulty,
-        category: sentence.categoryId,
-      } : null
+      sessionId
+        ? {
+            sessionId,
+            sentenceId: sentence.id,
+            difficulty: sentence.difficulty,
+            category: sentence.categoryId,
+          }
+        : null
     );
   }, [sentence, sessionId, audioUrl, submitAttempt]);
 
-  // Build sentence audio variants (native + user recording)
   const sentenceAudio = useMemo(() => {
     return buildSentenceAudioVariants(sentence, audioUrl, selectedVoice);
   }, [sentence, audioUrl, selectedVoice]);
 
-  // Build word audio variants from sentence wordRefs
   const wordAudios = useMemo(() => {
     return buildWordAudioVariantsForSentence(sentence, selectedVoice);
   }, [sentence, selectedVoice]);
 
-  // Normalize word scores for the panel, extracting phonemes from Azure response
   const normalizedWords = useMemo(() => {
     if (currentAttempt && currentAttempt.wordScores && currentAttempt.wordScores.length > 0) {
       return adaptWordScoresToNormalized(currentAttempt.wordScores, rawAzureResponse);
@@ -147,97 +130,51 @@ export default function LivePracticeSection({
   }, [currentAttempt, rawAzureResponse]);
 
   const enrichedWords = useMemo(() => {
-    if (normalizedWords.length === 0) {
-      return normalizedWords;
-    }
+    if (normalizedWords.length === 0) return normalizedWords;
     return enrichWordsWithCanonicalData(sentence, normalizedWords, canonicalWordMap);
   }, [sentence, normalizedWords, canonicalWordMap]);
 
-  const nativeAudioAvailable = useMemo(() => {
-    return selectedVoice === 'male'
-      ? Boolean(sentence.audioMaleUrl)
-      : Boolean(sentence.audioFemaleUrl);
-  }, [selectedVoice, sentence.audioMaleUrl, sentence.audioFemaleUrl]);
+  // Token-aligned word scores for the sentence display (mirrors PronunciationFeedbackPanel logic).
+  const tokenWordScores = useMemo(() => {
+    const tokens = sentence.textPt.trim().split(/\s+/);
+    return tokens.map((token, index) => {
+      const normalizedWord =
+        enrichedWords.find((w) => {
+          if (w.index !== undefined) return w.index === index;
+          const parsedIndex = Number.isFinite(Number(w.id)) ? Number(w.id) : undefined;
+          return parsedIndex === index;
+        }) ?? enrichedWords[index];
 
-  const coachingSuggestion = useMemo(() => {
-    if (!currentAttempt) {
-      return null;
-    }
+      return {
+        word: token,
+        overallScore: normalizedWord?.score ?? normalizedWord?.accuracyScore ?? 0,
+        normalizedWord,
+      };
+    });
+  }, [sentence.textPt, enrichedWords]);
 
-    const previousAttempt = attempts.length > 1 ? attempts[1] : undefined;
-    const baseSuggestion = buildCoachingSuggestion(currentAttempt, {
-      previousAttempt,
+  // Pre-scored-state panel props (shows sentence + native audio before assessment).
+  const panelProps: PronunciationFeedbackPanelProps = useMemo(
+    () => ({
+      attempts: attempts ?? [],
+      currentAttempt: currentAttempt ?? null,
       sentenceText: sentence.textPt,
-      nativeAudioAvailable,
-    });
-
-    if (baseSuggestion.kind !== 'clarity') {
-      return baseSuggestion;
-    }
-
-    const detectedTags = detectConfusionTags(currentAttempt, sentence.textPt).slice(0, 3);
-    if (detectedTags.length === 0) {
-      return baseSuggestion;
-    }
-
-    const pairs = pickMinimalPairsByTags(detectedTags, 3);
-    if (pairs.length < 2) {
-      return baseSuggestion;
-    }
-
-    return {
-      ...baseSuggestion,
-      kind: 'minimal_pairs' as const,
-      ctaLabel: 'Start drill',
-      drill: {
-        tags: detectedTags,
-        pairs,
-      },
-    };
-  }, [attempts, currentAttempt, nativeAudioAvailable, sentence.textPt]);
-
-  useEffect(() => {
-    setIsDrillOpen(false);
-  }, [sentence.id, currentAttempt?.attemptId]);
-
-  useEffect(() => {
-    if (!coachingSuggestion || !currentAttempt || attemptState !== 'scored') {
-      return;
-    }
-
-    const shownKey = `${currentAttempt.attemptId}:${coachingSuggestion.kind}`;
-    if (lastShownKeyRef.current === shownKey) {
-      return;
-    }
-
-    lastShownKeyRef.current = shownKey;
-    appendCoachingTelemetryEvent({
-      event: 'coaching_shown',
-      kind: coachingSuggestion.kind,
-      tags: coachingSuggestion.drill?.tags,
-    });
-  }, [attemptState, coachingSuggestion, currentAttempt]);
-
-  // Build panel props
-  const panelProps: PronunciationFeedbackPanelProps = useMemo(() => ({
-    attempts: attempts ?? [],
-    currentAttempt: currentAttempt ?? null,
-    sentenceText: sentence.textPt,
-    translationText: sentence.translationEn,
-    difficulty: sentence.difficulty,
-    sentenceAudio: sentenceAudio.length > 0 ? sentenceAudio : undefined,
-    wordAudios: wordAudios.length > 0 ? wordAudios : undefined,
-    words: enrichedWords.length > 0 ? enrichedWords : undefined,
-    title: undefined,
-    showDevControls: false,
-    hideHeaderContent: false, // Show sentence text, translation, difficulty, and audio
-    showDifficultyBadge: false,
-  }), [attempts, currentAttempt, sentence, sentenceAudio, wordAudios, enrichedWords]);
+      translationText: sentence.translationEn,
+      difficulty: sentence.difficulty,
+      sentenceAudio: sentenceAudio.length > 0 ? sentenceAudio : undefined,
+      wordAudios: wordAudios.length > 0 ? wordAudios : undefined,
+      words: enrichedWords.length > 0 ? enrichedWords : undefined,
+      title: undefined,
+      showDevControls: false,
+      hideHeaderContent: false,
+      showDifficultyBadge: false,
+    }),
+    [attempts, currentAttempt, sentence, sentenceAudio, wordAudios, enrichedWords]
+  );
 
   const canSubmit = Boolean(audioUrl) && attemptState !== 'submitting' && attemptState !== 'recording';
   const recordingFileExists = Boolean(audioUrl);
 
-  // UI rendering is driven from the centralized attempt lifecycle state.
   const isScoredState = attemptState === 'scored';
   const isReadyToRecord = attemptState === 'idle' || (!recordingFileExists && attemptState !== 'recording');
   const isRecordingInProgress = attemptState === 'recording' || isRecording;
@@ -249,52 +186,57 @@ export default function LivePracticeSection({
       attemptState === 'error' ||
       attemptState === 'canceled');
 
-  const handleCoachingPrimaryCta = useCallback(() => {
-    if (!coachingSuggestion) {
-      return;
-    }
-
-    appendCoachingTelemetryEvent({
-      event: 'coaching_cta_clicked',
-      kind: coachingSuggestion.kind,
-      tags: coachingSuggestion.drill?.tags,
-    });
-
-    if (coachingSuggestion.kind === 'minimal_pairs') {
-      if (!isDrillOpen) {
-        appendCoachingTelemetryEvent({
-          event: 'minimal_pairs_opened',
-          kind: coachingSuggestion.kind,
-          tags: coachingSuggestion.drill?.tags,
-        });
-      }
-      setIsDrillOpen(true);
-      return;
-    }
-
-    setIsDrillOpen(false);
-    resetRecording();
-  }, [coachingSuggestion, isDrillOpen, resetRecording]);
-
-  const handleRetrySentenceFromDrill = useCallback(() => {
-    if (coachingSuggestion) {
-      appendCoachingTelemetryEvent({
-        event: 'coaching_cta_clicked',
-        kind: coachingSuggestion.kind,
-        tags: coachingSuggestion.drill?.tags,
-      });
-    }
-
-    setIsDrillOpen(false);
-    resetRecording();
-  }, [coachingSuggestion, resetRecording]);
-
   const quotaExhausted = Boolean(dailyQuota) && dailyQuota!.remaining <= 0;
-  const quotaLow =
-    Boolean(dailyQuota) && dailyQuota!.remaining > 0 && dailyQuota!.remaining <= 5;
+  const quotaLow = Boolean(dailyQuota) && dailyQuota!.remaining > 0 && dailyQuota!.remaining <= 5;
 
   return (
     <div className="space-y-6">
+      {/* Scored state: focused result view */}
+      {isScoredState && currentAttempt && (
+        <SentenceResultView
+          sentenceText={sentence.textPt}
+          tokenWordScores={tokenWordScores}
+          words={enrichedWords}
+          attempt={currentAttempt}
+          difficulty={sentence.difficulty}
+          activeTab={activeTab}
+          onTabChange={onTabChange ?? (() => {})}
+        />
+      )}
+
+      {/* Pre-scored states: sentence + native audio above recording controls */}
+      {!isScoredState && (
+        <>
+          {onTabChange && (
+            <div className="flex items-center justify-end">
+              <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={() => onTabChange('practice')}
+                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                    activeTab === 'practice'
+                      ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  Practice
+                </button>
+                <button
+                  onClick={() => onTabChange('history')}
+                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                    (activeTab as string) === 'history'
+                      ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  History
+                </button>
+              </div>
+            </div>
+          )}
+          <PronunciationFeedbackPanel {...panelProps} />
+        </>
+      )}
+
       {/* Dynamic Recording Controls */}
       <div className="space-y-4">
         {dailyQuota && (
@@ -322,7 +264,6 @@ export default function LivePracticeSection({
           </div>
         )}
         <div className="flex items-center justify-center gap-4">
-          {/* State 1: Ready to Record - Single large red mic button */}
           {isReadyToRecord && (
             <PremiumRecordButton
               isRecording={false}
@@ -332,7 +273,6 @@ export default function LivePracticeSection({
             />
           )}
 
-          {/* State 2: Recording in Progress - Large red button with stop icon and pulsing */}
           {isRecordingInProgress && (
             <PremiumRecordButton
               isRecording={true}
@@ -342,10 +282,8 @@ export default function LivePracticeSection({
             />
           )}
 
-          {/* State 3: Review (pre-submit) - Two buttons side-by-side */}
           {isReviewState && (
             <>
-              {/* Secondary Button (Left): Reset/Retry */}
               <button
                 onClick={resetRecording}
                 disabled={submitting}
@@ -368,7 +306,6 @@ export default function LivePracticeSection({
                 </svg>
               </button>
 
-              {/* Main Button (Right): Green Submit button */}
               <button
                 onClick={handleSubmit}
                 disabled={!canSubmit || submitting}
@@ -377,19 +314,8 @@ export default function LivePracticeSection({
               >
                 {submitting ? (
                   <>
-                    <svg
-                      className="animate-spin w-6 h-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
+                    <svg className="animate-spin w-6 h-6" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path
                         className="opacity-75"
                         fill="currentColor"
@@ -421,13 +347,11 @@ export default function LivePracticeSection({
             </>
           )}
 
-          {/* State 4: Scored - Record again button */}
           {isScoredState && (
             <PremiumRecordButton
               isRecording={false}
               onClick={() => {
                 resetRecording();
-                // Small delay to ensure state resets before starting
                 setTimeout(() => startRecording(), 0);
               }}
               disabled={false}
@@ -436,7 +360,6 @@ export default function LivePracticeSection({
           )}
         </div>
 
-        {/* "Try again" label under mic button in scored state */}
         {isScoredState && (
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
             Tap to try again
@@ -470,24 +393,6 @@ export default function LivePracticeSection({
           </div>
         )}
       </div>
-
-      {/* Scoring Results - shown immediately after assessment */}
-      {isScoredState && currentAttempt && (
-        <ScoringPanel currentAttempt={currentAttempt} variant="banner" />
-      )}
-
-      {/* Pronunciation Feedback Panel */}
-      <PronunciationFeedbackPanel {...panelProps} />
-
-      {/* Coaching suggestion - shown below results as a helpful hint */}
-      {isScoredState && coachingSuggestion && (
-        <NextStepCoachingCard
-          suggestion={coachingSuggestion}
-          drillOpen={isDrillOpen}
-          onPrimaryCta={handleCoachingPrimaryCta}
-          onRetrySentence={handleRetrySentenceFromDrill}
-        />
-      )}
     </div>
   );
 }
