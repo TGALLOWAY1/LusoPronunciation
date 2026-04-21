@@ -8,6 +8,7 @@ type Screen = {
   route: string;
   fileName: string;
   readyText: string;
+  role?: Parameters<Page['getByRole']>[0];
   postNav?: (page: Page) => Promise<void>;
   fullPage?: boolean;
 };
@@ -16,7 +17,8 @@ const screenMatrix: Screen[] = [
   {
     route: '/',
     fileName: 'dashboard-sentences.png',
-    readyText: 'Sentence Practice',
+    readyText: 'Sentences',
+    role: 'button',
     // Open the History tab so the phoneme-tip panel renders populated from the
     // seeded attempt instead of the "Click a word..." empty state. Captured
     // full-page so branding + sentence + phoneme tips all appear together.
@@ -35,7 +37,7 @@ const screenMatrix: Screen[] = [
     },
     fullPage: true,
   },
-  { route: '/?tab=words', fileName: 'dashboard-words.png', readyText: 'Word Practice' },
+  { route: '/?tab=words', fileName: 'dashboard-words.png', readyText: 'Words', role: 'button' },
   { route: '/review', fileName: 'review.png', readyText: 'Review' },
   { route: '/progress', fileName: 'progress.png', readyText: 'Progress' },
 ];
@@ -189,7 +191,7 @@ async function captureRoute(page: Page, screen: Screen, outputPath: string) {
 
   const readyTarget = page
     .locator('main')
-    .getByRole('heading', { name: screen.readyText })
+    .getByRole(screen.role || 'heading', { name: screen.readyText, exact: true })
     .first();
   await expect(readyTarget).toBeVisible({ timeout: 15_000 });
   await expect(readyTarget).toHaveCSS('opacity', '1', { timeout: 15_000 });
