@@ -44,12 +44,6 @@ export function authMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  // DEV BYPASS
-  req.user = {
-    id: '507f1f77bcf86cd799439011',
-    email: 'dev@lusopronunciation.local',
-  };
-  return next();
 
   try {
     // Get token from Authorization header
