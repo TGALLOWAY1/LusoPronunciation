@@ -171,6 +171,39 @@ export function computeSentenceWordRefs(
 }
 
 /**
+ * Aligns whitespace-delimited UI tokens to the letter/number-delimited words that
+ * Azure Speech returns for the same sentence. The UI keeps punctuation and hyphens
+ * attached to a token (e.g. "e-mails"), while Azure splits on the same regex used
+ * here (/[\p{L}\p{N}]+/gu). For each UI token this returns the zero or more
+ * Azure word indices it spans, in order.
+ *
+ * Example:
+ *   alignUiTokensToAzureWords("Preciso responder uns e-mails agora.")
+ *   → { uiTokens: ["Preciso","responder","uns","e-mails","agora."],
+ *       azureIndicesPerToken: [[0],[1],[2],[3,4],[5]] }
+ */
+export function alignUiTokensToAzureWords(sentenceText: string): {
+  uiTokens: string[];
+  azureIndicesPerToken: number[][];
+} {
+  const trimmed = sentenceText.trim();
+  const uiTokens = trimmed.length === 0 ? [] : trimmed.split(/\s+/);
+  const azureIndicesPerToken: number[][] = [];
+  let azureIndex = 0;
+
+  for (const token of uiTokens) {
+    const indices: number[] = [];
+    for (const _ of token.matchAll(/[\p{L}\p{N}]+/gu)) {
+      indices.push(azureIndex);
+      azureIndex += 1;
+    }
+    azureIndicesPerToken.push(indices);
+  }
+
+  return { uiTokens, azureIndicesPerToken };
+}
+
+/**
  * Builds word references for a sentence by matching tokens to EnrichedWord entries.
  * (Legacy function, kept for backward compatibility)
  * 

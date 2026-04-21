@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { buildWordRefs, computeSentenceWordRefs } from './sentenceWordRefs';
+import {
+  alignUiTokensToAzureWords,
+  buildWordRefs,
+  computeSentenceWordRefs,
+} from './sentenceWordRefs';
 
 describe('sentenceWordRefs', () => {
   it('prefers longest phrase matches over single-token matches', () => {
@@ -69,6 +73,42 @@ describe('sentenceWordRefs', () => {
       { wordId: 'misc_accepts', tokenIndex: 1 },
       { wordId: 'misc_credit_card', tokenIndex: 2 },
     ]);
+  });
+
+  describe('alignUiTokensToAzureWords', () => {
+    it('splits hyphenated UI tokens into two Azure indices', () => {
+      const result = alignUiTokensToAzureWords('Preciso responder uns e-mails agora.');
+
+      expect(result.uiTokens).toEqual(['Preciso', 'responder', 'uns', 'e-mails', 'agora.']);
+      expect(result.azureIndicesPerToken).toEqual([[0], [1], [2], [3, 4], [5]]);
+    });
+
+    it('strips trailing punctuation from the Azure count', () => {
+      const result = alignUiTokensToAzureWords('Olá! Como está?');
+
+      expect(result.uiTokens).toEqual(['Olá!', 'Como', 'está?']);
+      expect(result.azureIndicesPerToken).toEqual([[0], [1], [2]]);
+    });
+
+    it('treats apostrophes as word separators', () => {
+      const result = alignUiTokensToAzureWords("d'água fria");
+
+      expect(result.azureIndicesPerToken).toEqual([[0, 1], [2]]);
+    });
+
+    it('returns an empty bucket for pure-punctuation tokens', () => {
+      const result = alignUiTokensToAzureWords('— bem.');
+
+      expect(result.uiTokens).toEqual(['—', 'bem.']);
+      expect(result.azureIndicesPerToken).toEqual([[], [0]]);
+    });
+
+    it('returns empty arrays for blank input', () => {
+      expect(alignUiTokensToAzureWords('   ')).toEqual({
+        uiTokens: [],
+        azureIndicesPerToken: [],
+      });
+    });
   });
 
   it('matches alternate surface forms to canonical words', () => {
