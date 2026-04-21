@@ -395,6 +395,9 @@ export default function WordPractice({ headerElement }: { headerElement?: ReactN
   return (
     <PageTransition>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+      <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
+        Word Practice
+      </h2>
       <div className="flex flex-col sm:flex-row items-end justify-between gap-4 mb-4 border-b border-gray-200 dark:border-gray-700">
         <div className="w-full sm:w-auto flex-1">
           {headerElement}

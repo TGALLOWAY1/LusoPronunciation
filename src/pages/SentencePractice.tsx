@@ -275,6 +275,9 @@ export default function SentencePractice({ headerElement }: { headerElement?: Re
   if (filteredSentences.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
+          Sentence Practice
+        </h2>
         {headerElement && (
           <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
             {headerElement}
@@ -295,6 +298,9 @@ export default function SentencePractice({ headerElement }: { headerElement?: Re
   return (
     <PageTransition>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
+          Sentence Practice
+        </h2>
         {headerElement && (
           <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
             {headerElement}
