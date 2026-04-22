@@ -401,6 +401,8 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
               onDifficultyChange={setSelectedDifficulties}
               currentIndex={currentIndex}
               totalCount={filteredSentences.length}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
             />
           </div>
         </div>
@@ -506,27 +508,6 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
           </div>
         ) : null}
 
-        {/* Navigation buttons */}
-        {currentSentence && (
-          <div className="flex flex-col sm:flex-row gap-3 mt-6">
-            <button
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
-              className="btn btn-secondary btn-md flex-1 flex items-center justify-center gap-2"
-            >
-              <span>←</span>
-              <span>Previous sentence</span>
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={currentIndex >= filteredSentences.length - 1}
-              className="btn btn-primary btn-md flex-1 flex items-center justify-center gap-2"
-            >
-              <span>Next sentence</span>
-              <span>→</span>
-            </button>
-          </div>
-        )}
       </div>
     </PageTransition>
   );
