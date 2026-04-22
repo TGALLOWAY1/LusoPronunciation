@@ -3,15 +3,17 @@
  *
  *   1. translateEnglishToPortuguese
  *   2. normalizePortugueseSentence
- *   3. generatePortugueseTTS
- *   4. tokenizeSentence
- *   5. resolvePronunciationCoverage   (curated-only for now)
- *   6. persist CustomSentence document
+ *   3. tokenizeSentence
+ *   4. resolvePronunciationCoverage      exact → lemma → generated → unresolved
+ *   5. generatePortugueseTTS
+ *   6. validate (coverage / confidence / TTS-vs-text)
+ *   7. persist CustomSentence document
  *
- * Exposed as `createCustomSentence({ englishText, userId })` so the route
- * handler can call it directly. Each stage emits a structured console log
- * for observability; failures bubble up with context and are translated to
- * HTTP error codes by the route.
+ * Every stage is wrapped in `timeStage` so production logs show per-stage
+ * latency plus token coverage counts. The validator in stage 6 enforces the
+ * trust invariants (no silent "high-confidence" data, no orphan tokens, no
+ * mismatched TTS output) and a failure there cleans up the orphaned WAV
+ * before re-throwing.
  */
 
 import mongoose from 'mongoose';
@@ -33,8 +35,16 @@ import {
 } from './sentenceTokenizer';
 import { resolvePronunciationCoverage } from './pronunciationResolver';
 import { deleteCustomAudio } from './customAudioStorage';
+import {
+  CustomSentenceValidationError,
+  summarizeCoverage,
+  validateConfidenceInvariants,
+  validateTokenCoverage,
+  validateTtsOutput,
+} from './customSentenceValidator';
+import { logStage, timeStage } from '../lib/pipelineLogger';
 
-const LOG_TAG = '[CustomSentenceService]';
+const PIPELINE = 'custom-sentence';
 const MAX_ENGLISH_LENGTH = 500;
 
 export class CustomSentenceError extends Error {
@@ -42,18 +52,22 @@ export class CustomSentenceError extends Error {
     | 'INVALID_INPUT'
     | 'TRANSLATION_FAILED'
     | 'TTS_FAILED'
+    | 'VALIDATION_FAILED'
     | 'PERSISTENCE_FAILED';
   readonly cause?: unknown;
+  readonly details?: Record<string, unknown>;
 
   constructor(
     code: CustomSentenceError['code'],
     message: string,
-    cause?: unknown
+    cause?: unknown,
+    details?: Record<string, unknown>
   ) {
     super(message);
     this.name = 'CustomSentenceError';
     this.code = code;
     this.cause = cause;
+    this.details = details;
   }
 }
 
@@ -88,12 +102,24 @@ export async function createCustomSentence(
     throw new CustomSentenceError('INVALID_INPUT', 'userId is invalid');
   }
 
-  console.log(`${LOG_TAG} start userId=${userId} chars=${englishText.length}`);
+  const sentenceObjectId = new mongoose.Types.ObjectId();
+  const sentenceId = sentenceObjectId.toHexString();
 
-  // Stage 1: translate
+  logStage({
+    pipeline: PIPELINE,
+    stage: 'start',
+    userId,
+    sentenceId,
+    data: { englishLength: englishText.length },
+  });
+
+  // Stage 1: translate ──────────────────────────────────────────────
   let translation;
   try {
-    translation = await translateEnglishToPortuguese(englishText);
+    translation = await timeStage(
+      { pipeline: PIPELINE, stage: 'translate', userId, sentenceId },
+      () => translateEnglishToPortuguese(englishText)
+    );
   } catch (err) {
     throw new CustomSentenceError(
       'TRANSLATION_FAILED',
@@ -102,58 +128,151 @@ export async function createCustomSentence(
     );
   }
 
-  // Stage 2: normalize
+  // Stage 2: normalize ──────────────────────────────────────────────
   const normalization = normalizePortugueseSentence(translation.textPt);
   const targetTextPt = normalization.text;
-  const normalizedTextPt = normalizeTokenForm(targetTextPt)
-    || targetTextPt.toLowerCase();
+  const normalizedTextPt =
+    normalizeTokenForm(targetTextPt) || targetTextPt.toLowerCase();
 
-  // Stage 4 (re-ordered before TTS to preserve logical flow, but both are
-  // independent of each other — tokens feed into persistence below):
+  logStage({
+    pipeline: PIPELINE,
+    stage: 'normalize',
+    userId,
+    sentenceId,
+    data: {
+      chars: targetTextPt.length,
+      changed: normalization.changed,
+    },
+  });
+
+  // Stage 3: tokenize ───────────────────────────────────────────────
   const sentenceTokens = tokenizeSentence(targetTextPt);
+  logStage({
+    pipeline: PIPELINE,
+    stage: 'tokenize',
+    userId,
+    sentenceId,
+    data: { tokens: sentenceTokens.length },
+  });
 
-  // Stage 5: pronunciation coverage (curated → lemma → generated → unresolved)
-  const coverage = await resolvePronunciationCoverage(sentenceTokens);
-  const status = deriveStatus(coverage.tokens);
+  // Stage 4: resolve pronunciation coverage ─────────────────────────
+  const coverage = await timeStage(
+    { pipeline: PIPELINE, stage: 'resolve', userId, sentenceId },
+    () => resolvePronunciationCoverage(sentenceTokens)
+  );
 
-  // Stage 3: TTS — do it after translate/normalize so the synthesized audio
-  // matches the final displayed text. We allocate the Mongo _id up front so
-  // the audio file name is stable before the document is written.
-  const sentenceObjectId = new mongoose.Types.ObjectId();
-  let tts;
-  try {
-    tts = await generatePortugueseTTS({
-      text: targetTextPt,
+  const unknownTokens = coverage.tokens.filter(
+    (t) => t.resolutionType === 'unresolved'
+  );
+  const fallbackTokens = coverage.tokens.filter(
+    (t) =>
+      t.resolutionType === 'generated' || t.resolutionType === 'unresolved'
+  );
+  if (unknownTokens.length > 0) {
+    logStage({
+      pipeline: PIPELINE,
+      stage: 'resolve.unknown',
       userId,
-      sentenceId: sentenceObjectId.toHexString(),
+      sentenceId,
+      level: 'warn',
+      data: {
+        unknown: unknownTokens.map((t) => t.surfaceForm),
+      },
     });
-  } catch (err) {
-    throw new CustomSentenceError('TTS_FAILED', 'Failed to generate TTS audio', err);
+  }
+  if (fallbackTokens.length > 0) {
+    logStage({
+      pipeline: PIPELINE,
+      stage: 'resolve.fallback',
+      userId,
+      sentenceId,
+      data: {
+        fallbacks: fallbackTokens.length,
+        generated: coverage.counts.generated,
+        unresolved: coverage.counts.unresolved,
+      },
+    });
   }
 
-  // Stage 6: persist. `new + save` (instead of `create`) so Mongoose casts
-  // string generatedPronunciationId values into ObjectIds automatically and
-  // accepts the pre-allocated _id without TypeScript complaining.
+  const status = deriveStatus(coverage.tokens);
+
+  // Stage 5: TTS ────────────────────────────────────────────────────
+  let tts;
+  try {
+    tts = await timeStage(
+      { pipeline: PIPELINE, stage: 'tts', userId, sentenceId },
+      () =>
+        generatePortugueseTTS({
+          text: targetTextPt,
+          userId,
+          sentenceId,
+        })
+    );
+  } catch (err) {
+    throw new CustomSentenceError(
+      'TTS_FAILED',
+      'Failed to generate TTS audio',
+      err
+    );
+  }
+
+  // Stage 6: validate ───────────────────────────────────────────────
+  try {
+    await timeStage(
+      { pipeline: PIPELINE, stage: 'validate', userId, sentenceId },
+      async () => {
+        validateTokenCoverage(coverage.tokens);
+        validateConfidenceInvariants(coverage.tokens);
+        await validateTtsOutput({
+          ttsText: targetTextPt,
+          persistedText: targetTextPt,
+          audioAbsolutePath: tts.absolutePath,
+        });
+      }
+    );
+  } catch (err) {
+    // Clean up the orphaned WAV so we don't keep disk state that doesn't
+    // correspond to any document.
+    await deleteCustomAudio(userId, sentenceId);
+    if (err instanceof CustomSentenceValidationError) {
+      throw new CustomSentenceError(
+        'VALIDATION_FAILED',
+        `Pipeline validation failed: ${err.code}`,
+        err,
+        err.details
+      );
+    }
+    throw new CustomSentenceError(
+      'VALIDATION_FAILED',
+      'Pipeline validation failed',
+      err
+    );
+  }
+
+  // Stage 7: persist ────────────────────────────────────────────────
   let doc: ICustomSentenceDocument;
   try {
-    const draft = new CustomSentenceModel({
-      _id: sentenceObjectId,
-      userId: new mongoose.Types.ObjectId(userId),
-      sourceTextEn: englishText,
-      targetTextPt,
-      normalizedTextPt,
-      locale: 'pt-BR',
-      ttsAudioUrl: tts.audioUrl,
-      status,
-      translationProvider: translation.provider,
-      translationConfidence: translation.confidence,
-      tokens: coverage.tokens,
-    });
-    doc = await draft.save();
+    doc = await timeStage(
+      { pipeline: PIPELINE, stage: 'persist', userId, sentenceId },
+      async () => {
+        const draft = new CustomSentenceModel({
+          _id: sentenceObjectId,
+          userId: new mongoose.Types.ObjectId(userId),
+          sourceTextEn: englishText,
+          targetTextPt,
+          normalizedTextPt,
+          locale: 'pt-BR',
+          ttsAudioUrl: tts.audioUrl,
+          status,
+          translationProvider: translation.provider,
+          translationConfidence: translation.confidence,
+          tokens: coverage.tokens,
+        });
+        return draft.save();
+      }
+    );
   } catch (err) {
-    // Best-effort cleanup of the orphaned WAV so we don't leak disk on failed
-    // persistence. Swallow secondary errors; the primary error is what matters.
-    await deleteCustomAudio(userId, sentenceObjectId.toHexString());
+    await deleteCustomAudio(userId, sentenceId);
     throw new CustomSentenceError(
       'PERSISTENCE_FAILED',
       'Failed to save custom sentence',
@@ -162,11 +281,16 @@ export async function createCustomSentence(
   }
 
   const sentence = toCustomSentenceDto(doc);
-  console.log(
-    `${LOG_TAG} done id=${sentence.id} status=${status} tokens=${sentence.tokens.length}` +
-      ` exact=${coverage.counts.exact_match} lemma=${coverage.counts.lemma_match}` +
-      ` generated=${coverage.counts.generated} unresolved=${coverage.counts.unresolved}`
-  );
+  logStage({
+    pipeline: PIPELINE,
+    stage: 'done',
+    userId,
+    sentenceId: sentence.id,
+    data: {
+      status,
+      ...summarizeCoverage(coverage.tokens),
+    },
+  });
 
   return {
     sentence,

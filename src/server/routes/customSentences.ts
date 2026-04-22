@@ -63,6 +63,7 @@ function mapErrorCodeToHttp(code: CustomSentenceError['code']): number {
     case 'TRANSLATION_FAILED':
     case 'TTS_FAILED':
       return 502;
+    case 'VALIDATION_FAILED':
     case 'PERSISTENCE_FAILED':
       return 500;
     default:

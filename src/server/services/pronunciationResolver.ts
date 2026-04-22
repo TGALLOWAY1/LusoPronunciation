@@ -17,6 +17,7 @@ import type {
   TokenConfidence,
   TokenResolutionType,
 } from '../../shared/types/customSentence';
+import { confidenceForResolution } from '../../shared/customSentenceConfidence';
 import { findMasterWordByNormalized } from '../lib/masterWordIndex';
 import { candidateLemmas } from './lemmaNormalizer';
 import { generatePronunciation } from './generatedPronunciationService';
@@ -41,7 +42,7 @@ export async function resolveTokenPronunciation(
   try {
     const exact = await findMasterWordByNormalized(token.normalizedForm);
     if (exact) {
-      return buildToken(token, 'exact_match', 'high', { wordEntryId: exact.id });
+      return buildToken(token, 'exact_match', { wordEntryId: exact.id });
     }
   } catch (err) {
     console.warn(`${LOG_TAG} exact lookup failed for "${token.surfaceForm}":`, err);
@@ -52,7 +53,7 @@ export async function resolveTokenPronunciation(
     for (const candidate of candidateLemmas(token.normalizedForm)) {
       const match = await findMasterWordByNormalized(candidate);
       if (match) {
-        return buildToken(token, 'lemma_match', 'high', { wordEntryId: match.id });
+        return buildToken(token, 'lemma_match', { wordEntryId: match.id });
       }
     }
   } catch (err) {
@@ -62,9 +63,7 @@ export async function resolveTokenPronunciation(
   // Stage 3+4: fallback generation (generated | unresolved)
   try {
     const generated = await generatePronunciation(token.surfaceForm);
-    const confidence: TokenConfidence =
-      generated.resolutionType === 'generated' ? 'medium' : 'low';
-    return buildToken(token, generated.resolutionType, confidence, {
+    return buildToken(token, generated.resolutionType, {
       generatedPronunciationId: generated.id,
     });
   } catch (err) {
@@ -72,7 +71,10 @@ export async function resolveTokenPronunciation(
       `${LOG_TAG} generation failed for "${token.surfaceForm}":`,
       err instanceof Error ? err.message : err
     );
-    return buildToken(token, 'unresolved', 'low', {});
+    // Best-effort: keep the token resolved as "unresolved" with no refs.
+    // Validation will reject this, so we also surface it here so the
+    // orchestrator can skip persistence and return an error to the user.
+    return buildToken(token, 'unresolved', {});
   }
 }
 
@@ -105,9 +107,9 @@ export async function resolvePronunciationCoverage(
 function buildToken(
   token: SentenceToken,
   resolutionType: TokenResolutionType,
-  confidence: TokenConfidence,
   refs: { wordEntryId?: string; generatedPronunciationId?: string }
 ): CustomSentenceTokenDto {
+  const confidence: TokenConfidence = confidenceForResolution(resolutionType);
   return {
     position: token.position,
     surfaceForm: token.surfaceForm,
