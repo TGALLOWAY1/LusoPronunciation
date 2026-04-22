@@ -10,6 +10,31 @@ interface PhonemePanelProps {
 }
 
 /**
+ * Ring color for per-phoneme score circles, matching the app's score bands.
+ */
+function getPhonemeRingColor(score: number): string {
+  if (score >= 80) return 'border-emerald-500 text-emerald-700 dark:border-emerald-400 dark:text-emerald-300';
+  if (score >= 60) return 'border-amber-500 text-amber-700 dark:border-amber-400 dark:text-amber-300';
+  return 'border-rose-500 text-rose-700 dark:border-rose-400 dark:text-rose-300';
+}
+
+/**
+ * Circular score indicator shown on the right of each phoneme card.
+ */
+function PhonemeScoreRing({ score }: { score: number }) {
+  const rounded = Math.round(score);
+  return (
+    <div
+      className={`shrink-0 w-14 h-14 rounded-full border-2 bg-white dark:bg-gray-800 flex flex-col items-center justify-center ${getPhonemeRingColor(rounded)}`}
+      aria-label={`Score ${rounded} out of 100`}
+    >
+      <span className="text-base font-bold leading-none">{rounded}</span>
+      <span className="text-[9px] text-gray-400 dark:text-gray-500 mt-0.5">/100</span>
+    </div>
+  );
+}
+
+/**
  * Panel displaying phoneme details and tips for a selected word.
  */
 export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: PhonemePanelProps) {
@@ -129,64 +154,60 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                 return (
                   <div
                     key={index}
-                    className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600"
+                    className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-4"
                   >
-                    <div className="flex items-start gap-2">
-                      <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <div className="shrink-0 w-12 h-12 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                      <span className="text-lg font-bold text-primary-700 dark:text-primary-300 font-mono">
                         {phoneme.symbol}
                       </span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
-                          <strong>How to say it:</strong> {desc}
-                        </p>
-                        {tip && (
-                          <p className="text-xs text-blue-600 dark:text-blue-400 mb-2">
-                            💡 {tip}
-                          </p>
-                        )}
-                        <div className="flex flex-wrap gap-3 text-xs text-gray-600 dark:text-gray-400">
-                          {ptEx && (
-                            <span>
-                              <strong>PT:</strong> <em>{ptEx}</em>
-                            </span>
-                          )}
-                          {enEx && (
-                            <span>
-                              <strong>EN:</strong> <em>{enEx}</em>
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                        {phoneme.score}/100
-                      </span>
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-800 dark:text-gray-200">
+                        <strong className="font-semibold">How to say it:</strong> {desc}
+                      </p>
+                      {tip && (
+                        <p className="text-xs text-primary-700 dark:text-primary-300 mt-1">
+                          💡 {tip}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-gray-500 dark:text-gray-400 mt-1.5">
+                        {ptEx && (
+                          <span>
+                            <strong className="text-gray-600 dark:text-gray-300">PT:</strong> <em>{ptEx}</em>
+                          </span>
+                        )}
+                        {enEx && (
+                          <span>
+                            <strong className="text-gray-600 dark:text-gray-300">EN:</strong> <em>{enEx}</em>
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <PhonemeScoreRing score={phoneme.score} />
                   </div>
                 );
               } else {
                 return (
                   <div
                     key={index}
-                    className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600"
+                    className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-4"
                   >
-                    <div className="flex items-start gap-2">
-                      <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <div className="shrink-0 w-12 h-12 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                      <span className="text-lg font-bold text-primary-700 dark:text-primary-300 font-mono">
                         {phoneme.symbol}
                       </span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-600 dark:text-gray-400 italic">
-                          No extra info available for this sound yet.
-                        </p>
-                        {phoneme.tip && (
-                          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                            {phoneme.tip}
-                          </p>
-                        )}
-                      </div>
-                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                        {phoneme.score}/100
-                      </span>
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 italic">
+                        No extra info available for this sound yet.
+                      </p>
+                      {phoneme.tip && (
+                        <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                          {phoneme.tip}
+                        </p>
+                      )}
+                    </div>
+                    <PhonemeScoreRing score={phoneme.score} />
                   </div>
                 );
               }
