@@ -81,19 +81,23 @@ export async function resolveTokenPronunciation(
 export async function resolvePronunciationCoverage(
   sentenceTokens: SentenceToken[]
 ): Promise<ResolvedCoverage> {
-  const tokens: CustomSentenceTokenDto[] = [];
+  // Resolution is per-token and independent (curated lookups are in-memory;
+  // generated-pronunciation upserts are atomic at the Mongo level). Running
+  // them in parallel cuts multi-word sentence latency roughly in half for
+  // any sentence that has more than 1-2 uncached fallbacks.
+  const tokens = await Promise.all(
+    sentenceTokens.map((t) => resolveTokenPronunciation(t))
+  );
+
   const counts: Record<TokenResolutionType, number> = {
     exact_match: 0,
     lemma_match: 0,
     generated: 0,
     unresolved: 0,
   };
-
-  for (const token of sentenceTokens) {
-    const resolved = await resolveTokenPronunciation(token);
-    tokens.push(resolved);
-    counts[resolved.resolutionType] += 1;
-  }
+  tokens.forEach((t) => {
+    counts[t.resolutionType] += 1;
+  });
 
   console.log(
     `${LOG_TAG} resolved ${sentenceTokens.length} tokens —` +

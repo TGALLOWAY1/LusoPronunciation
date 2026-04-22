@@ -58,7 +58,7 @@ export interface ILexiconReviewItemDocument extends Document {
 const ExampleSchema = new Schema<ILexiconReviewExample>(
   {
     sentenceId: { type: Schema.Types.ObjectId, required: true },
-    contextText: { type: String, required: true, maxlength: 1000 },
+    contextText: { type: String, required: true, maxlength: 2000 },
     observedAt: { type: Date, required: true },
   },
   { _id: false }

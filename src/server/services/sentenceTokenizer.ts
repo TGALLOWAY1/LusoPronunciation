@@ -22,14 +22,25 @@ const COMBINING_MARKS = /[̀-ͯ]/g;
 /**
  * Normalizes a single token for curated-word lookup.
  * Lower-cases, decomposes accents, strips diacritics and stray punctuation.
+ *
+ * Returns an empty string for pure-digit / pure-punctuation tokens so they
+ * get filtered out of the tokens array. Digits would otherwise never match
+ * the curated corpus and would drag the sentence status down to
+ * `needs_review` with no useful trust signal to the learner — Azure speech
+ * assessment still receives the original text, so the score accounts for
+ * them normally.
  */
 export function normalizeTokenForm(token: string): string {
-  return token
+  const result = token
     .toLowerCase()
     .normalize('NFD')
     .replace(COMBINING_MARKS, '')
     .replace(/[^\p{L}\p{N}\-']/gu, '')
     .trim();
+
+  if (!result) return '';
+  if (/^[\d\-']+$/.test(result)) return '';
+  return result;
 }
 
 /**

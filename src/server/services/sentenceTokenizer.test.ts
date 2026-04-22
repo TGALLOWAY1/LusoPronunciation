@@ -19,6 +19,24 @@ describe('normalizeTokenForm', () => {
   it('keeps hyphenated forms intact', () => {
     expect(normalizeTokenForm('guarda-chuva')).toBe('guarda-chuva');
   });
+
+  it('returns empty string for pure-digit tokens', () => {
+    expect(normalizeTokenForm('5')).toBe('');
+    expect(normalizeTokenForm('2026')).toBe('');
+    expect(normalizeTokenForm('1-2')).toBe('');
+  });
+
+  it('keeps alphanumeric tokens that include digits', () => {
+    expect(normalizeTokenForm('covid19')).toBe('covid19');
+    expect(normalizeTokenForm('R2D2')).toBe('r2d2');
+  });
+});
+
+describe('tokenizeSentence — digit filtering', () => {
+  it('drops pure-digit tokens from the tokens array', () => {
+    const tokens = tokenizeSentence('Tenho 5 livros.');
+    expect(tokens.map((t) => t.surfaceForm)).toEqual(['Tenho', 'livros']);
+  });
 });
 
 describe('tokenizeSentence', () => {

@@ -34,3 +34,7 @@ public/data/
 # Playwright
 playwright-report/
 test-results/
+
+# Custom Sentence Builder runtime artifacts
+# WAVs are synthesized on demand and never belong in source control.
+public/audio/custom/

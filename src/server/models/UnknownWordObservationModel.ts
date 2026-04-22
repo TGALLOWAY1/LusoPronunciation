@@ -33,7 +33,7 @@ const UnknownWordObservationSchema = new Schema<IUnknownWordObservationDocument>
       ref: 'CustomSentence',
       required: true,
     },
-    contextText: { type: String, required: true, maxlength: 1000 },
+    contextText: { type: String, required: true, maxlength: 2000 },
     resolutionType: {
       type: String,
       enum: ['generated', 'unresolved'],
