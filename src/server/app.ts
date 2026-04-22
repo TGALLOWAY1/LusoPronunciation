@@ -12,6 +12,9 @@ import oauthRouter from './routes/oauth';
 import practiceRouter from './routes/practice';
 import migrationRouter from './routes/migration';
 import flashcardsRouter from './routes/flashcards';
+import customSentencesRouter from './routes/customSentences';
+import lexiconReviewRouter from './routes/lexiconReview';
+import { getCustomAudioBaseDir } from './services/customAudioStorage';
 import {
   pronunciationCorsMiddleware,
   pronunciationRateLimitMiddleware,
@@ -118,6 +121,22 @@ app.use(
   migrationRouter
 );
 app.use('/api/flashcards', flashcardsRouter);
+app.use('/api/sentences', customSentencesRouter);
+app.use('/api/admin/lexicon', lexiconReviewRouter);
+
+// Serve TTS audio generated for user-created sentences. In dev, Vite also
+// serves the same files from `public/` — in production this Express mount is
+// the only server of record.
+app.use(
+  '/audio/custom',
+  express.static(getCustomAudioBaseDir(), {
+    maxAge: '1d',
+    fallthrough: true,
+    setHeaders(res) {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    },
+  })
+);
 app.use(
   '/api/pronunciation',
   pronunciationCorsMiddleware,

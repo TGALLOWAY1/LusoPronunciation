@@ -1,6 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
   BookOpen,
+  Library,
+  PenSquare,
   RotateCcw,
   BarChart3,
   Settings,
@@ -15,6 +17,8 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { path: '/', label: 'Practice', icon: BookOpen },
+  { path: '/builder', label: 'Sentence Builder', icon: PenSquare },
+  { path: '/sentences/custom', label: 'My Sentences', icon: Library },
   { path: '/review', label: 'Review', icon: RotateCcw },
   { path: '/progress', label: 'Progress', icon: BarChart3 },
   { path: '/settings', label: 'Settings', icon: Settings },
