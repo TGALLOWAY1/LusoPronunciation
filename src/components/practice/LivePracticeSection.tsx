@@ -9,6 +9,7 @@ import {
   adaptWordScoresToNormalized,
   buildWordAudioVariantsForSentence,
   enrichWordsWithCanonicalData,
+  FocusAreasCard,
   type NormalizedAudioVariant,
 } from '@/components/pronunciation/shared';
 import { useSettingsStore } from '@/state/settingsStore';
@@ -480,6 +481,11 @@ export default function LivePracticeSection({
 
       {/* Pronunciation Feedback Panel */}
       <PronunciationFeedbackPanel {...panelProps} />
+
+      {/* Focus Areas — problem phonemes across the sentence */}
+      {isScoredState && enrichedWords.length > 0 && (
+        <FocusAreasCard words={enrichedWords} />
+      )}
 
       {/* Coaching suggestion - shown below results as a helpful hint */}
       {isScoredState && coachingSuggestion && (
