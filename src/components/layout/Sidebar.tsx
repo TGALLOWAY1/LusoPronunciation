@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useMemo } from 'react';
 import {
   BookOpen,
   RotateCcw,
@@ -7,10 +6,6 @@ import {
   Settings,
 } from 'lucide-react';
 import type { ComponentType } from 'react';
-import { usePracticeLogStore } from '@/state/practiceLogStore';
-import { useProgressStore } from '@/state/progressStore';
-import { computeUserGlobalStats } from '@/lib/practiceAnalytics';
-import MomentumStrip from '@/components/common/MomentumStrip';
 
 interface NavItem {
   path: string;
@@ -37,37 +32,9 @@ const isDevMode = import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_ANALYTI
 export default function Sidebar() {
   const location = useLocation();
 
-  const { sessions, sentenceAttempts, wordAttempts } = usePracticeLogStore();
-  const { getDueCount } = useProgressStore();
-  const dueCount = getDueCount();
-
-  const streak = useMemo(() => {
-    if (sessions.length === 0) return 0;
-    const stats = computeUserGlobalStats(sessions, sentenceAttempts, wordAttempts, 0, 0);
-    return stats.currentDailyStreak;
-  }, [sessions, sentenceAttempts, wordAttempts]);
-
-  const todayAttempts = useMemo(() => {
-    const todayStr = new Date().toISOString().split('T')[0];
-    const sentenceCount = sentenceAttempts.filter(
-      (a) => new Date(a.createdAt).toISOString().split('T')[0] === todayStr,
-    ).length;
-    const wordCount = wordAttempts.filter(
-      (a) => new Date(a.createdAt).toISOString().split('T')[0] === todayStr,
-    ).length;
-    return sentenceCount + wordCount;
-  }, [sentenceAttempts, wordAttempts]);
-
   return (
     <aside className="bg-gray-900 dark:bg-gray-950 text-white w-64 min-h-screen p-4 sm:p-6 shadow-lg flex flex-col">
-      <div className="mb-6 -mx-2 bg-gray-800/50 p-3 rounded-lg border border-gray-700/50">
-        <MomentumStrip
-          streak={streak}
-          todayAttempts={todayAttempts}
-          dueCount={dueCount}
-        />
-      </div>
-      <nav className="space-y-2 flex-grow">
+      <nav className="space-y-2 flex-grow pt-2">
         {navItems.map((item) => {
           const isActive = item.path === '/'
             ? location.pathname === '/' || location.pathname.startsWith('/practice')

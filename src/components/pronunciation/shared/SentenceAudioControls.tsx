@@ -97,10 +97,10 @@ export default function SentenceAudioControls({
         {nativeAudio ? (
           <button
             onClick={() => handlePlay('native', nativeAudio.url)}
-            className={`flex-1 px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
               isNativePlaying
-                ? 'bg-blue-700 text-white shadow-md'
-                : 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
+                ? 'bg-primary-700 text-white'
+                : 'bg-primary-500 text-white hover:bg-primary-600'
             }`}
           >
             {isNativePlaying ? (
@@ -123,7 +123,7 @@ export default function SentenceAudioControls({
           <button
             disabled
             title="Native audio not available for this sentence."
-            className="flex-1 px-4 py-3 rounded-lg font-medium bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed opacity-60"
+            className="flex-1 px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed opacity-60"
           >
             <svg className="w-5 h-5 inline mr-2" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -131,28 +131,27 @@ export default function SentenceAudioControls({
             Native Sentence
           </button>
         )}
-        
+
         {userAudio && (
           <button
             onClick={() => handlePlay('user', userAudio.url)}
-            className={`flex-1 px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
               isUserPlaying
-                ? 'bg-gray-700 dark:bg-gray-600 text-white border-2 border-gray-700 dark:border-gray-600'
-                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700'
+                ? 'bg-gray-800 text-white border border-gray-800 dark:bg-gray-600 dark:border-gray-600'
+                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700'
             }`}
           >
             {isUserPlaying ? (
               <>
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
                 </svg>
                 <span>Pause</span>
               </>
             ) : (
               <>
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
-                  <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                 </svg>
                 <span>Your Recording</span>
               </>

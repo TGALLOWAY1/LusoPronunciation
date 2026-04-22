@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { setLastPracticeMode } from '@/lib/storage';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import {
@@ -88,8 +89,8 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
   4: 'badge-danger',
 };
 
-// Active tab in main panel: 'practice' or 'history'
-  const [activeTab, setActiveTab] = useState<'practice' | 'history'>('practice');
+  // Collapsible "Previous attempts" panel below the practice card
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   useEffect(() => {
     setLastPracticeMode('sentence');
@@ -237,7 +238,7 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
     setLivePracticeCurrentAttempt(null);
     setLatestRecordingUrlForCurrentSentence(null);
     setSelectedAttemptId(null); // Will be set by the auto-select effect above
-    setActiveTab('practice'); // Reset to practice tab when sentence changes
+    setIsHistoryOpen(false); // Collapse previous attempts when switching sentences
   }, [currentSentence?.id]);
 
   /**
@@ -400,141 +401,113 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
               onDifficultyChange={setSelectedDifficulties}
               currentIndex={currentIndex}
               totalCount={filteredSentences.length}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
             />
           </div>
         </div>
 
         {/* Main content area - Single column layout */}
         {currentSentence ? (
-          <div className="max-w-6xl mx-auto space-y-6 mb-6">
+          <div className="max-w-5xl mx-auto space-y-6 mb-6">
             {/* Main sentence practice area */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-6">
               <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <span className={`badge ${difficultyBadgeClasses[currentSentence.difficulty as Difficulty]}`}>
-                    Difficulty {currentSentence.difficulty}
-                  </span>
-                </div>
-                {/* Tabs */}
-                <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
-                  <button
-                    onClick={() => setActiveTab('practice')}
-                    className={`px-4 py-2 text-sm font-medium transition-colors ${
-                      activeTab === 'practice'
-                        ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}
-                  >
-                    Practice
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('history')}
-                    className={`px-4 py-2 text-sm font-medium transition-colors ${
-                      activeTab === 'history'
-                        ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                    }`}
-                  >
-                    History
-                  </button>
-                </div>
+                <span className={`badge ${difficultyBadgeClasses[currentSentence.difficulty as Difficulty]}`}>
+                  Difficulty {currentSentence.difficulty}
+                </span>
               </div>
-              
-              {/* Tab Content */}
-              {activeTab === 'practice' ? (
-                <LivePracticeSection
-                  sentence={currentSentence}
-                  sessionId={sessionIdRef.current}
-                  onCurrentAttemptChange={setLivePracticeCurrentAttempt}
-                  onRecordingUrlChange={handleRecordingUrlChange}
-                />
-              ) : (
-                <div className="mt-4 space-y-4">
-                  {/* Word-by-word breakdown */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                        Word-by-word breakdown
+
+              <LivePracticeSection
+                sentence={currentSentence}
+                sessionId={sessionIdRef.current}
+                onCurrentAttemptChange={setLivePracticeCurrentAttempt}
+                onRecordingUrlChange={handleRecordingUrlChange}
+              />
+            </div>
+
+            {/* Previous attempts — collapsed by default */}
+            {sentenceAttempts.length > 0 && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setIsHistoryOpen((prev) => !prev)}
+                  aria-expanded={isHistoryOpen}
+                  className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                >
+                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    Previous attempts ({sentenceAttempts.length})
+                  </span>
+                  {isHistoryOpen ? (
+                    <ChevronUp size={18} className="text-gray-500 dark:text-gray-400" />
+                  ) : (
+                    <ChevronDown size={18} className="text-gray-500 dark:text-gray-400" />
+                  )}
+                </button>
+
+                {isHistoryOpen && (
+                  <div className="px-6 pb-6 space-y-4 border-t border-gray-200/70 dark:border-gray-700 pt-4">
+                    {/* Word-by-word breakdown */}
+                    <div className="rounded-lg border border-gray-200/70 dark:border-gray-700 p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                          Word-by-word breakdown
+                        </h3>
+                        {selectedAttempt?.createdAt && (
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            {formatAttemptTimestamp(selectedAttempt.createdAt)}
+                          </span>
+                        )}
+                      </div>
+                      <SentenceFeedback
+                        sentence={currentSentence}
+                        attempts={selectedAttemptArray}
+                        currentAttempt={selectedAttempt}
+                        hideHeaderContent={false}
+                        className="mt-0"
+                      />
+                    </div>
+
+                    {/* Selected Attempt Recording */}
+                    <div className="rounded-lg border border-gray-200/70 dark:border-gray-700 p-4">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                        Selected Attempt Recording
                       </h3>
-                      {selectedAttempt?.createdAt && (
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          {formatAttemptTimestamp(selectedAttempt.createdAt)}
-                        </span>
+                      {selectedRecordingUrl ? (
+                        <RecordingPlayer
+                          url={selectedRecordingUrl}
+                          timestamp={
+                            selectedAttemptId
+                              ? sentenceAttempts.find(a => a.attemptId === selectedAttemptId)?.createdAt
+                              : undefined
+                          }
+                          formatTimestamp={formatAttemptTimestamp}
+                        />
+                      ) : (
+                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                          <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
+                            {selectedAttemptId
+                              ? 'No recording available for this attempt.'
+                              : 'Record this sentence to play back your pronunciation here.'}
+                          </p>
+                        </div>
                       )}
                     </div>
-                    <SentenceFeedback
-                      sentence={currentSentence}
-                      attempts={selectedAttemptArray}
-                      currentAttempt={selectedAttempt}
-                      hideHeaderContent={false}
-                      className="mt-0"
+
+                    <AttemptHistory
+                      attempts={sentenceAttempts}
+                      selectedAttemptId={selectedAttemptId}
+                      onSelectAttempt={setSelectedAttemptId}
                     />
-                  </div>
 
-                  {/* Selected Attempt Recording */}
-                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                      Selected Attempt Recording
-                    </h3>
-                    {selectedRecordingUrl ? (
-                      <RecordingPlayer
-                        url={selectedRecordingUrl}
-                        timestamp={
-                          selectedAttemptId
-                            ? sentenceAttempts.find(a => a.attemptId === selectedAttemptId)?.createdAt
-                            : undefined
-                        }
-                        formatTimestamp={formatAttemptTimestamp}
-                      />
-                    ) : (
-                      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-                        <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-                          {selectedAttemptId
-                            ? 'No recording available for this attempt.'
-                            : 'Record this sentence to play back your pronunciation here.'}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Attempt History */}
-                  <AttemptHistory
-                    attempts={sentenceAttempts}
-                    selectedAttemptId={selectedAttemptId}
-                    onSelectAttempt={setSelectedAttemptId}
-                  />
-
-                  {/* Score History - Trend chart */}
-                  <div className="mt-6">
                     <ScoreHistory attempts={sentenceAttempts} />
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </div>
         ) : null}
 
-        {/* Navigation buttons */}
-        {currentSentence && (
-          <div className="flex flex-col sm:flex-row gap-3 mt-6">
-            <button
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
-              className="btn btn-secondary btn-md flex-1 flex items-center justify-center gap-2"
-            >
-              <span>←</span>
-              <span>Previous sentence</span>
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={currentIndex >= filteredSentences.length - 1}
-              className="btn btn-primary btn-md flex-1 flex items-center justify-center gap-2"
-            >
-              <span>Next sentence</span>
-              <span>→</span>
-            </button>
-          </div>
-        )}
       </div>
     </PageTransition>
   );

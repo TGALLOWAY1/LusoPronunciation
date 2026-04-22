@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-slate-50 text-gray-900 antialiased;
   }
 
   /* Dark mode support */
@@ -31,16 +31,27 @@
 
   /* Card styles */
   .card {
-    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 transition-all duration-200;
+    @apply bg-white rounded-xl border border-gray-200/70 p-6 transition-all duration-200;
     @apply dark:bg-gray-800 dark:border-gray-700;
   }
 
   .card-hover {
-    @apply hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600;
+    @apply hover:shadow-sm hover:border-gray-300 dark:hover:border-gray-600;
   }
 
   .card-compact {
     @apply p-4;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-gray-600 hover:bg-gray-100 focus:ring-gray-400;
+    @apply dark:text-gray-300 dark:hover:bg-gray-800;
+  }
+
+  .chip-soft {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium;
+    @apply bg-primary-50 text-primary-700 border border-primary-100;
+    @apply dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-800/50;
   }
 
   /* Button styles */

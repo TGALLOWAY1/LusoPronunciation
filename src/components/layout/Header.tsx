@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Flame } from 'lucide-react';
 import VoiceSettings from '@/components/common/VoiceSettings';
 import { getLastPracticeMode } from '@/lib/storage';
+import { usePracticeLogStore } from '@/state/practiceLogStore';
+import { computeUserGlobalStats } from '@/lib/practiceAnalytics';
 
 interface HeaderProps {
   currentSection?: string;
@@ -11,13 +14,20 @@ export default function Header({ currentSection }: HeaderProps) {
   const [showSettings, setShowSettings] = useState(false);
   const location = useLocation();
 
+  const { sessions, sentenceAttempts, wordAttempts } = usePracticeLogStore();
+  const streak = useMemo(() => {
+    if (sessions.length === 0) return 0;
+    const stats = computeUserGlobalStats(sessions, sentenceAttempts, wordAttempts, 0, 0);
+    return stats.currentDailyStreak;
+  }, [sessions, sentenceAttempts, wordAttempts]);
+
   const isPracticePage = location.pathname === '/' || location.pathname.startsWith('/practice');
   const lastMode = getLastPracticeMode();
   const resumePath = lastMode === 'word' ? '/?tab=words' : '/';
 
   return (
     <>
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-4">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200/70 dark:border-gray-700 px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h1 className="text-xl sm:text-2xl font-bold text-primary-600 dark:text-primary-400">
@@ -30,6 +40,16 @@ export default function Header({ currentSection }: HeaderProps) {
                 {currentSection}
               </div>
             )}
+            <div
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-900/40"
+              title={streak > 0 ? `${streak} day practice streak` : 'Practice today to start a streak'}
+              aria-label={`${streak} day streak`}
+            >
+              <Flame size={14} className={streak > 0 ? 'text-orange-500' : 'text-gray-400 dark:text-gray-500'} />
+              <span className="text-xs font-semibold text-gray-900 dark:text-gray-100">
+                {streak} day{streak !== 1 ? 's' : ''} streak
+              </span>
+            </div>
             {!isPracticePage && (
               <Link
                 to={resumePath}

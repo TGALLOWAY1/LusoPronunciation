@@ -10,6 +10,7 @@ export { default as PhraseTrendSparkline } from './PhraseTrendSparkline';
 export { default as InteractiveWordStrip } from './InteractiveWordStrip';
 export { default as PhonemePanel } from './PhonemePanel';
 export { default as SentenceAudioControls } from './SentenceAudioControls';
+export { default as FocusAreasCard } from './FocusAreasCard';
 
 export type {
   NormalizedWordFeedback,

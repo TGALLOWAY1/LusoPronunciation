@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Category, Difficulty } from '@/lib/types';
 import { getDifficultyOptions } from '@/utils/difficultyLabels';
 import MultiSelect, { type MultiSelectOption } from '@/components/common/MultiSelect';
@@ -11,6 +12,8 @@ interface FilterControlsProps {
   onDifficultyChange: (difficulties: Difficulty[]) => void;
   currentIndex?: number;
   totalCount?: number;
+  onPrevious?: () => void;
+  onNext?: () => void;
   directionMode?: 'pt-to-en' | 'en-to-pt' | 'mixed';
   onDirectionModeChange?: (mode: 'pt-to-en' | 'en-to-pt' | 'mixed') => void;
 }
@@ -33,6 +36,8 @@ function FilterControls({
   onDifficultyChange,
   currentIndex,
   totalCount,
+  onPrevious,
+  onNext,
   directionMode,
   onDirectionModeChange,
 }: FilterControlsProps) {
@@ -114,9 +119,33 @@ function FilterControls({
       />
 
       {currentIndex !== undefined && totalCount !== undefined && (
-        <span className="text-sm font-medium text-gray-500 dark:text-gray-400 ml-auto block">
-          Sentence {currentIndex + 1} of {totalCount}
-        </span>
+        <div className="flex items-center gap-2 ml-auto">
+          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Sentence {currentIndex + 1} of {totalCount}
+          </span>
+          {(onPrevious || onNext) && (
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={onPrevious}
+                disabled={!onPrevious || currentIndex === 0}
+                aria-label="Previous sentence"
+                className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={onNext}
+                disabled={!onNext || currentIndex >= totalCount - 1}
+                aria-label="Next sentence"
+                className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
