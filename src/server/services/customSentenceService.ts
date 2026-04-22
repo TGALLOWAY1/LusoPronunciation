@@ -328,6 +328,72 @@ export function deriveStatus(
   return 'ready';
 }
 
+export interface ListCustomSentencesParams {
+  userId: string;
+  limit?: number;
+  offset?: number;
+}
+
+export async function listCustomSentencesForUser(
+  params: ListCustomSentencesParams
+): Promise<{ sentences: CustomSentenceDto[]; total: number; limit: number; offset: number }> {
+  const userObjectId = new mongoose.Types.ObjectId(params.userId);
+  const limit = Math.min(Math.max(params.limit ?? 50, 1), 200);
+  const offset = Math.max(params.offset ?? 0, 0);
+
+  const [docs, total] = await Promise.all([
+    CustomSentenceModel.find({ userId: userObjectId })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(offset)
+      .exec(),
+    CustomSentenceModel.countDocuments({ userId: userObjectId }),
+  ]);
+
+  return {
+    sentences: docs.map(toCustomSentenceDto),
+    total,
+    limit,
+    offset,
+  };
+}
+
+export async function getCustomSentenceForUser(
+  params: { userId: string; sentenceId: string }
+): Promise<CustomSentenceDto | null> {
+  if (!mongoose.Types.ObjectId.isValid(params.sentenceId)) {
+    return null;
+  }
+  const doc = await CustomSentenceModel.findOne({
+    _id: new mongoose.Types.ObjectId(params.sentenceId),
+    userId: new mongoose.Types.ObjectId(params.userId),
+  });
+  return doc ? toCustomSentenceDto(doc) : null;
+}
+
+export async function deleteCustomSentenceForUser(
+  params: { userId: string; sentenceId: string }
+): Promise<boolean> {
+  if (!mongoose.Types.ObjectId.isValid(params.sentenceId)) {
+    return false;
+  }
+  const doc = await CustomSentenceModel.findOneAndDelete({
+    _id: new mongoose.Types.ObjectId(params.sentenceId),
+    userId: new mongoose.Types.ObjectId(params.userId),
+  });
+  if (!doc) return false;
+
+  // Best-effort WAV cleanup; never throws.
+  await deleteCustomAudio(params.userId, params.sentenceId);
+  logStage({
+    pipeline: PIPELINE,
+    stage: 'delete',
+    userId: params.userId,
+    sentenceId: params.sentenceId,
+  });
+  return true;
+}
+
 export function toCustomSentenceDto(
   doc: ICustomSentenceDocument
 ): CustomSentenceDto {

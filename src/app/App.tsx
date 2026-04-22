@@ -10,6 +10,8 @@ import PracticePage from '../pages/PracticePage';
 import ProgressPage from '../pages/ProgressPage';
 import Review from '../pages/Review';
 import SentenceBuilderPage from '../pages/SentenceBuilderPage';
+import CustomSentencePracticePage from '../pages/CustomSentencePracticePage';
+import AdminLexiconPage from '../pages/AdminLexiconPage';
 import SettingsPage from '../pages/SettingsPage';
 import AuthPage from '../pages/AuthPage';
 import OAuthCallbackPage from '../pages/OAuthCallbackPage';
@@ -34,6 +36,8 @@ function AppRoutes() {
           <Route path="/review" element={<RequireAuth><Review /></RequireAuth>} />
           <Route path="/sessions" element={<Navigate to="/review" replace />} />
           <Route path="/builder" element={<RequireAuth><SentenceBuilderPage /></RequireAuth>} />
+          <Route path="/practice/custom/:id" element={<RequireAuth><CustomSentencePracticePage /></RequireAuth>} />
+          <Route path="/admin/lexicon" element={<RequireAuth><AdminLexiconPage /></RequireAuth>} />
           <Route path="/progress" element={<RequireAuth><ProgressPage /></RequireAuth>} />
           <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
           {import.meta.env.DEV && (

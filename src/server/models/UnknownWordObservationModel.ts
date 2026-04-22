@@ -50,6 +50,16 @@ const UnknownWordObservationSchema = new Schema<IUnknownWordObservationDocument>
 UnknownWordObservationSchema.index({ createdAt: -1 });
 UnknownWordObservationSchema.index({ surfaceForm: 1, createdAt: -1 });
 
+// TTL: purge observations older than 90 days. The lexicon aggregator rolls
+// their stats into LexiconReviewItem (which has no TTL) before they
+// disappear, so we keep permanent access to aggregates without letting
+// raw rows grow unboundedly.
+const OBSERVATION_TTL_SECONDS = 90 * 24 * 60 * 60;
+UnknownWordObservationSchema.index(
+  { createdAt: 1 },
+  { expireAfterSeconds: OBSERVATION_TTL_SECONDS }
+);
+
 export const UnknownWordObservationModel: Model<IUnknownWordObservationDocument> =
   mongoose.models.UnknownWordObservation ||
   mongoose.model<IUnknownWordObservationDocument>(

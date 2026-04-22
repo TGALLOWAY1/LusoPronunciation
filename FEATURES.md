@@ -35,12 +35,17 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Per-Word Coverage Indicators** — Preview shows each translated word color-coded by pronunciation data source: green for curated dictionary entries (exact or lemma match), yellow for heuristically-generated pronunciation, red for words with no resolved pronunciation.
 - **Sentence Trust Status** — Each custom sentence is tagged `ready`, `partial_support`, or `needs_review` so learners know how much to trust the scoring before practicing.
 - **Native Audio Preview** — In-page play/pause control for the generated pt-BR audio before practicing.
+- **Dedicated Custom Practice Page** — `/practice/custom/:id` reuses the same Azure Speech pronunciation assessment pipeline as the standard practice flow; attempts land in the user's history as regular sentence attempts.
+- **Delete From Practice** — One-click delete on the custom practice page removes the sentence document and its synthesized WAV; attempt history is preserved so learners keep the scores they earned.
+- **Per-User Rate Limit** — `POST /api/sentences/custom` is capped at 20 new sentences per hour per user to bound Azure spend on abusive clients; configurable via `CUSTOM_SENTENCE_CREATE_MAX` / `CUSTOM_SENTENCE_CREATE_WINDOW_MS`.
 
 ## Lexicon Expansion Pipeline
 
 - **Unknown Word Tracking** — Every custom sentence observation logs the normalized surface form, user, sentence context, and resolution type (generated/unresolved) of any word the resolver could not match against the curated corpus.
+- **Automatic 90-Day Purge** — Raw observation rows expire via a MongoDB TTL index 90 days after creation; aggregated stats on `LexiconReviewItem` persist indefinitely.
 - **Daily Aggregation** — `npm run lexicon:aggregate` rolls raw observations into a per-surface-form review queue with frequency, unique-user count, and up to three example sentences. Promoted and rejected items are never touched by aggregation.
-- **Admin Review Queue** — `/api/admin/lexicon/review` returns pending words sorted by frequency, gated by a `LEXICON_ADMIN_USER_IDS` allowlist (fail-safe denial in production when unset).
+- **Admin Review UI** — `/admin/lexicon` is an admin-only page that lists pending/promoted/rejected words, shows example sentences, and exposes promote and reject forms inline. Access is gated by `LEXICON_ADMIN_USER_IDS`.
+- **Admin Review API** — `/api/admin/lexicon/*` endpoints back the UI and are also available for CLI / scripted workflows.
 - **Manual Promotion** — Promotion requires an admin-supplied payload (text, phonemes, pronunciation notes, optional POS/English gloss). Promoted entries are merged into the master word index at runtime, so the pronunciation resolver starts picking them up immediately — no redeploy.
 
 ## Spaced Repetition (SRS)

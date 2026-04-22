@@ -43,9 +43,7 @@ export default function SentenceBuilderPage() {
 
   const handlePractice = useCallback(() => {
     if (!sentence) return;
-    navigate('/', {
-      state: { customSentenceId: sentence.id },
-    });
+    navigate(`/practice/custom/${sentence.id}`);
   }, [navigate, sentence]);
 
   return (
