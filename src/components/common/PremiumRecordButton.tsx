@@ -60,7 +60,7 @@ export default function PremiumRecordButton({
               ${pulseRingSizes[size]}
               absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
               rounded-full
-              bg-red-500/30
+              bg-primary-500/30
               animate-pulse-ring
             `}
           />
@@ -69,7 +69,7 @@ export default function PremiumRecordButton({
               ${pulseRingSizes[size]}
               absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
               rounded-full
-              bg-red-500/20
+              bg-primary-500/20
               animate-pulse-ring
             `}
             style={{
@@ -81,7 +81,7 @@ export default function PremiumRecordButton({
               ${pulseRingSizes[size]}
               absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
               rounded-full
-              bg-red-500/10
+              bg-primary-500/10
               animate-pulse-ring
             `}
             style={{
@@ -105,7 +105,7 @@ export default function PremiumRecordButton({
           relative z-10
           transition-all duration-200 ease-out
           disabled:opacity-50 disabled:cursor-not-allowed
-          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500
+          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500
           ${
             isPressed
               ? 'scale-95 shadow-md'
@@ -113,14 +113,14 @@ export default function PremiumRecordButton({
           }
           ${
             isRecording
-              ? 'bg-gradient-to-br from-red-600 to-red-700 shadow-2xl shadow-red-500/50'
-              : 'bg-gradient-to-br from-red-500 to-red-600 shadow-lg shadow-red-500/30'
+              ? 'bg-gradient-to-br from-primary-600 to-primary-700 shadow-2xl shadow-primary-500/50'
+              : 'bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30'
           }
         `}
         style={{
           boxShadow: isRecording
-            ? '0 10px 25px -5px rgba(239, 68, 68, 0.5), 0 4px 6px -2px rgba(239, 68, 68, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
-            : '0 4px 14px 0 rgba(239, 68, 68, 0.4), 0 2px 4px 0 rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+            ? '0 10px 25px -5px rgba(45, 134, 89, 0.5), 0 4px 6px -2px rgba(45, 134, 89, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+            : '0 4px 14px 0 rgba(45, 134, 89, 0.4), 0 2px 4px 0 rgba(45, 134, 89, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
         }}
         aria-label={isRecording ? 'Stop recording' : 'Start recording'}
       >
