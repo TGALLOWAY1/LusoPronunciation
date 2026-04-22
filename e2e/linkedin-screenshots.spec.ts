@@ -19,11 +19,14 @@ const screenMatrix: Screen[] = [
     fileName: 'dashboard-sentences.png',
     readyText: 'Sentences',
     role: 'button',
-    // Open the History tab so the phoneme-tip panel renders populated from the
-    // seeded attempt instead of the "Click a word..." empty state. Captured
-    // full-page so branding + sentence + phoneme tips all appear together.
+    // Expand the "Previous attempts" accordion so the phoneme-tip panel
+    // renders populated from the seeded attempt instead of the "Click a
+    // word..." empty state. Captured full-page so branding + sentence +
+    // phoneme tips all appear together.
     postNav: async (page) => {
-      await page.getByRole('button', { name: 'History', exact: true }).click();
+      await page
+        .getByRole('button', { name: /^Previous attempts/, exact: false })
+        .click();
       // Force an attempt to be selected in case the auto-select effect hasn't
       // yet populated `selectedAttemptId` — click the most recent entry.
       await page
