@@ -3,7 +3,18 @@ import type { AttemptScore } from '@/types/pronunciation';
 
 interface ScoringPanelProps {
   currentAttempt: AttemptScore | null;
-  variant?: 'card' | 'banner';
+  variant?: 'card' | 'banner' | 'strip';
+}
+
+/**
+ * Maps a numeric score to a short qualitative label shown in the strip variant.
+ */
+function getScoreLabel(score: number): string {
+  if (score >= 90) return 'Excellent';
+  if (score >= 80) return 'Very good';
+  if (score >= 70) return 'Good';
+  if (score >= 60) return 'Keep going';
+  return 'Practice';
 }
 
 export interface ScoreTheme {
@@ -329,6 +340,59 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
   }, [currentAttempt.attemptId]);
 
   const barWidth = (value: number) => animated ? `${value}%` : '0%';
+
+  // Render 4-up metric strip (premium product-polish layout)
+  if (variant === 'strip') {
+    type Metric = { label: string; value: number | null; theme: ScoreTheme | null; delayClass: string };
+    const metrics: Metric[] = [
+      { label: 'Overall', value: overall, theme: overallTheme, delayClass: '' },
+      { label: 'Accuracy', value: accuracy, theme: accuracyTheme, delayClass: 'delay-100' },
+      { label: 'Fluency', value: fluency, theme: fluencyTheme, delayClass: 'delay-200' },
+      { label: 'Completeness', value: completeness, theme: completenessTheme, delayClass: 'delay-300' },
+    ];
+
+    return (
+      <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
+          <AllMetricsInfoIcon prosodyAvailable={prosody !== null} />
+        </div>
+        {metrics.map((metric) => {
+          const value = metric.value;
+          const available = value !== null;
+          return (
+            <div
+              key={metric.label}
+              className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-4 flex flex-col justify-between ${
+                available ? '' : 'opacity-60'
+              }`}
+            >
+              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                {metric.label}
+              </div>
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-3xl font-bold text-gray-900 dark:text-gray-100 leading-none">
+                  {available ? value : '—'}
+                </span>
+                {available && (
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {getScoreLabel(value!)}
+                  </span>
+                )}
+              </div>
+              <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                {available && metric.theme && (
+                  <div
+                    className={`h-full transition-all duration-700 ease-out ${metric.delayClass} ${metric.theme.bg}`}
+                    style={{ width: barWidth(value!) }}
+                  />
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   // Render horizontal banner variant
   if (variant === 'banner') {
