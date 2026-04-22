@@ -9,6 +9,7 @@ import LocalStorageMigrator from '../features/migration/LocalStorageMigrator';
 import PracticePage from '../pages/PracticePage';
 import ProgressPage from '../pages/ProgressPage';
 import Review from '../pages/Review';
+import SentenceBuilderPage from '../pages/SentenceBuilderPage';
 import SettingsPage from '../pages/SettingsPage';
 import AuthPage from '../pages/AuthPage';
 import OAuthCallbackPage from '../pages/OAuthCallbackPage';
@@ -32,6 +33,7 @@ function AppRoutes() {
           <Route path="/practice/word" element={<Navigate to="/?tab=words" replace />} />
           <Route path="/review" element={<RequireAuth><Review /></RequireAuth>} />
           <Route path="/sessions" element={<Navigate to="/review" replace />} />
+          <Route path="/builder" element={<RequireAuth><SentenceBuilderPage /></RequireAuth>} />
           <Route path="/progress" element={<RequireAuth><ProgressPage /></RequireAuth>} />
           <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
           {import.meta.env.DEV && (

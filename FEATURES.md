@@ -29,6 +29,13 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Multiple View Modes** — List/glossary view (card grid for browsing), drill view (single-card focus for active practice), and weak words focus (filters to bottom 50 words by score).
 - **Word Phoneme Panel** — Displays phoneme breakdown with IPA symbols and pronunciation tips from the phoneme metadata dataset.
 
+## Custom Sentence Builder
+
+- **English-to-Portuguese Ingestion** — Type an English sentence; the server translates it to Brazilian Portuguese via Azure AI Translator, synthesizes native TTS audio, and persists the result to the signed-in user's custom sentence list.
+- **Per-Word Coverage Indicators** — Preview shows each translated word color-coded by pronunciation data source: green for curated dictionary entries (exact or lemma match), yellow for heuristically-generated pronunciation, red for words with no resolved pronunciation.
+- **Sentence Trust Status** — Each custom sentence is tagged `ready`, `partial_support`, or `needs_review` so learners know how much to trust the scoring before practicing.
+- **Native Audio Preview** — In-page play/pause control for the generated pt-BR audio before practicing.
+
 ## Spaced Repetition (SRS)
 
 - **SM-2 Flashcard Scheduling** — Server-side flashcard system using the SM-2 algorithm with interval, ease factor, reps, and lapse tracking.
