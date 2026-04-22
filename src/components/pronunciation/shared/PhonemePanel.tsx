@@ -1,15 +1,18 @@
 import type { NormalizedWordFeedback } from './types';
 import { getPhonemeById } from '@/lib/phonemeMetadata';
+import { findHomograph } from '@/lib/homographs';
+import type { TrustLevel } from '@/lib/assessmentTrust';
 
 interface PhonemePanelProps {
   word?: NormalizedWordFeedback | null;
   onClose?: () => void;
+  trustLevel?: TrustLevel;
 }
 
 /**
  * Panel displaying phoneme details and tips for a selected word.
  */
-export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
+export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: PhonemePanelProps) {
   // Empty state: no word selected
   if (!word) {
     return (
@@ -29,6 +32,7 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
   const problemPhonemes = word.phonemes?.filter(p => p.isProblem) || [];
   const wordScore = word.score ?? word.accuracyScore;
   const wordLevel = word.level || (wordScore >= 90 ? 'excellent' : wordScore >= 80 ? 'good' : wordScore >= 70 ? 'ok' : 'practice');
+  const homograph = findHomograph(word.text);
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
@@ -56,7 +60,49 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
         )}
       </div>
 
-      {(!word.phonemes || word.phonemes.length === 0) && (
+      {trustLevel === 'untrusted' && (
+        <div
+          data-testid="phoneme-panel-untrusted"
+          className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
+        >
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Phoneme tips are hidden for this attempt because the audio couldn't be scored reliably.
+            Re-record the full sentence in a quieter room to see detailed coaching.
+          </p>
+        </div>
+      )}
+
+      {trustLevel === 'degraded' && (
+        <div
+          data-testid="phoneme-panel-degraded"
+          className="rounded-lg p-3 border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20"
+        >
+          <p className="text-xs text-amber-800 dark:text-amber-300">
+            Parts of this recording were hard to score — tips below may be less precise than usual.
+          </p>
+        </div>
+      )}
+
+      {homograph && trustLevel !== 'untrusted' && (
+        <div
+          data-testid="phoneme-panel-homograph"
+          className="rounded-lg p-3 border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/20"
+        >
+          <p className="text-xs text-indigo-900 dark:text-indigo-200 mb-1">
+            <strong>{homograph.form}</strong> has more than one common pronunciation in Brazilian
+            Portuguese. Azure scored the reading that best matched your audio.
+          </p>
+          <ul className="text-xs text-indigo-900 dark:text-indigo-200 space-y-0.5">
+            {homograph.readings.map((r, i) => (
+              <li key={i}>
+                <span className="font-mono">/{r.ipa}/</span> &mdash; {r.meaning}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {trustLevel !== 'untrusted' && (!word.phonemes || word.phonemes.length === 0) && (
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
           <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
             No phoneme data available for this word yet.
@@ -65,7 +111,7 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
       )}
 
       {/* How to pronounce these sounds */}
-      {word.phonemes && word.phonemes.length > 0 && (
+      {trustLevel !== 'untrusted' && word.phonemes && word.phonemes.length > 0 && (
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
             🔊 How to pronounce these sounds:
@@ -150,7 +196,7 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
       )}
 
       {/* Tips section for problem phonemes */}
-      {problemPhonemes.length > 0 && (
+      {trustLevel !== 'untrusted' && problemPhonemes.length > 0 && (
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
             💡 Focus Areas:
@@ -178,13 +224,16 @@ export default function PhonemePanel({ word, onClose }: PhonemePanelProps) {
         </div>
       )}
 
-      {problemPhonemes.length === 0 && word.phonemes && word.phonemes.length > 0 && (
-        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-sm text-emerald-600 dark:text-emerald-400">
-            ✅ All phonemes are performing well!
-          </p>
-        </div>
-      )}
+      {trustLevel !== 'untrusted' &&
+        problemPhonemes.length === 0 &&
+        word.phonemes &&
+        word.phonemes.length > 0 && (
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm text-emerald-600 dark:text-emerald-400">
+              ✅ All phonemes are performing well!
+            </p>
+          </div>
+        )}
     </div>
   );
 }

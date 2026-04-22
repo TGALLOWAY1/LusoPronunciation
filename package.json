@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "vite",
     "dev:server": "tsx src/server/app.ts",
-    "prebuild": "mkdir -p public/data && cp data/masterSentences.json data/masterWords.json data/audio_index.json public/data/",
+    "prebuild": "mkdir -p public/data && cp data/masterSentences.json data/masterWords.json data/audio_index.json public/data/ && tsx scripts/verifyAudioConsistency.ts",
+    "verify:audio": "tsx scripts/verifyAudioConsistency.ts",
     "build": "npm run prebuild && tsc && vite build",
     "start": "tsx src/server/app.ts",
     "preview": "vite preview",

@@ -88,12 +88,43 @@ For each case validate:
 
 ## 7) Remaining Risks
 
-1. **Homograph pronunciation nuance** (same spelling, contextual pronunciation) still depends on Azure phoneme output quality.
-2. **Sentence-level native audio vs per-word canonical audio** can still sound different if generated from different voice/style assets.
-3. **No explicit trust gate UI yet** (e.g., hide phoneme panel when mapping confidence low) — currently improved mapping but no confidence badge/fallback state.
+Follow-up work (branch `claude/review-ui-bugs-plan-nxddp`) addressed all three
+items below:
+
+1. **Homograph pronunciation nuance** — *Mitigated*. A curated dictionary
+   (`data/static/homographs.ptbr.json`, ~20 common BR-PT homographs: `sede`,
+   `gosto`, `para`, `almoço`, `jogo`, `colher`, `acordo`, `começo`, `molho`,
+   `olho`, `choro`, `forma`, `corte`, `pelo`, `seco`, `toco`, …) is consulted
+   in `PhonemePanel` via `src/lib/homographs.ts`; when the selected word is a
+   homograph the panel shows an inline note listing the alternate IPA readings
+   and makes clear that Azure scored whichever reading matched the audio.
+   Underlying Azure phoneme quality for homographs is unchanged — this is a
+   UX/expectation fix, not a scoring fix.
+
+2. **Sentence vs per-word audio voice mismatch** — *Mitigated*. A prebuild
+   gate (`scripts/verifyAudioConsistency.ts`, wired into `npm run prebuild`)
+   fails the build if any entry in `data/audio_index.json` has a URL whose
+   voice tag disagrees with its voice key (`ptbr.male` must resolve to a
+   `male`-tagged path, etc.). A dev-only runtime warning in
+   `PronunciationFeedbackPanel` also logs when sentence and word native URLs
+   resolve to different voice families, catching drift during local work.
+
+3. **No explicit trust gate UI** — *Fixed*. `AttemptScore` now carries
+   `recognitionStatus`. `src/lib/assessmentTrust.ts` classifies each attempt
+   as `trusted` / `degraded` / `untrusted` based on `recognitionStatus`,
+   `completenessScore`, and the share of `omitted`/`extra` word errors.
+   `PronunciationFeedbackPanel` shows a single status badge above the phoneme
+   panel when a result is not trusted; `PhonemePanel` hides phoneme cards and
+   Focus Areas entirely when `untrusted`, and shows a softer caveat when
+   `degraded`. Thresholds: `completeness < 40` or > 50% omitted → untrusted;
+   `completeness < 70` or > 25% omitted → degraded.
 
 ## 8) Release Recommendation
 
-**Safe to share with caveats.**
+**Safe to share.**
 
-Major trust-breaking mapping bugs (stale result leakage + duplicate-word phoneme ambiguity + randomized guidance) were fixed and regression-tested. Remaining caveats are mostly model/asset consistency and confidence signaling, not direct index miswiring.
+Major trust-breaking mapping bugs (stale result leakage + duplicate-word
+phoneme ambiguity + randomized guidance) were fixed and regression-tested in
+PR #110, and the three documented follow-up risks (homograph expectations,
+voice asset consistency, confidence signaling) were addressed on
+`claude/review-ui-bugs-plan-nxddp`.
