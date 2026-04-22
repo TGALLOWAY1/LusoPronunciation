@@ -35,12 +35,7 @@ function mapAzurePhonemeToNormalized(
   
   let tip: string | undefined;
   if (isProblem) {
-    const tips = [
-      `Focus on the ${symbol} sound - try to make it clearer`,
-      `The ${symbol} sound needs more precision`,
-      `Practice the ${symbol} sound more slowly`,
-    ];
-    tip = tips[Math.floor(Math.random() * tips.length)];
+    tip = `Focus on the ${symbol} sound and slow down slightly for clarity.`;
   }
   
   return {
@@ -62,14 +57,19 @@ function mapAzurePhonemeToNormalized(
 function extractPhonemesFromAzureResponse(
   rawAzure: any,
   wordIndex: number,
-  wordText: string
+  wordText: string,
+  azureWordIndex?: number
 ): NormalizedWordFeedback['phonemes'] | undefined {
   const bestHypothesis = rawAzure?.NBest?.[0];
   const words = bestHypothesis?.Words || [];
   
-  // Prefer index lookup as wordScores are derived directly from this array.
-  // Fallback to text match if index is out of bounds (unlikely).
-  let wordData = words[wordIndex];
+  // First choice: explicit Azure index preserved in WordScore mapping.
+  // Second choice: positional fallback.
+  // Last resort: normalized text match.
+  let wordData =
+    typeof azureWordIndex === 'number'
+      ? words[azureWordIndex]
+      : words[wordIndex];
 
   if (!wordData) {
     // Fallback to text matching if index failed
@@ -141,7 +141,12 @@ export function adaptWordScoresToNormalized(
     // Extract phonemes from Azure response if available
     let phonemes: NormalizedWordFeedback['phonemes'] | undefined;
     if (rawAzure) {
-      phonemes = extractPhonemesFromAzureResponse(rawAzure, index, wordScore.word);
+      phonemes = extractPhonemesFromAzureResponse(
+        rawAzure,
+        index,
+        wordScore.word,
+        wordScore.azureWordIndex
+      );
     }
 
     return {
@@ -272,4 +277,3 @@ export function enrichWordsWithCanonicalData(
     };
   });
 }
-

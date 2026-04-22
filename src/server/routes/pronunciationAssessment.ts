@@ -573,7 +573,8 @@ async function processPronunciationAssessment(
         rawAzure,
         sentenceId,
         attemptId,
-        undefined // audioUrl - client will attach the blob URL
+        undefined, // audioUrl - client will attach the blob URL
+        referenceText
       );
     } catch (mappingError) {
       speechLog('error', 'Failed to map Azure pronunciation response', {

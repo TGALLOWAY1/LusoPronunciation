@@ -88,6 +88,7 @@ export default function LivePracticeSection({
     rawAzureResponse,
     submitAttempt,
     cancelAnalysis,
+    clearAssessmentState,
     dailyQuota,
   } = useLivePronunciationPractice();
 
@@ -108,7 +109,8 @@ export default function LivePracticeSection({
   // Reset recording when sentence changes (but preserve it after submission for current sentence)
   useEffect(() => {
     resetRecording();
-  }, [sentence.id, resetRecording]);
+    clearAssessmentState();
+  }, [sentence.id, resetRecording, clearAssessmentState]);
 
   // Handle submit button click
   const handleSubmit = useCallback(async () => {
