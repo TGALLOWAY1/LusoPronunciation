@@ -36,6 +36,13 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Sentence Trust Status** — Each custom sentence is tagged `ready`, `partial_support`, or `needs_review` so learners know how much to trust the scoring before practicing.
 - **Native Audio Preview** — In-page play/pause control for the generated pt-BR audio before practicing.
 
+## Lexicon Expansion Pipeline
+
+- **Unknown Word Tracking** — Every custom sentence observation logs the normalized surface form, user, sentence context, and resolution type (generated/unresolved) of any word the resolver could not match against the curated corpus.
+- **Daily Aggregation** — `npm run lexicon:aggregate` rolls raw observations into a per-surface-form review queue with frequency, unique-user count, and up to three example sentences. Promoted and rejected items are never touched by aggregation.
+- **Admin Review Queue** — `/api/admin/lexicon/review` returns pending words sorted by frequency, gated by a `LEXICON_ADMIN_USER_IDS` allowlist (fail-safe denial in production when unset).
+- **Manual Promotion** — Promotion requires an admin-supplied payload (text, phonemes, pronunciation notes, optional POS/English gloss). Promoted entries are merged into the master word index at runtime, so the pronunciation resolver starts picking them up immediately — no redeploy.
+
 ## Spaced Repetition (SRS)
 
 - **SM-2 Flashcard Scheduling** — Server-side flashcard system using the SM-2 algorithm with interval, ease factor, reps, and lapse tracking.

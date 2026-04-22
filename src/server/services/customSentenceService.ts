@@ -42,6 +42,7 @@ import {
   validateTokenCoverage,
   validateTtsOutput,
 } from './customSentenceValidator';
+import { recordUnknownWordObservations } from './unknownWordObservationService';
 import { logStage, timeStage } from '../lib/pipelineLogger';
 
 const PIPELINE = 'custom-sentence';
@@ -281,6 +282,16 @@ export async function createCustomSentence(
   }
 
   const sentence = toCustomSentenceDto(doc);
+
+  // Best-effort: record unknown-word observations for the lexicon expansion
+  // pipeline. This never blocks the sentence response.
+  await recordUnknownWordObservations({
+    userId,
+    sentenceId: sentence.id,
+    contextText: targetTextPt,
+    tokens: coverage.tokens,
+  });
+
   logStage({
     pipeline: PIPELINE,
     stage: 'done',
