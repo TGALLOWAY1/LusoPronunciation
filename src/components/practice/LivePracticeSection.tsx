@@ -476,7 +476,7 @@ export default function LivePracticeSection({
 
       {/* Scoring Results - shown immediately after assessment */}
       {isScoredState && currentAttempt && (
-        <ScoringPanel currentAttempt={currentAttempt} variant="banner" />
+        <ScoringPanel currentAttempt={currentAttempt} variant="strip" />
       )}
 
       {/* Pronunciation Feedback Panel */}
