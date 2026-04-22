@@ -138,6 +138,7 @@ export type UseLivePronunciationPracticeResult = {
     logParams?: LogAttemptParams | null
   ) => Promise<void>;
   cancelAnalysis: () => void;
+  clearAssessmentState: () => void;
 };
 
 /**
@@ -234,6 +235,19 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     setSubmitting(false);
     setError(null);
     setAttemptState('canceled');
+  }, []);
+
+  const clearAssessmentState = useCallback(() => {
+    setAttempts([]);
+    setAllRawAzureResponses(new Map());
+    setError(null);
+    setSubmitting(false);
+    setAttemptState('idle');
+    activeRequestIdRef.current = null;
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
   }, []);
 
   /**
@@ -670,5 +684,6 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
     // Actions
     submitAttempt,
     cancelAnalysis,
+    clearAssessmentState,
   };
 }

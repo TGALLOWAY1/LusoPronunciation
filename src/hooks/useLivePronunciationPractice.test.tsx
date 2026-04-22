@@ -168,4 +168,29 @@ describe('useLivePronunciationPractice lifecycle', () => {
       expect(result.current.currentAttempt?.attemptId).toBe('attempt_new');
     });
   });
+
+  it('clears attempts and raw azure mapping when assessment state is reset', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(buildAssessmentResponse('attempt_to_clear'));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const { result } = renderHook(() => useLivePronunciationPractice());
+
+    await act(async () => {
+      await result.current.submitAttempt('sentence-1', 'ola mundo');
+    });
+
+    await waitFor(() => {
+      expect(result.current.currentAttempt?.attemptId).toBe('attempt_to_clear');
+      expect(result.current.rawAzureResponse).toBeTruthy();
+    });
+
+    act(() => {
+      result.current.clearAssessmentState();
+    });
+
+    expect(result.current.currentAttempt).toBeNull();
+    expect(result.current.attempts).toHaveLength(0);
+    expect(result.current.rawAzureResponse).toBeNull();
+    expect(['idle', 'recorded']).toContain(result.current.attemptState);
+  });
 });

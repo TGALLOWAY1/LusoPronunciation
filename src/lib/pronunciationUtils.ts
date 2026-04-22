@@ -32,7 +32,8 @@ export function mapAzurePronunciationResultToAttemptScore(
   raw: any,
   sentenceId: string,
   attemptId: string,
-  audioUrl?: string
+  audioUrl?: string,
+  referenceText?: string
 ): AttemptScore {
   // Normalize the Azure response to a consistent format
   const normalized = normalizeAzurePronunciationResponse(raw);
@@ -68,16 +69,21 @@ export function mapAzurePronunciationResultToAttemptScore(
   const completeness = pronunciationAssessment.completenessScore;
   const prosody = pronunciationAssessment.prosodyScore;
 
+  const referenceTokenCount = Array.from(referenceText?.matchAll(/[\p{L}\p{N}]+/gu) ?? []).length;
+
   // Map word-level scores from normalized structure
-  const wordScores: WordScore[] = words.map((wordItem) => {
+  const wordScores: WordScore[] = words.map((wordItem, wordIndex) => {
     const wordText = wordItem.word || '';
     const wordAccuracy = wordItem.pronunciationAssessment.accuracyScore ?? 0;
     const errorType = mapAzureErrorType(wordItem.pronunciationAssessment.errorType);
+    const referenceTokenIndex = wordIndex < referenceTokenCount ? wordIndex : undefined;
 
     return {
       word: wordText,
       accuracy: wordAccuracy,
       errorType: errorType !== 'none' ? errorType : undefined,
+      azureWordIndex: wordIndex,
+      referenceTokenIndex,
     };
   });
 
@@ -93,4 +99,3 @@ export function mapAzurePronunciationResultToAttemptScore(
     audioUrl,
   };
 }
-
