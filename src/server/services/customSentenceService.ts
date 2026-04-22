@@ -112,7 +112,7 @@ export async function createCustomSentence(
   // independent of each other — tokens feed into persistence below):
   const sentenceTokens = tokenizeSentence(targetTextPt);
 
-  // Stage 5: pronunciation coverage (curated lookup only)
+  // Stage 5: pronunciation coverage (curated → lemma → generated → unresolved)
   const coverage = await resolvePronunciationCoverage(sentenceTokens);
   const status = deriveStatus(coverage.tokens);
 
@@ -131,10 +131,12 @@ export async function createCustomSentence(
     throw new CustomSentenceError('TTS_FAILED', 'Failed to generate TTS audio', err);
   }
 
-  // Stage 6: persist
+  // Stage 6: persist. `new + save` (instead of `create`) so Mongoose casts
+  // string generatedPronunciationId values into ObjectIds automatically and
+  // accepts the pre-allocated _id without TypeScript complaining.
   let doc: ICustomSentenceDocument;
   try {
-    doc = await CustomSentenceModel.create({
+    const draft = new CustomSentenceModel({
       _id: sentenceObjectId,
       userId: new mongoose.Types.ObjectId(userId),
       sourceTextEn: englishText,
@@ -147,6 +149,7 @@ export async function createCustomSentence(
       translationConfidence: translation.confidence,
       tokens: coverage.tokens,
     });
+    doc = await draft.save();
   } catch (err) {
     // Best-effort cleanup of the orphaned WAV so we don't leak disk on failed
     // persistence. Swallow secondary errors; the primary error is what matters.
@@ -160,7 +163,9 @@ export async function createCustomSentence(
 
   const sentence = toCustomSentenceDto(doc);
   console.log(
-    `${LOG_TAG} done id=${sentence.id} status=${status} tokens=${sentence.tokens.length} curated=${coverage.curatedHits} unresolved=${coverage.unresolved}`
+    `${LOG_TAG} done id=${sentence.id} status=${status} tokens=${sentence.tokens.length}` +
+      ` exact=${coverage.counts.exact_match} lemma=${coverage.counts.lemma_match}` +
+      ` generated=${coverage.counts.generated} unresolved=${coverage.counts.unresolved}`
   );
 
   return {
@@ -204,7 +209,9 @@ export function toCustomSentenceDto(
       position: t.position,
       surfaceForm: t.surfaceForm,
       normalizedForm: t.normalizedForm,
+      resolutionType: t.resolutionType,
       wordEntryId: t.wordEntryId,
+      generatedPronunciationId: t.generatedPronunciationId?.toHexString(),
       confidence: t.confidence,
     })),
     createdAt: doc.createdAt.toISOString(),

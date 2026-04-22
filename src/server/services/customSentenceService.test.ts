@@ -4,12 +4,14 @@ import type { CustomSentenceTokenDto } from '../../shared/types/customSentence';
 
 function token(
   position: number,
-  confidence: CustomSentenceTokenDto['confidence']
+  confidence: CustomSentenceTokenDto['confidence'],
+  resolutionType: CustomSentenceTokenDto['resolutionType'] = 'exact_match'
 ): CustomSentenceTokenDto {
   return {
     position,
     surfaceForm: `t${position}`,
     normalizedForm: `t${position}`,
+    resolutionType,
     confidence,
   };
 }

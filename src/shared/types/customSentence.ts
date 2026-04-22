@@ -8,6 +8,12 @@
 
 export type TokenConfidence = 'high' | 'medium' | 'low';
 
+export type TokenResolutionType =
+  | 'exact_match'
+  | 'lemma_match'
+  | 'generated'
+  | 'unresolved';
+
 export type CustomSentenceStatus =
   | 'ready'
   | 'partial_support'
@@ -26,7 +32,9 @@ export interface CustomSentenceTokenDto {
   position: number;
   surfaceForm: string;
   normalizedForm: string;
+  resolutionType: TokenResolutionType;
   wordEntryId?: string;
+  generatedPronunciationId?: string;
   confidence: TokenConfidence;
 }
 
