@@ -8,6 +8,7 @@ let mockHookState: any;
 const mockResetRecording = vi.fn();
 const mockSubmitAttempt = vi.fn();
 const mockCancelAnalysis = vi.fn();
+const mockClearAssessmentState = vi.fn();
 
 vi.mock('@/hooks/useLivePronunciationPractice', () => ({
   useLivePronunciationPractice: () => mockHookState,
@@ -79,6 +80,7 @@ function setHookState(currentAttempt: AttemptScore): void {
     rawAzureResponse: null,
     submitAttempt: mockSubmitAttempt,
     cancelAnalysis: mockCancelAnalysis,
+    clearAssessmentState: mockClearAssessmentState,
   };
 }
 

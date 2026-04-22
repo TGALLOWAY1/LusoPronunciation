@@ -3,6 +3,9 @@ import type { AttemptScore } from '@/types/pronunciation';
 import InteractiveSentenceDisplay from '@/components/practice/InteractiveSentenceDisplay';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { alignUiTokensToAzureWords } from '@/pipeline/sentenceWordRefs';
+import { computeTrustLevel, getTrustMessage } from '@/lib/assessmentTrust';
+import { isSameVoiceFamily } from '@/utils/audioConsistency';
+import { useSettingsStore } from '@/state/settingsStore';
 import {
   SentenceAudioControls,
   PhonemePanel,
@@ -70,6 +73,7 @@ export default function PronunciationFeedbackPanel({
   translationText,
   difficulty,
   sentenceAudio,
+  wordAudios,
   words,
   title,
   showDevControls = false,
@@ -79,15 +83,42 @@ export default function PronunciationFeedbackPanel({
   const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback | null>(null);
   const [showEnglish, setShowEnglish] = useState(false);
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('textOnly');
-  
+
   // Centralized audio state
   const [activeSentenceType, setActiveSentenceType] = useState<'native' | 'user' | null>(null);
-  
+
   // Refs for audio elements to enable stopping from parent
   const sentenceAudioRef = useRef<HTMLAudioElement>(null);
 
+  const { selectedVoice } = useSettingsStore();
+
   // Check if we have attempts
   const hasAttempts = attempts && attempts.length > 0 && currentAttempt !== null;
+
+  const trustLevel = useMemo(
+    () => (currentAttempt ? computeTrustLevel(currentAttempt) : 'trusted'),
+    [currentAttempt]
+  );
+  const trustMessage = getTrustMessage(trustLevel);
+
+  // Dev-only voice consistency check: if sentence-level and per-word native audio
+  // were generated with different voices than the user selected, log once per
+  // attempt so we catch dataset drift locally. The prebuild
+  // scripts/verify-audio-consistency.ts gate enforces this at build time.
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const sentenceNative = sentenceAudio?.find((a) => a.type === 'native')?.url;
+    const wordNativeUrls = (wordAudios ?? [])
+      .filter((a) => a.type === 'native')
+      .map((a) => a.url);
+    if (!sentenceNative && wordNativeUrls.length === 0) return;
+    if (!isSameVoiceFamily(sentenceNative, wordNativeUrls, selectedVoice)) {
+      console.warn(
+        '[PronunciationFeedbackPanel] Voice family mismatch between sentence and word audio.',
+        { selectedVoice, sentenceNative, wordNativeUrls }
+      );
+    }
+  }, [sentenceAudio, wordAudios, selectedVoice]);
 
   // Reset practice mode when sentence changes (use sentenceText as key)
   useEffect(() => {
@@ -261,8 +292,36 @@ export default function PronunciationFeedbackPanel({
         </div>
       )}
 
+      {/* Trust badge: surfaces when Azure couldn't score reliably or partially. */}
+      {hasAttempts && trustMessage && (
+        <div
+          data-testid="trust-badge"
+          data-trust-level={trustLevel}
+          role="status"
+          className={
+            trustLevel === 'untrusted'
+              ? 'rounded-lg p-3 border border-rose-300 dark:border-rose-700 bg-rose-50 dark:bg-rose-900/20'
+              : 'rounded-lg p-3 border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20'
+          }
+        >
+          <p
+            className={
+              trustLevel === 'untrusted'
+                ? 'text-sm text-rose-800 dark:text-rose-200'
+                : 'text-sm text-amber-800 dark:text-amber-200'
+            }
+          >
+            {trustMessage}
+          </p>
+        </div>
+      )}
+
       {/* Sound Details / Phoneme panel - always shown with empty state when no word selected */}
-      <PhonemePanel word={selectedWord} onClose={handleClosePhonemePanel} />
+      <PhonemePanel
+        word={selectedWord}
+        onClose={handleClosePhonemePanel}
+        trustLevel={trustLevel}
+      />
 
       {/* Dev controls (optional, gated behind showDevControls) */}
       {showDevControls && import.meta.env.DEV && (

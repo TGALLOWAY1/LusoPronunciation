@@ -29,4 +29,9 @@ export type AttemptScore = {
   createdAt: string;
   audioUrl?: string; // local blob URL for playback
   latencyMs?: number; // round-trip time for the Azure API call (ms)
+  /**
+   * Azure root-level recognition status (e.g. 'Success', 'NoMatch',
+   * 'InitialSilenceTimeout'). Preserved so the UI can gate on audio quality.
+   */
+  recognitionStatus?: string;
 };

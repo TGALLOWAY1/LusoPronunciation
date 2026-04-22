@@ -8,6 +8,8 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Word-by-Word Scores** — Each word in a sentence receives individual accuracy scores. Click any word to expand phoneme-level detail including IPA transcription and error type tags (insertion, omission, mispronunciation).
 - **Sentence-Level Metrics** — Overall accuracy, fluency, completeness, and prosody scores returned for every attempt.
 - **Audio Quality Gates** — Client-side validation rejects recordings that are too short or silent (minimum duration + RMS energy checks) before sending to the server.
+- **Confidence Trust Badge** — When Azure recognition fails or completeness is very low, the feedback panel shows a status message and suppresses phoneme coaching so users don't act on unreliable tips; softer caveat shown for partially-scored attempts.
+- **Homograph Awareness** — When a selected word is a known Brazilian Portuguese homograph (e.g. *sede*, *gosto*, *para*), the phoneme panel lists the alternate IPA readings and clarifies that the score reflects whichever reading matched the recording.
 
 ## Coaching & Feedback
 

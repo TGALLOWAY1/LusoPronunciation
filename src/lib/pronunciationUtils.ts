@@ -97,5 +97,6 @@ export function mapAzurePronunciationResultToAttemptScore(
     wordScores,
     createdAt: new Date().toISOString(),
     audioUrl,
+    recognitionStatus: normalized.recognitionStatus,
   };
 }

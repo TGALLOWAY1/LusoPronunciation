@@ -1,0 +1,142 @@
+[
+  {
+    "form": "sede",
+    "readings": [
+      { "meaning": "thirst", "ipa": "ˈsɛd͡ʒi" },
+      { "meaning": "headquarters", "ipa": "ˈsed͡ʒi" }
+    ]
+  },
+  {
+    "form": "gosto",
+    "readings": [
+      { "meaning": "I like (verb)", "ipa": "ˈɡɔstu" },
+      { "meaning": "taste (noun)", "ipa": "ˈɡostu" }
+    ]
+  },
+  {
+    "form": "para",
+    "readings": [
+      { "meaning": "for / to (preposition)", "ipa": "ˈpaɾɐ" },
+      { "meaning": "he/she stops (verb)", "ipa": "ˈpaɾɐ" }
+    ]
+  },
+  {
+    "form": "almoço",
+    "readings": [
+      { "meaning": "lunch (noun)", "ipa": "awˈmosu" },
+      { "meaning": "I have lunch (verb)", "ipa": "awˈmɔsu" }
+    ]
+  },
+  {
+    "form": "jogo",
+    "readings": [
+      { "meaning": "game (noun)", "ipa": "ˈʒoɡu" },
+      { "meaning": "I play (verb)", "ipa": "ˈʒɔɡu" }
+    ]
+  },
+  {
+    "form": "colher",
+    "readings": [
+      { "meaning": "spoon (noun)", "ipa": "koˈʎɛɾ" },
+      { "meaning": "to harvest (verb)", "ipa": "koˈʎeɾ" }
+    ]
+  },
+  {
+    "form": "acordo",
+    "readings": [
+      { "meaning": "agreement (noun)", "ipa": "aˈkoɾdu" },
+      { "meaning": "I wake up (verb)", "ipa": "aˈkɔɾdu" }
+    ]
+  },
+  {
+    "form": "começo",
+    "readings": [
+      { "meaning": "beginning (noun)", "ipa": "koˈmesu" },
+      { "meaning": "I begin (verb)", "ipa": "koˈmɛsu" }
+    ]
+  },
+  {
+    "form": "duvido",
+    "readings": [
+      { "meaning": "doubted (past participle)", "ipa": "duˈvidu" },
+      { "meaning": "I doubt (verb)", "ipa": "duˈvidu" }
+    ]
+  },
+  {
+    "form": "molho",
+    "readings": [
+      { "meaning": "sauce (noun)", "ipa": "ˈmoʎu" },
+      { "meaning": "I soak (verb)", "ipa": "ˈmɔʎu" }
+    ]
+  },
+  {
+    "form": "olho",
+    "readings": [
+      { "meaning": "eye (noun)", "ipa": "ˈoʎu" },
+      { "meaning": "I look (verb)", "ipa": "ˈɔʎu" }
+    ]
+  },
+  {
+    "form": "soco",
+    "readings": [
+      { "meaning": "punch (noun)", "ipa": "ˈsoku" },
+      { "meaning": "I punch (verb)", "ipa": "ˈsɔku" }
+    ]
+  },
+  {
+    "form": "apoio",
+    "readings": [
+      { "meaning": "support (noun)", "ipa": "aˈpoju" },
+      { "meaning": "I support (verb)", "ipa": "aˈpɔju" }
+    ]
+  },
+  {
+    "form": "choro",
+    "readings": [
+      { "meaning": "I cry (verb)", "ipa": "ˈʃɔɾu" },
+      { "meaning": "cry / choro music (noun)", "ipa": "ˈʃoɾu" }
+    ]
+  },
+  {
+    "form": "forma",
+    "readings": [
+      { "meaning": "shape / way (noun)", "ipa": "ˈfɔɾmɐ" },
+      { "meaning": "baking mold (noun)", "ipa": "ˈfoɾmɐ" }
+    ]
+  },
+  {
+    "form": "corte",
+    "readings": [
+      { "meaning": "cut (noun)", "ipa": "ˈkɔɾt͡ʃi" },
+      { "meaning": "royal court (noun)", "ipa": "ˈkoɾt͡ʃi" }
+    ]
+  },
+  {
+    "form": "esta",
+    "readings": [
+      { "meaning": "this (demonstrative)", "ipa": "ˈɛstɐ" },
+      { "meaning": "is (verb, rare spelling of está)", "ipa": "esˈta" }
+    ]
+  },
+  {
+    "form": "pelo",
+    "readings": [
+      { "meaning": "by/through the (contraction)", "ipa": "ˈpelu" },
+      { "meaning": "fur / hair (noun)", "ipa": "ˈpɛlu" }
+    ]
+  },
+  {
+    "form": "seco",
+    "readings": [
+      { "meaning": "dry (adjective)", "ipa": "ˈseku" },
+      { "meaning": "I dry (verb)", "ipa": "ˈsɛku" }
+    ]
+  },
+  {
+    "form": "toco",
+    "readings": [
+      { "meaning": "I play/touch (verb)", "ipa": "ˈtɔku" },
+      { "meaning": "stump / stub (noun)", "ipa": "ˈtoku" }
+    ]
+  }
+]

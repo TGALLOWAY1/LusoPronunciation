@@ -40,4 +40,26 @@ describe('mapAzurePronunciationResultToAttemptScore', () => {
       referenceTokenIndex: undefined,
     });
   });
+
+  it('preserves Azure recognitionStatus on the AttemptScore', () => {
+    const rawAzure = {
+      RecognitionStatus: 'NoMatch',
+      NBest: [
+        {
+          PronunciationAssessment: { AccuracyScore: 0, CompletenessScore: 0 },
+          Words: [],
+        },
+      ],
+    };
+
+    const attempt = mapAzurePronunciationResultToAttemptScore(
+      rawAzure,
+      'sentence-noise',
+      'attempt-noise',
+      undefined,
+      'Olá mundo.'
+    );
+
+    expect(attempt.recognitionStatus).toBe('NoMatch');
+  });
 });
