@@ -41,6 +41,7 @@ export default function SentenceBuilderForm({
         </label>
         <textarea
           id={textareaId}
+          aria-label="English sentence"
           value={value}
           onChange={(e) => setValue(e.target.value.slice(0, maxLength))}
           rows={3}

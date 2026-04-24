@@ -7,12 +7,16 @@ import { expect, test, type Page, type Route } from '@playwright/test';
  * a stubbed POST /api/sentences/custom, and verify the preview card
  * renders the translated text plus at least one trust-coded token chip.
  * The deeper practice-page flow is covered by Vitest component tests and
- * the server-side unit suite — duplicating it here just means more
- * headless-chromium variables that can flake in CI.
+ * the server-side unit suite — duplicating it here just adds
+ * headless-chromium variables that flake in CI.
  *
- * Uses regex route patterns to avoid any glob-vs-host ambiguity and a
- * broad /api/** fallback so unhandled calls don't surface as red errors
- * in the page and shift selectors around.
+ * Selector notes:
+ *  - `getByRole('textbox')` is preferred over `getByLabel` because React 19's
+ *    `useId` can produce label/control ids with non-ASCII characters that
+ *    break some CSS-compatible resolvers. The builder page has exactly one
+ *    textarea, so the role lookup is unambiguous.
+ *  - A heading-level smoke assertion runs first so a failure cleanly reports
+ *    "page didn't render" vs "selector didn't match".
  */
 
 const fakeSentenceId = '65e0000000000000000000ab';
@@ -38,22 +42,6 @@ function buildSentenceResponse() {
       },
       {
         position: 1,
-        surfaceForm: 'preciso',
-        normalizedForm: 'preciso',
-        resolutionType: 'exact_match' as const,
-        wordEntryId: 'w_preciso',
-        confidence: 'high' as const,
-      },
-      {
-        position: 2,
-        surfaceForm: 'comprar',
-        normalizedForm: 'comprar',
-        resolutionType: 'exact_match' as const,
-        wordEntryId: 'w_comprar',
-        confidence: 'high' as const,
-      },
-      {
-        position: 3,
         surfaceForm: 'pão',
         normalizedForm: 'pao',
         resolutionType: 'generated' as const,
@@ -72,19 +60,8 @@ async function seedAuthToken(page: Page): Promise<void> {
   });
 }
 
-async function stubCreate(page: Page): Promise<void> {
-  // Catch-all: any unhandled /api/** request succeeds with an empty body
-  // so background requests (quota pings, session pings, health) don't
-  // produce visible error surfaces in the UI.
-  await page.route(/\/api\//, async (route: Route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: '{}',
-    });
-  });
-
-  // Specific: POST /api/sentences/custom — the one the builder form hits.
+async function installApiStubs(page: Page): Promise<void> {
+  // Specific: POST /api/sentences/custom — the one the builder hits.
   await page.route(/\/api\/sentences\/custom(\?.*)?$/, async (route: Route) => {
     if (route.request().method() !== 'POST') {
       return route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
@@ -101,16 +78,50 @@ async function stubCreate(page: Page): Promise<void> {
       }),
     });
   });
+
+  // Catch-all: any other /api/** request gets an empty-object 200 so
+  // background pings (speech-health, session, etc.) can't fail in a way
+  // that shifts the DOM or blocks hydration.
+  await page.route(/\/api\//, async (route: Route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: '{}',
+    });
+  });
+}
+
+function attachConsoleErrorLogging(page: Page): void {
+  page.on('pageerror', (err) => {
+    // Surface uncaught exceptions from the SPA so a test-run failure
+    // includes the JavaScript error, not just "element not visible".
+    // eslint-disable-next-line no-console
+    console.log('[pageerror]', err.message);
+  });
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') {
+      // eslint-disable-next-line no-console
+      console.log('[console.error]', msg.text());
+    }
+  });
 }
 
 test.describe('Custom Sentence Builder', () => {
   test('renders the builder form and a trust-coded preview after submit', async ({ page }) => {
+    attachConsoleErrorLogging(page);
     await seedAuthToken(page);
-    await stubCreate(page);
+    await installApiStubs(page);
 
     await page.goto('/builder');
 
-    const textarea = page.getByLabel(/english sentence/i);
+    // Smoke: the page itself rendered (RequireAuth didn't redirect away
+    // and the component didn't throw). `Sentence Builder` is the H1 set by
+    // PageScaffold.
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Sentence Builder' })
+    ).toBeVisible({ timeout: 10_000 });
+
+    const textarea = page.getByRole('textbox');
     await expect(textarea).toBeVisible();
 
     const submit = page.getByRole('button', { name: /translate & preview/i });
@@ -124,13 +135,12 @@ test.describe('Custom Sentence Builder', () => {
     await expect(page.getByText('Eu preciso comprar pão.')).toBeVisible();
     await expect(page.getByText('Partial support', { exact: true })).toBeVisible();
 
-    // Legend is always rendered when there are tokens; its presence is the
-    // cheapest proof that the color-coded breakdown rendered at all.
+    // Legend is always rendered when there are tokens.
     await expect(page.getByText('Curated data', { exact: true })).toBeVisible();
     await expect(page.getByText('Generated', { exact: true })).toBeVisible();
 
-    // Add to Practice CTA is visible (we don't click it here; the practice
-    // page has its own unit + component coverage).
+    // Add to Practice CTA is visible. We don't click it — the practice
+    // page is covered by Vitest + server-side unit tests.
     await expect(page.getByRole('button', { name: /add to practice/i })).toBeVisible();
   });
 });
