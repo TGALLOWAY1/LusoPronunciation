@@ -36,6 +36,7 @@
     "e2e:phase04": "playwright test e2e/phase04",
     "screenshots:readme": "playwright test e2e/readme-screenshots.spec.ts --workers=1",
     "screenshots:linkedin": "playwright test e2e/linkedin-screenshots.spec.ts --workers=1",
+    "screenshots:practice": "playwright test e2e/practice-screenshots.spec.ts --workers=1",
     "verify:phase04": "npm run test:phase04 && npm run e2e:phase04",
     "test:watch": "vitest --watch"
   },
