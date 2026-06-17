@@ -400,3 +400,92 @@ export interface PhonemeStats {
   lastPracticedAt?: string; // ISO timestamp
   weaknessLabel?: "weak" | "ok" | "strong";
 }
+
+// ============================================================================
+// Progress Analytics Dashboard Types
+// ============================================================================
+
+/**
+ * Time window for analytics computations.
+ */
+export type AnalyticsWindow = "7d" | "30d" | "90d" | "all";
+
+/**
+ * One of the four Azure pronunciation assessment metrics (plus optional prosody).
+ */
+export type TrendMetric =
+  | "overall"
+  | "accuracy"
+  | "fluency"
+  | "completeness"
+  | "prosody";
+
+/**
+ * A single time bucket holding the raw scores recorded in that bucket per metric.
+ * Consumers (charts) average the arrays to produce a trend line.
+ */
+export interface TrendPoint {
+  /** ISO date (YYYY-MM-DD) marking the start of the bucket. */
+  date: string;
+  /** Human-friendly bucket label (e.g. "6/17"). */
+  label: string;
+  /** Raw scores recorded within the bucket, keyed by metric. */
+  values: Record<TrendMetric, number[]>;
+}
+
+/**
+ * An item (word / sentence / phoneme) whose score changed over the window.
+ * Used for "Most Improved" and "Needs More Practice" lists.
+ */
+export interface ImprovementItem {
+  id: string;
+  kind: "word" | "sentence" | "phoneme";
+  /** Display label; for words/sentences this is the id (UI resolves to text). */
+  label: string;
+  /** Mean score of the earlier half of attempts. */
+  earlyAvg: number;
+  /** Mean score of the recent half of attempts. */
+  recentAvg: number;
+  /** recentAvg - earlyAvg (positive = improving). */
+  delta: number;
+  attempts: number;
+  firstPracticedAt: string;
+  lastPracticedAt: string;
+  /** Chronological scores, for sparkline rendering. */
+  scores: number[];
+}
+
+/**
+ * A deterministic, data-grounded insight surfaced to the learner.
+ */
+export interface AnalyticsInsight {
+  /** Stable key (e.g. "phoneme-category-below-average"). */
+  id: string;
+  severity: "positive" | "neutral" | "attention";
+  title: string;
+  detail: string;
+}
+
+/**
+ * A practice recommendation grounded in stored assessment data.
+ */
+export interface PracticeRecommendation {
+  kind: "phoneme" | "word" | "sentence";
+  id: string;
+  label: string;
+  /** Human-readable justification tying the recommendation to the data. */
+  reason: string;
+  /** Priority score (higher = more important). */
+  score: number;
+  /** In-app route to act on the recommendation. */
+  to: string;
+}
+
+/**
+ * A pronunciation learning resource (e.g. tutorial video search) for a sound or word.
+ */
+export interface LearningResource {
+  label: string;
+  url: string;
+  source: "youtube-search" | "curated" | "forvo";
+}

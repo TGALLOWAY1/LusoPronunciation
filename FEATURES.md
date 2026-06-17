@@ -56,7 +56,13 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 
 ## Progress & Review
 
-- **Progress Page** — Lightweight page with three hero metrics (today's practice time, current streak, items due for review), a weekly trend chart, and top weak phonemes with action links.
+- **Progress Analytics Dashboard** — A sectioned Progress page (Overview, Progress, Strengths, Focus Areas, Recommendations, Learning Resources) answering "Am I improving?" and "What should I practice next?" with a sticky in-page nav.
+- **Score Trends** — Multi-metric trend chart (pronunciation, accuracy, fluency, completeness) with selectable 7-day / 30-day / 90-day / all-time windows.
+- **Improvement Tracking** — "Most Improved" and "Needs More Practice" lists for words, phrases, and phonemes, comparing earlier attempts to recent ones (e.g. `pão 72 → 91`), with a noise guard that requires several attempts.
+- **Weakness Detection** — Hardest sounds, frequently mispronounced words, and most-retried phrases surfaced from stored assessment data.
+- **Personalized Insights** — Deterministic, data-grounded insights (e.g. nasal vowels below your average, better on short than long phrases, scores improving with repetition).
+- **Practice Recommendations** — Recommended sounds, words, and phrases grounded in real content and your own weaknesses, each linking to the relevant practice surface.
+- **Learning Resources** — Click any difficult sound or word to open pronunciation tutorials; resource links are generated dynamically (YouTube search + Forvo) with no manual video curation or API key required.
 - **Review Page** — Tabbed interface with a Review Queue (SRS-driven items) and Recent Attempts timeline. Queue shows progress bar and item-by-item navigation with difficulty rating. Attempts list shows scores with "Practice again" links.
 - **Review Queue Algorithm** — Score-weighted review queue (`buildReviewQueue`) ranks items by `(1 - bestScore/100) * recencyWeight`, filtering items below a configurable threshold (default 80).
 - **Completion Moments** — Animated confirmation when the review queue is cleared, linking back to practice.
