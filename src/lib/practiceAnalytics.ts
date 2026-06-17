@@ -22,7 +22,16 @@ import type {
   PhonemeId,
   DifficultyLevel,
   ContentCategory,
+  AnalyticsWindow,
+  TrendMetric,
+  TrendPoint,
+  ImprovementItem,
+  AnalyticsInsight,
+  PracticeRecommendation,
+  Word,
+  Sentence,
 } from './types';
+import { getPhonemeById } from './phonemeMetadata';
 
 /**
  * Determines the status of a sentence/word based on practice history.
@@ -985,5 +994,609 @@ export function buildReviewQueue(
 
   queue.sort((a, b) => b.reviewPriority - a.reviewPriority);
   return queue.slice(0, maxItems);
+}
+
+// ============================================================================
+// Progress Analytics: time windows, trends, improvement, insights, recommendations
+// ============================================================================
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** All trend metrics, in stable display order. */
+export const TREND_METRICS: TrendMetric[] = [
+  'overall',
+  'accuracy',
+  'fluency',
+  'completeness',
+  'prosody',
+];
+
+const WINDOW_DAYS: Record<Exclude<AnalyticsWindow, 'all'>, number> = {
+  '7d': 7,
+  '30d': 30,
+  '90d': 90,
+};
+
+type AnyAttempt = SentencePracticeAttempt | WordPracticeAttempt;
+
+function startOfDayMs(date: Date): number {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
+}
+
+/**
+ * Filters any list of timestamped items to those within the given analytics window.
+ *
+ * The cutoff is inclusive (`>=`), matching the rolling-window convention used by
+ * computeUserGlobalStats. `now` is injectable for deterministic tests.
+ */
+export function filterByWindow<T extends { createdAt: string }>(
+  items: T[],
+  window: AnalyticsWindow,
+  now: Date = new Date(),
+): T[] {
+  if (window === 'all') return items;
+  const cutoff = now.getTime() - WINDOW_DAYS[window] * DAY_MS;
+  return items.filter((item) => new Date(item.createdAt).getTime() >= cutoff);
+}
+
+/** Extracts a single metric value from an attempt, or undefined when not recorded. */
+function metricValue(attempt: AnyAttempt, metric: TrendMetric): number | undefined {
+  switch (metric) {
+    case 'overall':
+      return attempt.overallScore;
+    case 'accuracy':
+      return attempt.accuracyScore;
+    case 'fluency':
+      return attempt.fluencyScore;
+    case 'completeness':
+      // completenessScore is required on sentences, optional on words.
+      return (attempt as SentencePracticeAttempt).completenessScore;
+    case 'prosody':
+      return attempt.prosodyScore;
+  }
+}
+
+interface BucketSpec {
+  bucketCount: number;
+  bucketMs: number;
+}
+
+/** Resolves bucket sizing for a window. Daily for short windows, weekly/monthly for long. */
+function resolveBuckets(
+  window: AnalyticsWindow,
+  attempts: AnyAttempt[],
+  now: Date,
+): BucketSpec {
+  if (window === '7d') return { bucketCount: 7, bucketMs: DAY_MS };
+  if (window === '30d') return { bucketCount: 30, bucketMs: DAY_MS };
+  if (window === '90d') return { bucketCount: 13, bucketMs: 7 * DAY_MS };
+
+  // 'all' — size buckets to the span of practice history.
+  if (attempts.length === 0) return { bucketCount: 0, bucketMs: DAY_MS };
+  const earliest = Math.min(
+    ...attempts.map((a) => new Date(a.createdAt).getTime()),
+  );
+  const endOfToday = startOfDayMs(now) + DAY_MS;
+  const spanDays = Math.max(1, Math.ceil((endOfToday - earliest) / DAY_MS));
+  if (spanDays <= 14) return { bucketCount: spanDays, bucketMs: DAY_MS };
+  const weeks = Math.ceil(spanDays / 7);
+  if (weeks <= 26) return { bucketCount: weeks, bucketMs: 7 * DAY_MS };
+  const months = Math.ceil(spanDays / 28);
+  return { bucketCount: months, bucketMs: 28 * DAY_MS };
+}
+
+function formatBucketLabel(startMs: number): string {
+  const d = new Date(startMs);
+  return `${d.getMonth() + 1}/${d.getDate()}`;
+}
+
+/**
+ * Builds a multi-metric trend series over the given window.
+ *
+ * Generalizes the rolling-7-day chart logic to all four (+prosody) metrics and to
+ * 7/30/90/all windows. Buckets are anchored to the end of the current day and walk
+ * backwards. Each bucket collects the raw scores recorded within it per metric;
+ * optional metrics (fluency/completeness/prosody) only contribute when present.
+ */
+export function buildMultiMetricTrend(
+  sentenceAttempts: SentencePracticeAttempt[],
+  wordAttempts: WordPracticeAttempt[],
+  window: AnalyticsWindow,
+  now: Date = new Date(),
+): TrendPoint[] {
+  const all: AnyAttempt[] = [
+    ...filterByWindow(sentenceAttempts, window, now),
+    ...filterByWindow(wordAttempts, window, now),
+  ];
+
+  const { bucketCount, bucketMs } = resolveBuckets(window, all, now);
+  if (bucketCount === 0) return [];
+
+  const rangeEnd = startOfDayMs(now) + DAY_MS; // end of today
+  const rangeStart = rangeEnd - bucketCount * bucketMs;
+
+  const points: TrendPoint[] = [];
+  for (let i = 0; i < bucketCount; i++) {
+    const bucketStart = rangeStart + i * bucketMs;
+    points.push({
+      date: new Date(bucketStart).toISOString().split('T')[0],
+      label: formatBucketLabel(bucketStart),
+      values: { overall: [], accuracy: [], fluency: [], completeness: [], prosody: [] },
+    });
+  }
+
+  for (const attempt of all) {
+    const ts = new Date(attempt.createdAt).getTime();
+    if (ts < rangeStart || ts >= rangeEnd) continue;
+    let idx = Math.floor((ts - rangeStart) / bucketMs);
+    if (idx < 0) idx = 0;
+    if (idx >= bucketCount) idx = bucketCount - 1;
+    const bucket = points[idx];
+    for (const metric of TREND_METRICS) {
+      const v = metricValue(attempt, metric);
+      if (typeof v === 'number' && !Number.isNaN(v)) {
+        bucket.values[metric].push(v);
+      }
+    }
+  }
+
+  return points;
+}
+
+export interface ImprovementOptions {
+  /** Minimum number of attempts for an item to qualify (default 4). */
+  minAttempts?: number;
+  /** Minimum days between first and last attempt (default 0 = no span requirement). */
+  minSpanDays?: number;
+  /** Max items returned per list (default 6). */
+  topN?: number;
+  /** Minimum positive delta to be "most improved" (default 2). */
+  minDeltaForImproved?: number;
+  /** recentAvg below this counts as "needs practice" (default 70). */
+  needsPracticeThreshold?: number;
+}
+
+interface ScoredEntry {
+  score: number;
+  createdAt: string;
+}
+
+function buildImprovementItem(
+  id: string,
+  kind: ImprovementItem['kind'],
+  entries: ScoredEntry[],
+  minAttempts: number,
+  minSpanDays: number,
+): ImprovementItem | null {
+  const n = entries.length;
+  if (n < minAttempts) return null;
+
+  const sorted = [...entries].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  );
+  const firstAt = sorted[0].createdAt;
+  const lastAt = sorted[n - 1].createdAt;
+  const spanDays =
+    (new Date(lastAt).getTime() - new Date(firstAt).getTime()) / DAY_MS;
+  if (spanDays < minSpanDays) return null;
+
+  const half = Math.ceil(n / 2);
+  const earlyScores = sorted.slice(0, half).map((e) => e.score);
+  const recentScores = sorted.slice(n - half).map((e) => e.score);
+  const mean = (xs: number[]) => xs.reduce((s, x) => s + x, 0) / xs.length;
+  const earlyAvg = mean(earlyScores);
+  const recentAvg = mean(recentScores);
+
+  return {
+    id,
+    kind,
+    label: id,
+    earlyAvg,
+    recentAvg,
+    delta: recentAvg - earlyAvg,
+    attempts: n,
+    firstPracticedAt: firstAt,
+    lastPracticedAt: lastAt,
+    scores: sorted.map((e) => e.score),
+  };
+}
+
+/**
+ * Computes "most improved" and "needs more practice" items across words, sentences,
+ * and phonemes, comparing the earlier half of attempts to the recent half.
+ *
+ * A noise guard requires at least `minAttempts` attempts (and optionally a minimum
+ * day span); items below threshold appear in neither list.
+ */
+export function computeImprovement(
+  sentenceAttempts: SentencePracticeAttempt[],
+  wordAttempts: WordPracticeAttempt[],
+  window: AnalyticsWindow,
+  options?: ImprovementOptions & { now?: Date },
+): { mostImproved: ImprovementItem[]; needsPractice: ImprovementItem[] } {
+  const minAttempts = options?.minAttempts ?? 4;
+  const minSpanDays = options?.minSpanDays ?? 0;
+  const topN = options?.topN ?? 6;
+  const minDeltaForImproved = options?.minDeltaForImproved ?? 2;
+  const needsPracticeThreshold = options?.needsPracticeThreshold ?? 70;
+  const now = options?.now ?? new Date();
+
+  const sentences = filterByWindow(sentenceAttempts, window, now);
+  const words = filterByWindow(wordAttempts, window, now);
+
+  // Group scored entries by item.
+  const wordEntries = new Map<string, ScoredEntry[]>();
+  const sentenceEntries = new Map<string, ScoredEntry[]>();
+  const phonemeEntries = new Map<string, ScoredEntry[]>();
+
+  const push = (map: Map<string, ScoredEntry[]>, key: string, entry: ScoredEntry) => {
+    const arr = map.get(key);
+    if (arr) arr.push(entry);
+    else map.set(key, [entry]);
+  };
+
+  for (const a of sentences) {
+    push(sentenceEntries, a.sentenceId, { score: a.overallScore, createdAt: a.createdAt });
+    if (a.wordScores) {
+      for (const ws of a.wordScores) {
+        if (ws.phonemeScores) {
+          for (const ps of ws.phonemeScores) {
+            push(phonemeEntries, ps.phonemeId, {
+              score: ps.overallScore,
+              createdAt: a.createdAt,
+            });
+          }
+        }
+      }
+    }
+  }
+  for (const a of words) {
+    push(wordEntries, a.wordId, { score: a.overallScore, createdAt: a.createdAt });
+    if (a.phonemeScores) {
+      for (const ps of a.phonemeScores) {
+        push(phonemeEntries, ps.phonemeId, {
+          score: ps.overallScore,
+          createdAt: a.createdAt,
+        });
+      }
+    }
+  }
+
+  const items: ImprovementItem[] = [];
+  const collect = (map: Map<string, ScoredEntry[]>, kind: ImprovementItem['kind']) => {
+    for (const [id, entries] of map.entries()) {
+      const item = buildImprovementItem(id, kind, entries, minAttempts, minSpanDays);
+      if (item) items.push(item);
+    }
+  };
+  collect(wordEntries, 'word');
+  collect(sentenceEntries, 'sentence');
+  collect(phonemeEntries, 'phoneme');
+
+  const mostImproved = items
+    .filter((it) => it.delta >= minDeltaForImproved)
+    .sort((a, b) => b.delta - a.delta || a.id.localeCompare(b.id))
+    .slice(0, topN);
+
+  const needsPractice = items
+    .filter((it) => it.recentAvg < needsPracticeThreshold || it.delta <= 0)
+    .sort((a, b) => a.recentAvg - b.recentAvg || a.id.localeCompare(b.id))
+    .slice(0, topN);
+
+  return { mostImproved, needsPractice };
+}
+
+/** Average of a numeric array, or undefined when empty. */
+function avg(xs: number[]): number | undefined {
+  return xs.length > 0 ? xs.reduce((s, x) => s + x, 0) / xs.length : undefined;
+}
+
+/**
+ * Generates deterministic, data-grounded insights for the learner.
+ *
+ * Rules run in a fixed order and each is guarded by a minimum-sample check, so the
+ * output is fully deterministic for a given input (no randomness; `now` injectable).
+ */
+export function generateInsights(
+  sentenceAttempts: SentencePracticeAttempt[],
+  wordAttempts: WordPracticeAttempt[],
+  window: AnalyticsWindow,
+  now: Date = new Date(),
+): AnalyticsInsight[] {
+  const sentences = filterByWindow(sentenceAttempts, window, now);
+  const words = filterByWindow(wordAttempts, window, now);
+  const insights: AnalyticsInsight[] = [];
+
+  const allOverall = [
+    ...sentences.map((a) => a.overallScore),
+    ...words.map((a) => a.overallScore),
+  ];
+  const overallMean = avg(allOverall);
+  const MIN_TOTAL = 5;
+  if (overallMean === undefined || allOverall.length < MIN_TOTAL) {
+    return insights; // Not enough data for trustworthy insights.
+  }
+
+  // Rule 1: a phoneme category consistently below the user's overall average.
+  const phonemeStats = computePhonemeStats(sentences, words);
+  const categoryAgg = new Map<string, { sum: number; count: number }>();
+  for (const ps of phonemeStats) {
+    const meta = getPhonemeById(ps.phonemeId);
+    if (!meta || ps.avgOverallScore === undefined) continue;
+    const agg = categoryAgg.get(meta.category) ?? { sum: 0, count: 0 };
+    agg.sum += ps.avgOverallScore * ps.attempts;
+    agg.count += ps.attempts;
+    categoryAgg.set(meta.category, agg);
+  }
+  const weakestCategory = [...categoryAgg.entries()]
+    .filter(([, agg]) => agg.count >= 6)
+    .map(([category, agg]) => ({ category, mean: agg.sum / agg.count }))
+    .sort((a, b) => a.mean - b.mean || a.category.localeCompare(b.category))[0];
+  if (weakestCategory && weakestCategory.mean <= overallMean - 8) {
+    insights.push({
+      id: 'phoneme-category-below-average',
+      severity: 'attention',
+      title: `${capitalize(weakestCategory.category)} sounds need attention`,
+      detail: `Your ${weakestCategory.category} sounds average ${Math.round(
+        weakestCategory.mean,
+      )}, below your overall pronunciation average of ${Math.round(overallMean)}.`,
+    });
+  }
+
+  // Rule 2: short vs long phrases.
+  const shortScores: number[] = [];
+  const longScores: number[] = [];
+  for (const a of sentences) {
+    const wordCount = a.wordScores?.length;
+    if (!wordCount) continue;
+    if (wordCount <= 4) shortScores.push(a.overallScore);
+    else if (wordCount >= 8) longScores.push(a.overallScore);
+  }
+  const shortMean = avg(shortScores);
+  const longMean = avg(longScores);
+  if (
+    shortMean !== undefined &&
+    longMean !== undefined &&
+    shortScores.length >= 3 &&
+    longScores.length >= 3 &&
+    shortMean - longMean >= 8
+  ) {
+    insights.push({
+      id: 'short-vs-long-phrases',
+      severity: 'neutral',
+      title: 'You do better on short phrases',
+      detail: `Short phrases average ${Math.round(
+        shortMean,
+      )} versus ${Math.round(longMean)} on longer ones — extra reps on longer phrases will close the gap.`,
+    });
+  }
+
+  // Rule 3: scores improve with repeated attempts within the same session.
+  const sessionItem = new Map<string, ScoredEntry[]>();
+  for (const a of sentences) {
+    const key = `${a.sessionId}::s::${a.sentenceId}`;
+    const arr = sessionItem.get(key);
+    if (arr) arr.push({ score: a.overallScore, createdAt: a.createdAt });
+    else sessionItem.set(key, [{ score: a.overallScore, createdAt: a.createdAt }]);
+  }
+  for (const a of words) {
+    const key = `${a.sessionId}::w::${a.wordId}`;
+    const arr = sessionItem.get(key);
+    if (arr) arr.push({ score: a.overallScore, createdAt: a.createdAt });
+    else sessionItem.set(key, [{ score: a.overallScore, createdAt: a.createdAt }]);
+  }
+  const firstScores: number[] = [];
+  const lastScores: number[] = [];
+  for (const entries of sessionItem.values()) {
+    if (entries.length < 2) continue;
+    const sorted = [...entries].sort(
+      (x, y) => new Date(x.createdAt).getTime() - new Date(y.createdAt).getTime(),
+    );
+    firstScores.push(sorted[0].score);
+    lastScores.push(sorted[sorted.length - 1].score);
+  }
+  const firstMean = avg(firstScores);
+  const lastMean = avg(lastScores);
+  if (
+    firstMean !== undefined &&
+    lastMean !== undefined &&
+    firstScores.length >= 3 &&
+    lastMean - firstMean >= 3
+  ) {
+    insights.push({
+      id: 'improves-with-repetition',
+      severity: 'positive',
+      title: 'Repetition is paying off',
+      detail: `When you retry an item in a session, your score rises by about ${Math.round(
+        lastMean - firstMean,
+      )} points on average — keep using retries.`,
+    });
+  }
+
+  // Rule 4: difficulty gradient.
+  const diffStats = computeDifficultyStats(sentences, words);
+  const easy = diffStats.find((d) => d.difficulty === 2);
+  const hard = diffStats.find((d) => d.difficulty === 4);
+  if (
+    easy?.avgOverallScore !== undefined &&
+    hard?.avgOverallScore !== undefined &&
+    easy.sentenceAttempts + easy.wordAttempts >= 3 &&
+    hard.sentenceAttempts + hard.wordAttempts >= 3 &&
+    easy.avgOverallScore - hard.avgOverallScore >= 12
+  ) {
+    insights.push({
+      id: 'difficulty-gradient',
+      severity: 'neutral',
+      title: 'Harder content is challenging you',
+      detail: `You average ${Math.round(
+        easy.avgOverallScore,
+      )} on easy items but ${Math.round(
+        hard.avgOverallScore,
+      )} on hard ones. That gap is normal — it shows where to push next.`,
+    });
+  }
+
+  // Rule 5: momentum over the window.
+  const trend = buildMultiMetricTrend(sentenceAttempts, wordAttempts, window, now);
+  const bucketMeans = trend
+    .map((p) => avg(p.values.overall))
+    .filter((m): m is number => m !== undefined);
+  if (bucketMeans.length >= 4) {
+    const third = Math.max(1, Math.floor(bucketMeans.length / 3));
+    const firstThird = avg(bucketMeans.slice(0, third)) ?? 0;
+    const lastThird = avg(bucketMeans.slice(bucketMeans.length - third)) ?? 0;
+    const momentum = lastThird - firstThird;
+    if (momentum >= 3) {
+      insights.push({
+        id: 'momentum-up',
+        severity: 'positive',
+        title: 'Your scores are trending up',
+        detail: `Your overall pronunciation rose about ${Math.round(
+          momentum,
+        )} points across this period. Keep it going!`,
+      });
+    } else if (momentum <= -3) {
+      insights.push({
+        id: 'momentum-down',
+        severity: 'attention',
+        title: 'Your scores have dipped recently',
+        detail: `Your overall pronunciation is down about ${Math.round(
+          Math.abs(momentum),
+        )} points across this period. A few focused sessions can turn it around.`,
+      });
+    }
+  }
+
+  return insights;
+}
+
+function capitalize(s: string): string {
+  return s.length === 0 ? s : s[0].toUpperCase() + s.slice(1);
+}
+
+/** Resolves an Azure/dataset phoneme id to its canonical metadata id, for matching. */
+function canonicalPhonemeId(id: string): string {
+  return getPhonemeById(id)?.id ?? id.trim().toUpperCase();
+}
+
+export interface RecommendationOptions {
+  /** Max recommendations per kind (default 5). */
+  perKind?: number;
+}
+
+/**
+ * Builds practice recommendations grounded in stored assessment data and real content.
+ *
+ * Returns a flat list spanning sounds, words, and phrases; every recommendation points
+ * to an item that exists in the supplied content (or a practiced item). Reuses
+ * computePhonemeStats, buildWordProgress/getWeakWordIds, and buildReviewQueue.
+ */
+export function buildRecommendations(
+  sentenceAttempts: SentencePracticeAttempt[],
+  wordAttempts: WordPracticeAttempt[],
+  allWords: Word[],
+  allSentences: Sentence[],
+  options?: RecommendationOptions,
+): PracticeRecommendation[] {
+  const perKind = options?.perKind ?? 5;
+  const recs: PracticeRecommendation[] = [];
+
+  const wordById = new Map(allWords.map((w) => [w.id, w]));
+  const sentenceById = new Map(allSentences.map((s) => [s.id, s]));
+
+  // --- Weak sounds ---
+  const phonemeStats = computePhonemeStats(sentenceAttempts, wordAttempts);
+  const weakPhonemes = phonemeStats
+    .filter((p) => p.weaknessLabel === 'weak' && p.avgOverallScore !== undefined)
+    .sort((a, b) => (a.avgOverallScore ?? 0) - (b.avgOverallScore ?? 0))
+    .slice(0, perKind);
+  for (const p of weakPhonemes) {
+    recs.push({
+      kind: 'phoneme',
+      id: p.phonemeId,
+      label: getPhonemeById(p.phonemeId)?.ipa ?? p.phonemeId,
+      reason: `Averaging ${Math.round(
+        p.avgOverallScore ?? 0,
+      )}% across ${p.attempts} reps — one of your weakest sounds.`,
+      score: 100 - (p.avgOverallScore ?? 0),
+      to: '/progress#resources',
+    });
+  }
+  const weakCanonical = new Set(weakPhonemes.map((p) => canonicalPhonemeId(p.phonemeId)));
+
+  // --- Weak words (grounded in practiced content, supplemented by content w/ weak sounds) ---
+  const { perWord } = buildWordProgress(wordAttempts, allWords.length || 1);
+  const weakWordIds = getWeakWordIds(perWord)
+    .map((id) => ({ id, weakness: perWord[id]?.weaknessScore ?? 0 }))
+    .sort((a, b) => b.weakness - a.weakness)
+    .slice(0, perKind);
+  for (const { id, weakness } of weakWordIds) {
+    const word = wordById.get(id);
+    recs.push({
+      kind: 'word',
+      id,
+      label: word?.textPt ?? id,
+      reason: `Practiced ${perWord[id]?.attempts ?? 0} times, still below target — worth another round.`,
+      score: weakness,
+      to: '/?tab=words',
+    });
+  }
+  // Supplement with content words that contain a weak sound, if we have spare slots.
+  if (weakWordIds.length < perKind && weakCanonical.size > 0) {
+    const taken = new Set(weakWordIds.map((w) => w.id));
+    for (const w of allWords) {
+      if (recs.filter((r) => r.kind === 'word').length >= perKind) break;
+      if (taken.has(w.id)) continue;
+      const hasWeak = (w.phonemes ?? []).some((ph) => weakCanonical.has(canonicalPhonemeId(ph)));
+      if (!hasWeak) continue;
+      const weakSound = (w.phonemes ?? []).find((ph) => weakCanonical.has(canonicalPhonemeId(ph)));
+      recs.push({
+        kind: 'word',
+        id: w.id,
+        label: w.textPt,
+        reason: `Practises your weak ${getPhonemeById(weakSound ?? '')?.ipa ?? weakSound} sound.`,
+        score: 40,
+        to: '/?tab=words',
+      });
+      taken.add(w.id);
+    }
+  }
+
+  // --- Weak phrases (from review queue, supplemented by content w/ weak sounds) ---
+  const lowSentences = buildReviewQueue(sentenceAttempts, [], { maxItems: perKind })
+    .filter((q) => q.itemType === 'sentence');
+  for (const q of lowSentences) {
+    const sentence = sentenceById.get(q.itemId);
+    recs.push({
+      kind: 'sentence',
+      id: q.itemId,
+      label: sentence?.textPt ?? q.itemId,
+      reason: `Best score ${Math.round(q.bestScore)} — revisit to push it higher.`,
+      score: 100 - q.bestScore,
+      to: '/',
+    });
+  }
+  if (lowSentences.length < perKind && weakCanonical.size > 0) {
+    const taken = new Set(lowSentences.map((q) => q.itemId));
+    for (const s of allSentences) {
+      if (recs.filter((r) => r.kind === 'sentence').length >= perKind) break;
+      if (taken.has(s.id)) continue;
+      const hasWeak = (s.phonemes ?? []).some((ph) => weakCanonical.has(canonicalPhonemeId(ph)));
+      if (!hasWeak) continue;
+      recs.push({
+        kind: 'sentence',
+        id: s.id,
+        label: s.textPt,
+        reason: 'Includes sounds you are working on.',
+        score: 30,
+        to: '/',
+      });
+      taken.add(s.id);
+    }
+  }
+
+  return recs;
 }
 
