@@ -5,6 +5,26 @@ A browser-based Brazilian Portuguese pronunciation trainer that scores your spee
 <!-- TODO: Replace this static hero with a short GIF showing a full record → score → coaching cycle -->
 <img width="1289" height="1274" alt="LusoPronounce sentence practice" src="https://github.com/user-attachments/assets/eb5fcdd1-ab7e-41ff-a015-dd4f973b0e6f" />
 
+## Take a tour / try the demo (no login required)
+
+Two **public, unauthenticated** routes let anyone understand the product
+without an account, a microphone, or Azure credentials:
+
+| Route | What it is |
+|-------|------------|
+| `/tour` | "Take a Tour" — a portfolio-friendly product explainer |
+| `/demo` | An interactive demo with clearly-labeled **sample** scores, phoneme feedback, coaching, and progress trends |
+
+```bash
+npm install
+npm run dev            # → http://localhost:3000
+# then open http://localhost:3000/tour  or  http://localhost:3000/demo
+```
+
+No backend, Azure key, or MongoDB is needed for the tour and demo. See
+[`DEMO_READY.md`](./DEMO_READY.md) for the full run/deploy guide, including how
+to publish just the tour/demo as a static site.
+
 ## Why this project exists
 
 English speakers learning Brazilian Portuguese rarely get fast, phoneme-level feedback. Most apps grade at the sentence level and miss the sound confusions that matter most in PT-BR: nasalization, `r`/`rr`, `lh`/`nh`, `tch`/`ti`, open vs. close vowels. LusoPronounce closes that loop — record a sentence, get per-word and per-phoneme scores in seconds, and receive deterministic coaching on what to drill next.
