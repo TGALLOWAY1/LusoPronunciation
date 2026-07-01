@@ -79,11 +79,12 @@ See `.env.example` for the complete list.
 ## 5. What works WITHOUT Azure credentials
 
 - ✅ **`/tour`** — the full product explainer (static, self-contained).
-- ✅ **`/demo`** — pick a word/phrase, "Analyze demo recording", and see a
-  realistic **sample** score, word-by-word chips, phoneme breakdown (with IPA
-  and teaching tips), coaching suggestions, and a progress trend. All of this
-  is hand-authored sample data in `src/lib/demo/demoData.ts` and is clearly
-  labeled "Sample data" in the UI.
+- ✅ **`/demo`** — pick a real PT-BR sentence, play its native reference audio,
+  "Analyze demo recording", and see a realistic **sample** score, word-by-word
+  chips, phoneme breakdown (with IPA and teaching tips), coaching suggestions,
+  and a progress trend. The sentences and native audio are real; the scores and
+  history are hand-authored sample data in `src/lib/demo/demoData.ts` and are
+  clearly labeled "Sample data" in the UI.
 - ✅ The frontend builds and runs; navigation, styling, and layout all work.
 
 ## 6. What REQUIRES Azure credentials (and MongoDB)

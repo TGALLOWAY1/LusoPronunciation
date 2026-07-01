@@ -17,7 +17,10 @@ import PhraseScoreOverview from '@/components/pronunciation/PhraseScoreOverview'
 import PhonemeChip from '@/components/pronunciation/PhonemeChip';
 import { DEMO_ITEMS } from '@/lib/demo/demoData';
 
-const showcase = DEMO_ITEMS.find((d) => d.id === 'trabalho') ?? DEMO_ITEMS[0];
+const showcase =
+  DEMO_ITEMS.find((d) => d.id === 'gemini_family_friends_001') ?? DEMO_ITEMS[0];
+// Highlight the trickiest word in the showcase sentence for the phoneme breakdown.
+const showcaseWord = [...showcase.words].sort((a, b) => a.score - b.score)[0];
 
 function Section({
   eyebrow,
@@ -147,10 +150,10 @@ export default function TourPage() {
               </p>
               <div className="mt-4">
                 <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Phoneme-level breakdown (sample for “{showcase.text}”):
+                  Phoneme-level breakdown (sample for “{showcaseWord.text}” in “{showcase.text}”):
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {showcase.words[0].phonemes.map((p, i) => (
+                  {showcaseWord.phonemes.map((p, i) => (
                     <PhonemeChip key={`${p.symbol}-${i}`} symbol={p.symbol} score={p.score} />
                   ))}
                 </div>

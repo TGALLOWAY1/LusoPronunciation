@@ -7,12 +7,30 @@
  * progress tracking WITHOUT an account, Azure Speech credentials, a
  * microphone, or a database.
  *
- * These numbers are illustrative and are NOT real Azure Speech
- * pronunciation-assessment output. The UI clearly labels this as demo
- * data wherever it is shown.
+ * The demo items are REAL sentences drawn from the app's curated
+ * content set (`data/masterSentences.json`). Each item's `id` matches
+ * the real sentence id, so the native reference audio shipped in
+ * `public/audio/sentences/` plays in the demo exactly as it does in the
+ * full app.
+ *
+ * The SCORES, phoneme breakdowns, and attempt history are illustrative
+ * and are NOT real Azure Speech pronunciation-assessment output. The UI
+ * clearly labels this as demo data wherever it is shown.
  */
 
 import type { AttemptScore, ErrorType } from '@/types/pronunciation';
+
+/** Voice folder used for the demo's native reference playback. */
+const DEMO_VOICE = 'ptbr_female';
+
+/**
+ * Resolve the native reference audio URL for a demo item. The audio
+ * files live under `public/audio/sentences/<voice>/<id>.wav` and are
+ * served statically, so no account or API key is needed to play them.
+ */
+export function getDemoNativeAudioUrl(id: string): string {
+  return `/audio/sentences/${DEMO_VOICE}/${id}.wav`;
+}
 
 /** A single phoneme within a demo word, with its illustrative score. */
 export interface DemoPhonemeScore {
@@ -31,10 +49,11 @@ export interface DemoWordFeedback {
   tip?: string;
 }
 
-/** A complete demo item: a word or phrase plus its sample assessment. */
+/** A complete demo item: a real sentence plus its sample assessment. */
 export interface DemoItem {
+  /** Real sentence id from masterSentences.json — also drives audio lookup. */
   id: string;
-  /** Brazilian Portuguese text. */
+  /** Brazilian Portuguese sentence text. */
   text: string;
   /** English translation. */
   translation: string;
@@ -42,6 +61,8 @@ export interface DemoItem {
   ipa: string;
   /** 1 (easiest) – 4 (hardest). */
   difficulty: number;
+  /** CEFR level of the source sentence (e.g. "A1"). */
+  cefr?: string;
   /** Human-friendly labels for the tricky sounds in this item. */
   focusSounds: string[];
   /** Sample assessment shown in the score card. */
@@ -52,6 +73,14 @@ export interface DemoItem {
   history: number[];
   /** Coaching suggestions surfaced after the sample attempt. */
   coaching: string[];
+  /**
+   * Optional URL to a real learner recording of this sentence, so the
+   * demo can play back "a sample attempt" alongside the native voice.
+   * Drop a WAV/MP3 in `public/audio/demo/` and point this at it, e.g.
+   * `/audio/demo/gemini_food_003.wav`. Left undefined when no recording
+   * is available yet.
+   */
+  learnerAudioUrl?: string;
 }
 
 function attempt(
@@ -82,72 +111,202 @@ function attempt(
 }
 
 /**
- * The fixed demo word/phrase set. Ordered easiest → hardest so the demo
- * tells a coherent story about progressively trickier PT-BR sounds.
+ * The fixed demo sentence set. Ordered strongest → trickiest so the demo
+ * tells a coherent story: an easy greeting first, then progressively
+ * harder PT-BR sounds (nasal diphthongs, the palatal "lh/nh", the tapped
+ * "r"). Every `id` is a real sentence id, so native audio plays.
  */
 export const DEMO_ITEMS: DemoItem[] = [
   (() => {
     const words: DemoWordFeedback[] = [
       {
-        text: 'não',
-        score: 71,
+        text: 'Oi,',
+        score: 95,
+        phonemes: [
+          { symbol: 'OW', score: 96 },
+          { symbol: 'IY', score: 94 },
+        ],
+      },
+      {
+        text: 'tudo',
+        score: 90,
+        phonemes: [
+          { symbol: 'T', score: 95 },
+          { symbol: 'UW', score: 89 },
+          { symbol: 'D', score: 93 },
+          { symbol: 'UW', score: 84 },
+        ],
+        tip: 'The final "-o" reduces to a short "u" sound — "tudo" ends like "too-doo".',
+      },
+      {
+        text: 'bem?',
+        score: 80,
         errorType: 'mispronounced',
         phonemes: [
-          { symbol: 'N', score: 94 },
-          { symbol: 'AN_NASAL', score: 58 },
-          { symbol: 'W', score: 74 },
+          { symbol: 'B', score: 94 },
+          { symbol: 'EN_NASAL', score: 72 },
+          { symbol: 'Y', score: 78 },
         ],
-        tip: 'Let the air flow through your nose on the "ão" — don\'t close it into a hard "w".',
+        tip: 'The "em" is nasal and glides toward "y" — "bẽi", not a flat English "beng".',
       },
     ];
     return {
-      id: 'nao',
-      text: 'não',
-      translation: 'no',
-      ipa: 'nɐ̃w̃',
-      difficulty: 2,
-      focusSounds: ['nasal ão'],
-      attempt: attempt('demo-nao', 71, 78, 100, 69, words),
+      id: 'gemini_small_talk_001',
+      text: 'Oi, tudo bem?',
+      translation: 'Hi, how are you?',
+      ipa: 'oj ˈtudu ˈbẽj',
+      difficulty: 1,
+      cefr: 'A1',
+      focusSounds: ['nasal em', 'vowel reduction'],
+      attempt: attempt('demo-oi-tudo-bem', 88, 90, 100, 86, words),
       words,
-      history: [58, 63, 66, 71],
+      history: [72, 78, 83, 88],
       coaching: [
-        'Your nasal vowel "ão" is the weakest sound here. Practice humming "ãaão" with your mouth barely open.',
-        'Try the minimal pair "pau" vs "pão" to feel the nasal contrast.',
+        'Nice and natural. The only soft spot is the nasal "em" in "bem" — let it resonate in your nose and glide up toward "y".',
+        'Keep the final "-o" in "tudo" light and short; it reduces to "u", not a full "oh".',
       ],
     };
   })(),
   (() => {
     const words: DemoWordFeedback[] = [
       {
-        text: 'pão',
-        score: 68,
+        text: 'Estou',
+        score: 85,
+        phonemes: [
+          { symbol: 'IY', score: 82 },
+          { symbol: 'S', score: 92 },
+          { symbol: 'T', score: 90 },
+          { symbol: 'OW', score: 84 },
+        ],
+        tip: 'The unstressed "es-" sounds like "is"; the "-ou" is a clean "oh".',
+      },
+      {
+        text: 'muito',
+        score: 82,
+        phonemes: [
+          { symbol: 'M', score: 94 },
+          { symbol: 'UW', score: 86 },
+          { symbol: 'IY', score: 80 },
+          { symbol: 'T', score: 88 },
+          { symbol: 'UW', score: 78 },
+        ],
+        tip: '"muito" carries a hidden nasal — it sounds like "muin-too".',
+      },
+      {
+        text: 'feliz',
+        score: 84,
+        phonemes: [
+          { symbol: 'F', score: 96 },
+          { symbol: 'EH', score: 86 },
+          { symbol: 'L', score: 90 },
+          { symbol: 'IY', score: 88 },
+          { symbol: 'S', score: 80 },
+        ],
+        tip: 'A final "-z" is pronounced as a soft "s" here: "feh-lees".',
+      },
+      {
+        text: 'hoje.',
+        score: 78,
         errorType: 'mispronounced',
         phonemes: [
-          { symbol: 'P', score: 96 },
-          { symbol: 'AN_NASAL', score: 52 },
-          { symbol: 'W', score: 70 },
+          { symbol: 'OW', score: 82 },
+          { symbol: 'ZH', score: 72 },
+          { symbol: 'IY', score: 80 },
         ],
-        tip: 'Nasalize the vowel before the glide — the "ão" should resonate in the nose.',
+        tip: 'The "h" is silent and the "j" is a soft "zh", like the "s" in "measure": "oh-zhee".',
       },
     ];
     return {
-      id: 'pao',
-      text: 'pão',
-      translation: 'bread',
-      ipa: 'pɐ̃w̃',
+      id: 'gemini_feelings_001',
+      text: 'Estou muito feliz hoje.',
+      translation: "I'm very happy today.",
+      ipa: 'isˈto ˈmũjtu feˈlis ˈoʒi',
       difficulty: 2,
-      focusSounds: ['nasal ão'],
-      attempt: attempt('demo-pao', 68, 74, 100, 65, words),
+      cefr: 'A1',
+      focusSounds: ['soft j (zh)', 'silent h'],
+      attempt: attempt('demo-estou-feliz', 83, 85, 100, 81, words),
       words,
-      history: [55, 60, 64, 68],
+      history: [70, 74, 79, 83],
       coaching: [
-        'The nasal diphthong "ão" is dragging your score down. Keep the soft palate lowered throughout the vowel.',
-        'Contrast "pau" (stick) with "pão" (bread) to train the nasalization.',
+        'The soft "j" (zh) in "hoje" is your best opportunity — the "h" is silent, so aim for "oh-zhee".',
+        'Solid vowels overall. Keep the final "-z" of "feliz" light, closer to an "s".',
       ],
     };
   })(),
   (() => {
     const words: DemoWordFeedback[] = [
+      {
+        text: 'A',
+        score: 92,
+        phonemes: [{ symbol: 'AH', score: 92 }],
+      },
+      {
+        text: 'conta,',
+        score: 78,
+        errorType: 'mispronounced',
+        phonemes: [
+          { symbol: 'K', score: 95 },
+          { symbol: 'ON_NASAL', score: 66 },
+          { symbol: 'T', score: 88 },
+          { symbol: 'AH', score: 84 },
+        ],
+        tip: 'The "on" is nasal — let the air flow through your nose before the "t".',
+      },
+      {
+        text: 'por',
+        score: 76,
+        errorType: 'mispronounced',
+        phonemes: [
+          { symbol: 'P', score: 94 },
+          { symbol: 'OW', score: 82 },
+          { symbol: 'R_TAP', score: 68 },
+        ],
+        tip: 'This "r" is a quick tongue tap, like the "tt" in American "butter".',
+      },
+      {
+        text: 'favor.',
+        score: 74,
+        errorType: 'mispronounced',
+        phonemes: [
+          { symbol: 'F', score: 96 },
+          { symbol: 'AH', score: 88 },
+          { symbol: 'V', score: 90 },
+          { symbol: 'OW', score: 80 },
+          { symbol: 'R_TAP', score: 66 },
+        ],
+        tip: 'End on a single tapped "r", not the English retroflex "r".',
+      },
+    ];
+    return {
+      id: 'gemini_food_003',
+      text: 'A conta, por favor.',
+      translation: 'The check, please.',
+      ipa: 'a ˈkõtɐ poɾ faˈvoɾ',
+      difficulty: 3,
+      cefr: 'A1',
+      focusSounds: ['tapped r', 'nasal on'],
+      attempt: attempt('demo-a-conta', 79, 82, 100, 77, words),
+      words,
+      history: [64, 70, 75, 79],
+      coaching: [
+        'The tapped "r" in "por favor" is your lowest sound. Practice "para" and "caro" to isolate the single tap between vowels.',
+        'Nasalize the "on" in "conta" — keep the soft palate lowered so the air resonates in your nose.',
+      ],
+    };
+  })(),
+  (() => {
+    const words: DemoWordFeedback[] = [
+      {
+        text: 'Minha',
+        score: 82,
+        phonemes: [
+          { symbol: 'M', score: 96 },
+          { symbol: 'IY', score: 88 },
+          { symbol: 'NH', score: 70 },
+          { symbol: 'AH', score: 86 },
+        ],
+        tip: 'The "nh" is a palatal nasal, like the "ni" in "onion" — one sound, not "n" + "y".',
+      },
       {
         text: 'mãe',
         score: 66,
@@ -159,206 +318,102 @@ export const DEMO_ITEMS: DemoItem[] = [
         ],
         tip: 'The "ãe" is a nasal diphthong — glide from a nasal "ã" toward "i" without stopping the airflow.',
       },
-    ];
-    return {
-      id: 'mae',
-      text: 'mãe',
-      translation: 'mother',
-      ipa: 'mɐ̃j̃',
-      difficulty: 3,
-      focusSounds: ['nasal ãe'],
-      attempt: attempt('demo-mae', 66, 70, 100, 64, words),
-      words,
-      history: [52, 57, 61, 66],
-      coaching: [
-        'Both halves of the "ãe" diphthong need to stay nasal. Practice slowly: "mã—ẽ".',
-        'Compare "mãe" with the non-nasal "mais" to hear the difference.',
-      ],
-    };
-  })(),
-  (() => {
-    const words: DemoWordFeedback[] = [
       {
-        text: 'filho',
-        score: 74,
-        errorType: 'mispronounced',
+        text: 'se',
+        score: 88,
         phonemes: [
-          { symbol: 'F', score: 97 },
-          { symbol: 'IY', score: 90 },
-          { symbol: 'LH', score: 61 },
-          { symbol: 'UW', score: 72 },
+          { symbol: 'S', score: 92 },
+          { symbol: 'IY', score: 84 },
         ],
-        tip: 'The "lh" is one sound (like the "lli" in "million"), not "l" + "y".',
+        tip: 'Before "chama", "se" softens to "si".',
+      },
+      {
+        text: 'chama',
+        score: 85,
+        phonemes: [
+          { symbol: 'SH', score: 88 },
+          { symbol: 'AA', score: 90 },
+          { symbol: 'M', score: 92 },
+          { symbol: 'AH', score: 82 },
+        ],
+        tip: 'The "ch" is a single "sh" sound.',
+      },
+      {
+        text: 'Ana.',
+        score: 90,
+        phonemes: [
+          { symbol: 'AA', score: 92 },
+          { symbol: 'N', score: 94 },
+          { symbol: 'AH', score: 88 },
+        ],
       },
     ];
     return {
-      id: 'filho',
-      text: 'filho',
-      translation: 'son',
-      ipa: 'ˈfiʎu',
+      id: 'gemini_family_friends_001',
+      text: 'Minha mãe se chama Ana.',
+      translation: "My mother's name is Ana.",
+      ipa: 'ˈmiɲɐ ˈmɐ̃j si ˈʃɐmɐ ˈɐnɐ',
       difficulty: 3,
-      focusSounds: ['lh (palatal l)', 'unstressed final -o'],
-      attempt: attempt('demo-filho', 74, 80, 100, 72, words),
+      cefr: 'B2',
+      focusSounds: ['nasal ãe', 'nh (palatal)'],
+      attempt: attempt('demo-minha-mae', 74, 76, 100, 72, words),
       words,
       history: [60, 65, 70, 74],
       coaching: [
-        'Press the middle of your tongue against the roof of your mouth for "lh" — avoid an English "ly".',
-        'The final "-o" reduces to a short "u" sound; keep it light and quick.',
+        'Both halves of the "ãe" in "mãe" need to stay nasal. Practice slowly: "mã—ẽ", never closing into a hard "y".',
+        'For "nh" in "Minha", press the middle of your tongue to the roof of your mouth — think "meen-ya" as one blended sound.',
       ],
     };
   })(),
   (() => {
     const words: DemoWordFeedback[] = [
       {
-        text: 'obrigado',
-        score: 82,
+        text: 'Que',
+        score: 90,
+        phonemes: [
+          { symbol: 'K', score: 94 },
+          { symbol: 'IY', score: 86 },
+        ],
+        tip: '"que" is just "ki" — the "u" is silent.',
+      },
+      {
+        text: 'horas',
+        score: 80,
+        errorType: 'mispronounced',
         phonemes: [
           { symbol: 'OW', score: 84 },
-          { symbol: 'B', score: 95 },
           { symbol: 'R_TAP', score: 70 },
-          { symbol: 'IY', score: 91 },
-          { symbol: 'G', score: 93 },
-          { symbol: 'AA', score: 88 },
-          { symbol: 'D', score: 94 },
-          { symbol: 'UW', score: 74 },
-        ],
-        tip: 'The "r" in "-brig-" is a quick tongue tap, like the "tt" in American "butter".',
-      },
-    ];
-    return {
-      id: 'obrigado',
-      text: 'obrigado',
-      translation: 'thank you',
-      ipa: 'obɾiˈgadu',
-      difficulty: 2,
-      focusSounds: ['tapped r', 'unstressed final -o'],
-      attempt: attempt('demo-obrigado', 82, 85, 100, 80, words),
-      words,
-      history: [70, 74, 79, 82],
-      coaching: [
-        'Nice work — your consonants are solid. The tapped "r" is your main opportunity.',
-        'Say "para" and "caro" to isolate the single-tap "r" between vowels.',
-      ],
-    };
-  })(),
-  (() => {
-    const words: DemoWordFeedback[] = [
-      {
-        text: 'trabalho',
-        score: 70,
-        errorType: 'mispronounced',
-        phonemes: [
-          { symbol: 'T', score: 93 },
-          { symbol: 'R_TAP', score: 66 },
-          { symbol: 'AA', score: 89 },
-          { symbol: 'B', score: 94 },
-          { symbol: 'AA', score: 87 },
-          { symbol: 'LH', score: 58 },
-          { symbol: 'UW', score: 73 },
-        ],
-        tip: 'Two tricky sounds here: the tapped "r" and the palatal "lh". Slow the word down and hit each.',
-      },
-    ];
-    return {
-      id: 'trabalho',
-      text: 'trabalho',
-      translation: 'work',
-      ipa: 'tɾaˈbaʎu',
-      difficulty: 3,
-      focusSounds: ['tapped r', 'lh (palatal l)'],
-      attempt: attempt('demo-trabalho', 70, 74, 100, 68, words),
-      words,
-      history: [56, 61, 66, 70],
-      coaching: [
-        'The "lh" is your lowest sound. Anchor the tongue mid-mouth and voice it: "ba-lyo" → "baʎo".',
-        'The "tr" cluster uses a tapped "r", not the English retroflex "r".',
-      ],
-    };
-  })(),
-  (() => {
-    const words: DemoWordFeedback[] = [
-      {
-        text: 'coração',
-        score: 69,
-        errorType: 'mispronounced',
-        phonemes: [
-          { symbol: 'K', score: 95 },
-          { symbol: 'OW', score: 82 },
-          { symbol: 'R_TAP', score: 67 },
           { symbol: 'AA', score: 88 },
           { symbol: 'S', score: 90 },
-          { symbol: 'AN_NASAL', score: 54 },
-          { symbol: 'W', score: 71 },
         ],
-        tip: 'Ends on the nasal "ão" — the same sound as "pão" and "não". Keep it resonating in the nose.',
+        tip: 'The "h" is silent and the middle "r" is a quick tap: "OH-ras".',
       },
-    ];
-    return {
-      id: 'coracao',
-      text: 'coração',
-      translation: 'heart',
-      ipa: 'koɾaˈsɐ̃w̃',
-      difficulty: 3,
-      focusSounds: ['tapped r', 'nasal ão'],
-      attempt: attempt('demo-coracao', 69, 72, 100, 67, words),
-      words,
-      history: [54, 59, 64, 69],
-      coaching: [
-        'The final "ão" and the medial tapped "r" are both below target. Drill them separately, then together.',
-        'The "ç" is just an "s" sound — that part is already strong.',
-      ],
-    };
-  })(),
-  (() => {
-    const words: DemoWordFeedback[] = [
       {
-        text: 'Rio',
+        text: 'são?',
         score: 64,
         errorType: 'mispronounced',
         phonemes: [
-          { symbol: 'HH', score: 55 },
-          { symbol: 'IY', score: 88 },
-          { symbol: 'UW', score: 76 },
+          { symbol: 'S', score: 92 },
+          { symbol: 'AN_NASAL', score: 52 },
+          { symbol: 'W', score: 68 },
         ],
-        tip: 'Word-initial "R" in PT-BR is guttural (like a soft "h" from the throat), not an English "r".',
-      },
-      {
-        text: 'de',
-        score: 83,
-        phonemes: [
-          { symbol: 'JH', score: 80 },
-          { symbol: 'IY', score: 86 },
-        ],
-        tip: 'Before an "i" sound, "de" softens toward "dji".',
-      },
-      {
-        text: 'Janeiro',
-        score: 72,
-        errorType: 'mispronounced',
-        phonemes: [
-          { symbol: 'ZH', score: 68 },
-          { symbol: 'AH', score: 84 },
-          { symbol: 'N', score: 92 },
-          { symbol: 'EY', score: 85 },
-          { symbol: 'R_TAP', score: 70 },
-          { symbol: 'UW', score: 75 },
-        ],
-        tip: 'The "J" is a soft "zh" sound, like the "s" in "measure".',
+        tip: 'The "ão" is the same nasal diphthong as in "pão" — keep it resonating in the nose, then glide to "w".',
       },
     ];
     return {
-      id: 'rio-de-janeiro',
-      text: 'Rio de Janeiro',
-      translation: 'Rio de Janeiro',
-      ipa: 'ˈʁiu dʒi ʒɐˈnejɾu',
+      id: 'gemini_questions_005',
+      text: 'Que horas são?',
+      translation: 'What time is it?',
+      ipa: 'ki ˈɔɾɐs ˈsɐ̃w',
       difficulty: 4,
-      focusSounds: ['guttural R', 'zh (soft J)', 'tapped r'],
-      attempt: attempt('demo-rio', 73, 76, 100, 71, words),
+      cefr: 'B2',
+      focusSounds: ['nasal ão', 'tapped r'],
+      attempt: attempt('demo-que-horas-sao', 71, 74, 100, 69, words),
       words,
-      history: [58, 63, 68, 73],
+      history: [56, 62, 67, 71],
       coaching: [
-        'The guttural "R" at the start of "Rio" is the biggest win here — practice it like clearing your throat gently.',
-        'The "J" in "Janeiro" is a soft "zh", not an English "j".',
+        'The nasal "ão" in "são" is dragging the score down. Hum "ãaão" with your mouth barely open, then add the final "w" glide.',
+        'Remember the "h" in "horas" is silent, and the "r" is a single tap — not an English "r".',
       ],
     };
   })(),
