@@ -179,7 +179,7 @@ export default function DemoPage() {
 
           {native.error && (
             <p className="mt-3 text-center text-xs text-rose-500 dark:text-rose-400">
-              Couldn&apos;t play the reference audio here. It works in the deployed app.
+              Couldn&apos;t play the reference audio. Please try again.
             </p>
           )}
 

@@ -9,9 +9,12 @@
  *
  * The demo items are REAL sentences drawn from the app's curated
  * content set (`data/masterSentences.json`). Each item's `id` matches
- * the real sentence id, so the native reference audio shipped in
- * `public/audio/sentences/` plays in the demo exactly as it does in the
- * full app.
+ * the real sentence id. The native reference audio for these few demo
+ * sentences is shipped in `public/demo-audio/` — a dedicated, small copy
+ * that is intentionally kept OUTSIDE `public/audio/`, because the public
+ * static deploy (see `.vercelignore`) excludes the ~215MB `public/audio/`
+ * practice corpus. Keeping the demo's clips in their own folder means the
+ * "Listen (native voice)" button works both locally and on the deploy.
  *
  * The SCORES, phoneme breakdowns, and attempt history are illustrative
  * and are NOT real Azure Speech pronunciation-assessment output. The UI
@@ -24,12 +27,18 @@ import type { AttemptScore, ErrorType } from '@/types/pronunciation';
 const DEMO_VOICE = 'ptbr_female';
 
 /**
- * Resolve the native reference audio URL for a demo item. The audio
- * files live under `public/audio/sentences/<voice>/<id>.wav` and are
- * served statically, so no account or API key is needed to play them.
+ * Resolve the native reference audio URL for a demo item. The clips live
+ * under `public/demo-audio/<voice>/<id>.wav` and are served statically, so
+ * no account or API key is needed to play them.
+ *
+ * These are deliberately a separate, small copy of the corresponding files
+ * in `public/audio/sentences/` — that directory is excluded from the public
+ * static deploy (`.vercelignore`) to keep it lightweight, so the demo cannot
+ * rely on it. If you add a demo item, copy its native WAV into
+ * `public/demo-audio/<voice>/` as well.
  */
 export function getDemoNativeAudioUrl(id: string): string {
-  return `/audio/sentences/${DEMO_VOICE}/${id}.wav`;
+  return `/demo-audio/${DEMO_VOICE}/${id}.wav`;
 }
 
 /** A single phoneme within a demo word, with its illustrative score. */
@@ -76,9 +85,10 @@ export interface DemoItem {
   /**
    * Optional URL to a real learner recording of this sentence, so the
    * demo can play back "a sample attempt" alongside the native voice.
-   * Drop a WAV/MP3 in `public/audio/demo/` and point this at it, e.g.
-   * `/audio/demo/gemini_food_003.wav`. Left undefined when no recording
-   * is available yet.
+   * Drop a WAV/MP3 in `public/demo-audio/` and point this at it, e.g.
+   * `/demo-audio/gemini_food_003.wav`. (Use `public/demo-audio/`, not
+   * `public/audio/`, so it ships with the public static deploy.) Left
+   * undefined when no recording is available yet.
    */
   learnerAudioUrl?: string;
 }
