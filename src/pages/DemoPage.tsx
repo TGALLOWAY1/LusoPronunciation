@@ -1,12 +1,18 @@
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Volume2, Mic, Loader2, RotateCcw, Info, ArrowRight } from 'lucide-react';
+import { Volume2, Mic, Loader2, RotateCcw, Info, ArrowRight, Pause, Headphones } from 'lucide-react';
 import PublicPageShell from '@/components/demo/PublicPageShell';
 import PhraseScoreOverview from '@/components/pronunciation/PhraseScoreOverview';
 import PhraseTrendSparkline from '@/components/pronunciation/PhraseTrendSparkline';
 import PhonemeChip from '@/components/pronunciation/PhonemeChip';
+import { useAudioPlayer, stopAllAudio } from '@/hooks/useAudioPlayer';
 import { getScoreColor, getScoreBorderColor } from '@/lib/pronunciationDisplay';
-import { DEMO_ITEMS, type DemoItem, type DemoWordFeedback } from '@/lib/demo/demoData';
+import {
+  DEMO_ITEMS,
+  getDemoNativeAudioUrl,
+  type DemoItem,
+  type DemoWordFeedback,
+} from '@/lib/demo/demoData';
 
 type DemoPhase = 'idle' | 'analyzing' | 'result';
 
@@ -33,11 +39,23 @@ export default function DemoPage() {
     [activeId],
   );
 
+  // Native reference audio — the same WAV the full app plays.
+  const nativeAudioUrl = useMemo(() => getDemoNativeAudioUrl(item.id), [item.id]);
+  const native = useAudioPlayer(nativeAudioUrl);
+  // Optional sample learner recording (present only when one has been added).
+  const learner = useAudioPlayer(item.learnerAudioUrl);
+
   const resetTo = (id: string) => {
     if (analyzeTimer.current) clearTimeout(analyzeTimer.current);
+    stopAllAudio();
     setActiveId(id);
     setPhase('idle');
     setSelectedWord(null);
+  };
+
+  const toggleNative = () => {
+    if (native.isPlaying) native.pause();
+    else native.play();
   };
 
   const runAnalysis = () => {
@@ -59,10 +77,12 @@ export default function DemoPage() {
           <div className="flex items-start gap-3">
             <Info size={18} className="text-amber-600 dark:text-amber-300 mt-0.5 flex-shrink-0" />
             <div className="text-sm text-amber-800 dark:text-amber-200">
-              <p className="font-semibold">Interactive demo — sample data only</p>
+              <p className="font-semibold">Interactive demo — real sentences, sample scores</p>
               <p className="mt-1">
-                This is a self-contained preview. Scores, phoneme feedback, and history below are
-                realistic <strong>samples</strong>, not live Azure Speech results. No microphone,
+                These are <strong>real sentences</strong> from the app, with the same native
+                reference audio you hear in the full experience — press{' '}
+                <strong>Listen</strong> to play it. The scores, phoneme feedback, and history below
+                are realistic <strong>samples</strong>, not live Azure Speech results. No microphone,
                 account, or API keys are used. In the full app, you record your own voice and Azure
                 Speech scores it in real time.
               </p>
@@ -73,7 +93,7 @@ export default function DemoPage() {
         {/* Word / phrase picker */}
         <div>
           <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-            Pick a word or phrase
+            Pick a sentence
           </h2>
           <div className="flex flex-wrap gap-2">
             {DEMO_ITEMS.map((d) => (
@@ -92,15 +112,18 @@ export default function DemoPage() {
 
         {/* Prompt card */}
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-6">
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-3">
             <span className="badge badge-secondary">Difficulty {item.difficulty}</span>
+            {item.cefr && <span className="badge badge-secondary">{item.cefr}</span>}
             {item.focusSounds.map((s) => (
               <span key={s} className="chip-soft">{s}</span>
             ))}
           </div>
           <div className="text-center">
-            <p className="text-4xl font-bold text-gray-900 dark:text-gray-100">{item.text}</p>
-            <p className="mt-1 font-mono text-primary-600 dark:text-primary-400">/{item.ipa}/</p>
+            <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 leading-snug">
+              {item.text}
+            </p>
+            <p className="mt-2 font-mono text-primary-600 dark:text-primary-400">/{item.ipa}/</p>
             <p className="mt-1 text-gray-500 dark:text-gray-400 italic">{item.translation}</p>
           </div>
 
@@ -108,11 +131,18 @@ export default function DemoPage() {
             <button
               type="button"
               className="btn btn-secondary btn-md inline-flex items-center gap-2"
-              title="Native TTS playback is available in the full app."
-              onClick={() => undefined}
+              title="Play the native reference pronunciation for this sentence."
+              onClick={toggleNative}
+              aria-pressed={native.isPlaying}
             >
-              <Volume2 size={18} />
-              Listen (native voice)
+              {native.isLoading ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : native.isPlaying ? (
+                <Pause size={18} />
+              ) : (
+                <Volume2 size={18} />
+              )}
+              {native.isPlaying ? 'Playing…' : 'Listen (native voice)'}
             </button>
 
             {phase === 'idle' && (
@@ -147,9 +177,16 @@ export default function DemoPage() {
             )}
           </div>
 
+          {native.error && (
+            <p className="mt-3 text-center text-xs text-rose-500 dark:text-rose-400">
+              Couldn&apos;t play the reference audio here. It works in the deployed app.
+            </p>
+          )}
+
           {phase === 'idle' && (
             <p className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
-              Press <strong>Analyze demo recording</strong> to see how a scored attempt looks.
+              Press <strong>Listen</strong> to hear the native voice, then{' '}
+              <strong>Analyze demo recording</strong> to see how a scored attempt looks.
             </p>
           )}
         </div>
@@ -161,6 +198,33 @@ export default function DemoPage() {
               <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Your sample result</h2>
               <DemoBadge />
             </div>
+
+            {/* Compare recordings — only shown when a sample learner recording exists */}
+            {item.learnerAudioUrl && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-4">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                  Hear it back — native vs. this sample attempt
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={toggleNative}
+                    className="btn btn-secondary btn-sm inline-flex items-center gap-2"
+                  >
+                    {native.isPlaying ? <Pause size={16} /> : <Volume2 size={16} />}
+                    Native voice
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => (learner.isPlaying ? learner.pause() : learner.play())}
+                    className="btn btn-secondary btn-sm inline-flex items-center gap-2"
+                  >
+                    {learner.isPlaying ? <Pause size={16} /> : <Headphones size={16} />}
+                    Sample attempt
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Score overview (reuses the real app component) */}
             <PhraseScoreOverview attemptScore={item.attempt} />
