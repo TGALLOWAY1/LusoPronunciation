@@ -1,7 +1,12 @@
 # This Vercel deploy targets the PUBLIC static tour + demo (/tour, /demo),
-# which need no backend and no audio. The ~215MB of pre-generated practice
-# audio is only used by the authenticated app (which redirects to /auth on a
-# static deploy), so we exclude it to keep deploys small and fast.
+# which need no backend. The ~215MB of pre-generated practice audio is only
+# used by the authenticated app (which redirects to /auth on a static
+# deploy), so we exclude it to keep deploys small and fast.
+#
+# NOTE: the /demo "Listen (native voice)" button plays a handful of native
+# reference clips. Those live in `public/demo-audio/` (a small, dedicated
+# copy) precisely so they are NOT caught by the exclusions below and DO ship
+# with this deploy. Do not add demo playback assets under `public/audio/`.
 #
 # The prebuild audio-consistency check only reads data/audio_index.json, so
 # excluding these directories does not affect the build.
