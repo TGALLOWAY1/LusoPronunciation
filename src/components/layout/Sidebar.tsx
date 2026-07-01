@@ -6,6 +6,7 @@ import {
   RotateCcw,
   BarChart3,
   Settings,
+  Compass,
 } from 'lucide-react';
 import type { ComponentType } from 'react';
 
@@ -57,7 +58,20 @@ export default function Sidebar() {
             </Link>
           );
         })}
-        
+
+        {/* Public tour — always available, useful for sharing/portfolio */}
+        <div className="pt-4 mt-4 border-t border-gray-700">
+          <Link
+            to="/tour"
+            className={`nav-link ${
+              location.pathname === '/tour' ? 'nav-link-active' : 'nav-link-inactive text-gray-300'
+            }`}
+          >
+            <Compass size={20} className="mr-2" />
+            <span className="text-sm sm:text-base">Take a Tour</span>
+          </Link>
+        </div>
+
         {/* Dev-only navigation items */}
         {isDevMode && (
           <>
