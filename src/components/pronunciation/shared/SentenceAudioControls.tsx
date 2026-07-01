@@ -7,6 +7,10 @@ interface SentenceAudioControlsProps {
   audioRef?: React.RefObject<HTMLAudioElement | null>;
   onStart?: (type: 'native' | 'user') => void;
   onStop?: () => void;
+  /** Label for the native audio button (defaults to "Native Sentence"). */
+  nativeLabel?: string;
+  /** Label for the user audio button (defaults to "Your Recording"). */
+  userLabel?: string;
 }
 
 /**
@@ -20,6 +24,8 @@ export default function SentenceAudioControls({
   audioRef: externalAudioRef,
   onStart,
   onStop,
+  nativeLabel = 'Native Sentence',
+  userLabel = 'Your Recording',
 }: SentenceAudioControlsProps) {
   const internalAudioRef = useRef<HTMLAudioElement>(null);
   const audioRef = externalAudioRef || internalAudioRef;
@@ -115,7 +121,7 @@ export default function SentenceAudioControls({
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M8 5v14l11-7z" />
                 </svg>
-                <span>Native Sentence</span>
+                <span>{nativeLabel}</span>
               </>
             )}
           </button>
@@ -128,7 +134,7 @@ export default function SentenceAudioControls({
             <svg className="w-5 h-5 inline mr-2" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
             </svg>
-            Native Sentence
+            {nativeLabel}
           </button>
         )}
 
@@ -153,7 +159,7 @@ export default function SentenceAudioControls({
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                 </svg>
-                <span>Your Recording</span>
+                <span>{userLabel}</span>
               </>
             )}
           </button>
