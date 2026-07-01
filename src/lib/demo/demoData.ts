@@ -41,6 +41,16 @@ export function getDemoNativeAudioUrl(id: string): string {
   return `/demo-audio/${DEMO_VOICE}/${id}.wav`;
 }
 
+/**
+ * Resolve the URL for an uploaded learner recording of a demo sentence.
+ * Recordings live under `public/demo-audio/attempts/<id>.<kind>.wav` (see the
+ * README in that folder). Files are optional — the demo probes availability
+ * at runtime and hides the playback button until a recording is uploaded.
+ */
+export function getDemoAttemptAudioUrl(id: string, kind: 'bad' | 'best'): string {
+  return `/demo-audio/attempts/${id}.${kind}.wav`;
+}
+
 /** A single phoneme within a demo word, with its illustrative score. */
 export interface DemoPhonemeScore {
   /** Phoneme id matching data/phoneme_metadata.json (e.g. "LH", "AN_NASAL"). */
@@ -56,6 +66,37 @@ export interface DemoWordFeedback {
   phonemes: DemoPhonemeScore[];
   /** Short coaching note surfaced when the word is expanded. */
   tip?: string;
+}
+
+/** Which of the three demo audio examples an assessment belongs to. */
+export type DemoExampleKind = 'native' | 'bad' | 'best';
+
+/**
+ * One selectable audio example for a demo sentence — the synthesized native
+ * reference, an intentionally bad learner attempt, or a best-effort learner
+ * attempt. Each carries its own full sample assessment so the demo can show
+ * how scoring reacts to very different pronunciations of the same sentence.
+ */
+export interface DemoExample {
+  kind: DemoExampleKind;
+  /** Selector button label, e.g. "Native speaker". */
+  label: string;
+  /** One-line explanation shown when the example is selected. */
+  description: string;
+  /**
+   * Audio for this example. The native example always resolves to the shipped
+   * reference WAV; learner examples point at `public/demo-audio/attempts/`
+   * and may not exist yet — the UI probes availability before offering play.
+   */
+  audioUrl: string;
+  /** True when the audio is guaranteed to ship with the deploy (native TTS). */
+  audioBundled: boolean;
+  /** Sample assessment for this example. */
+  attempt: AttemptScore;
+  /** Word-by-word breakdown with phonemes for this example. */
+  words: DemoWordFeedback[];
+  /** Coaching notes tailored to this example. */
+  coaching: string[];
 }
 
 /** A complete demo item: a real sentence plus its sample assessment. */
@@ -74,24 +115,24 @@ export interface DemoItem {
   cefr?: string;
   /** Human-friendly labels for the tricky sounds in this item. */
   focusSounds: string[];
-  /** Sample assessment shown in the score card. */
+  /** Sample assessment shown in the score card (the best-effort attempt). */
   attempt: AttemptScore;
-  /** Word-by-word breakdown with phonemes. */
+  /** Word-by-word breakdown with phonemes (the best-effort attempt). */
   words: DemoWordFeedback[];
   /** Illustrative history of overall scores across prior attempts (oldest → newest). */
   history: number[];
   /** Coaching suggestions surfaced after the sample attempt. */
   coaching: string[];
   /**
-   * Optional URL to a real learner recording of this sentence, so the
-   * demo can play back "a sample attempt" alongside the native voice.
-   * Drop a WAV/MP3 in `public/demo-audio/` and point this at it, e.g.
-   * `/demo-audio/gemini_food_003.wav`. (Use `public/demo-audio/`, not
-   * `public/audio/`, so it ships with the public static deploy.) Left
-   * undefined when no recording is available yet.
+   * The three selectable audio examples — native TTS, an intentionally bad
+   * attempt, and a best-effort attempt — ordered for display. The best
+   * example reuses `attempt`/`words`/`coaching`; the other two are derived.
    */
-  learnerAudioUrl?: string;
+  examples: DemoExample[];
 }
+
+/** A demo item before its three audio examples are derived. */
+type DemoItemBase = Omit<DemoItem, 'examples'>;
 
 function attempt(
   id: string,
@@ -121,12 +162,112 @@ function attempt(
 }
 
 /**
+ * Score transforms used to derive the native and bad examples from the
+ * hand-authored best-effort assessment. Deterministic (no randomness) so
+ * the demo renders identically on every visit:
+ *
+ * - Native: clamped into 96–100. The reference audio *is* the target, so
+ *   assessing it against itself scores near-perfect. Uses the original
+ *   score's low bits for a little natural-looking variation.
+ * - Bad: scaled down to roughly 60% (floored at 28) — an intentionally
+ *   rough attempt where the tricky sounds fall apart.
+ */
+function toNativeScore(score: number): number {
+  return Math.min(100, 96 + (score % 4));
+}
+
+function toBadScore(score: number): number {
+  return Math.max(28, Math.round(score * 0.6));
+}
+
+function averageWordScore(words: DemoWordFeedback[]): number {
+  return Math.round(words.reduce((sum, w) => sum + w.score, 0) / words.length);
+}
+
+function mapWordScores(
+  words: DemoWordFeedback[],
+  transform: (score: number) => number,
+  errorFloor: number | null,
+): DemoWordFeedback[] {
+  return words.map((w) => {
+    const score = transform(w.score);
+    return {
+      text: w.text,
+      score,
+      errorType: errorFloor !== null && score < errorFloor ? 'mispronounced' : undefined,
+      phonemes: w.phonemes.map((p) => ({ symbol: p.symbol, score: transform(p.score) })),
+      tip: w.tip,
+    };
+  });
+}
+
+/** Derive the three selectable audio examples for a demo sentence. */
+function buildExamples(item: DemoItemBase): DemoExample[] {
+  const nativeWords = mapWordScores(item.words, toNativeScore, null);
+  const nativeOverall = averageWordScore(nativeWords);
+
+  const badWords = mapWordScores(item.words, toBadScore, 65);
+  const badOverall = averageWordScore(badWords);
+
+  const focus = item.focusSounds.join(' and ');
+
+  return [
+    {
+      kind: 'native',
+      label: 'Native speaker',
+      description:
+        'Synthesized native-speaker audio — the reference the app compares every attempt against. Assessed against itself, it scores near-perfect.',
+      audioUrl: getDemoNativeAudioUrl(item.id),
+      audioBundled: true,
+      attempt: attempt(`${item.attempt.attemptId}-native`, nativeOverall, 98, 100, 97, nativeWords),
+      words: nativeWords,
+      coaching: [
+        'This is the synthesized native reference — the same voice the full app plays before you record.',
+        `Listen for the ${focus}, then switch to the sample attempts to hear how the scoring reacts when they slip.`,
+      ],
+    },
+    {
+      kind: 'bad',
+      label: 'My bad attempt',
+      description:
+        'A deliberately poor pronunciation of the same sentence, so you can see how the scoring pinpoints trouble.',
+      audioUrl: getDemoAttemptAudioUrl(item.id, 'bad'),
+      audioBundled: false,
+      attempt: attempt(
+        `${item.attempt.attemptId}-bad`,
+        badOverall,
+        Math.max(35, badOverall - 8),
+        100,
+        Math.max(30, badOverall - 12),
+        badWords,
+      ),
+      words: badWords,
+      coaching: [
+        `An intentionally rough attempt — the ${focus} drift far from the native targets, and the word scores show exactly where.`,
+        'Toggle between this attempt and the native speaker to hear the contrast the scores are picking up.',
+      ],
+    },
+    {
+      kind: 'best',
+      label: 'My best attempt',
+      description:
+        'A realistic best effort — strong scores overall, with a few tricky sounds still left to polish.',
+      audioUrl: getDemoAttemptAudioUrl(item.id, 'best'),
+      audioBundled: false,
+      attempt: item.attempt,
+      words: item.words,
+      coaching: item.coaching,
+    },
+  ];
+}
+
+/**
  * The fixed demo sentence set. Ordered strongest → trickiest so the demo
  * tells a coherent story: an easy greeting first, then progressively
  * harder PT-BR sounds (nasal diphthongs, the palatal "lh/nh", the tapped
  * "r"). Every `id` is a real sentence id, so native audio plays.
  */
-export const DEMO_ITEMS: DemoItem[] = [
+const BASE_ITEMS: DemoItemBase[] = [
   (() => {
     const words: DemoWordFeedback[] = [
       {
@@ -428,6 +569,11 @@ export const DEMO_ITEMS: DemoItem[] = [
     };
   })(),
 ];
+
+export const DEMO_ITEMS: DemoItem[] = BASE_ITEMS.map((item) => ({
+  ...item,
+  examples: buildExamples(item),
+}));
 
 export function getDemoItem(id: string): DemoItem | undefined {
   return DEMO_ITEMS.find((item) => item.id === id);

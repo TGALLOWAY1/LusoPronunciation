@@ -103,8 +103,8 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 ## Public Tour & Demo Mode
 
 - **Take a Tour** — A public, no-login `/tour` page that explains the product for portfolio/recruiter viewing: what it does, the practice flow, pronunciation feedback, progress tracking, why it helps, and technical highlights.
-- **Interactive Demo Mode** — A public, no-login `/demo` page where visitors pick from a set of real PT-BR sentences drawn from the app's content ("Oi, tudo bem?", "Estou muito feliz hoje.", "A conta, por favor.", "Minha mãe se chama Ana.", "Que horas são?"), play the native reference audio, trigger a simulated assessment, and explore a realistic sample result: overall + sub-scores, word-by-word chips, phoneme breakdown with IPA, coaching tips, and a progress trend.
-- **Native Reference Playback in Demo** — Each demo sentence plays its real native pronunciation audio (the same clip used in the full app), with an optional slot to play back a sample learner recording alongside it for comparison.
+- **Interactive Demo Mode** — A public, no-login `/demo` page that mirrors the real sentence practice page (interactive full-sentence display, score strip, sound details, focus areas, coaching, progress trend) for a set of real PT-BR sentences ("Oi, tudo bem?", "Estou muito feliz hoje.", "A conta, por favor.", "Minha mãe se chama Ana.", "Que horas são?").
+- **Demo Audio Examples** — Instead of recording, visitors compare three selectable audio examples per sentence — the native speaker (scores near-perfect), an intentionally bad attempt, and a best-effort attempt — each with its own full sample assessment. Native reference audio always plays; learner recordings are optional uploads under `public/demo-audio/attempts/` that appear automatically once present.
 - **Clearly-Labeled Sample Data** — Demo scores, phoneme feedback, and history are hand-authored sample data (not live Azure output) and are labeled as such in the UI; no microphone, account, Azure credentials, or database are required.
 
 ## Infrastructure
