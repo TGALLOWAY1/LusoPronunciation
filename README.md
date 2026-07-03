@@ -29,12 +29,34 @@
 <!-- TODO: Replace this static hero with a short GIF showing a full record → score → coaching cycle -->
 <img width="900" alt="LusoPronounce sentence practice" src="https://github.com/user-attachments/assets/eb5fcdd1-ab7e-41ff-a015-dd4f973b0e6f" />
 
+**🚀 Try it with zero setup — no login, microphone, or Azure key required.**
+
 </div>
+
+---
+
+## 🎮 Live Demo & Tour
+
+Two **public, unauthenticated** routes let anyone experience the product without an account, a microphone, or Azure credentials:
+
+| Route | What it is |
+|-------|------------|
+| **`/tour`** | *"Take a Tour"* — a portfolio-friendly product explainer |
+| **`/demo`** | An interactive demo with clearly-labeled **sample** scores, phoneme feedback, coaching, and progress trends |
+
+```bash
+npm install
+npm run dev            # → http://localhost:3000
+# then open http://localhost:3000/tour  or  http://localhost:3000/demo
+```
+
+> No backend, Azure key, or MongoDB is needed for the tour and demo — ideal for a quick recruiter walkthrough or a static portfolio deploy. See [`DEMO_READY.md`](./DEMO_READY.md) for the full run/deploy guide, including how to publish just the tour/demo as a static site.
 
 ---
 
 ## 📑 Table of Contents
 
+- [Live Demo & Tour](#-live-demo--tour)
 - [The Problem](#-the-problem)
 - [Why This Project Is Technically Interesting](#-why-this-project-is-technically-interesting)
 - [Project Overview](#-project-overview)
@@ -507,7 +529,7 @@ LusoPronounce/
 |--------|-------|
 | Lines of TypeScript/TSX (`src/`) | **~42,700** |
 | React components | **71** |
-| Pages (routes) | **15** |
+| Pages (routes) | **17** (incl. public `/tour` + `/demo`) |
 | Business-logic hooks | **5** |
 | REST route groups | **9** (assessment, auth, oauth, practice, flashcards, custom sentences, lexicon, migration, health) |
 | Mongoose models | **9** |

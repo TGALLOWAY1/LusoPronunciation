@@ -93,10 +93,10 @@ export default function PhraseScoreOverview({
   //   : [];
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return 'bg-emerald-500';
-    if (score >= 80) return 'bg-sky-500';
-    if (score >= 70) return 'bg-amber-500';
-    return 'bg-rose-500';
+    if (score >= 90) return 'bg-gradient-to-r from-emerald-400 to-emerald-500';
+    if (score >= 80) return 'bg-gradient-to-r from-sky-400 to-sky-500';
+    if (score >= 70) return 'bg-gradient-to-r from-amber-400 to-amber-500';
+    return 'bg-gradient-to-r from-rose-400 to-rose-500';
   };
 
   return (
@@ -113,7 +113,7 @@ export default function PhraseScoreOverview({
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
           <div
-            className={`h-full transition-all duration-500 ${getScoreColor(overall)}`}
+            className={`h-full rounded-full shadow-sm transition-all duration-500 ${getScoreColor(overall)}`}
             style={{ width: `${overall}%` }}
           />
         </div>
@@ -142,7 +142,7 @@ export default function PhraseScoreOverview({
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
           <div
-            className={`h-full transition-all duration-500 ${getScoreColor(accuracy)}`}
+            className={`h-full rounded-full shadow-sm transition-all duration-500 ${getScoreColor(accuracy)}`}
             style={{ width: `${accuracy}%` }}
           />
         </div>
@@ -160,7 +160,7 @@ export default function PhraseScoreOverview({
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${getScoreColor(fluency)}`}
+                className={`h-full rounded-full shadow-sm transition-all duration-500 ${getScoreColor(fluency)}`}
                 style={{ width: `${fluency}%` }}
               />
             </div>
@@ -180,7 +180,7 @@ export default function PhraseScoreOverview({
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${getScoreColor(completeness)}`}
+                className={`h-full rounded-full shadow-sm transition-all duration-500 ${getScoreColor(completeness)}`}
                 style={{ width: `${completeness}%` }}
               />
             </div>
@@ -200,7 +200,7 @@ export default function PhraseScoreOverview({
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-full transition-all duration-500 ${getScoreColor(prosody)}`}
+                className={`h-full rounded-full shadow-sm transition-all duration-500 ${getScoreColor(prosody)}`}
                 style={{ width: `${prosody}%` }}
               />
             </div>

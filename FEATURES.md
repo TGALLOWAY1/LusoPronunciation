@@ -100,6 +100,13 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Error Handling** — React ErrorBoundary at the app root, centralized error taxonomy (`ERROR_CLASS` enum), and safe error payloads in API responses.
 - **Local Storage Management** — Audio cache capped at 1.5 MB with graceful handling when storage is full.
 
+## Public Tour & Demo Mode
+
+- **Take a Tour** — A public, no-login `/tour` page that explains the product for portfolio/recruiter viewing: what it does, the practice flow, pronunciation feedback, progress tracking, why it helps, and technical highlights.
+- **Interactive Demo Mode** — A public, no-login `/demo` page that mirrors the real sentence practice page (interactive full-sentence display, score strip, sound details, focus areas, coaching, progress trend) for a set of real PT-BR sentences ("Oi, tudo bem?", "Estou muito feliz hoje.", "A conta, por favor.", "Minha mãe se chama Ana.", "Que horas são?").
+- **Demo Audio Examples** — Instead of recording, visitors compare three selectable audio examples per sentence — the native speaker (scores near-perfect), an intentionally bad attempt, and a best-effort attempt — each with its own full sample assessment. Native reference audio always plays; learner recordings are optional uploads under `public/demo-audio/attempts/` that appear automatically once present.
+- **Clearly-Labeled Sample Data** — Demo scores, phoneme feedback, and history are hand-authored sample data (not live Azure output) and are labeled as such in the UI; no microphone, account, Azure credentials, or database are required.
+
 ## Infrastructure
 
 - **Testing** — Vitest for unit and contract tests, Playwright for end-to-end browser tests, organized by project phase.

@@ -46,6 +46,8 @@ export interface PronunciationFeedbackPanelProps {
   // Audio
   sentenceAudio?: NormalizedAudioVariant[]; // native/user variants
   wordAudios?: NormalizedWordAudioVariant[]; // optional per-word audio
+  /** Custom label for the user audio button (e.g. "Bad attempt" in the demo). */
+  userAudioLabel?: string;
 
   // Word-level feedback
   words?: NormalizedWordFeedback[];
@@ -74,6 +76,7 @@ export default function PronunciationFeedbackPanel({
   difficulty,
   sentenceAudio,
   wordAudios,
+  userAudioLabel,
   words,
   title,
   showDevControls = false,
@@ -278,6 +281,7 @@ export default function PronunciationFeedbackPanel({
               audioRef={sentenceAudioRef}
               onStart={handleSentenceStart}
               onStop={handleSentenceStop}
+              userLabel={userAudioLabel}
             />
           )}
         </>

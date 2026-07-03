@@ -16,6 +16,8 @@ import AdminLexiconPage from '../pages/AdminLexiconPage';
 import SettingsPage from '../pages/SettingsPage';
 import AuthPage from '../pages/AuthPage';
 import OAuthCallbackPage from '../pages/OAuthCallbackPage';
+import TourPage from '../pages/TourPage';
+import DemoPage from '../pages/DemoPage';
 import { isAuthenticated, pingSpeechServiceHealth } from '@/api/auth';
 import RequireAuth from '@/components/auth/RequireAuth';
 
@@ -24,12 +26,11 @@ const PronunciationFixtures = lazy(() => import('../pages/dev/pronunciation-fixt
 const DevAnalyticsPage = lazy(() => import('../pages/dev/DevAnalyticsPage'));
 const DevMetricsPage = lazy(() => import('../pages/dev/DevMetricsPage'));
 
-function AppRoutes() {
+function AppShell() {
   return (
-    <BrowserRouter>
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<RequireAuth><PracticePage /></RequireAuth>} />
+    <AppLayout>
+      <Routes>
+        <Route path="/" element={<RequireAuth><PracticePage /></RequireAuth>} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<OAuthCallbackPage />} />
           <Route path="/practice/sentence" element={<Navigate to="/" replace />} />
@@ -49,8 +50,21 @@ function AppRoutes() {
               <Route path="/dev/metrics" element={<Suspense fallback={null}><DevMetricsPage /></Suspense>} />
             </>
           )}
-        </Routes>
-      </AppLayout>
+      </Routes>
+    </AppLayout>
+  );
+}
+
+function AppRoutes() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Public, unauthenticated marketing surfaces (own standalone layout) */}
+        <Route path="/tour" element={<TourPage />} />
+        <Route path="/demo" element={<DemoPage />} />
+        {/* Everything else runs inside the authenticated app shell */}
+        <Route path="/*" element={<AppShell />} />
+      </Routes>
     </BrowserRouter>
   );
 }
