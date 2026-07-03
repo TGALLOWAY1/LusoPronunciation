@@ -198,64 +198,7 @@ Single scores are noise. Aggregating attempts over time surfaces *real* weakness
 ---
 
 ## 🏗️ Application Architecture
-
-```mermaid
-flowchart TD
-    subgraph Browser["🌐 Browser (React 19 SPA)"]
-        UI[UI Components<br/>practice · dashboard · analytics]
-        Hooks[Business-logic Hooks<br/>recording · assessment · audio]
-        Store[State Stores<br/>React Context: settings · progress · practice log]
-        Rec[Audio Recording<br/>MediaRecorder + quality gates]
-        UI --> Hooks --> Store
-        Hooks --> Rec
-    end
-
-    Rec -->|webm/opus upload| API
-
-    subgraph Server["⚙️ Express 5 Backend (Node 22)"]
-        API[REST API /api<br/>auth · assessment · practice · flashcards · custom · lexicon]
-        MW[Middleware<br/>JWT · rate limit · CORS · Helmet]
-        Conv[Audio Conversion<br/>ffmpeg → WAV 16kHz mono]
-        Coach[Coaching Engine]
-        API --> MW --> Conv
-    end
-
-    Conv -->|WAV| Azure
-    subgraph AzureCloud["☁️ Azure AI Services"]
-        Azure[Pronunciation Assessment]
-        TTS[Text-to-Speech]
-        Trans[AI Translator]
-    end
-
-    Azure -->|word + phoneme scores| API
-    API --> Coach
-    API --> DB[(MongoDB<br/>Mongoose 9)]
-    DB --> Analytics[Analytics Layer<br/>trends · weak sounds · improvement]
-    Analytics --> Charts[Chart Components]
-    Coach --> UI
-    Charts --> UI
-
-    style Azure fill:#0078D4,color:#fff
-    style TTS fill:#0078D4,color:#fff
-    style Trans fill:#0078D4,color:#fff
-    style DB fill:#47A248,color:#fff
-    style Coach fill:#16a34a,color:#fff
-```
-
-**Layer-by-layer:**
-
-| Layer | Responsibility |
-|-------|----------------|
-| **UI Components** | Feature-grouped React components (auth, practice, pronunciation, dashboard, analytics, layout) |
-| **Hooks** | Encapsulated lifecycle logic — `useLivePronunciationPractice`, `useMicrophoneRecorder`, audio players |
-| **State Stores** | React Context: `settingsStore`, `progressStore`, `practiceLogStore` (dual-written to localStorage) |
-| **Audio Recording** | MediaRecorder capture with client-side quality gates before any API spend |
-| **REST API** | Express routers under `/api` with JWT-protected practice/data endpoints |
-| **Middleware** | JWT auth, per-user rate limiting on AI routes, CORS allowlist, Helmet CSP |
-| **Audio Conversion** | ffmpeg transcode to Azure's required WAV format |
-| **Azure AI Services** | Pronunciation Assessment, TTS, AI Translator |
-| **MongoDB** | Users, attempts, sessions, flashcards, invite codes, custom sentences, lexicon |
-| **Analytics → Charts** | Aggregations rendered as trend/score visualizations |
+<img width="1164" height="1351" alt="image" src="https://github.com/user-attachments/assets/a42b3949-cb63-43d1-8ed2-e3cacc1dc212" />
 
 ---
 
@@ -341,7 +284,7 @@ flowchart LR
 > **Design stance:** cloud AI handles *perception* (speech → scores); deterministic in-house logic handles *pedagogy* (scores → coaching). This keeps every suggestion explainable and unit-tested — no LLM hallucination in the feedback loop.
 
 ---
-
+<!--
 ## 📊 Analytics Dashboard
 
 The Progress page is organized into **Overview · Progress · Strengths · Focus Areas · Recommendations · Learning Resources**, backed by a dedicated analytics layer (`src/components/analytics/`).
@@ -353,69 +296,7 @@ The Progress page is organized into **Overview · Progress · Strengths · Focus
 | Difficulty distribution | `DifficultyScoreBarChart` | Scores bucketed by difficulty level |
 | Phrase trend sparklines | `PhraseTrendSparkline` | Per-sentence score trajectory |
 | Improvement rows | `ImprovementRow` | "Most Improved" / "Needs More Practice" |
-
-**Recommended screenshots** (placeholders where assets don't yet exist):
-
-- ✅ Daily practice & dashboard — `docs/assets/readme/dashboard.png`
-- ✅ Pronunciation trends — `docs/assets/linkedin/progress.png`
-- ⬜ Phoneme accuracy heatmap — <!-- TODO: capture weakest-sounds heatmap -->
-- ⬜ Word-accuracy breakdown — <!-- TODO -->
-- ✅ Session history — `docs/assets/readme/recent-sessions.png`
-- ⬜ Vocabulary progress — <!-- TODO -->
-- ⬜ Weakest sounds / improvement-over-time — <!-- TODO -->
-
----
-
-## 🗂️ Repository Structure
-
-The frontend and backend share a single `src/` tree. Every major package below exists for a specific reason:
-
-```text
-LusoPronounce/
-├── src/
-│   ├── app/                 # React root + routing shell (App.tsx, main.tsx)
-│   ├── pages/               # Top-level route components (practice, auth, dashboard, dev-only)
-│   ├── components/          # 71 feature-grouped components…
-│   │   ├── analytics/       #   …Progress dashboard sections + charts
-│   │   ├── auth/            #   …login forms + route guards
-│   │   ├── common/          #   …UI primitives (ChartContainer, panels, spinners)
-│   │   ├── dashboard/       #   …dashboard widgets (Rolling7DayChart, etc.)
-│   │   ├── layout/          #   …responsive shell (AppLayout, Sidebar, Header)
-│   │   ├── practice/        #   …sentence/word practice UI
-│   │   └── pronunciation/   #   …scoring, phoneme panels, word chips, sparklines
-│   ├── hooks/               # Recording / assessment-lifecycle / audio-playback hooks
-│   ├── state/               # React Context stores (settings, progress, practice log)
-│   ├── lib/                 # Pure domain logic — audio quality, parsing, analytics…
-│   │   └── coaching/        #   …deterministic coaching engine + PT-BR minimal pairs
-│   ├── api/                 # Client-side HTTP wrappers (auth, practice, flashcards)
-│   ├── features/            # Cross-cutting modules (e.g. localStorage migration)
-│   ├── pipeline/            # Content-generation logic (enrich, phoneme map, TTS, validate)
-│   ├── models/              # Frontend data models
-│   ├── shared/types/        # Types shared between client and server
-│   ├── config/ types/ utils/ styles/   # App config, client types, helpers, Tailwind entry
-│   ├── dev/ mock/ test/     # E2E media mocks, fixtures, test setup
-│   └── server/              # Express backend
-│       ├── app.ts           #   server entry + fail-fast startup
-│       ├── routes/          #   9 route groups (assessment, auth, oauth, practice, flashcards…)
-│       ├── middleware/      #   JWT auth, pronunciation security (rate limit + CORS)
-│       ├── models/          #   9 Mongoose schemas
-│       ├── services/        #   business logic (SM-2 flashcards, translation)
-│       ├── mappers/ lib/    #   DTO mappers; audio conversion, temp workspace, timing
-│       ├── config/ db/ utils/  # startup env validation; Mongo singleton; speech debug
-│       └── __fixtures__/    #   server-side test audio
-│
-├── data/                    # 593 sentences · 974 words · 36 phonemes (+ test/raw/legacy)
-├── audio/ · public/audio/   # ~4,200 generated TTS assets (source + web-served)
-├── scripts/                 # Data + audio generation, analysis, invite seeding, ops
-├── config/                  # Generation pipeline configuration
-├── e2e/                     # Playwright specs (phase-organized) + screenshot specs
-├── docs/                    # architecture · audits · planning · retrospectives · assets
-├── .github/workflows/       # CI pipeline (ci.yml)
-├── Dockerfile               # Multi-stage production image (node:22-slim)
-├── railway.json · nixpacks.toml   # Railway deploy config
-├── FEATURES.md · CLAUDE.md  # Feature inventory · contributor/agent guide
-└── package.json · *.config.* # Build, test, and tooling config
-```
+--> 
 
 ---
 
@@ -486,105 +367,9 @@ LusoPronounce/
 | Avg. assessment latency | <!-- TODO: telemetry recorded; publish measured p50/p95 --> _telemetry-tracked_ |
 | Supported browsers | Modern Chromium / Firefox / WebKit (MediaRecorder required) |
 
----
-
-## 🚀 Getting Started
-
-> **Requires Node 22.x** (see `.nvmrc`).
-
-<details open>
-<summary><b>1 · Installation</b></summary>
-
-```bash
-git clone https://github.com/TGALLOWAY1/LusoPronunciation.git
-cd LusoPronunciation
-npm install
-```
-</details>
-
-<details>
-<summary><b>2 · Environment variables</b></summary>
-
-```bash
-cp .env.example .env   # then fill in the values below
-```
-
-**Required**
-
-| Variable | Purpose |
-|----------|---------|
-| `AZURE_SPEECH_KEY` | Azure Cognitive Services Speech subscription key |
-| `AZURE_SPEECH_REGION` | Azure region (e.g. `eastus`, `brazilsouth`) |
-| `MONGODB_URI` | MongoDB connection string (Atlas or local) |
-| `JWT_SECRET` | Secret for signing JWT auth tokens |
-
-**Optional**
-
-| Variable | Purpose |
-|----------|---------|
-| `REQUIRE_INVITE_CODE` | Gate registration behind an invite code (default off) |
-| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth |
-| `LINKEDIN_CLIENT_ID` / `LINKEDIN_CLIENT_SECRET` | LinkedIn OAuth |
-| `APP_ORIGIN` | Public URL used for OAuth redirects |
-| `SPEECH_RATE_LIMIT_*`, `SPEECH_MAX_UPLOAD_BYTES` | Tune rate limits and upload cap |
-| `AUDIO_CONVERT_TIMEOUT_MS` | ffmpeg timeout (default 12 s) |
-| `CUSTOM_SENTENCE_CREATE_MAX` / `_WINDOW_MS` | Custom-sentence creation rate limit |
-
-See [`.env.example`](./.env.example) for the full list.
-</details>
-
-<details>
-<summary><b>3 · Azure configuration</b></summary>
-
-1. Create an **Azure AI Speech** resource in the [Azure Portal](https://portal.azure.com/).
-2. Copy a **Key** and the **Region** into `AZURE_SPEECH_KEY` / `AZURE_SPEECH_REGION`.
-3. (Optional) Create an **Azure AI Translator** resource to enable the custom sentence builder.
-4. Verify wiring at runtime via `GET /api/health` (reports Mongo + Azure config state).
-</details>
-
-<details>
-<summary><b>4 · Run locally (dev)</b></summary>
-
-```bash
-npm run dev          # frontend → http://localhost:3000
-npm run dev:server   # backend  → http://localhost:4000
-```
-The Vite dev server proxies `/api` requests to the backend automatically.
-</details>
-
-<details>
-<summary><b>5 · Production build & deploy</b></summary>
-
-```bash
-npm run build        # prebuild (copy data) + tsc + vite build
-npm start            # serve built frontend + API
-```
-
-Target platform: **Railway** (multi-stage Dockerfile on `node:22-slim`, health check at `/api/health`).
-For a gated launch, seed an invite code first:
-
-```bash
-npm run invite:seed -- --code=LAUNCH-ACCESS --maxUses=25
-```
-</details>
-
-<details>
-<summary><b>6 · Testing</b></summary>
-
-```bash
-npm test -- --run        # all Vitest unit + contract tests once
-npm run test:phase04     # deploy-critical unit suite
-npm run e2e:phase04      # Playwright e2e
-npm run verify:phase04   # unit + e2e
-npm run screenshots:readme  # regenerate docs/assets/readme/*.png
-```
-</details>
-
----
-
+--
+<!--
 ## 🖼️ Screenshots
-
-> Refresh with `npm run screenshots:readme` if the UI changes.
 
 ### Practice Mode
 | Sentence Practice | Word Practice |
@@ -605,26 +390,7 @@ npm run screenshots:readme  # regenerate docs/assets/readme/*.png
 | Before | After |
 |---|---|
 | ![Before](docs/assets/practice/sentence-practice-before.png) | ![After](docs/assets/practice/sentence-practice-after.png) |
-
-<!-- TODO: add Recording Interface, Phoneme Feedback close-up, Vocabulary, Mobile, and Dark Mode screenshots -->
-
----
-
-## 🧩 Design Decisions
-
-<details>
-<summary><b>Why React 19 + TypeScript?</b></summary>
-
-A speech-feedback UI is highly interactive and state-heavy (recording lifecycle, async assessment, live charts). React's component model + hooks keep that logic composable; strict TypeScript catches the many shapes of Azure's nested response at compile time. **Trade-off:** more upfront typing effort for far fewer runtime surprises in the assessment-parsing layer.
-</details>
-
-<details>
-<summary><b>Why React Context instead of Redux/Zustand?</b></summary>
-
-> _Note: an earlier spec referenced Zustand; the codebase deliberately uses **React Context** stores._
-
-App state is modest and mostly session-scoped (settings, progress, practice log). Three focused Context providers + localStorage dual-write give resilience without a global-store dependency or boilerplate. **Trade-off:** Context can over-render if misused — mitigated by splitting into independent stores. If cross-cutting state grows, a dedicated store library would be the next step.
-</details>
+-->
 
 <details>
 <summary><b>Why Azure AI Speech?</b></summary>
@@ -659,62 +425,7 @@ See [`docs/planning/ROADMAP.md`](./docs/planning/ROADMAP.md) and [`docs/planning
 
 ---
 
-## 📚 Documentation
-
-| Topic | Location |
-|-------|----------|
-| Architecture (UI, routes, audio pipeline, AI usage) | [`docs/architecture/`](./docs/architecture) |
-| Analytics pipeline | [`docs/architecture/analytics-pipeline.md`](./docs/architecture/analytics-pipeline.md) |
-| Audio & assessment pipeline | [`docs/architecture/audio-assessment-pipeline.md`](./docs/architecture/audio-assessment-pipeline.md) |
-| Metrics & latency | [`docs/architecture/metrics-and-latency.md`](./docs/architecture/metrics-and-latency.md) |
-| Deployment & Azure config | [`docs/audits/DEPLOYMENT_COMMANDS_AND_ENV.md`](./docs/audits/DEPLOYMENT_COMMANDS_AND_ENV.md) |
-| Security hardening | [`docs/audits/SECURITY_AUDIT_AND_HARDENING.md`](./docs/audits/SECURITY_AUDIT_AND_HARDENING.md) |
-| Feature inventory | [`FEATURES.md`](./FEATURES.md) |
-| Contributor / agent guide | [`CLAUDE.md`](./CLAUDE.md) |
-
-<!-- TODO: add a dedicated CONTRIBUTING.md and API.md / TROUBLESHOOTING.md if external contributors join -->
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! The full contributor and agent guide lives in [`CLAUDE.md`](./CLAUDE.md).
-
-**Workflow**
-1. Branch from the active development branch.
-2. Make focused changes; keep business logic in hooks/`lib`, UI in components.
-3. **Add tests** alongside source (`*.test.ts(x)`); run `npm test -- --run`.
-4. Run `npm run build` (typecheck must pass — strict mode, no unused locals/params).
-5. Update [`FEATURES.md`](./FEATURES.md) when you add/rename/remove user-facing functionality.
-6. Open a PR with a clear description.
-
-**Coding standards**
-- Conventional commits: `feat(scope):` · `fix(scope):` · `chore:` · `test:` · `docs:`
-- Feature-grouped components; Context for global state; centralized `ERROR_CLASS` taxonomy
-- Avoid loose `any` except for raw Azure response types
-
----
-
-## 🎬 Recommended Assets to Elevate This Repo
-
-To take the project from "polished" to "portfolio-defining," consider adding:
-
-- 🎥 Animated **record → score → coaching** demo GIF (hero)
-- 🔬 Interactive **phoneme visualization** walkthrough
-- 🧭 **User-journey** GIF (sign in → practice → progress)
-- 📊 **Dashboard walkthrough** video
-- ☁️ **Azure Speech architecture** diagram (services + data flow)
-- 🔊 **Before/after** pronunciation audio examples
-- ⚡ **Performance benchmarks** (assessment p50/p95)
-- 📱 **Mobile** + **dark mode** screenshots
-- 🆚 **Feature comparison** table vs. mainstream language apps
-- 🎞️ A short **demo video** suitable for a portfolio reel
-
----
-
 <div align="center">
-
-**Built with Azure AI Speech · React 19 · TypeScript · Express · MongoDB**
 
 <sub>⭐ If this project is useful or interesting, consider starring the repo.</sub>
 
