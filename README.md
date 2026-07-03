@@ -34,37 +34,10 @@
 
 Two **public, unauthenticated** routes let anyone experience the product without an account, a microphone, or Azure credentials:
 
-| Route | What it is |Link|
+| Route | What it is |Link| 
 |-------|------------|------|
 | **`/demo`** | An interactive demo with clearly-labeled **sample** scores, phoneme feedback, coaching, and progress trends| 
 https://luso-pronunciation.vercel.app/demo |
-
-
-> No backend, Azure key, or MongoDB is needed for the tour and demo — ideal for a quick recruiter walkthrough or a static portfolio deploy. See [`DEMO_READY.md`](./DEMO_READY.md) for the full run/deploy guide, including how to publish just the tour/demo as a static site.
-
----
-
-## 📑 Table of Contents
-
-- [Live Demo & Tour](#-live-demo--tour)
-- [The Problem](#-the-problem)
-- [Why This Project Is Technically Interesting](#-why-this-project-is-technically-interesting)
-- [Project Overview](#-project-overview)
-- [Core Features](#-core-features)
-- [Application Architecture](#-application-architecture)
-- [Pronunciation Workflow](#-pronunciation-workflow)
-- [Speech AI Pipeline](#-speech-ai-pipeline)
-- [AI Features](#-ai-features)
-- [Analytics Dashboard](#-analytics-dashboard)
-- [Repository Structure](#-repository-structure)
-- [Technical Highlights](#-technical-highlights)
-- [Engineering Metrics](#-engineering-metrics)
-- [Getting Started](#-getting-started)
-- [Screenshots](#-screenshots)
-- [Design Decisions](#-design-decisions)
-- [Roadmap](#-roadmap)
-- [Documentation](#-documentation)
-- [Contributing](#-contributing)
 
 ---
 
@@ -107,15 +80,6 @@ A recruiter-skimmable tour of the engineering. Every row maps a user-facing capa
 
 <br/>
 
-> ### ⚡ Engineering Highlights (30-second skim)
-> - **~42,700 lines** of strict TypeScript across a unified frontend + backend `src` tree
-> - **3 Azure AI services** in production use: Pronunciation Assessment, Text-to-Speech, AI Translator
-> - **Real audio engineering**: browser capture → ffmpeg transcode → cloud assessment → typed phoneme model
-> - **71 React components**, **15 pages**, **5 business-logic hooks**, **9 Mongoose models**, **9 REST route groups**
-> - **48 unit/contract test files** (Vitest) + **Playwright e2e**, wired into GitHub Actions CI
-> - **Deterministic coaching engine** — AI *insights* without hallucination, every suggestion is testable
-> - **Production deployment** via multi-stage Docker on Railway with health checks and fail-fast startup
-
 ---
 
 ## 📖 Project Overview
@@ -143,20 +107,8 @@ Single scores are noise. Aggregating attempts over time surfaces *real* weakness
 </tr>
 </table>
 
-```mermaid
-flowchart LR
-    A[🎙️ Learner speaks] --> B[Azure Pronunciation<br/>Assessment]
-    B --> C[Phoneme-level<br/>scores + IPA]
-    C --> D[Coaching engine<br/>+ minimal pairs]
-    D --> E[Targeted drill]
-    E --> A
-    C --> F[(Historical<br/>analytics)]
-    F --> G[Weak-sound<br/>detection]
-    G --> E
-    style B fill:#0078D4,color:#fff
-    style D fill:#16a34a,color:#fff
-    style F fill:#7c3aed,color:#fff
-```
+<img width="1448" height="1086" alt="image" src="https://github.com/user-attachments/assets/31ff3259-5010-4915-b1ff-d6966b7b1559" />
+
 
 ---
 
@@ -242,8 +194,6 @@ flowchart LR
 </td>
 </tr>
 </table>
-
-> See [`FEATURES.md`](./FEATURES.md) for the complete, continuously-maintained feature inventory.
 
 ---
 
