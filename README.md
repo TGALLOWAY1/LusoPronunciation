@@ -34,17 +34,11 @@
 
 Two **public, unauthenticated** routes let anyone experience the product without an account, a microphone, or Azure credentials:
 
-| Route | What it is |
-|-------|------------|
-| **`/tour`** | *"Take a Tour"* — a portfolio-friendly product explainer |
-| **`/demo`** | An interactive demo with clearly-labeled **sample** scores, phoneme feedback, coaching, and progress trends https://luso-pronunciation.vercel.app/demo |
+| Route | What it is |Link|
+|-------|------------|------|
+| **`/demo`** | An interactive demo with clearly-labeled **sample** scores, phoneme feedback, coaching, and progress trends| 
+https://luso-pronunciation.vercel.app/demo |
 
-
-```bash
-npm install
-npm run dev            # → http://localhost:3000
-# then open http://localhost:3000/tour  or  http://localhost:3000/demo
-```
 
 > No backend, Azure key, or MongoDB is needed for the tour and demo — ideal for a quick recruiter walkthrough or a static portfolio deploy. See [`DEMO_READY.md`](./DEMO_READY.md) for the full run/deploy guide, including how to publish just the tour/demo as a static site.
 
