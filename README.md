@@ -21,7 +21,6 @@
 
 <br/>
 
-**Record a sentence → get word-by-word and phoneme-level scores in seconds → drill the exact sounds you're getting wrong.**
 
 <!-- TODO: Replace this static hero with a short GIF showing a full record → score → coaching cycle -->
 <img width="900" alt="LusoPronounce sentence practice" src="https://github.com/user-attachments/assets/eb5fcdd1-ab7e-41ff-a015-dd4f973b0e6f" />
@@ -29,15 +28,11 @@
 </div>
 
 ---
+**Record a sentence → get word-by-word and phoneme-level scores in seconds → drill the exact sounds you're getting wrong.**
 
-## 🎮 Live Demo & Tour
+---
 
-Two **public, unauthenticated** routes let anyone experience the product without an account, a microphone, or Azure credentials:
-
-| Route | What it is |Link| 
-|-------|------------|------|
-| **`/demo`** | An interactive demo with clearly-labeled **sample** scores, phoneme feedback, coaching, and progress trends| 
-https://luso-pronunciation.vercel.app/demo |
+## 🎮 Live Demo & Tour - [https://luso-pronunciation.vercel.app/demo]
 
 ---
 
@@ -204,33 +199,8 @@ Single scores are noise. Aggregating attempts over time surfaces *real* weakness
 
 ## 🔄 Pronunciation Workflow
 
-```mermaid
-sequenceDiagram
-    actor User
-    participant Mic as 🎙️ Microphone
-    participant Client as React Client
-    participant API as Express /api
-    participant FFmpeg as ffmpeg
-    participant Azure as Azure Speech
-    participant DB as MongoDB
-    participant Dash as Dashboard
+<img width="1448" height="1086" alt="image" src="https://github.com/user-attachments/assets/8c9f34f3-7f8c-4850-ac10-327358632f36" />
 
-    User->>Mic: Press Record & speak
-    Mic->>Client: webm/opus stream
-    Client->>Client: Quality gate (duration + silence)
-    Client->>API: POST /api/pronunciation/assessment (audio + ref text)
-    API->>API: Authenticate (JWT) + rate-limit check
-    API->>FFmpeg: Transcode → WAV 16kHz mono
-    FFmpeg->>API: WAV buffer
-    API->>Azure: Pronunciation Assessment (Comprehensive, EnableMiscue)
-    Azure->>API: Word + phoneme scores, IPA, error types
-    API->>API: Normalize result + run coaching engine
-    API->>DB: Persist PronunciationAttempt
-    API->>Client: Scores + phoneme breakdown + coaching
-    Client->>User: Render word chips, phoneme panel, suggestions
-    DB->>Dash: Aggregate into trends & weak-sound analytics
-    Dash->>User: Updated progress dashboard
-```
 
 ---
 
@@ -238,33 +208,7 @@ sequenceDiagram
 
 What happens internally after a user presses **Record**:
 
-```mermaid
-flowchart LR
-    A[1 · Capture<br/>MediaRecorder<br/>webm/opus] --> B[2 · Quality Gate<br/>min duration<br/>RMS silence check]
-    B --> C[3 · Upload<br/>multipart → Express]
-    C --> D[4 · Transcode<br/>ffmpeg → WAV<br/>16kHz · 16-bit · mono]
-    D --> E[5 · Assess<br/>Azure Speech SDK<br/>Granularity: Word<br/>Dimension: Comprehensive]
-    E --> F[6 · Align<br/>word → phoneme<br/>IPA + error types]
-    F --> G[7 · Score<br/>accuracy · fluency<br/>completeness · miscue]
-    G --> H[8 · Coach<br/>confusion detection<br/>minimal pairs]
-    H --> I[9 · Visualize<br/>chips · phoneme panel<br/>sparklines]
-    style E fill:#0078D4,color:#fff
-    style H fill:#16a34a,color:#fff
-```
-
-| Stage | Detail |
-|-------|--------|
-| **1 · Audio capture** | Browser `MediaRecorder` records webm/opus from the user's mic |
-| **2 · Preprocessing (client)** | `src/lib/audioQuality.ts` rejects too-short / silent clips before any upload |
-| **3 · Upload** | Multipart POST to the Express assessment route (size-capped, rate-limited) |
-| **4 · Preprocessing (server)** | `src/server/lib/audioConversion.ts` runs ffmpeg → WAV 16 kHz/16-bit/mono |
-| **5 · Recognition + assessment** | Azure Speech SDK with `Granularity: Word`, `Dimension: Comprehensive`, `EnableMiscue: True` |
-| **6 · Phoneme alignment** | Azure returns words decomposed into phonemes with IPA + error classification |
-| **7 · Confidence / scoring** | Accuracy, fluency, completeness, and miscue scores normalized into a typed model |
-| **8 · Feedback generation** | Coaching engine detects confusion patterns and selects minimal-pair drills |
-| **9 · Visualization** | Word chips, expandable phoneme panel, and trend sparklines render the result |
-
-> 📊 **Latency:** the pipeline records `timeToFeedbackMs`, `serverTimingsMs` (convert / azure / normalize), and `clientTimingsMs` telemetry (`p50`/`p95`). <!-- TODO: publish a measured median/p95 figure from production telemetry -->
+<img width="1448" height="1086" alt="image" src="https://github.com/user-attachments/assets/77782470-76ab-4fa9-8050-a00f85d30cd4" />
 
 ---
 
@@ -342,32 +286,6 @@ The Progress page is organized into **Overview · Progress · Strengths · Focus
 
 ---
 
-## 📈 Engineering Metrics
-
-> Computed from the repository on the current branch. Items that can't be measured precisely are marked.
-
-| Metric | Value |
-|--------|-------|
-| Lines of TypeScript/TSX (`src/`) | **~42,700** |
-| React components | **71** |
-| Pages (routes) | **17** (incl. public `/tour` + `/demo`) |
-| Business-logic hooks | **5** |
-| REST route groups | **9** (assessment, auth, oauth, practice, flashcards, custom sentences, lexicon, migration, health) |
-| Mongoose models | **9** |
-| Azure AI services | **3** (Speech Assessment, TTS, Translator) |
-| Chart / visualization components | **6+** |
-| Practice exercise modes | Pronunciation, MC (PT↔EN), listening, self-rating |
-| Sentence corpus | **593** sentences |
-| Vocabulary corpus | **974** words |
-| Phoneme metadata entries | **36** |
-| Generated audio assets | **~4,200** files (male + female PT-BR) |
-| Test files (Vitest) | **48** |
-| E2E specs (Playwright) | **4** |
-| Test coverage | <!-- TODO: coverage reporting not yet configured --> _not yet instrumented_ |
-| Avg. assessment latency | <!-- TODO: telemetry recorded; publish measured p50/p95 --> _telemetry-tracked_ |
-| Supported browsers | Modern Chromium / Firefox / WebKit (MediaRecorder required) |
-
---
 <!--
 ## 🖼️ Screenshots
 
@@ -391,37 +309,6 @@ The Progress page is organized into **Overview · Progress · Strengths · Focus
 |---|---|
 | ![Before](docs/assets/practice/sentence-practice-before.png) | ![After](docs/assets/practice/sentence-practice-after.png) |
 -->
-
-<details>
-<summary><b>Why Azure AI Speech?</b></summary>
-
-Azure's Pronunciation Assessment is one of the few production services offering **phoneme-level** scoring with IPA alignment and miscue detection — exactly the granularity this app's value proposition depends on. **Trade-off:** cloud dependency + per-call cost (bounded via rate limits and client-side quality gates); no bundled on-device fallback.
-</details>
-
-<details>
-<summary><b>Why browser-based recording + server-side transcode?</b></summary>
-
-`MediaRecorder` ships in every modern browser (zero install), but emits webm/opus — not what Azure wants. Transcoding server-side with ffmpeg centralizes the format contract and keeps the client thin. **Trade-off:** a server hop and ffmpeg dependency, accepted for reliability and a consistent WAV spec.
-</details>
-
-<details>
-<summary><b>Why a deterministic coaching engine (not an LLM)?</b></summary>
-
-Coaching advice must be *trustworthy* and *testable*. A rules-based engine over real scores is fully unit-tested and never hallucinates a phoneme tip. **Trade-off:** less conversational flexibility than an LLM — a deliberate choice, with an AI coach noted on the roadmap as an additive layer.
-</details>
-
----
-
-## 🗺️ Roadmap
-
-| Stage | Items |
-|-------|-------|
-| **✅ Current** | Sentence & word practice · phoneme scoring · coaching engine · SM-2 SRS · progress analytics · custom sentence builder · OAuth + invite gating |
-| **🔜 Next Release** | Configurable per-user pass thresholds · deeper phoneme-score extraction · CEFR-level auto-estimation · virtual scrolling for large lists |
-| **🌅 Future** | Offline practice (service worker / IndexedDB) · conversation practice · sentence-level fluency scoring · leaderboards & speaking challenges · mobile app |
-| **🔬 Research** | AI pronunciation coach · adaptive lesson generation · grammar feedback · accent comparison · multi-language support · personalized recommendations |
-
-See [`docs/planning/ROADMAP.md`](./docs/planning/ROADMAP.md) and [`docs/planning/BACKLOG.md`](./docs/planning/BACKLOG.md).
 
 ---
 
