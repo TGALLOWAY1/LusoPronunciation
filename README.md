@@ -18,9 +18,6 @@
 [![Docker](https://img.shields.io/badge/Docker-node:22--slim-2496ED?logo=docker&logoColor=white)](./Dockerfile)
 [![CI](https://img.shields.io/github/actions/workflow/status/TGALLOWAY1/LusoPronunciation/ci.yml?label=CI&logo=githubactions&logoColor=white)](./.github/workflows/ci.yml)
 [![Tests](https://img.shields.io/badge/tests-Vitest_+_Playwright-6E9F18?logo=vitest&logoColor=white)](#-testing)
-[![Last Commit](https://img.shields.io/github/last-commit/TGALLOWAY1/LusoPronunciation)](https://github.com/TGALLOWAY1/LusoPronunciation/commits)
-[![Release](https://img.shields.io/github/v/release/TGALLOWAY1/LusoPronunciation?display_name=tag&sort=semver)](https://github.com/TGALLOWAY1/LusoPronunciation/releases)
-![License](https://img.shields.io/badge/license-TODO-lightgrey)
 
 <br/>
 
@@ -28,8 +25,6 @@
 
 <!-- TODO: Replace this static hero with a short GIF showing a full record → score → coaching cycle -->
 <img width="900" alt="LusoPronounce sentence practice" src="https://github.com/user-attachments/assets/eb5fcdd1-ab7e-41ff-a015-dd4f973b0e6f" />
-
-**🚀 Try it with zero setup — no login, microphone, or Azure key required.**
 
 </div>
 
@@ -42,7 +37,8 @@ Two **public, unauthenticated** routes let anyone experience the product without
 | Route | What it is |
 |-------|------------|
 | **`/tour`** | *"Take a Tour"* — a portfolio-friendly product explainer |
-| **`/demo`** | An interactive demo with clearly-labeled **sample** scores, phoneme feedback, coaching, and progress trends |
+| **`/demo`** | An interactive demo with clearly-labeled **sample** scores, phoneme feedback, coaching, and progress trends https://luso-pronunciation.vercel.app/demo |
+
 
 ```bash
 npm install
