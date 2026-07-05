@@ -27,7 +27,7 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 
 - **Multiple Practice Modes** — Pronunciation recording, text multiple-choice (PT-to-EN, EN-to-PT, mixed directions), listening multiple-choice, and self-rating (Know It / Review Later).
 - **Multiple View Modes** — List/glossary view (card grid for browsing), drill view (single-card focus for active practice), and weak words focus (filters to bottom 50 words by score).
-- **Word Phoneme Panel** — Displays phoneme breakdown with IPA symbols and pronunciation tips from the phoneme metadata dataset.
+- **Word Phoneme Panel** — Pronunciation breakdown with per-phoneme sound tiles, teaching tips, and example words from the phoneme metadata dataset, plus a Show IPA toggle and per-row playback of the word's native audio.
 
 ## Custom Sentence Builder
 
