@@ -192,6 +192,9 @@ async function seedAppState(page: Page) {
   await page.addInitScript(
     ({ practiceLog, progressEntries, attemptTelemetry, speechServiceHealth }) => {
       localStorage.setItem('luso_auth_token', 'e2e-screenshot-token');
+      // Mark cloud migration as done so LocalStorageMigrator does not POST
+      // /api/migrate/local-storage on mount (keeps the suite self-contained).
+      localStorage.setItem('luso_cloud_migrated', 'true');
       localStorage.setItem('luso_practice_log_v1', JSON.stringify(practiceLog));
       localStorage.setItem('lusopronounce_progress', JSON.stringify(progressEntries));
       localStorage.setItem('lusopronounce_preferredWordVoice', 'female');
@@ -437,6 +440,17 @@ async function mockBackend(page: Page) {
   await page.route('**/api/auth/providers', (route) =>
     json(route, { providers: ['email', 'dev', 'google', 'github', 'linkedin'] }),
   );
+
+  // LocalStorage migration (defensive — the seed also sets luso_cloud_migrated).
+  await page.route('**/api/migrate/**', (route) =>
+    json(route, {
+      importedSessions: 0,
+      importedAttempts: 0,
+      skippedSessions: 0,
+      skippedAttempts: 0,
+      errors: [],
+    }),
+  );
 }
 
 async function prep(page: Page) {
@@ -529,6 +543,33 @@ test.describe('Full app screenshot tour', () => {
   });
 
   test('review — queue', async ({ page }) => {
+    // Review.tsx shuffles the due queue with Math.random(), so seed exactly one
+    // due item here to keep 07-review-queue.png deterministic across reruns.
+    await page.addInitScript(() => {
+      const pastIso = new Date(Date.parse('2026-07-04T00:00:00Z')).toISOString();
+      const futureIso = new Date(Date.parse('2026-07-30T00:00:00Z')).toISOString();
+      const entries: Record<string, unknown> = {
+        sentence_gemini_food_001: {
+          itemId: 'gemini_food_001',
+          itemType: 'sentence',
+          lastRating: 'hard',
+          lastReviewedAt: pastIso,
+          nextReviewAt: pastIso, // due
+          reviewCount: 3,
+        },
+      };
+      for (const id of ['gemini_food_002', 'gemini_food_003', 'gemini_food_004', 'gemini_food_005']) {
+        entries[`sentence_${id}`] = {
+          itemId: id,
+          itemType: 'sentence',
+          lastRating: 'good',
+          lastReviewedAt: pastIso,
+          nextReviewAt: futureIso, // not due
+          reviewCount: 2,
+        };
+      }
+      localStorage.setItem('lusopronounce_progress', JSON.stringify(entries));
+    });
     await page.goto('/review', { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('button', { name: 'Review Queue' })).toBeVisible({ timeout: 20_000 });
     await shoot(page, '07-review-queue');
