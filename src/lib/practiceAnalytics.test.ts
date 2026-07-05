@@ -11,6 +11,7 @@ import {
   computeImprovement,
   generateInsights,
   buildRecommendations,
+  buildAttemptSummaries,
 } from './practiceAnalytics';
 
 const NOW = new Date('2026-06-17T12:00:00.000Z');
@@ -222,5 +223,50 @@ describe('buildRecommendations', () => {
     }
     expect(recs.some((r) => r.kind === 'phoneme' && r.id === 'AN_NASAL')).toBe(true);
     expect(recs.some((r) => r.kind === 'word' && r.id === 'w1')).toBe(true);
+  });
+});
+
+describe('buildAttemptSummaries', () => {
+  it('collapses repeated attempts into one summary per item', () => {
+    const attempts = [
+      sentence({ sentenceId: 'sent-1', overallScore: 70, createdAt: daysAgo(3) }),
+      sentence({ sentenceId: 'sent-1', overallScore: 82, createdAt: daysAgo(2) }),
+      sentence({ sentenceId: 'sent-1', overallScore: 88, createdAt: daysAgo(1) }),
+      sentence({ sentenceId: 'sent-2', overallScore: 55, createdAt: daysAgo(1) }),
+    ];
+
+    const summaries = buildAttemptSummaries(attempts, []);
+    expect(summaries).toHaveLength(2);
+
+    const s1 = summaries.find((s) => s.itemId === 'sent-1')!;
+    expect(s1.attempts).toBe(3);
+    expect(s1.scores).toEqual([70, 82, 88]); // chronological
+    expect(s1.latestScore).toBe(88);
+    expect(s1.previousScore).toBe(82);
+    expect(s1.bestScore).toBe(88);
+    expect(s1.avgScore).toBeCloseTo(80);
+    expect(s1.status).toBe('known');
+  });
+
+  it('separates words from sentences that share an id, and sets status buckets', () => {
+    const summaries = buildAttemptSummaries(
+      [sentence({ sentenceId: 'shared', overallScore: 90 })],
+      [word({ wordId: 'shared', overallScore: 40 })],
+    );
+    expect(summaries).toHaveLength(2);
+    expect(summaries.find((s) => s.itemType === 'sentence')!.status).toBe('known');
+    expect(summaries.find((s) => s.itemType === 'word')!.status).toBe('review');
+  });
+
+  it('sorts by most recently practiced first and omits previousScore for single attempts', () => {
+    const summaries = buildAttemptSummaries(
+      [
+        sentence({ sentenceId: 'old', overallScore: 75, createdAt: daysAgo(10) }),
+        sentence({ sentenceId: 'new', overallScore: 75, createdAt: daysAgo(1) }),
+      ],
+      [],
+    );
+    expect(summaries.map((s) => s.itemId)).toEqual(['new', 'old']);
+    expect(summaries[0].previousScore).toBeUndefined();
   });
 });

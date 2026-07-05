@@ -996,6 +996,102 @@ export function buildReviewQueue(
   return queue.slice(0, maxItems);
 }
 
+// ---- Attempt summaries (consolidated recent attempts) ----
+
+export interface AttemptSummary {
+  itemId: string;
+  itemType: 'sentence' | 'word';
+  /** Total number of logged attempts for this item. */
+  attempts: number;
+  /** Overall score of the most recent attempt. */
+  latestScore: number;
+  /** Overall score of the second-most-recent attempt, if any (for a trend delta). */
+  previousScore?: number;
+  /** Highest overall score achieved across all attempts. */
+  bestScore: number;
+  /** Mean overall score across all attempts (unrounded). */
+  avgScore: number;
+  firstPracticedAt: string;
+  lastPracticedAt: string;
+  /** Overall scores in chronological order (oldest → newest), for sparklines. */
+  scores: number[];
+  /** Mastery bucket derived from the best score (same thresholds as progress). */
+  status: 'review' | 'learning' | 'known';
+}
+
+/**
+ * Consolidates a flat list of practice attempts into one summary per unique item.
+ *
+ * The Recent Attempts view logs every attempt chronologically, which becomes a wall
+ * of near-duplicate rows once the same handful of items are practiced repeatedly.
+ * This groups by item so each word/sentence appears once with its latest score,
+ * trend, best/average, attempt count, and score history.
+ *
+ * Results are sorted by `lastPracticedAt` descending (most recently practiced first).
+ * Callers resolve display labels from their own content maps.
+ */
+export function buildAttemptSummaries(
+  sentenceAttempts: SentencePracticeAttempt[],
+  wordAttempts: WordPracticeAttempt[],
+): AttemptSummary[] {
+  const groups = new Map<
+    string,
+    { itemId: string; itemType: 'sentence' | 'word'; entries: ScoredEntry[] }
+  >();
+
+  const ingest = (
+    itemId: string,
+    itemType: 'sentence' | 'word',
+    score: number,
+    createdAt: string,
+  ) => {
+    const key = `${itemType}:${itemId}`;
+    const group = groups.get(key);
+    if (group) {
+      group.entries.push({ score, createdAt });
+    } else {
+      groups.set(key, { itemId, itemType, entries: [{ score, createdAt }] });
+    }
+  };
+
+  for (const a of sentenceAttempts) {
+    ingest(a.sentenceId, 'sentence', a.overallScore, a.createdAt);
+  }
+  for (const a of wordAttempts) {
+    ingest(a.wordId, 'word', a.overallScore, a.createdAt);
+  }
+
+  const summaries: AttemptSummary[] = [];
+  for (const { itemId, itemType, entries } of groups.values()) {
+    const sorted = [...entries].sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
+    const scores = sorted.map((e) => e.score);
+    const n = scores.length;
+    const bestScore = Math.max(...scores);
+
+    summaries.push({
+      itemId,
+      itemType,
+      attempts: n,
+      latestScore: scores[n - 1],
+      previousScore: n >= 2 ? scores[n - 2] : undefined,
+      bestScore,
+      avgScore: scores.reduce((sum, s) => sum + s, 0) / n,
+      firstPracticedAt: sorted[0].createdAt,
+      lastPracticedAt: sorted[n - 1].createdAt,
+      scores,
+      status: bestScore >= 85 ? 'known' : bestScore >= 60 ? 'learning' : 'review',
+    });
+  }
+
+  summaries.sort(
+    (a, b) =>
+      new Date(b.lastPracticedAt).getTime() - new Date(a.lastPracticedAt).getTime(),
+  );
+  return summaries;
+}
+
 // ============================================================================
 // Progress Analytics: time windows, trends, improvement, insights, recommendations
 // ============================================================================
