@@ -1,7 +1,6 @@
 import { memo, useCallback, useState, useEffect, useRef } from 'react';
 import type { Word } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
-import AudioPlayerButton from './AudioPlayerButton';
 import WordAudioButton from './WordAudioButton';
 import WordStatusBar from './WordStatusBar';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
@@ -13,7 +12,8 @@ import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import { PhonemePanel } from './PhonemePanel';
 import PremiumRecordButton from '@/components/common/PremiumRecordButton';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import PremiumPlayButton from '@/components/common/PremiumPlayButton';
+import { ChevronDown, ChevronUp, Lightbulb, Volume2, Check, HelpCircle } from 'lucide-react';
 
 interface WordCardProps {
   word: Word;
@@ -55,7 +55,12 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
 
   // Track native audio plays using useAudioPlayer hook
   const nativeAudioUrl = selectedVoice === 'male' ? word.audioMaleUrl : word.audioFemaleUrl;
-  const { isPlaying: isNativePlaying } = useAudioPlayer(nativeAudioUrl || null);
+  const {
+    isPlaying: isNativePlaying,
+    play: playNative,
+    pause: pauseNative,
+    isLoading: isNativeLoading,
+  } = useAudioPlayer(nativeAudioUrl || null);
   const prevIsNativePlayingRef = useRef(false);
 
   // Track when native audio starts playing
@@ -283,10 +288,19 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
     return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
   };
 
+  const handlePlayNative = useCallback(() => {
+    if (!nativeAudioUrl) return;
+    if (isNativePlaying) {
+      pauseNative();
+    } else {
+      playNative();
+    }
+  }, [nativeAudioUrl, isNativePlaying, playNative, pauseNative]);
+
   return (
-    <div className="card card-hover card-compact relative">
+    <div className="card card-hover relative">
       {/* Header with status, category and difficulty */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
         <div className="flex items-center gap-2 flex-wrap">
           {status && <WordStatusBar status={status} />}
           <span className="badge badge-secondary">
@@ -312,108 +326,122 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
         </div>
       </div>
 
-      {/* Portuguese word - large and prominent */}
-      <div className="mb-3">
-        <div className="flex flex-col items-center gap-y-2">
-          <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
+      {/* Portuguese word - large and prominent, with inline speaker */}
+      <div className="flex flex-col items-center gap-y-2 mb-2">
+        <div className="flex items-center gap-3">
+          <p className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
             {word.textPt}
           </p>
-
-          {/* Translation toggle chevron */}
-          {word.translationEn && (
+          {nativeAudioUrl ? (
             <button
               type="button"
-              onClick={() => {
-                if (onToggleTranslation) {
-                  onToggleTranslation();
+              onClick={handlePlayNative}
+              disabled={isNativeLoading}
+              aria-label={isNativePlaying ? 'Stop pronunciation' : 'Hear pronunciation'}
+              className={`shrink-0 w-11 h-11 rounded-full border flex items-center justify-center transition-colors
+                ${
+                  isNativePlaying
+                    ? 'border-primary-500 text-primary-600 bg-primary-50 dark:bg-primary-900/30 dark:text-primary-300'
+                    : 'border-gray-200 text-gray-500 hover:text-primary-600 hover:border-primary-300 dark:border-gray-600 dark:text-gray-400 dark:hover:text-primary-300'
                 }
-              }}
-              className="text-gray-300 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 cursor-pointer transition-colors"
-              aria-pressed={showTranslation}
-              aria-label={showTranslation ? 'Hide translation' : 'Show translation'}
+                disabled:opacity-40 disabled:cursor-not-allowed`}
             >
-              {showTranslation ? (
-                <ChevronUp size={20} className="w-5 h-5" />
-              ) : (
-                <ChevronDown size={20} className="w-5 h-5" />
-              )}
+              <Volume2 size={20} className={isNativePlaying ? 'animate-pulse' : ''} />
             </button>
-          )}
-
-          {/* English translation - shown conditionally */}
-          {word.translationEn && showTranslation && (
-            <p className="text-base md:text-lg text-gray-500 dark:text-gray-400 italic text-center">
-              {word.translationEn}
-            </p>
+          ) : (
+            word.id && <WordAudioButton wordId={word.id} compact />
           )}
         </div>
-      </div>
 
-      {/* Part of speech */}
-      {word.partOfSpeech && (
-        <div className="mb-4">
-          <p className="text-xs text-gray-400 dark:text-gray-500">
+        {/* Part of speech */}
+        {word.partOfSpeech && (
+          <p className="text-sm text-gray-400 dark:text-gray-500">
             {word.partOfSpeech}
           </p>
-        </div>
-      )}
+        )}
 
-      {/* Pronunciation notes - track as hint usage */}
+        {/* Translation toggle chevron */}
+        {word.translationEn && (
+          <button
+            type="button"
+            onClick={() => {
+              if (onToggleTranslation) {
+                onToggleTranslation();
+              }
+            }}
+            className="text-gray-300 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 cursor-pointer transition-colors"
+            aria-pressed={showTranslation}
+            aria-label={showTranslation ? 'Hide translation' : 'Show translation'}
+          >
+            {showTranslation ? (
+              <ChevronUp size={20} className="w-5 h-5" />
+            ) : (
+              <ChevronDown size={20} className="w-5 h-5" />
+            )}
+          </button>
+        )}
+
+        {/* English translation - shown conditionally */}
+        {word.translationEn && showTranslation && (
+          <p className="text-base md:text-lg text-gray-500 dark:text-gray-400 italic text-center">
+            {word.translationEn}
+          </p>
+        )}
+      </div>
+
+      {/* Pronunciation notes / tip - track as hint usage */}
       {word.pronunciationNotes && (
-        <div 
-          className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded text-sm cursor-pointer"
+        <div
+          className="mb-5 flex items-start gap-2 p-3.5 bg-primary-50 dark:bg-primary-900/20 border border-primary-100 dark:border-primary-800/50 rounded-xl text-sm cursor-pointer"
           onClick={() => setHintUsedForCurrentAttempt(true)}
           title="Click to mark as hint used"
         >
-          <p className="text-blue-800 dark:text-blue-300">{word.pronunciationNotes}</p>
+          <Lightbulb size={18} className="shrink-0 mt-0.5 text-primary-600 dark:text-primary-400" />
+          <p className="text-primary-800 dark:text-primary-200 font-medium">{word.pronunciationNotes}</p>
         </div>
       )}
 
-      {/* Phoneme Panel (Metadata/Tips) */}
-      <div className="mb-4">
-        <PhonemePanel word={word} />
-      </div>
-
-      {/* Audio playback controls - uses global voice setting */}
-      <div className="mb-4 flex gap-2">
-        {(() => {
-          const audioUrl = selectedVoice === 'male' ? word.audioMaleUrl : word.audioFemaleUrl;
-          
-          if (audioUrl) {
-            return (
-              <AudioPlayerButton
-                audioUrl={audioUrl}
-                label="Play"
-                icon="▶"
-                variant={selectedVoice}
-                compact={true}
+      {/* Listen + Record panel */}
+      <div className="mb-5 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 dark:divide-gray-700">
+          {/* Listen */}
+          <div className="flex flex-col items-center text-center gap-2 pb-5 sm:pb-0 sm:pr-4">
+            {nativeAudioUrl ? (
+              <PremiumPlayButton
+                isPlaying={isNativePlaying}
+                onClick={handlePlayNative}
+                disabled={isNativeLoading}
+                size="md"
               />
-            );
-          } else if (word.id) {
-            return <WordAudioButton wordId={word.id} compact={true} />;
-          }
-          return null;
-        })()}
-      </div>
+            ) : (
+              word.id && <WordAudioButton wordId={word.id} compact />
+            )}
+            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">Listen</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">Hear native pronunciation</span>
+          </div>
 
-      {/* Recording controls */}
-      <div className="mb-4">
-        <div className="flex items-center gap-4">
-          <PremiumRecordButton
-            isRecording={isRecording}
-            onClick={handleRecordToggle}
-            disabled={isSubmitting}
-            size="md"
-          />
-          {isRecording && (
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Recording...
+          {/* Record */}
+          <div className="flex flex-col items-center text-center gap-2 pt-5 sm:pt-0 sm:pl-4">
+            <PremiumRecordButton
+              isRecording={isRecording}
+              onClick={handleRecordToggle}
+              disabled={isSubmitting}
+              size="md"
+            />
+            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {isRecording ? 'Recording…' : isSubmitting ? 'Assessing…' : 'Tap to record'}
             </span>
-          )}
+            <span className="text-xs text-gray-500 dark:text-gray-400">Speak clearly at a natural pace</span>
+          </div>
         </div>
         {recorderError && (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-400">{recorderError}</p>
+          <p className="mt-3 text-sm text-red-600 dark:text-red-400 text-center">{recorderError}</p>
         )}
+      </div>
+
+      {/* Pronunciation Breakdown */}
+      <div className="mb-5">
+        <PhonemePanel word={word} />
       </div>
 
       {/* Submit error banner */}
@@ -432,7 +460,7 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
 
       {/* Pronunciation Feedback - show feedback for the most recent attempt */}
       {latestAttempt && (
-        <SentenceFeedback 
+        <SentenceFeedback
           currentAttempt={latestAttempt}
           fallbackText={word.textPt}
           fallbackTranslation={word.translationEn}
@@ -441,18 +469,24 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
       )}
 
       {/* Action buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex flex-col sm:flex-row gap-3 mt-4">
         <button
           onClick={handleKnowIt}
-          className="btn btn-success btn-sm flex-1"
+          className="btn btn-success flex-1 flex flex-col items-center py-3"
         >
-          ✓ Know it
+          <span className="flex items-center gap-2 text-base font-semibold">
+            <Check size={18} /> Know it
+          </span>
+          <span className="text-xs font-normal opacity-90">I pronounced this correctly</span>
         </button>
         <button
           onClick={handleReviewLater}
-          className="btn btn-secondary btn-sm flex-1"
+          className="btn btn-secondary flex-1 flex flex-col items-center py-3"
         >
-          ❓ Don't know it yet
+          <span className="flex items-center gap-2 text-base font-semibold">
+            <HelpCircle size={18} /> Don't know it yet
+          </span>
+          <span className="text-xs font-normal opacity-80">I need more practice</span>
         </button>
       </div>
     </div>

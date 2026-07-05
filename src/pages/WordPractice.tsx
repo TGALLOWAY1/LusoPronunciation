@@ -415,15 +415,27 @@ export default function WordPractice({ headerElement }: { headerElement?: React.
         </div>
 
       {/* Global status summary */}
-      <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        <span className="font-medium">Progress: </span>
-        <span>New: {statusCounts.new}</span>
-        <span className="mx-1">•</span>
-        <span>Learning: {statusCounts.learning}</span>
-        <span className="mx-1">•</span>
-        <span>Review: {statusCounts.review}</span>
-        <span className="mx-1">•</span>
-        <span>Mastered: {statusCounts.known}</span>
+      <div className="mb-6 card card-compact">
+        <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Your Progress</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { label: 'New', value: statusCounts.new, dot: 'bg-gray-400' },
+            { label: 'Learning', value: statusCounts.learning, dot: 'bg-yellow-400' },
+            { label: 'Review', value: statusCounts.review, dot: 'bg-orange-400' },
+            { label: 'Mastered', value: statusCounts.known, dot: 'bg-primary-500' },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/60 dark:bg-gray-800/40 px-4 py-3"
+            >
+              <div className="flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-400">
+                <span className={`inline-block w-2 h-2 rounded-full ${stat.dot}`} />
+                {stat.label}
+              </div>
+              <div className="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">{stat.value}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Practice Mode Selector */}
