@@ -17,6 +17,18 @@ function getScoreLabel(score: number): string {
   return 'Practice';
 }
 
+/**
+ * One-line coaching interpretation of the overall score, so learners don't
+ * have to translate a bare number into "was that good?" themselves.
+ */
+function getScoreInterpretation(score: number): string {
+  if (score >= 90) return 'Very close to native — keep this consistency.';
+  if (score >= 80) return 'Strong attempt — polish the highlighted sounds to level up.';
+  if (score >= 70) return 'Good base — a few sounds below still need attention.';
+  if (score >= 60) return 'Getting there — work on the words and sounds marked below.';
+  return 'Tough one — replay the native audio, then try again slowly.';
+}
+
 export interface ScoreTheme {
   bg: string;
   text: string;
@@ -341,55 +353,82 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
 
   const barWidth = (value: number) => animated ? `${value}%` : '0%';
 
-  // Render 4-up metric strip (premium product-polish layout)
+  // Render score summary strip: hero overall score with a coaching
+  // interpretation, plus compact sub-metric rows (accuracy/fluency/completeness).
   if (variant === 'strip') {
     type Metric = { label: string; value: number | null; theme: ScoreTheme | null; delayClass: string };
-    const metrics: Metric[] = [
-      { label: 'Overall', value: overall, theme: overallTheme, delayClass: '' },
+    const subMetrics: Metric[] = [
       { label: 'Accuracy', value: accuracy, theme: accuracyTheme, delayClass: 'delay-100' },
       { label: 'Fluency', value: fluency, theme: fluencyTheme, delayClass: 'delay-200' },
       { label: 'Completeness', value: completeness, theme: completenessTheme, delayClass: 'delay-300' },
     ];
 
     return (
-      <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
+      <div className="relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-4 sm:p-5">
+        <div className="absolute top-3 right-3 z-10">
           <AllMetricsInfoIcon prosodyAvailable={prosody !== null} />
         </div>
-        {metrics.map((metric) => {
-          const value = metric.value;
-          const available = value !== null;
-          return (
-            <div
-              key={metric.label}
-              className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-4 flex flex-col justify-between ${
-                available ? '' : 'opacity-60'
-              }`}
-            >
-              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
-                {metric.label}
-              </div>
-              <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-3xl font-bold text-gray-900 dark:text-gray-100 leading-none">
-                  {available ? value : '—'}
-                </span>
-                {available && (
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {getScoreLabel(value!)}
-                  </span>
-                )}
-              </div>
-              <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
-                {available && metric.theme && (
-                  <div
-                    className={`h-full transition-all duration-700 ease-out ${metric.delayClass} ${metric.theme.bg}`}
-                    style={{ width: barWidth(value!) }}
-                  />
-                )}
-              </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-center">
+          {/* Hero: overall score + interpretation */}
+          <div className="pr-8 sm:pr-0">
+            <div className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
+              Overall score
             </div>
-          );
-        })}
+            <div className="flex items-baseline gap-2">
+              <span className="text-5xl font-bold text-gray-900 dark:text-gray-100 leading-none">
+                {overall}
+              </span>
+              <span className="text-sm text-gray-400 dark:text-gray-500">/100</span>
+              <span
+                className={`ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+                  overall >= 80
+                    ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
+                    : overall >= 60
+                      ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'
+                      : 'bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300'
+                }`}
+              >
+                {getScoreLabel(overall)}
+              </span>
+            </div>
+            <div className="mt-3 w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+              <div
+                className={`h-full transition-all duration-700 ease-out ${overallTheme.bg}`}
+                style={{ width: barWidth(overall) }}
+              />
+            </div>
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              {getScoreInterpretation(overall)}
+            </p>
+          </div>
+
+          {/* Sub-metrics */}
+          <div className="space-y-3 pr-8 sm:border-l sm:border-gray-200/70 sm:dark:border-gray-700 sm:pl-6">
+            {subMetrics.map((metric) => {
+              const available = metric.value !== null;
+              return (
+                <div key={metric.label} className={available ? '' : 'opacity-50'}>
+                  <div className="flex items-baseline justify-between mb-1">
+                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                      {metric.label}
+                    </span>
+                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      {available ? metric.value : '—'}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                    {available && metric.theme && (
+                      <div
+                        className={`h-full transition-all duration-700 ease-out ${metric.delayClass} ${metric.theme.bg}`}
+                        style={{ width: barWidth(metric.value!) }}
+                      />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     );
   }

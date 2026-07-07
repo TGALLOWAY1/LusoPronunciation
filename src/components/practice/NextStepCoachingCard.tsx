@@ -21,10 +21,9 @@ export default function NextStepCoachingCard({
       <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
         Next step
       </p>
-      <h3 className="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">
-        {suggestion.title}
-      </h3>
-      <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{suggestion.message}</p>
+      <p className="mt-1.5 text-sm font-medium text-gray-900 dark:text-gray-100">
+        {suggestion.message}
+      </p>
 
       {suggestion.targets && suggestion.targets.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">

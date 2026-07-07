@@ -206,6 +206,11 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
     return getAttemptsBySentenceId(currentSentence.id);
   }, [currentSentence?.id, getAttemptsBySentenceId]);
 
+  const bestScore = useMemo(() => {
+    if (sentenceAttempts.length === 0) return null;
+    return Math.round(Math.max(...sentenceAttempts.map((a) => a.overallScore)));
+  }, [sentenceAttempts]);
+
   // Auto-select most recent attempt when attempts change or sentence changes
   useEffect(() => {
     if (sentenceAttempts.length > 0) {
@@ -350,7 +355,7 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
   if (filteredSentences.length === 0) {
     return (
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">Sentence Practice</h2>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Sentence Practice</h2>
         <FilterControls
           categories={categories}
           selectedCategories={selectedCategories}
@@ -411,11 +416,24 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
         {currentSentence ? (
           <div className="max-w-5xl mx-auto space-y-6 mb-6">
             {/* Main sentence practice area */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <span className={`badge ${difficultyBadgeClasses[currentSentence.difficulty as Difficulty]}`}>
-                  Difficulty {currentSentence.difficulty}
-                </span>
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-4 sm:p-6">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={`badge ${difficultyBadgeClasses[currentSentence.difficulty as Difficulty]}`}>
+                    {getDifficultyLabel(currentSentence.difficulty) || `Difficulty ${currentSentence.difficulty}`}
+                  </span>
+                  {currentSentence.categoryLabelEn && (
+                    <span className="badge badge-secondary">{currentSentence.categoryLabelEn}</span>
+                  )}
+                </div>
+                {bestScore !== null && (
+                  <span
+                    className="badge badge-success"
+                    title={`Your best score on this sentence across ${sentenceAttempts.length} attempt${sentenceAttempts.length === 1 ? '' : 's'}`}
+                  >
+                    Best {bestScore}
+                  </span>
+                )}
               </div>
 
               <LivePracticeSection
@@ -437,6 +455,11 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
                 >
                   <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                     Previous attempts ({sentenceAttempts.length})
+                    {bestScore !== null && (
+                      <span className="ml-2 font-normal text-gray-500 dark:text-gray-400">
+                        best {bestScore} · last {Math.round(sentenceAttempts[0].overallScore)}
+                      </span>
+                    )}
                   </span>
                   {isHistoryOpen ? (
                     <ChevronUp size={18} className="text-gray-500 dark:text-gray-400" />

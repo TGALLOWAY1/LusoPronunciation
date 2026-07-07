@@ -130,10 +130,14 @@ export default function PronunciationFeedbackPanel({
     setSelectedWord(null);
   }, [sentenceText]);
 
-  // Auto-select the first word when scoring results arrive
+  // Auto-select the weakest word when scoring results arrive, so the
+  // Sound Details panel opens on the most useful coaching target.
   useEffect(() => {
     if (words && words.length > 0 && hasAttempts && !selectedWord) {
-      setSelectedWord(words[0]);
+      const weakest = [...words].sort(
+        (a, b) => (a.score ?? a.accuracyScore ?? 100) - (b.score ?? b.accuracyScore ?? 100)
+      )[0];
+      setSelectedWord(weakest);
     }
   }, [words, hasAttempts]); // intentionally omit selectedWord to avoid re-selecting after user clears
 
@@ -214,7 +218,7 @@ export default function PronunciationFeedbackPanel({
 
       return {
         word: token,
-        overallScore: normalizedWord?.score ?? normalizedWord?.accuracyScore ?? 0,
+        overallScore: normalizedWord?.score ?? normalizedWord?.accuracyScore ?? null,
         normalizedWord,
       };
     });
@@ -291,7 +295,8 @@ export default function PronunciationFeedbackPanel({
       {!hasAttempts && (
         <div className="p-6 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 text-center">
           <p className="text-gray-600 dark:text-gray-400">
-            Record this sentence to see your pronunciation scores and word-by-word breakdown.
+            Listen to the native audio, then record yourself to get a score and
+            word-by-word feedback.
           </p>
         </div>
       )}
@@ -320,12 +325,14 @@ export default function PronunciationFeedbackPanel({
         </div>
       )}
 
-      {/* Sound Details / Phoneme panel - always shown with empty state when no word selected */}
-      <PhonemePanel
-        word={selectedWord}
-        onClose={handleClosePhonemePanel}
-        trustLevel={trustLevel}
-      />
+      {/* Sound Details / Phoneme panel - only meaningful once an attempt is scored */}
+      {hasAttempts && (
+        <PhonemePanel
+          word={selectedWord}
+          onClose={handleClosePhonemePanel}
+          trustLevel={trustLevel}
+        />
+      )}
 
       {/* Dev controls (optional, gated behind showDevControls) */}
       {showDevControls && import.meta.env.DEV && (

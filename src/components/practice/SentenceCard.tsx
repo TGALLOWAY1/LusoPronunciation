@@ -307,11 +307,16 @@ function SentenceCard({ sentence, currentIndex, totalCount, sessionId }: Sentenc
             disabled={isSubmitting}
             size="md"
           />
-          {isRecording && (
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Recording...
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {isRecording ? 'Recording…' : isSubmitting ? 'Analyzing…' : 'Tap to record'}
             </span>
-          )}
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {isRecording
+                ? 'Tap again to stop — your attempt is scored right away'
+                : 'Your attempt is scored as soon as you stop'}
+            </span>
+          </div>
         </div>
         {recorderError && (
           <p className="mt-2 text-sm text-red-600 dark:text-red-400">{recorderError}</p>
