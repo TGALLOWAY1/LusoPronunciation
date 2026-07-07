@@ -14,14 +14,12 @@ vi.mock('@/hooks/useLivePronunciationPractice', () => ({
   useLivePronunciationPractice: () => mockHookState,
 }));
 
-vi.mock('@/components/pronunciation', () => ({
-  PronunciationFeedbackPanel: () => <div data-testid="feedback-panel" />,
-}));
-
 vi.mock('@/components/pronunciation/shared', () => ({
   adaptWordScoresToNormalized: () => [],
   buildWordAudioVariantsForSentence: () => [],
   enrichWordsWithCanonicalData: (_sentence: unknown, words: unknown[]) => words,
+  FocusAreasCard: () => <div data-testid="focus-areas-card" />,
+  PhonemePanel: () => <div data-testid="phoneme-panel" />,
 }));
 
 vi.mock('@/state/settingsStore', () => ({

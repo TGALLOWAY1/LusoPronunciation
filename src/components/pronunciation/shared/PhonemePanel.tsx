@@ -25,11 +25,11 @@ function PhonemeScoreRing({ score }: { score: number }) {
   const rounded = Math.round(score);
   return (
     <div
-      className={`shrink-0 w-14 h-14 rounded-full border-2 bg-white dark:bg-gray-800 flex flex-col items-center justify-center ${getPhonemeRingColor(rounded)}`}
+      className={`shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-full border-2 bg-white dark:bg-gray-800 flex flex-col items-center justify-center ${getPhonemeRingColor(rounded)}`}
       aria-label={`Score ${rounded} out of 100`}
     >
-      <span className="text-base font-bold leading-none">{rounded}</span>
-      <span className="text-[9px] text-gray-400 dark:text-gray-500 mt-0.5">/100</span>
+      <span className="text-sm sm:text-base font-bold leading-none">{rounded}</span>
+      <span className="hidden sm:block text-[9px] text-gray-400 dark:text-gray-500 mt-0.5">/100</span>
     </div>
   );
 }
@@ -41,7 +41,7 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
   // Empty state: no word selected
   if (!word) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
           Sound Details (Phonemes & Tips)
         </h3>
@@ -60,7 +60,7 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
   const homograph = findHomograph(word.text);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 space-y-4">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -71,7 +71,10 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
             <span className="text-primary-600 dark:text-primary-400">{word.text}</span>
           </p>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            Overall score: {wordScore}/100 • Level: {wordLevel}
+            Word score: {wordScore}/100 • {wordLevel}
+          </p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+            Tap any word in the sentence to inspect its sounds.
           </p>
         </div>
         {onClose && (
@@ -154,9 +157,9 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                 return (
                   <div
                     key={index}
-                    className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-4"
+                    className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-3 sm:gap-4"
                   >
-                    <div className="shrink-0 w-12 h-12 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                    <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
                       <span className="text-lg font-bold text-primary-700 dark:text-primary-300 font-mono">
                         {phoneme.symbol}
                       </span>
@@ -190,9 +193,9 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                 return (
                   <div
                     key={index}
-                    className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-4"
+                    className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-3 sm:gap-4"
                   >
-                    <div className="shrink-0 w-12 h-12 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                    <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
                       <span className="text-lg font-bold text-primary-700 dark:text-primary-300 font-mono">
                         {phoneme.symbol}
                       </span>
@@ -213,35 +216,6 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
               }
             })}
           </div>
-        </div>
-      )}
-
-      {/* Tips section for problem phonemes */}
-      {trustLevel !== 'untrusted' && problemPhonemes.length > 0 && (
-        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-            💡 Focus Areas:
-          </h4>
-          <ul className="space-y-2">
-            {problemPhonemes.map((phoneme, index) => {
-              const metadata = getPhonemeById(phoneme.symbol);
-              const desc = metadata?.englishApprox || metadata?.articulation || '';
-              const tip = phoneme.tip || metadata?.teachingTips?.[0] || desc || `Score: ${phoneme.score}/100 - needs practice`;
-              
-              return (
-                <li
-                  key={index}
-                  className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300"
-                >
-                  <span className="text-rose-500 dark:text-rose-400 mt-0.5">•</span>
-                  <span>
-                    <strong className="font-medium">{phoneme.symbol}:</strong>{' '}
-                    {tip}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
         </div>
       )}
 

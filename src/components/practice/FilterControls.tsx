@@ -100,23 +100,26 @@ function FilterControls({
         </div>
       )}
 
-      {/* Category filter */}
-      <MultiSelect
-        label="Category"
-        options={categoryOptions}
-        selectedValues={selectedCategories}
-        onChange={(values) => onCategoryChange(values as string[])}
-        placeholder="All categories"
-      />
+      {/* Category + Difficulty filters — side by side on mobile to save vertical space */}
+      <div className="flex w-full sm:w-auto gap-2 sm:gap-4">
+        <MultiSelect
+          label="Category"
+          options={categoryOptions}
+          selectedValues={selectedCategories}
+          onChange={(values) => onCategoryChange(values as string[])}
+          placeholder="All categories"
+          className="flex-1 min-w-0 sm:flex-none sm:min-w-[200px]"
+        />
 
-      {/* Difficulty filter */}
-      <MultiSelect
-        label="Difficulty"
-        options={difficultyOptions}
-        selectedValues={selectedDifficulties}
-        onChange={(values) => onDifficultyChange(values as Difficulty[])}
-        placeholder="All difficulties"
-      />
+        <MultiSelect
+          label="Difficulty"
+          options={difficultyOptions}
+          selectedValues={selectedDifficulties}
+          onChange={(values) => onDifficultyChange(values as Difficulty[])}
+          placeholder="All difficulties"
+          className="flex-1 min-w-0 sm:flex-none sm:min-w-[200px]"
+        />
+      </div>
 
       {currentIndex !== undefined && totalCount !== undefined && (
         <div className="flex items-center gap-2 ml-auto">

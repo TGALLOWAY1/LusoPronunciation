@@ -68,7 +68,7 @@ export default function MultiSelect({
       : `${selectedCount} selected`;
 
   return (
-    <div className={`relative min-w-[200px] ${className}`} ref={dropdownRef}>
+    <div className={`relative ${className || 'min-w-[200px]'}`} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -77,9 +77,9 @@ export default function MultiSelect({
         }`}
       >
         <div className="flex items-center justify-between gap-2">
-          <span>{label ? <span className="font-semibold text-gray-700 dark:text-gray-300 mr-1">{label}</span> : null}{displayText}</span>
+          <span className="truncate">{label ? <span className="font-semibold text-gray-700 dark:text-gray-300 mr-1">{label}</span> : null}{displayText}</span>
           <svg
-            className={`w-4 h-4 transition-transform ${isOpen ? 'transform rotate-180' : ''}`}
+            className={`w-4 h-4 shrink-0 transition-transform ${isOpen ? 'transform rotate-180' : ''}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

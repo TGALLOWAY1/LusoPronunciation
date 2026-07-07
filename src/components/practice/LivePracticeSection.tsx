@@ -1,20 +1,24 @@
 import { useMemo, useCallback, useEffect, useRef, useState } from 'react';
+import { Check, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
 import type { Sentence } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import { useLivePronunciationPractice } from '@/hooks/useLivePronunciationPractice';
-import { PronunciationFeedbackPanel, type PronunciationFeedbackPanelProps } from '@/components/pronunciation';
-import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import NextStepCoachingCard from '@/components/practice/NextStepCoachingCard';
+import InteractiveSentenceDisplay from '@/components/practice/InteractiveSentenceDisplay';
+import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import {
   adaptWordScoresToNormalized,
-  buildWordAudioVariantsForSentence,
   enrichWordsWithCanonicalData,
   FocusAreasCard,
-  type NormalizedAudioVariant,
+  PhonemePanel,
+  type NormalizedWordFeedback,
 } from '@/components/pronunciation/shared';
+import { alignUiTokensToAzureWords } from '@/pipeline/sentenceWordRefs';
+import { computeTrustLevel, getTrustMessage } from '@/lib/assessmentTrust';
 import { useSettingsStore } from '@/state/settingsStore';
 import { useCanonicalWordMap } from '@/hooks/useCanonicalWordMap';
 import PremiumRecordButton from '@/components/common/PremiumRecordButton';
+import PremiumPlayButton from '@/components/common/PremiumPlayButton';
 import { buildCoachingSuggestion } from '@/lib/coaching/coachingEngine';
 import { detectConfusionTags } from '@/lib/coaching/confusionDetection';
 import { pickMinimalPairsByTags } from '@/lib/coaching/minimalPairs.ptbr';
@@ -28,44 +32,15 @@ export interface LivePracticeSectionProps {
 }
 
 /**
- * Builds normalized audio variants from sentence audio URLs, including user recording.
- * Only includes the native audio variant that matches the selected voice preference.
+ * The core sentence practice loop, laid out as a coaching flow:
+ *
+ *   1. The sentence (with optional translation) front and center.
+ *   2. A paired "Listen | Record" panel — hear the native model, then record.
+ *   3. After scoring: overall score with interpretation, sentence-wide focus
+ *      areas, per-word sound details, and a concrete next step.
  */
-function buildSentenceAudioVariants(
-  sentence: Sentence,
-  userAudioUrl: string | null,
-  selectedVoice: 'male' | 'female'
-): NormalizedAudioVariant[] {
-  const variants: NormalizedAudioVariant[] = [];
-  
-  // Add native audio variant based on selected voice preference
-  const nativeAudioUrl = selectedVoice === 'male' ? sentence.audioMaleUrl : sentence.audioFemaleUrl;
-  if (nativeAudioUrl) {
-    variants.push({
-      type: 'native',
-      url: nativeAudioUrl,
-    });
-  }
-
-  // Add user recording if available
-  if (userAudioUrl) {
-    variants.push({
-      type: 'user',
-      url: userAudioUrl,
-    });
-  }
-  
-  return variants;
-}
-
-/**
- * LivePracticeSection component for recording and assessing pronunciation in real-time.
- * 
- * Uses the useLivePronunciationPractice hook to handle recording, submission, and attempt management.
- * Displays results using PronunciationFeedbackPanel.
- */
-export default function LivePracticeSection({ 
-  sentence, 
+export default function LivePracticeSection({
+  sentence,
   sessionId,
   onCurrentAttemptChange,
   onRecordingUrlChange,
@@ -73,8 +48,10 @@ export default function LivePracticeSection({
   const { selectedVoice } = useSettingsStore();
   const canonicalWordMap = useCanonicalWordMap();
   const [isDrillOpen, setIsDrillOpen] = useState(false);
+  const [showEnglish, setShowEnglish] = useState(false);
+  const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback | null>(null);
   const lastShownKeyRef = useRef<string | null>(null);
-  
+
   const {
     isRecording,
     audioUrl,
@@ -107,10 +84,12 @@ export default function LivePracticeSection({
     }
   }, [audioUrl, onRecordingUrlChange]);
 
-  // Reset recording when sentence changes (but preserve it after submission for current sentence)
+  // Reset recording and per-sentence UI state when sentence changes
   useEffect(() => {
     resetRecording();
     clearAssessmentState();
+    setShowEnglish(false);
+    setSelectedWord(null);
   }, [sentence.id, resetRecording, clearAssessmentState]);
 
   // Handle submit button click
@@ -131,17 +110,7 @@ export default function LivePracticeSection({
     );
   }, [sentence, sessionId, audioUrl, submitAttempt]);
 
-  // Build sentence audio variants (native + user recording)
-  const sentenceAudio = useMemo(() => {
-    return buildSentenceAudioVariants(sentence, audioUrl, selectedVoice);
-  }, [sentence, audioUrl, selectedVoice]);
-
-  // Build word audio variants from sentence wordRefs
-  const wordAudios = useMemo(() => {
-    return buildWordAudioVariantsForSentence(sentence, selectedVoice);
-  }, [sentence, selectedVoice]);
-
-  // Normalize word scores for the panel, extracting phonemes from Azure response
+  // Normalize word scores, extracting phonemes from Azure response
   const normalizedWords = useMemo(() => {
     if (currentAttempt && currentAttempt.wordScores && currentAttempt.wordScores.length > 0) {
       return adaptWordScoresToNormalized(currentAttempt.wordScores, rawAzureResponse);
@@ -156,12 +125,116 @@ export default function LivePracticeSection({
     return enrichWordsWithCanonicalData(sentence, normalizedWords, canonicalWordMap);
   }, [sentence, normalizedWords, canonicalWordMap]);
 
-  const nativeAudioAvailable = useMemo(() => {
-    return selectedVoice === 'male'
-      ? Boolean(sentence.audioMaleUrl)
-      : Boolean(sentence.audioFemaleUrl);
+  const nativeAudioUrl = useMemo(() => {
+    return (selectedVoice === 'male' ? sentence.audioMaleUrl : sentence.audioFemaleUrl) || null;
   }, [selectedVoice, sentence.audioMaleUrl, sentence.audioFemaleUrl]);
+  const nativeAudioAvailable = Boolean(nativeAudioUrl);
 
+  // UI rendering is driven from the centralized attempt lifecycle state.
+  const isScoredState = attemptState === 'scored';
+  const recordingFileExists = Boolean(audioUrl);
+  const isReadyToRecord = attemptState === 'idle' || (!recordingFileExists && attemptState !== 'recording');
+  const isRecordingInProgress = attemptState === 'recording' || isRecording;
+  const isReviewState =
+    recordingFileExists &&
+    !isScoredState &&
+    (attemptState === 'recorded' ||
+      attemptState === 'submitting' ||
+      attemptState === 'error' ||
+      attemptState === 'canceled');
+
+  const canSubmit = Boolean(audioUrl) && attemptState !== 'submitting' && attemptState !== 'recording';
+
+  // ---------------------------------------------------------------------
+  // Audio playback (native model + user's own take) via one shared element
+  // ---------------------------------------------------------------------
+  const audioElRef = useRef<HTMLAudioElement>(null);
+  const [activeAudio, setActiveAudio] = useState<'native' | 'user' | null>(null);
+
+  const stopPlayback = useCallback(() => {
+    audioElRef.current?.pause();
+    setActiveAudio(null);
+  }, []);
+
+  const toggleAudio = useCallback(
+    (type: 'native' | 'user', url: string) => {
+      const el = audioElRef.current;
+      if (!el) return;
+
+      if (activeAudio === type) {
+        el.pause();
+        setActiveAudio(null);
+        return;
+      }
+
+      el.pause();
+      el.currentTime = 0;
+      el.src = url;
+      setActiveAudio(type);
+      el.play().catch(() => setActiveAudio(null));
+    },
+    [activeAudio]
+  );
+
+  // Stop playback when the sentence changes or a recording starts
+  useEffect(() => {
+    stopPlayback();
+  }, [sentence.id, isRecordingInProgress, stopPlayback]);
+
+  // ---------------------------------------------------------------------
+  // Word selection for the Sound Details panel
+  // ---------------------------------------------------------------------
+
+  // Auto-select the weakest word of the latest scored attempt so the panel
+  // opens on the most useful coaching target.
+  useEffect(() => {
+    if (isScoredState && enrichedWords.length > 0) {
+      const weakest = [...enrichedWords].sort(
+        (a, b) => (a.score ?? a.accuracyScore ?? 100) - (b.score ?? b.accuracyScore ?? 100)
+      )[0];
+      setSelectedWord(weakest);
+    } else {
+      setSelectedWord(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentAttempt?.attemptId, isScoredState, enrichedWords.length]);
+
+  const tokenWordScores = useMemo(() => {
+    const { uiTokens, azureIndicesPerToken } = alignUiTokensToAzureWords(sentence.textPt);
+    return uiTokens.map((token, i) => {
+      const azureIndices = azureIndicesPerToken[i];
+      const firstAzureIndex = azureIndices[0];
+      const normalizedWord =
+        firstAzureIndex === undefined || enrichedWords.length === 0
+          ? undefined
+          : enrichedWords.find((w) => w.index === firstAzureIndex) ?? enrichedWords[firstAzureIndex];
+
+      return {
+        word: token,
+        overallScore: normalizedWord
+          ? normalizedWord.score ?? normalizedWord.accuracyScore ?? null
+          : null,
+        normalizedWord,
+      };
+    });
+  }, [sentence.textPt, enrichedWords]);
+
+  const handleWordClick = useCallback((wordData: { [key: string]: any }) => {
+    const normalizedWord: NormalizedWordFeedback | undefined = wordData?.normalizedWord;
+    if (normalizedWord) {
+      setSelectedWord(normalizedWord);
+    }
+  }, []);
+
+  const trustLevel = useMemo(
+    () => (currentAttempt ? computeTrustLevel(currentAttempt) : 'trusted'),
+    [currentAttempt]
+  );
+  const trustMessage = getTrustMessage(trustLevel);
+
+  // ---------------------------------------------------------------------
+  // Coaching suggestion
+  // ---------------------------------------------------------------------
   const coachingSuggestion = useMemo(() => {
     if (!currentAttempt) {
       return null;
@@ -221,37 +294,6 @@ export default function LivePracticeSection({
     });
   }, [attemptState, coachingSuggestion, currentAttempt]);
 
-  // Build panel props
-  const panelProps: PronunciationFeedbackPanelProps = useMemo(() => ({
-    attempts: attempts ?? [],
-    currentAttempt: currentAttempt ?? null,
-    sentenceText: sentence.textPt,
-    translationText: sentence.translationEn,
-    difficulty: sentence.difficulty,
-    sentenceAudio: sentenceAudio.length > 0 ? sentenceAudio : undefined,
-    wordAudios: wordAudios.length > 0 ? wordAudios : undefined,
-    words: enrichedWords.length > 0 ? enrichedWords : undefined,
-    title: undefined,
-    showDevControls: false,
-    hideHeaderContent: false, // Show sentence text, translation, difficulty, and audio
-    showDifficultyBadge: false,
-  }), [attempts, currentAttempt, sentence, sentenceAudio, wordAudios, enrichedWords]);
-
-  const canSubmit = Boolean(audioUrl) && attemptState !== 'submitting' && attemptState !== 'recording';
-  const recordingFileExists = Boolean(audioUrl);
-
-  // UI rendering is driven from the centralized attempt lifecycle state.
-  const isScoredState = attemptState === 'scored';
-  const isReadyToRecord = attemptState === 'idle' || (!recordingFileExists && attemptState !== 'recording');
-  const isRecordingInProgress = attemptState === 'recording' || isRecording;
-  const isReviewState =
-    recordingFileExists &&
-    !isScoredState &&
-    (attemptState === 'recorded' ||
-      attemptState === 'submitting' ||
-      attemptState === 'error' ||
-      attemptState === 'canceled');
-
   const handleCoachingPrimaryCta = useCallback(() => {
     if (!coachingSuggestion) {
       return;
@@ -298,169 +340,172 @@ export default function LivePracticeSection({
 
   return (
     <div className="space-y-6">
-      {/* Dynamic Recording Controls */}
-      <div className="space-y-4">
-        {dailyQuota && (
-          <div className="flex justify-center">
-            <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${
-                quotaExhausted
-                  ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
-                  : quotaLow
-                    ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200'
-                    : 'bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300'
-              }`}
-              title={`Daily limit resets at 00:00 UTC. Limit: ${dailyQuota.limit}.`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  quotaExhausted ? 'bg-red-500' : quotaLow ? 'bg-amber-500' : 'bg-emerald-500'
-                }`}
-                aria-hidden="true"
-              />
-              {quotaExhausted
-                ? 'Daily limit reached — resets at 00:00 UTC'
-                : `${dailyQuota.remaining} of ${dailyQuota.limit} attempts left today`}
-            </span>
-          </div>
+      {/* Sentence — the thing being practiced, front and center */}
+      <div className="flex flex-col items-center gap-y-2">
+        <InteractiveSentenceDisplay
+          sentenceText={sentence.textPt}
+          wordScores={tokenWordScores}
+          onWordClick={handleWordClick}
+        />
+
+        {sentence.translationEn && (
+          <button
+            type="button"
+            onClick={() => setShowEnglish((prev) => !prev)}
+            className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer transition-colors"
+            aria-pressed={showEnglish}
+            aria-label={showEnglish ? 'Hide translation' : 'Show translation'}
+          >
+            {showEnglish ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            <span>{showEnglish ? 'Hide translation' : 'Show translation'}</span>
+          </button>
         )}
-        <div className="flex items-center justify-center gap-4">
-          {/* State 1: Ready to Record - Single large red mic button */}
-          {isReadyToRecord && (
-            <PremiumRecordButton
-              isRecording={false}
-              onClick={startRecording}
-              disabled={submitting || quotaExhausted}
-              size="lg"
-            />
-          )}
 
-          {/* State 2: Recording in Progress - Large red button with stop icon and pulsing */}
-          {isRecordingInProgress && (
-            <PremiumRecordButton
-              isRecording={true}
-              onClick={stopRecording}
-              disabled={submitting}
-              size="lg"
-            />
-          )}
-
-          {/* State 3: Review (pre-submit) - Two buttons side-by-side */}
-          {isReviewState && (
-            <>
-              {/* Secondary Button (Left): Reset/Retry */}
-              <button
-                onClick={resetRecording}
-                disabled={submitting}
-                className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 flex items-center justify-center shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Reset recording"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  />
-                </svg>
-              </button>
-
-              {/* Main Button (Right): Green Submit button */}
-              <button
-                onClick={handleSubmit}
-                disabled={!canSubmit || submitting}
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 flex flex-col items-center justify-center gap-1 shadow-lg shadow-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Submit recording"
-              >
-                {submitting ? (
-                  <>
-                    <svg
-                      className="animate-spin w-6 h-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
-                    <span className="text-xs font-medium">Submitting...</span>
-                  </>
-                ) : (
-                  <>
-                    <svg
-                      className="w-7 h-7"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-xs font-medium">Submit</span>
-                  </>
-                )}
-              </button>
-            </>
-          )}
-
-          {/* State 4: Scored - Record again button */}
-          {isScoredState && (
-            <PremiumRecordButton
-              isRecording={false}
-              onClick={() => {
-                resetRecording();
-                // Small delay to ensure state resets before starting
-                setTimeout(() => startRecording(), 0);
-              }}
-              disabled={false}
-              size="lg"
-            />
-          )}
-        </div>
-
-        {/* "Try again" label under mic button in scored state */}
-        {isScoredState && (
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Tap to try again
+        {sentence.translationEn && showEnglish && (
+          <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 italic text-center">
+            {sentence.translationEn}
           </p>
         )}
+      </div>
 
-        {submitting && (
-          <div className="flex justify-center">
-            <button
-              onClick={cancelAnalysis}
-              className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-            >
-              Cancel analysis
-            </button>
+      {/* Listen | Record panel */}
+      <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 dark:divide-gray-700">
+          {/* Listen half */}
+          <div className="flex flex-col items-center text-center gap-2 pb-5 sm:pb-0 sm:pr-4">
+            <PremiumPlayButton
+              isPlaying={activeAudio === 'native'}
+              onClick={() => nativeAudioUrl && toggleAudio('native', nativeAudioUrl)}
+              disabled={!nativeAudioAvailable}
+              size="md"
+            />
+            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">Listen</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {nativeAudioAvailable
+                ? 'Hear the native pronunciation'
+                : 'Native audio not available for this sentence'}
+            </span>
+            {audioUrl && (
+              <button
+                type="button"
+                onClick={() => toggleAudio('user', audioUrl)}
+                className={`mt-1 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                  activeAudio === 'user'
+                    ? 'border-primary-500 text-primary-700 bg-primary-50 dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-700'
+                    : 'border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 dark:border-gray-600 dark:text-gray-300 dark:hover:text-primary-300'
+                }`}
+              >
+                <Volume2 size={14} />
+                {activeAudio === 'user' ? 'Stop my recording' : 'Play my recording'}
+              </button>
+            )}
           </div>
-        )}
+
+          {/* Record half — state-driven */}
+          <div className="flex flex-col items-center text-center gap-2 pt-5 sm:pt-0 sm:pl-4">
+            {(isReadyToRecord || isRecordingInProgress) && (
+              <>
+                <PremiumRecordButton
+                  isRecording={isRecordingInProgress}
+                  onClick={isRecordingInProgress ? stopRecording : startRecording}
+                  disabled={submitting || (quotaExhausted && !isRecordingInProgress)}
+                  size="md"
+                />
+                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  {isRecordingInProgress ? 'Recording…' : 'Tap to record'}
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {isRecordingInProgress
+                    ? 'Tap again to stop when you finish the sentence'
+                    : 'Speak clearly at a natural pace'}
+                </span>
+              </>
+            )}
+
+            {isReviewState && (
+              <>
+                <button
+                  onClick={handleSubmit}
+                  disabled={!canSubmit || submitting}
+                  aria-label="Submit recording"
+                  className="btn btn-primary btn-md inline-flex items-center gap-2"
+                >
+                  {submitting ? (
+                    <>
+                      <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Analyzing…
+                    </>
+                  ) : (
+                    <>
+                      <Check size={18} />
+                      Check my pronunciation
+                    </>
+                  )}
+                </button>
+                {submitting ? (
+                  <button
+                    onClick={cancelAnalysis}
+                    className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 underline underline-offset-2 transition-colors"
+                  >
+                    Cancel analysis
+                  </button>
+                ) : (
+                  <button
+                    onClick={resetRecording}
+                    disabled={submitting}
+                    aria-label="Reset recording"
+                    className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 underline underline-offset-2 transition-colors"
+                  >
+                    Discard &amp; re-record
+                  </button>
+                )}
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  Listen back first, or submit to get your score
+                </span>
+              </>
+            )}
+
+            {isScoredState && (
+              <>
+                <PremiumRecordButton
+                  isRecording={false}
+                  onClick={() => {
+                    resetRecording();
+                    // Small delay to ensure state resets before starting
+                    setTimeout(() => startRecording(), 0);
+                  }}
+                  disabled={quotaExhausted}
+                  size="md"
+                />
+                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  Try again
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  Another take usually beats the first
+                </span>
+              </>
+            )}
+          </div>
+        </div>
 
         {error && (
           <div
             role="alert"
-            className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-800 dark:text-red-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+            className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-800 dark:text-red-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
           >
             <span>{error}</span>
             <button
@@ -474,28 +519,91 @@ export default function LivePracticeSection({
         )}
       </div>
 
-      {/* Scoring Results - shown immediately after assessment */}
+      {/* Daily quota — subtle status under the controls */}
+      {dailyQuota && (quotaExhausted || quotaLow) && (
+        <div className="flex justify-center">
+          <span
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${
+              quotaExhausted
+                ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
+                : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200'
+            }`}
+            title={`Daily limit resets at 00:00 UTC. Limit: ${dailyQuota.limit}.`}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${quotaExhausted ? 'bg-red-500' : 'bg-amber-500'}`}
+              aria-hidden="true"
+            />
+            {quotaExhausted
+              ? 'Daily limit reached — resets at 00:00 UTC'
+              : `${dailyQuota.remaining} of ${dailyQuota.limit} attempts left today`}
+          </span>
+        </div>
+      )}
+
+      {/* Pre-attempt hint */}
+      {!isScoredState && !currentAttempt && (
+        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+          Record yourself to get a score with word-by-word feedback.
+        </p>
+      )}
+
+      {/* Results — coaching order: score, focus areas, word detail, next step */}
       {isScoredState && currentAttempt && (
-        <ScoringPanel currentAttempt={currentAttempt} variant="strip" />
+        <>
+          <ScoringPanel currentAttempt={currentAttempt} variant="strip" />
+
+          {trustMessage && (
+            <div
+              data-testid="trust-badge"
+              data-trust-level={trustLevel}
+              role="status"
+              className={
+                trustLevel === 'untrusted'
+                  ? 'rounded-lg p-3 border border-rose-300 dark:border-rose-700 bg-rose-50 dark:bg-rose-900/20'
+                  : 'rounded-lg p-3 border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20'
+              }
+            >
+              <p
+                className={
+                  trustLevel === 'untrusted'
+                    ? 'text-sm text-rose-800 dark:text-rose-200'
+                    : 'text-sm text-amber-800 dark:text-amber-200'
+                }
+              >
+                {trustMessage}
+              </p>
+            </div>
+          )}
+
+          {enrichedWords.length > 0 && <FocusAreasCard words={enrichedWords} />}
+
+          {selectedWord && (
+            <PhonemePanel
+              word={selectedWord}
+              onClose={() => setSelectedWord(null)}
+              trustLevel={trustLevel}
+            />
+          )}
+
+          {coachingSuggestion && (
+            <NextStepCoachingCard
+              suggestion={coachingSuggestion}
+              drillOpen={isDrillOpen}
+              onPrimaryCta={handleCoachingPrimaryCta}
+              onRetrySentence={handleRetrySentenceFromDrill}
+            />
+          )}
+        </>
       )}
 
-      {/* Pronunciation Feedback Panel */}
-      <PronunciationFeedbackPanel {...panelProps} />
-
-      {/* Focus Areas — problem phonemes across the sentence */}
-      {isScoredState && enrichedWords.length > 0 && (
-        <FocusAreasCard words={enrichedWords} />
-      )}
-
-      {/* Coaching suggestion - shown below results as a helpful hint */}
-      {isScoredState && coachingSuggestion && (
-        <NextStepCoachingCard
-          suggestion={coachingSuggestion}
-          drillOpen={isDrillOpen}
-          onPrimaryCta={handleCoachingPrimaryCta}
-          onRetrySentence={handleRetrySentenceFromDrill}
-        />
-      )}
+      {/* Hidden shared audio element */}
+      <audio
+        ref={audioElRef}
+        onEnded={stopPlayback}
+        onPause={() => setActiveAudio(null)}
+        className="hidden"
+      />
     </div>
   );
 }
