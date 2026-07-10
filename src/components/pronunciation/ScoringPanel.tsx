@@ -4,6 +4,12 @@ import type { AttemptScore } from '@/types/pronunciation';
 interface ScoringPanelProps {
   currentAttempt: AttemptScore | null;
   variant?: 'card' | 'banner' | 'strip';
+  /**
+   * Optional content rendered inside the hero column of the `strip` variant,
+   * below the overall-score interpretation (e.g. a progress sparkline). When
+   * present, the sub-metrics spread vertically to keep the two columns balanced.
+   */
+  heroExtra?: React.ReactNode;
 }
 
 /**
@@ -310,7 +316,7 @@ export function getScoreColor(score: number): ScoreTheme {
  * 
  * @param variant - 'card' for vertical card layout (default), 'banner' for horizontal banner layout
  */
-export default function ScoringPanel({ currentAttempt, variant = 'card' }: ScoringPanelProps) {
+export default function ScoringPanel({ currentAttempt, variant = 'card', heroExtra }: ScoringPanelProps) {
   if (!currentAttempt) {
     if (variant === 'banner') {
       return null; // Don't render banner if no attempt
@@ -368,7 +374,7 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
         <div className="absolute top-3 right-3 z-10">
           <AllMetricsInfoIcon prosodyAvailable={prosody !== null} />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-center">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 ${heroExtra ? 'items-stretch' : 'items-center'}`}>
           {/* Hero: overall score + interpretation */}
           <div className="pr-8 sm:pr-0">
             <div className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
@@ -400,10 +406,11 @@ export default function ScoringPanel({ currentAttempt, variant = 'card' }: Scori
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
               {getScoreInterpretation(overall)}
             </p>
+            {heroExtra && <div className="mt-4">{heroExtra}</div>}
           </div>
 
           {/* Sub-metrics */}
-          <div className="space-y-3 pr-8 sm:border-l sm:border-gray-200/70 sm:dark:border-gray-700 sm:pl-6">
+          <div className={`pr-8 sm:border-l sm:border-gray-200/70 sm:dark:border-gray-700 sm:pl-6 ${heroExtra ? 'flex flex-col justify-between gap-3' : 'space-y-3'}`}>
             {subMetrics.map((metric) => {
               const available = metric.value !== null;
               return (
