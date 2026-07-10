@@ -105,8 +105,24 @@ function DemoPracticeCard({ item, example }: { item: DemoItem; example: DemoExam
         </p>
       )}
 
-      {/* Score strip — same component the practice page shows after scoring */}
-      <ScoringPanel currentAttempt={example.attempt} variant="strip" />
+      {/* Score strip — same component the practice page shows after scoring.
+          The sparkline rides in the hero column so progress sits alongside the
+          accuracy/fluency/completeness metrics instead of a separate card. */}
+      <ScoringPanel
+        currentAttempt={example.attempt}
+        variant="strip"
+        heroExtra={
+          <div className="border-t border-gray-200/70 dark:border-gray-700 pt-3">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                Progress
+              </span>
+              <DemoBadge />
+            </div>
+            <PhraseTrendSparkline scores={item.history} />
+          </div>
+        }
+      />
 
       {/* Full sentence, translation toggle, audio controls, and Sound Details.
           Keyed by example so word selection and scores reset when switching. */}
@@ -263,32 +279,6 @@ export default function DemoPage() {
           </div>
 
           <DemoPracticeCard item={item} example={example} />
-        </div>
-
-        {/* Progress over time */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Progress on “{item.text}”
-            </h3>
-            <DemoBadge />
-          </div>
-          <PhraseTrendSparkline scores={item.history} />
-          <div className="mt-4 space-y-1.5">
-            {item.history.map((score, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400"
-              >
-                <span>Attempt {i + 1}</span>
-                <span className="font-semibold text-gray-900 dark:text-gray-100">{score}</span>
-              </div>
-            ))}
-          </div>
-          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-            +{item.history[item.history.length - 1] - item.history[0]} points across{' '}
-            {item.history.length} attempts.
-          </p>
         </div>
 
         {/* Footer CTA */}

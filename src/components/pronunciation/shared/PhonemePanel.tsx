@@ -159,8 +159,8 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                     key={index}
                     className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-3 sm:gap-4"
                   >
-                    <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
-                      <span className="text-lg font-bold text-primary-700 dark:text-primary-300 font-mono">
+                    <div className="shrink-0 min-w-10 h-10 sm:min-w-12 sm:h-12 px-2 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                      <span className={`font-bold text-primary-700 dark:text-primary-300 font-mono whitespace-nowrap ${phoneme.symbol.length > 3 ? 'text-[11px] sm:text-xs' : 'text-lg'}`}>
                         {phoneme.symbol}
                       </span>
                     </div>
@@ -195,8 +195,8 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                     key={index}
                     className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-3 sm:gap-4"
                   >
-                    <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
-                      <span className="text-lg font-bold text-primary-700 dark:text-primary-300 font-mono">
+                    <div className="shrink-0 min-w-10 h-10 sm:min-w-12 sm:h-12 px-2 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                      <span className={`font-bold text-primary-700 dark:text-primary-300 font-mono whitespace-nowrap ${phoneme.symbol.length > 3 ? 'text-[11px] sm:text-xs' : 'text-lg'}`}>
                         {phoneme.symbol}
                       </span>
                     </div>
