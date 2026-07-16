@@ -6,18 +6,14 @@ import {
   ExternalLink,
   Github,
   PlayCircle,
-  ShieldCheck,
 } from 'lucide-react';
 import {
-  CAPABILITIES,
-  DATASET_FACTS,
   GITHUB_URL,
   IMPLEMENTATION_LABELS,
   WALKTHROUGH_STEPS,
 } from './tour/tourContent';
 import {
   AssessmentTransformation,
-  CapabilityMark,
   DemoAccessSummary,
   InteractiveAttemptFrame,
   PipelineDiagram,
@@ -62,12 +58,6 @@ function TourHeader() {
         </Link>
 
         <nav className="flex items-center gap-1 sm:gap-2" aria-label="Tour navigation">
-          <a
-            href="#evidence"
-            className="hidden min-h-11 items-center rounded-lg px-3 text-sm font-medium text-slate-400 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 md:flex"
-          >
-            Evidence
-          </a>
           <a
             href={GITHUB_URL}
             target="_blank"
@@ -294,82 +284,6 @@ export default function TourPage() {
           </div>
         </section>
 
-        <section id="evidence" className="border-y border-white/10 bg-[#0a101a]" aria-labelledby="evidence-title">
-          <div className="mx-auto max-w-[86rem] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-            <SectionHeading
-              eyebrow="Implemented and verifiable"
-              title="Working features, backed by the repository"
-              intro="The demo is immediately explorable, the authenticated speech path is implemented, and dataset counts are generated directly from the current source data."
-            />
-            <div id="evidence-title" className="sr-only">Verified evidence and implementation</div>
-
-            <div className="mt-12 grid gap-12 xl:grid-cols-[1.08fr_0.92fr]">
-              <div>
-                <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                  <h3 className="text-sm font-semibold text-white">Product capabilities</h3>
-                  <span className="text-[10px] uppercase tracking-[0.14em] text-slate-600">Current scope</span>
-                </div>
-                <ul className="divide-y divide-white/10">
-                  {CAPABILITIES.map((capability) => (
-                    <li key={capability.title} className="flex gap-3 py-5">
-                      <CapabilityMark />
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <p className="text-sm font-semibold text-white">{capability.title}</p>
-                          <span className="rounded-full border border-white/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-                            {capability.status}
-                          </span>
-                        </div>
-                        <p className="mt-1 text-sm leading-6 text-slate-400">{capability.description}</p>
-                        <details className="mt-2 text-xs text-slate-500">
-                          <summary className="min-h-11 cursor-pointer py-3 text-[10px] font-medium uppercase tracking-[0.1em] text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300">
-                            Implementation evidence
-                          </summary>
-                          <p className="pb-1 font-mono text-[10px] leading-5 text-slate-600">{capability.source}</p>
-                        </details>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                  <h3 className="text-sm font-semibold text-white">Dataset depth</h3>
-                  <span className="text-[10px] uppercase tracking-[0.14em] text-slate-600">Generated at build time</span>
-                </div>
-                <dl className="divide-y divide-white/10">
-                  {DATASET_FACTS.map((fact) => (
-                    <div key={fact.label} className="grid grid-cols-[5.5rem_1fr] gap-4 py-4">
-                      <dt className="text-2xl font-bold tabular-nums tracking-tight text-primary-200">
-                        {fact.value.toLocaleString()}
-                      </dt>
-                      <dd>
-                        <p className="text-sm font-semibold text-white">{fact.label}</p>
-                        <p className="mt-1 text-xs leading-5 text-slate-500">{fact.description}</p>
-                        <details className="mt-1 text-xs text-slate-500">
-                          <summary className="min-h-11 cursor-pointer py-3 text-[10px] font-medium uppercase tracking-[0.1em] text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300">
-                            Verification
-                          </summary>
-                          <p className="pb-1 leading-5">{fact.verification}</p>
-                          <p className="font-mono text-[10px] leading-5 text-slate-600">{fact.source}</p>
-                        </details>
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </div>
-
-            <div className="mt-10 flex items-start gap-3 border-l-2 border-amber-300/70 bg-amber-300/[0.04] px-5 py-4 text-sm leading-6 text-amber-100">
-              <ShieldCheck size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
-              <p>
-                Scores shown on this page are illustrative product samples, not learner outcomes. Live assessment requires the authenticated product path and configured Azure credentials.
-              </p>
-            </div>
-          </div>
-        </section>
-
         <section className="border-t border-white/10 bg-[#0a101a]">
           <div className="mx-auto max-w-[86rem] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
@@ -410,7 +324,7 @@ export default function TourPage() {
       <footer className="border-t border-white/10">
         <div className="mx-auto flex max-w-[86rem] flex-col gap-2 px-4 py-8 text-xs leading-5 text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <p>LusoPronounce · independent full-stack PT-BR pronunciation project</p>
-          <p>Tour samples are explicitly illustrative. Dataset facts are generated from repository sources.</p>
+          <p>Tour samples are explicitly illustrative; live recording begins in authenticated practice.</p>
         </div>
       </footer>
     </div>

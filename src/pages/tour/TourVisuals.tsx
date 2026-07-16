@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import {
   ArrowDown,
   ArrowRight,
-  Check,
   Info,
   Mic,
   Pause,
@@ -595,14 +594,6 @@ export function PipelineDiagram() {
         The public demo previews the experience without executing this pipeline. Live recording and Azure assessment begin only in authenticated practice.
       </p>
     </div>
-  );
-}
-
-export function CapabilityMark() {
-  return (
-    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-primary-300/30 bg-primary-300/10 text-primary-200">
-      <Check size={13} aria-hidden="true" />
-    </span>
   );
 }
 
