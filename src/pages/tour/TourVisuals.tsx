@@ -120,19 +120,19 @@ export function InteractiveAttemptFrame() {
       <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-[#111b2a] px-4 py-3 sm:px-5">
         <div>
           <p className="text-xs font-semibold text-slate-200">Coaching for “{selectedWord.text}”</p>
-          <p className="mt-0.5 text-[10px] text-slate-500">Rendered with the same feedback components used in practice</p>
+          <p className="mt-0.5 text-[10px] text-slate-400">Rendered with the same feedback components used in practice</p>
         </div>
         <SampleLabel compact />
       </div>
 
       <div className="space-y-4 p-4 sm:p-5">
-        <div className="rounded-xl border border-gray-700 bg-gray-800 p-4 sm:p-5">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
           <div className="mb-5 flex flex-wrap items-end justify-between gap-2">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-700">
                 Scored sentence
               </p>
-              <p className="mt-1 text-xs text-gray-400">Choose a word to inspect its sounds.</p>
+              <p className="mt-1 text-xs text-gray-600">Choose a word to inspect its sounds.</p>
             </div>
             <p className="text-[10px] text-gray-500">Illustrative word scores</p>
           </div>
