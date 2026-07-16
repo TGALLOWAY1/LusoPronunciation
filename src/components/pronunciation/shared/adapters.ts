@@ -271,8 +271,6 @@ export function enrichWordsWithCanonicalData(
       wordId: canonicalWord.id,
       phonemes: canonicalPhonemes.map(symbol => ({
         symbol,
-        score: word.accuracyScore,
-        isProblem: word.accuracyScore < 80,
       })),
     };
   });

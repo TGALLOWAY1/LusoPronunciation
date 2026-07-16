@@ -22,7 +22,7 @@ function collectProblemPhonemes(words: NormalizedWordFeedback[]): ProblemPhoneme
   for (const word of words) {
     if (!word.phonemes) continue;
     for (const phoneme of word.phonemes) {
-      if (!phoneme.isProblem) continue;
+      if (!phoneme.isProblem || phoneme.score === undefined) continue;
       const existing = bySymbol.get(phoneme.symbol);
       if (existing && existing.score <= phoneme.score) continue;
 

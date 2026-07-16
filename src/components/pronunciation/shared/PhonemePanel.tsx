@@ -21,7 +21,10 @@ function getPhonemeRingColor(score: number): string {
 /**
  * Circular score indicator shown on the right of each phoneme card.
  */
-function PhonemeScoreRing({ score }: { score: number }) {
+function PhonemeScoreRing({ score }: { score?: number }) {
+  if (typeof score !== 'number') {
+    return null;
+  }
   const rounded = Math.round(score);
   return (
     <div
@@ -54,7 +57,10 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
     );
   }
 
-  const problemPhonemes = word.phonemes?.filter(p => p.isProblem) || [];
+  const hasScoredPhonemes = word.phonemes?.some(p => typeof p.score === 'number') ?? false;
+  const problemPhonemes = hasScoredPhonemes
+    ? (word.phonemes?.filter(p => typeof p.score === 'number' && p.score < 80) ?? [])
+    : [];
   const wordScore = word.score ?? word.accuracyScore;
   const wordLevel = word.level || (wordScore >= 90 ? 'excellent' : wordScore >= 80 ? 'good' : wordScore >= 70 ? 'ok' : 'practice');
   const homograph = findHomograph(word.text);
@@ -221,6 +227,7 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
       )}
 
       {trustLevel !== 'untrusted' &&
+        hasScoredPhonemes &&
         problemPhonemes.length === 0 &&
         word.phonemes &&
         word.phonemes.length > 0 && (
