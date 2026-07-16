@@ -1,6 +1,5 @@
 import {
   AudioLines,
-  BadgeCheck,
   Cloud,
   Database,
   FileAudio,
@@ -8,21 +7,17 @@ import {
   Headphones,
   ListChecks,
   Mic,
-  Route,
-  ShieldCheck,
-  SlidersHorizontal,
   type LucideIcon,
 } from 'lucide-react';
 import { TOUR_FACTS } from './tourFacts.generated';
 
 export const GITHUB_URL = 'https://github.com/TGALLOWAY1/LusoPronunciation';
-export const LIVE_DEMO_URL = 'https://luso-pronunciation.vercel.app/demo';
 
 export const IMPLEMENTATION_LABELS = [
   'React 19 + TypeScript',
   'Express + MongoDB',
-  'Azure Speech assessment',
-  'Deterministic PT-BR metadata',
+  'Azure Speech + neural TTS',
+  'PT-BR coaching engine',
 ] as const;
 
 export type WalkthroughStep = {
@@ -37,65 +32,30 @@ export const WALKTHROUGH_STEPS: WalkthroughStep[] = [
   {
     icon: Headphones,
     kicker: 'Reference',
-    title: 'Choose a sentence and hear the target',
-    body: 'Practice items include pre-generated male and female Azure neural PT-BR reference audio.',
-    evidence: 'audio_index.json + Azure TTS voice configuration',
+    title: 'Hear the sentence in Brazilian Portuguese',
+    body: 'Compare your pronunciation with male or female PT-BR reference audio generated with Azure neural text-to-speech.',
+    evidence: 'Azure neural text-to-speech · two PT-BR voices',
   },
   {
     icon: Mic,
-    kicker: 'Capture',
-    title: 'Record, review, then submit',
-    body: 'The authenticated product records in the browser and blocks very short or effectively silent takes before a request is sent.',
-    evidence: 'useMicrophoneRecorder + audioQuality',
+    kicker: 'Practice',
+    title: 'Record a practice attempt',
+    body: 'Record in the browser, review the take, and retry before sending it for assessment. Very short or effectively silent recordings are stopped early.',
+    evidence: 'Browser recording · pre-submit quality checks',
   },
   {
     icon: Gauge,
-    kicker: 'Assessment',
-    title: 'Read the returned score at the right level',
-    body: 'The current live Azure path returns overall, fluency, completeness, miscue, and word-level accuracy data.',
-    evidence: 'pronunciationAssessment + pronunciationUtils',
+    kicker: 'Feedback',
+    title: 'See which words need attention',
+    body: 'Azure Speech returns overall, fluency, completeness, and word-level accuracy so the learner can focus on a specific part of the sentence.',
+    evidence: 'Azure Speech pronunciation assessment · word-level results',
   },
   {
     icon: ListChecks,
     kicker: 'Coaching',
-    title: 'Move from a weak word to a teachable sound',
-    body: 'A scored word is joined to canonical PT-BR phoneme metadata so the learner can inspect articulation notes and retry deliberately.',
-    evidence: 'adapters + masterWords + phoneme_metadata',
-  },
-];
-
-export type Challenge = {
-  icon: LucideIcon;
-  title: string;
-  summary: string;
-  detail: string;
-  source: string;
-};
-
-export const SUPPORTING_CHALLENGES: Challenge[] = [
-  {
-    icon: ShieldCheck,
-    title: 'Reject weak inputs before they spend an API call',
-    summary: 'Duration and RMS gates run in the browser before submission.',
-    detail:
-      'The current thresholds reject recordings shorter than 900 ms or below an RMS of 0.012. Decode failures also stop the request and ask the learner to record again.',
-    source: 'src/lib/audioQuality.ts · submitAttempt()',
-  },
-  {
-    icon: Route,
-    title: 'Keep incomplete provider output honest',
-    summary: 'Recognition status, completeness, and missing-word ratio control the level of detail shown.',
-    detail:
-      'The trust classifier marks attempts as trusted, degraded, or untrusted. Detailed phoneme help is withheld for untrusted responses rather than treating an incomplete assessment as precise.',
-    source: 'src/lib/assessmentTrust.ts · PhonemePanel',
-  },
-  {
-    icon: SlidersHorizontal,
-    title: 'Join scores to PT-BR teaching metadata',
-    summary: 'Word indices and normalized text provide controlled fallbacks into the canonical dataset.',
-    detail:
-      'The adapter first preserves provider phonemes when present. Otherwise it uses sentence word references, then normalized text, to attach the repository’s phoneme sequence without fabricating phoneme scores.',
-    source: 'enrichWordsWithCanonicalData()',
+    title: 'Turn a weak word into a practical correction',
+    body: 'LusoPronounce connects the weak word to PT-BR sound guidance, showing how to shape the sound and what to practice next.',
+    evidence: 'Deterministic PT-BR coaching · articulation guidance',
   },
 ];
 
@@ -110,43 +70,43 @@ export type EvidenceFact = {
 export const DATASET_FACTS: EvidenceFact[] = [
   {
     value: TOUR_FACTS.sentences,
-    label: 'Sentence records',
-    description: 'Current master sentence dataset used by the practice loader.',
+    label: 'Practice sentences',
+    description: 'Brazilian Portuguese sentences available to the practice experience.',
     source: 'data/masterSentences.json',
     verification: 'Deterministic top-level array count.',
   },
   {
     value: TOUR_FACTS.words,
-    label: 'Word records',
-    description: 'Current master word dataset with IDs, references, and enrichment fields.',
+    label: 'Practice words',
+    description: 'Word entries supporting sentence alignment, sound guidance, and targeted practice.',
     source: 'data/masterWords.json',
     verification: 'Deterministic top-level array count.',
   },
   {
     value: TOUR_FACTS.phonemeMetadataEntries,
-    label: 'Phoneme metadata entries',
-    description: 'PT-BR teaching records; this is not a claim of complete phoneme coverage.',
+    label: 'PT-BR sound profiles',
+    description: 'Articulation guidance, common mistakes, examples, and teaching tips for Brazilian Portuguese sounds.',
     source: 'data/phoneme_metadata.json',
     verification: 'Deterministic top-level array count.',
   },
   {
     value: TOUR_FACTS.confusionPatternTags,
-    label: 'Confusion-pattern tags',
-    description: 'Tags used by deterministic spelling and weak-word heuristics.',
+    label: 'Coaching patterns',
+    description: 'Common pronunciation contrasts recognized by the rule-based coaching layer.',
     source: 'confusionDetection.ts',
     verification: 'Unique tags referenced by the coaching pair dataset.',
   },
   {
     value: TOUR_FACTS.minimalPairPrompts,
     label: 'Tagged contrast prompts',
-    description: 'Repository coaching data with selector logic; not presented as a currently accessible drill.',
+    description: 'Minimal contrasts prepared in the coaching dataset; not presented as a live drill feature.',
     source: 'minimalPairs.ptbr.ts',
     verification: 'Deterministic exported-array count.',
   },
   {
     value: TOUR_FACTS.dualVoiceAudioIndexEntries,
-    label: 'Dual-voice audio index entries',
-    description: 'Practice audio records containing both configured Azure neural voice URL fields.',
+    label: 'Two-voice audio entries',
+    description: 'Practice references with both male and female Azure neural PT-BR voice variants.',
     source: 'data/audio_index.json',
     verification: 'Deterministic count of records with non-empty male and female URL fields.',
   },
@@ -155,45 +115,45 @@ export const DATASET_FACTS: EvidenceFact[] = [
 export type Capability = {
   title: string;
   description: string;
-  status: 'Public sample' | 'Authenticated product' | 'Implementation';
+  status: 'Try now' | 'Authenticated path' | 'Built';
   source: string;
 };
 
 export const CAPABILITIES: Capability[] = [
   {
-    title: 'Deterministic public demo',
-    description: 'Local sample states and static audio; no microphone, account, backend, or Azure key.',
-    status: 'Public sample',
+    title: 'Explore the coaching flow without setup',
+    description: 'The public demo uses local sample states and bundled audio, so recruiters can inspect the experience immediately.',
+    status: 'Try now',
     source: '/demo · demoData.ts',
   },
   {
-    title: 'Browser recording with quality gates',
-    description: 'MediaRecorder capture plus pre-submit duration and loudness checks.',
-    status: 'Authenticated product',
+    title: 'Record and assess real speech',
+    description: 'The authenticated path captures microphone audio, checks recording quality, and submits accepted takes for assessment.',
+    status: 'Authenticated path',
     source: 'useMicrophoneRecorder · audioQuality',
   },
   {
-    title: 'Word-level Azure assessment',
-    description: 'Overall, fluency, completeness, miscue, recognition, and per-word accuracy handling.',
-    status: 'Authenticated product',
+    title: 'Inspect word-by-word Azure feedback',
+    description: 'The product handles overall, fluency, completeness, recognition, miscue, and per-word accuracy results.',
+    status: 'Authenticated path',
     source: 'pronunciationAssessment · normalizer',
   },
   {
-    title: 'Attempt history and progress analysis',
-    description: 'Client-hydrated history and analytics with authenticated server dual-write.',
-    status: 'Authenticated product',
+    title: 'Track attempts and practice patterns',
+    description: 'Completed attempts feed local history and progress views, with authenticated attempts also written to the server.',
+    status: 'Authenticated path',
     source: 'practiceLogStore · ProgressPage',
   },
   {
-    title: 'Male and female synthesized references',
-    description: 'Azure neural PT-BR voice URLs indexed for the current practice corpus.',
-    status: 'Implementation',
+    title: 'Compare two synthesized PT-BR voices',
+    description: 'The practice corpus includes male and female Azure neural reference-audio variants.',
+    status: 'Built',
     source: 'generationPipeline.config · audio_index',
   },
   {
-    title: 'Static Vercel story deployment',
-    description: 'The public tour and demo were reachable on Vercel during this audit.',
-    status: 'Public sample',
+    title: 'Open the deployed tour and demo',
+    description: 'The public tour and deterministic demo are deployed on Vercel and linked to the source repository.',
+    status: 'Try now',
     source: 'vercel.json · verified 2026-07-16',
   },
 ];
@@ -210,58 +170,42 @@ export type PipelineStage = {
 export const PIPELINE_STAGES: PipelineStage[] = [
   {
     icon: Mic,
-    title: 'Capture',
+    title: 'Capture & validate',
     location: 'Browser',
-    input: 'Microphone stream',
-    responsibility: 'Prefer Ogg/Opus; fall back to supported MediaRecorder output.',
-    output: 'Encoded audio Blob',
-  },
-  {
-    icon: BadgeCheck,
-    title: 'Quality gate',
-    location: 'Browser',
-    input: 'Encoded audio Blob',
-    responsibility: 'Decode, measure duration and RMS, and stop invalid takes.',
-    output: 'Accepted multipart upload',
+    input: 'Learner microphone',
+    responsibility: 'Record the take and stop audio that is too short, too quiet, or cannot be decoded.',
+    output: 'Accepted practice recording',
   },
   {
     icon: FileAudio,
-    title: 'Normalize',
+    title: 'Prepare audio',
     location: 'App server',
-    input: 'Browser audio',
-    responsibility: 'Attempt FFmpeg conversion with timeout and record fallback use.',
-    output: '16 kHz mono s16 WAV or original fallback',
+    input: 'Browser recording',
+    responsibility: 'Attempt a consistent FFmpeg audio target and report when the original upload must be used instead.',
+    output: 'Assessment-ready audio',
   },
   {
     icon: Cloud,
-    title: 'Assess',
+    title: 'Assess with Azure',
     location: 'External provider',
-    input: 'Audio + PT-BR reference text',
-    responsibility: 'Run Azure pronunciation assessment at word granularity.',
-    output: 'Overall, sub-score, miscue, and word data',
-  },
-  {
-    icon: Route,
-    title: 'Normalize response',
-    location: 'App server',
-    input: 'Azure detailed response',
-    responsibility: 'Map provider variants into the typed AttemptScore contract.',
-    output: 'Stable word-score model',
+    input: 'Audio + Portuguese sentence',
+    responsibility: 'Run Azure Speech pronunciation assessment and return sentence and word-level results.',
+    output: 'Accuracy, fluency, completeness & word scores',
   },
   {
     icon: AudioLines,
-    title: 'Teach',
-    location: 'Browser',
-    input: 'AttemptScore + canonical word refs',
-    responsibility: 'Gate trust and attach PT-BR sound metadata without inventing scores.',
-    output: 'Progressive learner feedback',
+    title: 'Turn scores into coaching',
+    location: 'Browser + server',
+    input: 'Azure results + PT-BR sound data',
+    responsibility: 'Normalize the response, check its reliability, and connect weak words to actionable sound guidance.',
+    output: 'Learner-facing pronunciation feedback',
   },
   {
     icon: Database,
-    title: 'Persist',
+    title: 'Save & learn',
     location: 'Browser + server',
-    input: 'Completed attempt',
-    responsibility: 'Update the local practice log and dual-write authenticated attempts.',
-    output: 'History, analytics, MongoDB record',
+    input: 'Completed practice attempt',
+    responsibility: 'Update practice history and store authenticated attempts for later progress review.',
+    output: 'Attempt history & progress views',
   },
 ];

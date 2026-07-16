@@ -1,10 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ArrowDown,
   ArrowRight,
   Check,
-  CircleAlert,
-  FileAudio,
   Info,
   Mic,
   Pause,
@@ -105,16 +103,6 @@ export function InteractiveAttemptFrame() {
   const wordBand = scoreBand(selectedWord.score);
   const phonemeBand = scoreBand(selectedPhoneme.score);
 
-  const problemSounds = useMemo(
-    () =>
-      SAMPLE.words.flatMap((word, wordIndex) =>
-        word.phonemes
-          .map((phoneme, phonemeIndex) => ({ word, wordIndex, phoneme, phonemeIndex }))
-          .filter(({ phoneme }) => phoneme.score < 75),
-      ),
-    [],
-  );
-
   const selectWord = (wordIndex: number) => {
     const word = SAMPLE.words[wordIndex];
     const weakestIndex = word.phonemes.reduce(
@@ -142,7 +130,7 @@ export function InteractiveAttemptFrame() {
       <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-[#111b2a] px-4 py-3 sm:px-5">
         <div>
           <p className="text-xs font-semibold text-slate-200">Practice feedback</p>
-          <p className="mt-0.5 text-[10px] text-slate-500">Static sample based on the production feedback format</p>
+          <p className="mt-0.5 text-[10px] text-slate-500">Interactive product sample · illustrative scores</p>
         </div>
         <SampleLabel compact />
       </div>
@@ -162,33 +150,71 @@ export function InteractiveAttemptFrame() {
           </div>
         </div>
 
-        <div className="mt-5" aria-label="Select a word to inspect its pronunciation feedback">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-            Choose a word
-          </p>
+        <div className="mt-5" aria-label="Words and their pronunciation sounds">
+          <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+              Words → sounds
+            </p>
+            <p className="text-[10px] text-slate-500">Choose any word or sound</p>
+          </div>
           <div className="flex flex-wrap gap-2">
-            {SAMPLE.words.map((word, index) => {
-              const band = scoreBand(word.score);
-              const active = index === selectedWordIndex;
+            {SAMPLE.words.map((word, wordIndex) => {
+              const wordActive = wordIndex === selectedWordIndex;
+              const wordBand = scoreBand(word.score);
               return (
-                <button
-                  key={`${word.text}-${index}`}
-                  type="button"
-                  onClick={() => selectWord(index)}
-                  onFocus={() => selectWord(index)}
-                  aria-pressed={active}
-                  className={`min-h-11 rounded-lg border px-3 py-2 text-left text-xs font-medium transition-[background-color,border-color,transform] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1724] motion-reduce:transition-none ${
-                    active
-                      ? `${band.border} ${band.background} ${band.text} -translate-y-0.5 motion-reduce:translate-y-0`
-                      : 'border-white/10 bg-black/15 text-slate-300 hover:border-white/20 hover:bg-white/5'
+                <div
+                  key={`${word.text}-${wordIndex}`}
+                  className={`min-w-[5.5rem] flex-1 rounded-xl border p-2 transition-colors motion-reduce:transition-none ${
+                    wordActive
+                      ? 'border-primary-300/45 bg-primary-300/[0.06]'
+                      : 'border-white/10 bg-black/15'
                   }`}
+                  role="group"
+                  aria-label={`${cleanWord(word.text)}, illustrative word score ${word.score}`}
                 >
-                  <span>{cleanWord(word.text)}</span>
-                  <span className="ml-2 font-mono text-[10px] opacity-80">{word.score}</span>
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => selectWord(wordIndex)}
+                    onFocus={() => selectWord(wordIndex)}
+                    aria-pressed={wordActive}
+                    className={`flex min-h-11 w-full items-center justify-between gap-2 rounded-lg px-2 text-left text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 ${
+                      wordActive ? wordBand.text : 'text-slate-300 hover:bg-white/5'
+                    }`}
+                  >
+                    <span>{cleanWord(word.text)}</span>
+                    <span className="font-mono text-[10px] opacity-75">{word.score}</span>
+                  </button>
+                  <div className="mt-1 flex flex-wrap gap-1 border-t border-white/10 pt-2">
+                    {word.phonemes.map((phoneme, phonemeIndex) => {
+                      const meta = getPhonemeById(phoneme.symbol);
+                      const soundActive = wordActive && phonemeIndex === selectedPhonemeIndex;
+                      const band = scoreBand(phoneme.score);
+                      return (
+                        <button
+                          key={`${phoneme.symbol}-${phonemeIndex}`}
+                          type="button"
+                          onClick={() => selectSound(wordIndex, phonemeIndex)}
+                          aria-pressed={soundActive}
+                          className={`flex min-h-11 min-w-10 flex-col items-center justify-center rounded-md border px-1.5 font-mono text-[10px] leading-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 motion-reduce:transition-none ${
+                            soundActive
+                              ? 'border-white bg-white/10 text-white ring-1 ring-white/35'
+                              : `${band.border} ${band.background} ${band.text} hover:border-white/40`
+                          }`}
+                          aria-label={`Inspect ${cleanWord(word.text)} sound ${meta?.ipa ?? phoneme.symbol}, illustrative score ${phoneme.score}`}
+                        >
+                          <span>/{meta?.ipa ?? phoneme.symbol}/</span>
+                          <span className="mt-0.5 opacity-65">{phoneme.score}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               );
             })}
           </div>
+          <p className="mt-2 text-[10px] leading-4 text-slate-500">
+            Word scores come from the illustrative attempt; sound scores are sample values used to demonstrate the detailed feedback UI.
+          </p>
         </div>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-[0.9fr_1.1fr]">
@@ -228,7 +254,7 @@ export function InteractiveAttemptFrame() {
             <p className="mt-3 text-sm leading-6 text-slate-300">{coaching}</p>
             {metadata?.exampleWords?.[0] && (
               <p className="mt-3 border-t border-white/10 pt-3 text-xs text-slate-400">
-                Repository example:{' '}
+                Practice example:{' '}
                 <span className="font-medium text-slate-200">{metadata.exampleWords[0].pt}</span>{' '}
                 <span className="font-mono">/{metadata.exampleWords[0].ipa}/</span>
               </p>
@@ -236,64 +262,6 @@ export function InteractiveAttemptFrame() {
           </div>
         </div>
 
-        <div className="mt-4">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-            Select a problem sound
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {problemSounds.map(({ word, wordIndex, phoneme, phonemeIndex }) => {
-              const meta = getPhonemeById(phoneme.symbol);
-              const active = wordIndex === selectedWordIndex && phonemeIndex === selectedPhonemeIndex;
-              const band = scoreBand(phoneme.score);
-              return (
-                <button
-                  key={`${wordIndex}-${phonemeIndex}`}
-                  type="button"
-                  onClick={() => selectSound(wordIndex, phonemeIndex)}
-                  aria-pressed={active}
-                  className={`min-h-11 rounded-lg border px-3 py-2 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1724] ${
-                    active
-                      ? `${band.border} ${band.background} ${band.text}`
-                      : 'border-white/10 bg-black/15 text-slate-300 hover:border-white/20'
-                  }`}
-                  aria-label={`Inspect ${cleanWord(word.text)} sound ${meta?.ipa ?? phoneme.symbol}, illustrative score ${phoneme.score}`}
-                >
-                  <span className="font-mono">/{meta?.ipa ?? phoneme.symbol}/</span>
-                  <span className="ml-2 text-[10px] opacity-70">{cleanWord(word.text)}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="mt-4 rounded-xl border border-white/10 bg-black/15 p-3">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-              Illustrative phoneme timeline
-            </p>
-            <p className="text-[10px] text-slate-500">Selected sound is outlined</p>
-          </div>
-          <div className="mt-2 flex flex-wrap gap-1.5" aria-label="Illustrative phoneme score timeline">
-            {SAMPLE.words.flatMap((word, wordIndex) =>
-              word.phonemes.map((phoneme, phonemeIndex) => {
-                const meta = getPhonemeById(phoneme.symbol);
-                const active = wordIndex === selectedWordIndex && phonemeIndex === selectedPhonemeIndex;
-                const band = scoreBand(phoneme.score);
-                return (
-                  <span
-                    key={`${wordIndex}-${phonemeIndex}`}
-                    className={`rounded-md border px-2 py-1 font-mono text-[10px] ${band.background} ${band.text} ${
-                      active ? 'border-white ring-1 ring-white/40' : band.border
-                    }`}
-                    title={`${cleanWord(word.text)} /${meta?.ipa ?? phoneme.symbol}/ · illustrative ${phoneme.score}`}
-                  >
-                    {meta?.ipa ?? phoneme.symbol}
-                  </span>
-                );
-              }),
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -386,7 +354,7 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
                 </div>
               </div>
               <p className="mt-4 border-t border-white/10 pt-4 text-sm leading-6 text-slate-300">
-                Playback is user-triggered. Viewing the tour does not start audio or call Azure.
+                Compare your attempt with an Azure neural PT-BR reference before you record.
               </p>
             </div>
           )}
@@ -410,7 +378,7 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
                 </button>
               </div>
               <p className="mt-4 text-xs text-amber-200">
-                Tour state only — this control never requests microphone permission.
+                Preview state — microphone access begins only in authenticated practice.
               </p>
             </div>
           )}
@@ -436,8 +404,8 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
               </div>
               <div className="mt-4 rounded-xl border border-white/10 bg-black/15 p-4">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs font-semibold text-slate-300">Returned word accuracy</p>
-                  <span className="text-[10px] text-slate-500">Current live granularity</span>
+                  <p className="text-xs font-semibold text-slate-300">Azure word-level feedback</p>
+                  <span className="text-[10px] text-slate-500">Live assessment scope</span>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {SAMPLE.words.map((word) => {
@@ -471,7 +439,7 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
                 </div>
               </div>
               <div className="rounded-xl border border-primary-300/25 bg-primary-300/[0.06] p-4">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">Repository coaching metadata</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">PT-BR coaching guidance</p>
                 <p className="mt-2 text-base font-semibold text-white">NH · /{metadata?.ipa}/</p>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{metadata?.teachingTips?.[0]}</p>
                 <p className="mt-3 text-xs text-slate-400">
@@ -503,8 +471,8 @@ export function AssessmentTransformation() {
         <div className="rounded-2xl border border-white/10 bg-[#0f1724] p-5">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-xs font-semibold text-slate-200">1 · Provider-shaped input</p>
-              <p className="mt-1 text-xs text-slate-500">Sanitized, illustrative word record</p>
+              <p className="text-xs font-semibold text-slate-200">1 · Azure assessment result</p>
+              <p className="mt-1 text-xs text-slate-500">Sanitized illustrative excerpt</p>
             </div>
             <SampleLabel compact />
           </div>
@@ -526,14 +494,14 @@ export function AssessmentTransformation() {
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-[#0f1724] p-5">
-          <p className="text-xs font-semibold text-slate-200">2 · Normalize and join</p>
-          <p className="mt-1 text-xs text-slate-500">Typed result + canonical word reference</p>
+          <p className="text-xs font-semibold text-slate-200">2 · LusoPronounce teaching layer</p>
+          <p className="mt-1 text-xs text-slate-500">Make the provider result usable</p>
           <ol className="mt-5 space-y-3 text-sm text-slate-300">
             {[
-              ['Normalize', 'Provider variants → AttemptScore'],
-              ['Align', 'Azure word index → UI token'],
-              ['Enrich', 'wordRef → [M, IY, NH, AH]'],
-              ['Guard', 'No phoneme score is invented'],
+              ['Normalize', 'Create a stable score model'],
+              ['Align', 'Match the result to the learner’s words'],
+              ['Enrich', 'Connect “minha” to its PT-BR sounds'],
+              ['Protect trust', 'Never invent a missing sound score'],
             ].map(([title, body], index) => (
               <li key={title} className="flex gap-3">
                 <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-primary-300/30 bg-primary-300/10 text-[10px] font-bold text-primary-200">
@@ -554,14 +522,14 @@ export function AssessmentTransformation() {
         </div>
 
         <div className="rounded-2xl border border-primary-300/25 bg-primary-300/[0.06] p-5">
-          <p className="text-xs font-semibold text-primary-200">3 · Learner-facing context</p>
+          <p className="text-xs font-semibold text-primary-200">3 · Actionable learner feedback</p>
           <div className="mt-5 flex items-center gap-3">
             <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-primary-300/30 bg-primary-300/10 font-mono text-lg font-bold text-primary-100">
               /{metadata?.ipa}/
             </span>
             <div>
               <p className="font-semibold text-white">NH in “minha”</p>
-              <p className="text-xs text-slate-400">Canonical PT-BR metadata</p>
+              <p className="text-xs text-slate-400">Target sound and articulation guidance</p>
             </div>
           </div>
           <div className="mt-5 border-l-2 border-primary-300 pl-4">
@@ -569,71 +537,8 @@ export function AssessmentTransformation() {
             <p className="mt-2 text-sm leading-6 text-slate-200">{metadata?.teachingTips?.[0]}</p>
           </div>
           <p className="mt-4 text-xs leading-5 text-slate-400">
-            The score identifies the weak word; repository metadata explains its sounds. Per-phoneme values shown elsewhere on this tour are illustrative only.
+            Azure identifies the weak word; LusoPronounce explains the sound worth practicing. Per-sound values in this tour remain illustrative.
           </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function AudioNormalizationVisual() {
-  return (
-    <div className="grid gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
-      <div className="rounded-2xl border border-white/10 bg-[#0f1724] p-5">
-        <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-black/20 text-slate-300">
-            <Mic size={20} />
-          </span>
-          <div>
-            <p className="font-semibold text-white">Browser output</p>
-            <p className="text-xs text-slate-500">Container and codec vary by support</p>
-          </div>
-        </div>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {['Ogg · Opus preferred', 'WebM · Opus fallback', 'Browser default'].map((value) => (
-            <span key={value} className="rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-xs text-slate-300">
-              {value}
-            </span>
-          ))}
-        </div>
-        <p className="mt-5 text-sm leading-6 text-slate-400">
-          MediaRecorder prioritizes an Opus format but does not assume every browser exposes the same MIME type.
-        </p>
-      </div>
-
-      <div className="flex items-center justify-center" aria-hidden="true">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary-300/30 bg-primary-300/10 text-primary-200">
-          <ArrowDown className="lg:hidden" size={20} />
-          <ArrowRight className="hidden lg:block" size={20} />
-        </div>
-      </div>
-
-      <div className="rounded-2xl border border-primary-300/25 bg-primary-300/[0.06] p-5">
-        <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-primary-300/25 bg-primary-300/10 text-primary-200">
-            <FileAudio size={20} />
-          </span>
-          <div>
-            <p className="font-semibold text-white">FFmpeg target</p>
-            <p className="text-xs text-slate-500">Server-side normalization attempt</p>
-          </div>
-        </div>
-        <dl className="mt-5 grid grid-cols-3 gap-2 text-center">
-          {[
-            ['16 kHz', 'sample rate'],
-            ['1', 'mono channel'],
-            ['s16', 'sample format'],
-          ].map(([value, label]) => (
-            <div key={label} className="rounded-lg border border-white/10 bg-black/15 px-2 py-3">
-              <dt className="text-base font-bold text-primary-200">{value}</dt>
-              <dd className="mt-1 text-[10px] text-slate-500">{label}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="mt-5 flex items-start gap-2 rounded-xl border border-amber-300/25 bg-amber-300/[0.06] p-3 text-xs leading-5 text-amber-100">
-          <CircleAlert size={15} className="mt-0.5 shrink-0" />
-          <p>Conversion has a timeout. On failure, the route records a fallback flag and sends the original upload instead.</p>
         </div>
       </div>
     </div>
@@ -643,7 +548,7 @@ export function AudioNormalizationVisual() {
 export function PipelineDiagram() {
   return (
     <div className="tour-pipeline" aria-label="Authenticated pronunciation assessment pipeline">
-      <ol className="grid gap-3 md:grid-cols-2 xl:grid-cols-7">
+      <ol className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
         {PIPELINE_STAGES.map((stage, index) => (
           <li key={stage.title} className="relative min-w-0 border-l border-white/10 pl-4 md:border-l-0 md:pl-0">
             <div className="h-full border-b border-white/10 bg-transparent py-5 transition-colors duration-200 hover:border-primary-300/30 focus-within:border-primary-300/30 motion-reduce:transition-none md:rounded-2xl md:border md:bg-[#0f1724] md:p-4">
@@ -661,7 +566,7 @@ export function PipelineDiagram() {
                   <dd className="text-slate-300">{stage.input}</dd>
                 </div>
                 <div className="grid grid-cols-[5rem_1fr] gap-2 md:block">
-                  <dt className="font-semibold text-slate-500">Responsibility</dt>
+                  <dt className="font-semibold text-slate-500">What it does</dt>
                   <dd className="text-slate-300">{stage.responsibility}</dd>
                 </div>
                 <div className="grid grid-cols-[5rem_1fr] gap-2 md:block">
@@ -683,7 +588,7 @@ export function PipelineDiagram() {
       </div>
       <p className="mt-3 flex items-start gap-2 text-xs leading-5 text-slate-500">
         <ShieldCheck size={14} className="mt-0.5 shrink-0 text-primary-300" />
-        The public tour renders this pipeline but does not execute it. Azure requests, microphone access, and authenticated API calls begin only inside the configured full product flow.
+        The public demo previews the experience without executing this pipeline. Live recording and Azure assessment begin only in authenticated practice.
       </p>
     </div>
   );
@@ -706,7 +611,7 @@ export function DemoAccessSummary() {
           Public sample mode
         </div>
         <p className="mt-2 text-sm leading-6 text-slate-400">
-          Static sample states and bundled audio. No account, microphone, backend, database, or Azure key is required.
+          A guided product sample with bundled audio and illustrative feedback. No account or microphone access is required.
         </p>
       </div>
       <div className="border-l-2 border-slate-600 pl-4">
@@ -715,7 +620,7 @@ export function DemoAccessSummary() {
           Live recording path
         </div>
         <p className="mt-2 text-sm leading-6 text-slate-400">
-          Requires sign-in, microphone permission, a running Express backend, MongoDB connectivity, and configured Azure Speech credentials.
+          Sign in and grant microphone access to use the configured Express, Azure Speech, and saved-history flow.
         </p>
       </div>
     </div>

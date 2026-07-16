@@ -13,12 +13,10 @@ import {
   DATASET_FACTS,
   GITHUB_URL,
   IMPLEMENTATION_LABELS,
-  SUPPORTING_CHALLENGES,
   WALKTHROUGH_STEPS,
 } from './tour/tourContent';
 import {
   AssessmentTransformation,
-  AudioNormalizationVisual,
   CapabilityMark,
   DemoAccessSummary,
   InteractiveAttemptFrame,
@@ -178,7 +176,9 @@ function GuidedWalkthrough() {
                   </span>
                   <span className="mt-4 block text-xl font-semibold leading-snug text-white">{step.title}</span>
                   <span className="mt-2 block text-sm leading-6 text-slate-400">{step.body}</span>
-                  <span className="mt-4 block font-mono text-[10px] leading-5 text-slate-600">{step.evidence}</span>
+                  <span className="mt-4 inline-flex rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-primary-300">
+                    {step.evidence}
+                  </span>
                 </button>
               </div>
             );
@@ -215,7 +215,7 @@ export default function TourPage() {
                 From speech scores to Brazilian Portuguese coaching you can act on.
               </h1>
               <p className="mt-5 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
-                LusoPronounce connects word-level speech assessment to deterministic PT-BR sound metadata, helping a learner move from “this word was weak” to a specific sound worth practicing.
+                LusoPronounce combines Azure Speech word-level assessment with a Brazilian Portuguese coaching library, helping a learner move from “this word was weak” to a specific sound worth practicing.
               </p>
               <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500">
                 An independent full-stack portfolio build spanning browser audio, an Express assessment service, React feedback, and MongoDB-backed attempt storage.
@@ -241,7 +241,7 @@ export default function TourPage() {
                 </a>
               </div>
               <p className="mt-3 text-xs leading-5 text-slate-500">
-                Public sample mode is local and deterministic. It does not request a microphone or call Azure.
+                Explore the guided sample without signing in or granting microphone access.
               </p>
 
               <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-white/10 pt-5" aria-label="Implementation summary">
@@ -261,8 +261,8 @@ export default function TourPage() {
         <section id="walkthrough" className="mx-auto max-w-[86rem] px-4 py-20 sm:px-6 sm:py-24 lg:px-8" aria-labelledby="walkthrough-title">
           <SectionHeading
             eyebrow="Learner experience"
-            title="One practice loop, revealed step by step"
-            intro="Scroll the sequence or choose a step directly. Every state is deterministic; only the reference-audio control loads a bundled asset when you ask it to."
+            title="Hear it. Try it. Understand what to improve."
+            intro="The learner moves from an Azure-generated PT-BR reference to a recorded attempt, word-level assessment, and a concrete pronunciation correction."
           />
           <div id="walkthrough-title" className="sr-only">Guided product walkthrough</div>
           <GuidedWalkthrough />
@@ -271,9 +271,9 @@ export default function TourPage() {
         <section className="border-y border-white/10 bg-[#0a101a]" aria-labelledby="transformation-title">
           <div className="mx-auto max-w-[86rem] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <SectionHeading
-              eyebrow="Core transformation"
-              title="Raw assessment data → teachable PT-BR feedback"
-              intro="Azure identifies the scored word. The application normalizes that response, aligns it to the practice item, and attaches repository-authored sound context without pretending the provider returned data it did not."
+              eyebrow="What makes it different"
+              title="A speech score becomes coaching the learner can use"
+              intro="Azure identifies the weak word. LusoPronounce adds the teaching layer: it connects that result to PT-BR sound guidance and turns an opaque score into a focused next attempt."
             />
             <div id="transformation-title" className="sr-only">Assessment to coaching transformation</div>
             <div className="mt-10">
@@ -282,86 +282,31 @@ export default function TourPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-[86rem] px-4 py-20 sm:px-6 sm:py-24 lg:px-8" aria-labelledby="engineering-title">
+        <section className="mx-auto max-w-[86rem] px-4 py-20 sm:px-6 sm:py-24 lg:px-8" aria-labelledby="pipeline-title">
           <SectionHeading
-            eyebrow="Engineering decisions"
-            title="The difficult work sits between capture and coaching"
-            intro="The implementation has to tolerate browser format differences, reject unusable takes, normalize a provider response, and disclose when the evidence is too weak for detailed feedback."
+            eyebrow="Full-stack ownership"
+            title="From microphone input to progress history"
+            intro="The product spans browser audio, an Express service, Azure Speech, a PT-BR coaching layer, and persistence. The pipeline makes those boundaries—and the work owned at each one—clear."
           />
-          <div id="engineering-title" className="sr-only">Engineering challenges</div>
-
-          <div className="mt-10 grid gap-10 xl:grid-cols-[1.35fr_0.65fr]">
-            <div>
-              <div className="mb-5 flex items-center gap-3">
-                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">Featured challenge</span>
-                <span className="h-px flex-1 bg-white/10" />
-              </div>
-              <AudioNormalizationVisual />
-            </div>
-
-            <div className="divide-y divide-white/10 border-y border-white/10">
-              {SUPPORTING_CHALLENGES.map((challenge) => (
-                <details key={challenge.title} className="group py-1">
-                  <summary className="flex min-h-20 cursor-pointer list-none items-start gap-4 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 [&::-webkit-details-marker]:hidden">
-                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-primary-200">
-                      <challenge.icon size={17} aria-hidden="true" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-white">{challenge.title}</span>
-                      <span className="mt-1 block text-xs leading-5 text-slate-500">{challenge.summary}</span>
-                    </span>
-                    <span className="mt-2 text-lg leading-none text-slate-500 group-open:rotate-45" aria-hidden="true">+</span>
-                  </summary>
-                  <div className="pb-5 pl-[3.25rem]">
-                    <p className="text-sm leading-6 text-slate-300">{challenge.detail}</p>
-                    <p className="mt-3 font-mono text-[10px] leading-5 text-slate-600">{challenge.source}</p>
-                  </div>
-                </details>
-              ))}
-            </div>
+          <div id="pipeline-title" className="sr-only">Technical pipeline stages</div>
+          <div className="mt-10">
+            <PipelineDiagram />
           </div>
         </section>
 
         <section id="evidence" className="border-y border-white/10 bg-[#0a101a]" aria-labelledby="evidence-title">
           <div className="mx-auto max-w-[86rem] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <SectionHeading
-              eyebrow="Evidence ledger"
-              title="Counts are derived; capabilities are scoped"
-              intro="Repository facts, accessible product behavior, and illustrative sample results are different kinds of evidence. This ledger keeps them separate."
+              eyebrow="Implemented and verifiable"
+              title="Working features, backed by the repository"
+              intro="The demo is immediately explorable, the authenticated speech path is implemented, and dataset counts are generated directly from the current source data."
             />
             <div id="evidence-title" className="sr-only">Verified evidence and implementation</div>
 
-            <div className="mt-12 grid gap-12 xl:grid-cols-[1.1fr_0.9fr]">
+            <div className="mt-12 grid gap-12 xl:grid-cols-[1.08fr_0.92fr]">
               <div>
                 <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                  <h3 className="text-sm font-semibold text-white">Dataset facts</h3>
-                  <span className="text-[10px] uppercase tracking-[0.14em] text-slate-600">Generated at build time</span>
-                </div>
-                <dl className="divide-y divide-white/10">
-                  {DATASET_FACTS.map((fact) => (
-                    <div key={fact.label} className="grid gap-3 py-5 sm:grid-cols-[7rem_1fr] sm:gap-5">
-                      <dt className="text-3xl font-bold tabular-nums tracking-tight text-primary-200">
-                        {fact.value.toLocaleString()}
-                      </dt>
-                      <dd>
-                        <p className="text-sm font-semibold text-white">{fact.label}</p>
-                        <p className="mt-1 text-sm leading-6 text-slate-400">{fact.description}</p>
-                        <details className="mt-2 text-xs text-slate-500">
-                          <summary className="min-h-11 cursor-pointer py-3 font-medium text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300">
-                            Verification note
-                          </summary>
-                          <p className="pb-1 leading-5">{fact.verification}</p>
-                          <p className="font-mono text-[10px] leading-5 text-slate-600">{fact.source}</p>
-                        </details>
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                  <h3 className="text-sm font-semibold text-white">Demonstrable capabilities</h3>
+                  <h3 className="text-sm font-semibold text-white">Product capabilities</h3>
                   <span className="text-[10px] uppercase tracking-[0.14em] text-slate-600">Current scope</span>
                 </div>
                 <ul className="divide-y divide-white/10">
@@ -376,32 +321,52 @@ export default function TourPage() {
                           </span>
                         </div>
                         <p className="mt-1 text-sm leading-6 text-slate-400">{capability.description}</p>
-                        <p className="mt-2 font-mono text-[10px] leading-5 text-slate-600">{capability.source}</p>
+                        <details className="mt-2 text-xs text-slate-500">
+                          <summary className="min-h-11 cursor-pointer py-3 text-[10px] font-medium uppercase tracking-[0.1em] text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300">
+                            Implementation evidence
+                          </summary>
+                          <p className="pb-1 font-mono text-[10px] leading-5 text-slate-600">{capability.source}</p>
+                        </details>
                       </div>
                     </li>
                   ))}
                 </ul>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
+                  <h3 className="text-sm font-semibold text-white">Dataset depth</h3>
+                  <span className="text-[10px] uppercase tracking-[0.14em] text-slate-600">Generated at build time</span>
+                </div>
+                <dl className="divide-y divide-white/10">
+                  {DATASET_FACTS.map((fact) => (
+                    <div key={fact.label} className="grid grid-cols-[5.5rem_1fr] gap-4 py-4">
+                      <dt className="text-2xl font-bold tabular-nums tracking-tight text-primary-200">
+                        {fact.value.toLocaleString()}
+                      </dt>
+                      <dd>
+                        <p className="text-sm font-semibold text-white">{fact.label}</p>
+                        <p className="mt-1 text-xs leading-5 text-slate-500">{fact.description}</p>
+                        <details className="mt-1 text-xs text-slate-500">
+                          <summary className="min-h-11 cursor-pointer py-3 text-[10px] font-medium uppercase tracking-[0.1em] text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300">
+                            Verification
+                          </summary>
+                          <p className="pb-1 leading-5">{fact.verification}</p>
+                          <p className="font-mono text-[10px] leading-5 text-slate-600">{fact.source}</p>
+                        </details>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
             </div>
 
             <div className="mt-10 flex items-start gap-3 border-l-2 border-amber-300/70 bg-amber-300/[0.04] px-5 py-4 text-sm leading-6 text-amber-100">
               <ShieldCheck size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
               <p>
-                Scores shown on this page are illustrative UI fixtures, not learner outcomes. Railway configuration exists in the repository, but a live Railway service was not independently verified and is not claimed here.
+                Scores shown on this page are illustrative product samples, not learner outcomes. Live assessment requires the authenticated product path and configured Azure credentials.
               </p>
             </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-[86rem] px-4 py-20 sm:px-6 sm:py-24 lg:px-8" aria-labelledby="pipeline-title">
-          <SectionHeading
-            eyebrow="Technical pipeline"
-            title="Each stage has one job—and one boundary"
-            intro="The pipeline distinguishes browser work, server normalization, the external assessment provider, coaching presentation, and persistence. On smaller screens it becomes a readable vertical sequence."
-          />
-          <div id="pipeline-title" className="sr-only">Technical pipeline stages</div>
-          <div className="mt-10">
-            <PipelineDiagram />
           </div>
         </section>
 
@@ -411,10 +376,10 @@ export default function TourPage() {
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-300">Explore the product</p>
                 <h2 className="mt-3 max-w-2xl text-3xl font-bold leading-tight tracking-[-0.025em] text-white sm:text-4xl">
-                  Start with the working sample. Inspect the live path in source.
+                  Try the coaching experience. Then inspect the system behind it.
                 </h2>
                 <p className="mt-4 max-w-xl text-base leading-7 text-slate-400">
-                  The public demo is the quickest way to inspect the feedback model without setup. The repository shows exactly where the authenticated recording and assessment path begins.
+                  The public demo makes the learner experience immediately reviewable. The source shows how browser audio, Azure assessment, coaching, and progress tracking fit together.
                 </p>
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                   <Link

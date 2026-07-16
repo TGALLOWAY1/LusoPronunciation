@@ -30,7 +30,7 @@ async function openTour(page: Page) {
 
   await page.goto('/tour', { waitUntil: 'networkidle' });
   await expect(page.getByRole('heading', { level: 1 })).toContainText('From speech scores');
-  await expect(page.getByText(/static sample based on the production feedback format/i)).toBeVisible();
+  await expect(page.getByText(/interactive product sample · illustrative scores/i)).toBeVisible();
   await page.waitForTimeout(750);
 
   return { errors, assessmentRequests };
@@ -76,7 +76,7 @@ test.describe('public tour', () => {
     const coachingStep = page.getByRole('button', { name: /04 \/ 04/i });
     await coachingStep.focus();
     await page.keyboard.press('Enter');
-    await expect(page.getByText(/repository coaching metadata/i)).toBeVisible();
+    await expect(page.getByText(/PT-BR coaching guidance/i)).toBeVisible();
   });
 
   test('reduced motion disables the tour reveal animations', async ({ page }) => {

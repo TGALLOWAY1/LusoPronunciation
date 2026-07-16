@@ -15,17 +15,18 @@ describe('tour evidence visuals', () => {
     render(<InteractiveAttemptFrame />);
 
     expect(screen.getAllByText(/^illustrative$/i).length).toBeGreaterThan(0);
-    fireEvent.click(screen.getByRole('button', { name: /inspect mãe sound ɐ̃/i }));
+    const nasalSound = screen.getByRole('button', { name: /inspect mãe sound ɐ̃/i });
+    fireEvent.click(nasalSound);
 
     expect(screen.getByText(/touch your nose; you should feel vibration/i)).toBeInTheDocument();
-    expect(screen.getByText(/selected sound is outlined/i)).toBeInTheDocument();
+    expect(nasalSound).toHaveAttribute('aria-pressed', 'true');
   });
 
   it('describes the current provider granularity without inventing phoneme scores', () => {
     render(<AssessmentTransformation />);
 
     expect(screen.getByText(/word granularity/i)).toBeInTheDocument();
-    expect(screen.getByText(/no phoneme score is invented/i)).toBeInTheDocument();
+    expect(screen.getByText(/never invent a missing sound score/i)).toBeInTheDocument();
     expect(screen.getByText(/NH in “minha”/i)).toBeInTheDocument();
   });
 
@@ -33,6 +34,6 @@ describe('tour evidence visuals', () => {
     render(<WalkthroughFrame activeStep={1} />);
 
     expect(screen.getByText(/seeded recording ready/i)).toBeInTheDocument();
-    expect(screen.getByText(/never requests microphone permission/i)).toBeInTheDocument();
+    expect(screen.getByText(/microphone access begins only in authenticated practice/i)).toBeInTheDocument();
   });
 });
