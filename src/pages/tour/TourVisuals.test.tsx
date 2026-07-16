@@ -17,6 +17,8 @@ describe('tour evidence visuals', () => {
     expect(screen.getAllByText(/^illustrative$/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/word score: 66\/100/i)).toBeInTheDocument();
     expect(screen.getByText(/touch your nose; you should feel vibration/i)).toBeInTheDocument();
+    expect(screen.getByText('/ɐ̃/')).toBeInTheDocument();
+    expect(screen.queryByText('AN_NASAL')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Minha' }));
 
