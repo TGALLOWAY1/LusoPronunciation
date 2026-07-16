@@ -58,7 +58,7 @@ function TourHeader() {
           <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary-300/25 bg-primary-300/10 text-primary-200">
             <AudioLines size={17} aria-hidden="true" />
           </span>
-          <span>
+          <span className="hidden min-[360px]:inline">
             Luso<span className="text-primary-300">Pronounce</span>
           </span>
         </Link>
@@ -135,8 +135,13 @@ function GuidedWalkthrough() {
         ))}
       </div>
 
+      <div className="mb-5 border-l-2 border-primary-300 py-1 pl-4 lg:hidden" aria-live="polite">
+        <p className="text-sm font-semibold text-white">{WALKTHROUGH_STEPS[activeStep].title}</p>
+        <p className="mt-1 text-xs leading-5 text-slate-400">{WALKTHROUGH_STEPS[activeStep].body}</p>
+      </div>
+
       <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:gap-12">
-        <div className="order-2 space-y-4 lg:order-1 lg:space-y-20 lg:py-[18vh]">
+        <div className="order-2 hidden lg:order-1 lg:block lg:space-y-4 lg:py-6">
           {WALKTHROUGH_STEPS.map((step, index) => {
             const active = activeStep === index;
             return (
@@ -146,7 +151,7 @@ function GuidedWalkthrough() {
                   stepRefs.current[index] = node;
                 }}
                 data-step={index}
-                className="scroll-mt-28 lg:min-h-[35vh]"
+                className="scroll-mt-28 lg:min-h-[16rem]"
               >
                 <button
                   type="button"

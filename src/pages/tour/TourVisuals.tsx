@@ -643,10 +643,10 @@ export function AudioNormalizationVisual() {
 export function PipelineDiagram() {
   return (
     <div className="tour-pipeline" aria-label="Authenticated pronunciation assessment pipeline">
-      <ol className="grid gap-3 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-7">
+      <ol className="grid gap-3 md:grid-cols-2 xl:grid-cols-7">
         {PIPELINE_STAGES.map((stage, index) => (
-          <li key={stage.title} className="relative min-w-0">
-            <div className="h-full rounded-2xl border border-white/10 bg-[#0f1724] p-4 transition-colors duration-200 hover:border-primary-300/30 focus-within:border-primary-300/30 motion-reduce:transition-none">
+          <li key={stage.title} className="relative min-w-0 border-l border-white/10 pl-4 md:border-l-0 md:pl-0">
+            <div className="h-full border-b border-white/10 bg-transparent py-5 transition-colors duration-200 hover:border-primary-300/30 focus-within:border-primary-300/30 motion-reduce:transition-none md:rounded-2xl md:border md:bg-[#0f1724] md:p-4">
               <div className="flex items-start justify-between gap-3">
                 <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-primary-300/20 bg-primary-300/[0.07] text-primary-200">
                   <stage.icon size={17} aria-hidden="true" />
@@ -655,16 +655,16 @@ export function PipelineDiagram() {
               </div>
               <p className="mt-4 text-sm font-semibold text-white">{stage.title}</p>
               <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary-300">{stage.location}</p>
-              <dl className="mt-4 space-y-3 text-xs leading-5">
-                <div>
+              <dl className="mt-4 space-y-2 text-xs leading-5 md:space-y-3">
+                <div className="grid grid-cols-[5rem_1fr] gap-2 md:block">
                   <dt className="font-semibold text-slate-500">Input</dt>
                   <dd className="text-slate-300">{stage.input}</dd>
                 </div>
-                <div>
+                <div className="grid grid-cols-[5rem_1fr] gap-2 md:block">
                   <dt className="font-semibold text-slate-500">Responsibility</dt>
                   <dd className="text-slate-300">{stage.responsibility}</dd>
                 </div>
-                <div>
+                <div className="grid grid-cols-[5rem_1fr] gap-2 md:block">
                   <dt className="font-semibold text-slate-500">Output</dt>
                   <dd className="text-slate-300">{stage.output}</dd>
                 </div>
