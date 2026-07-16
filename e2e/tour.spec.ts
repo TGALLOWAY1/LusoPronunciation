@@ -30,7 +30,7 @@ async function openTour(page: Page) {
 
   await page.goto('/tour', { waitUntil: 'networkidle' });
   await expect(page.getByRole('heading', { level: 1 })).toContainText('From speech scores');
-  await expect(page.getByText(/interactive product sample · illustrative scores/i)).toBeVisible();
+  await expect(page.getByText(/rendered with the same feedback components used in practice/i)).toBeVisible();
   await page.waitForTimeout(750);
 
   return { errors, assessmentRequests };
@@ -68,10 +68,13 @@ test.describe('public tour', () => {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await openTour(page);
 
-    const nasalSound = page.getByRole('button', { name: /inspect mãe sound ɐ̃/i });
-    await nasalSound.focus();
+    const selectedWord = page.getByRole('button', { name: 'Minha', exact: true });
+    await selectedWord.focus();
     await page.keyboard.press('Enter');
-    await expect(page.getByText(/touch your nose; you should feel vibration/i)).toBeVisible();
+    await expect(page.getByText(/word score: 82\/100/i)).toBeVisible();
+    await expect(
+      page.getByText(/^💡 Press the FLAT middle part of your tongue against the roof of your mouth\.$/i),
+    ).toBeVisible();
 
     const recordingStep = page.getByRole('button', { name: /02 \/ 04/i });
     await recordingStep.click();

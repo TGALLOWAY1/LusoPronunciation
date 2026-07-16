@@ -11,15 +11,17 @@ describe('tour evidence visuals', () => {
     vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
   });
 
-  it('updates the selected sound and coaching from deterministic repository metadata', () => {
+  it('renders the production word-coaching UI and switches its selected word', () => {
     render(<InteractiveAttemptFrame />);
 
     expect(screen.getAllByText(/^illustrative$/i).length).toBeGreaterThan(0);
-    const nasalSound = screen.getByRole('button', { name: /inspect mãe sound ɐ̃/i });
-    fireEvent.click(nasalSound);
-
+    expect(screen.getByText(/word score: 66\/100/i)).toBeInTheDocument();
     expect(screen.getByText(/touch your nose; you should feel vibration/i)).toBeInTheDocument();
-    expect(nasalSound).toHaveAttribute('aria-pressed', 'true');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Minha' }));
+
+    expect(screen.getByText(/word score: 82\/100/i)).toBeInTheDocument();
+    expect(screen.getByText(/press the flat middle part of your tongue/i)).toBeInTheDocument();
   });
 
   it('describes the current provider granularity without inventing phoneme scores', () => {

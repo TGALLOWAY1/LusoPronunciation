@@ -9,6 +9,11 @@ import {
   ShieldCheck,
   Volume2,
 } from 'lucide-react';
+import InteractiveSentenceDisplay from '@/components/practice/InteractiveSentenceDisplay';
+import {
+  PhonemePanel,
+  type NormalizedWordFeedback,
+} from '@/components/pronunciation/shared';
 import { getDemoItem, getDemoNativeAudioUrl } from '@/lib/demo/demoData';
 import { getPhonemeById } from '@/lib/phonemeMetadata';
 import { PIPELINE_STAGES } from './tourContent';
@@ -69,198 +74,80 @@ export function SampleLabel({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function ScoreMeter({ label, value }: { label: string; value: number }) {
-  const band = scoreBand(value);
-  return (
-    <div>
-      <div className="mb-1.5 flex items-center justify-between gap-3 text-xs">
-        <span className="text-slate-400">{label}</span>
-        <span className={`font-semibold ${band.text}`}>{value}/100</span>
-      </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
-        <div
-          className={`h-full rounded-full transition-[width] duration-300 motion-reduce:transition-none ${band.bar}`}
-          style={{ width: `${value}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
 function cleanWord(value: string): string {
   return value.replace(/[.,!?]/g, '');
 }
 
-/** Interactive, deterministic sample used as the hero product demonstration. */
+const HERO_WORDS: NormalizedWordFeedback[] = SAMPLE.words.map((word, index) => ({
+  id: `tour-word-${index}`,
+  index,
+  text: cleanWord(word.text),
+  accuracyScore: word.score,
+  score: word.score,
+  errorType: word.errorType ?? null,
+  level:
+    word.score >= 90
+      ? 'excellent'
+      : word.score >= 80
+        ? 'good'
+        : word.score >= 70
+          ? 'ok'
+          : 'practice',
+  phonemes: word.phonemes.map((phoneme) => ({
+    symbol: phoneme.symbol,
+    score: phoneme.score,
+    isProblem: phoneme.score < 75,
+    tip: phoneme.score < 75 ? word.tip : undefined,
+  })),
+}));
+
+const DEFAULT_HERO_WORD = HERO_WORDS.reduce((weakest, word) =>
+  word.accuracyScore < weakest.accuracyScore ? word : weakest,
+);
+
+const HERO_WORD_SCORES = HERO_WORDS.map((word) => ({
+  word: word.text,
+  overallScore: word.accuracyScore,
+  normalizedWord: word,
+}));
+
+/** Deterministic tour sample rendered with the app's production coaching components. */
 export function InteractiveAttemptFrame() {
-  const [selectedWordIndex, setSelectedWordIndex] = useState(0);
-  const [selectedPhonemeIndex, setSelectedPhonemeIndex] = useState(2);
-
-  const selectedWord = SAMPLE.words[selectedWordIndex] ?? SAMPLE.words[0];
-  const selectedPhoneme = selectedWord.phonemes[selectedPhonemeIndex] ?? selectedWord.phonemes[0];
-  const metadata = getPhonemeById(selectedPhoneme.symbol);
-  const wordBand = scoreBand(selectedWord.score);
-  const phonemeBand = scoreBand(selectedPhoneme.score);
-
-  const selectWord = (wordIndex: number) => {
-    const word = SAMPLE.words[wordIndex];
-    const weakestIndex = word.phonemes.reduce(
-      (weakest, phoneme, index) =>
-        phoneme.score < word.phonemes[weakest].score ? index : weakest,
-      0,
-    );
-    setSelectedWordIndex(wordIndex);
-    setSelectedPhonemeIndex(weakestIndex);
-  };
-
-  const selectSound = (wordIndex: number, phonemeIndex: number) => {
-    setSelectedWordIndex(wordIndex);
-    setSelectedPhonemeIndex(phonemeIndex);
-  };
-
-  const coaching =
-    metadata?.teachingTips?.[0] ??
-    metadata?.articulation ??
-    selectedWord.tip ??
-    'Listen to the reference, isolate this sound, and retry the word slowly.';
+  const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback>(DEFAULT_HERO_WORD);
 
   return (
-    <div className="overflow-hidden rounded-[1.4rem] border border-white/12 bg-[#0f1724] shadow-[0_24px_60px_rgba(0,0,0,0.28)]">
+    <div className="dark overflow-hidden rounded-[1.4rem] border border-white/12 bg-[#0f1724] shadow-[0_24px_60px_rgba(0,0,0,0.28)]">
       <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-[#111b2a] px-4 py-3 sm:px-5">
         <div>
-          <p className="text-xs font-semibold text-slate-200">Practice feedback</p>
-          <p className="mt-0.5 text-[10px] text-slate-500">Interactive product sample · illustrative scores</p>
+          <p className="text-xs font-semibold text-slate-200">Coaching for “{selectedWord.text}”</p>
+          <p className="mt-0.5 text-[10px] text-slate-500">Rendered with the same feedback components used in practice</p>
         </div>
         <SampleLabel compact />
       </div>
 
-      <div className="p-4 sm:p-5">
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <p className="text-lg font-semibold tracking-tight text-white sm:text-xl">{SAMPLE.text}</p>
-            <p className="mt-1 text-xs text-slate-400">{SAMPLE.translation}</p>
-          </div>
-          <div className="shrink-0 border-l border-white/10 pl-4 text-right">
-            <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-500">Sentence</p>
-            <p className="mt-0.5 text-3xl font-bold leading-none text-primary-300">
-              {Math.round(SAMPLE.attempt.overallAccuracy)}
-            </p>
-            <p className="mt-1 text-[10px] text-slate-500">illustrative / 100</p>
-          </div>
-        </div>
-
-        <div className="mt-5" aria-label="Words and their pronunciation sounds">
-          <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-              Words → sounds
-            </p>
-            <p className="text-[10px] text-slate-500">Choose any word or sound</p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {SAMPLE.words.map((word, wordIndex) => {
-              const wordActive = wordIndex === selectedWordIndex;
-              const wordBand = scoreBand(word.score);
-              return (
-                <div
-                  key={`${word.text}-${wordIndex}`}
-                  className={`min-w-[5.5rem] flex-1 rounded-xl border p-2 transition-colors motion-reduce:transition-none ${
-                    wordActive
-                      ? 'border-primary-300/45 bg-primary-300/[0.06]'
-                      : 'border-white/10 bg-black/15'
-                  }`}
-                  role="group"
-                  aria-label={`${cleanWord(word.text)}, illustrative word score ${word.score}`}
-                >
-                  <button
-                    type="button"
-                    onClick={() => selectWord(wordIndex)}
-                    onFocus={() => selectWord(wordIndex)}
-                    aria-pressed={wordActive}
-                    className={`flex min-h-11 w-full items-center justify-between gap-2 rounded-lg px-2 text-left text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 ${
-                      wordActive ? wordBand.text : 'text-slate-300 hover:bg-white/5'
-                    }`}
-                  >
-                    <span>{cleanWord(word.text)}</span>
-                    <span className="font-mono text-[10px] opacity-75">{word.score}</span>
-                  </button>
-                  <div className="mt-1 flex flex-wrap gap-1 border-t border-white/10 pt-2">
-                    {word.phonemes.map((phoneme, phonemeIndex) => {
-                      const meta = getPhonemeById(phoneme.symbol);
-                      const soundActive = wordActive && phonemeIndex === selectedPhonemeIndex;
-                      const band = scoreBand(phoneme.score);
-                      return (
-                        <button
-                          key={`${phoneme.symbol}-${phonemeIndex}`}
-                          type="button"
-                          onClick={() => selectSound(wordIndex, phonemeIndex)}
-                          aria-pressed={soundActive}
-                          className={`flex min-h-11 min-w-10 flex-col items-center justify-center rounded-md border px-1.5 font-mono text-[10px] leading-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 motion-reduce:transition-none ${
-                            soundActive
-                              ? 'border-white bg-white/10 text-white ring-1 ring-white/35'
-                              : `${band.border} ${band.background} ${band.text} hover:border-white/40`
-                          }`}
-                          aria-label={`Inspect ${cleanWord(word.text)} sound ${meta?.ipa ?? phoneme.symbol}, illustrative score ${phoneme.score}`}
-                        >
-                          <span>/{meta?.ipa ?? phoneme.symbol}/</span>
-                          <span className="mt-0.5 opacity-65">{phoneme.score}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <p className="mt-2 text-[10px] leading-4 text-slate-500">
-            Word scores come from the illustrative attempt; sound scores are sample values used to demonstrate the detailed feedback UI.
-          </p>
-        </div>
-
-        <div className="mt-4 grid gap-3 sm:grid-cols-[0.9fr_1.1fr]">
-          <div className="rounded-xl border border-white/10 bg-black/15 p-3.5">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                  Selected word
-                </p>
-                <p className="mt-1 text-base font-semibold text-white">{cleanWord(selectedWord.text)}</p>
-              </div>
-              <div className={`rounded-lg border px-2.5 py-1.5 text-right ${wordBand.border} ${wordBand.background}`}>
-                <p className={`text-lg font-bold leading-none ${wordBand.text}`}>{selectedWord.score}</p>
-                <p className="mt-1 text-[9px] text-slate-400">{wordBand.label}</p>
-              </div>
-            </div>
-            <div className="mt-4 space-y-3">
-              <ScoreMeter label="Word accuracy" value={selectedWord.score} />
-              <ScoreMeter label={`Sound /${metadata?.ipa ?? selectedPhoneme.symbol}/`} value={selectedPhoneme.score} />
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-primary-300/25 bg-primary-300/[0.06] p-3.5" aria-live="polite">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">
-                  Coaching context
-                </p>
-                <p className="mt-1 text-sm font-semibold text-white">
-                  /{metadata?.ipa ?? selectedPhoneme.symbol}/ · {metadata?.category ?? 'PT-BR sound'}
-                </p>
-              </div>
-              <span className={`rounded-md border px-2 py-1 text-[10px] font-semibold ${phonemeBand.border} ${phonemeBand.background} ${phonemeBand.text}`}>
-                {phonemeBand.label}
-              </span>
-            </div>
-            <p className="mt-3 text-sm leading-6 text-slate-300">{coaching}</p>
-            {metadata?.exampleWords?.[0] && (
-              <p className="mt-3 border-t border-white/10 pt-3 text-xs text-slate-400">
-                Practice example:{' '}
-                <span className="font-medium text-slate-200">{metadata.exampleWords[0].pt}</span>{' '}
-                <span className="font-mono">/{metadata.exampleWords[0].ipa}/</span>
+      <div className="space-y-4 p-4 sm:p-5">
+        <div className="rounded-xl border border-gray-700 bg-gray-800 p-4 sm:p-5">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">
+                Scored sentence
               </p>
-            )}
+              <p className="mt-1 text-xs text-gray-400">Choose a word to inspect its sounds.</p>
+            </div>
+            <p className="text-[10px] text-gray-500">Illustrative word scores</p>
           </div>
+          <InteractiveSentenceDisplay
+            sentenceText={SAMPLE.text}
+            wordScores={HERO_WORD_SCORES}
+            onWordClick={(wordData) => {
+              if (wordData.normalizedWord) setSelectedWord(wordData.normalizedWord);
+            }}
+          />
         </div>
 
+        <div aria-live="polite">
+          <PhonemePanel word={selectedWord} trustLevel="trusted" />
+        </div>
       </div>
     </div>
   );
