@@ -73,6 +73,14 @@ test.describe('public tour', () => {
     await page.keyboard.press('Enter');
     await expect(page.getByText(/touch your nose; you should feel vibration/i)).toBeVisible();
 
+    const recordingStep = page.getByRole('button', { name: /02 \/ 04/i });
+    await recordingStep.click();
+    await expect(page.getByText(/seeded recording ready/i)).toBeVisible();
+
+    const feedbackStep = page.getByRole('button', { name: /03 \/ 04/i });
+    await feedbackStep.click();
+    await expect(page.getByText(/Azure word-level feedback/i)).toBeVisible();
+
     const coachingStep = page.getByRole('button', { name: /04 \/ 04/i });
     await coachingStep.focus();
     await page.keyboard.press('Enter');

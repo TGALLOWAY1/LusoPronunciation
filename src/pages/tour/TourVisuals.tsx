@@ -268,13 +268,17 @@ export function InteractiveAttemptFrame() {
 }
 
 function Waveform({ active = false }: { active?: boolean }) {
-  const bars = [26, 46, 68, 42, 76, 54, 88, 62, 38, 70, 48, 82, 58, 34, 64, 44, 72, 50];
+  const bars = [
+    26, 46, 68, 42, 76, 54, 88, 62, 38, 70, 48, 82, 58, 34, 64, 44, 72, 50,
+    40, 66, 84, 52, 74, 36, 60, 90, 56, 78, 46, 68, 32, 72, 54, 86, 44, 64,
+    30, 58, 76, 48, 88, 62, 42, 70, 52, 80, 38, 66, 46, 74, 56, 84, 50, 34,
+  ];
   return (
-    <div className="flex h-14 items-center gap-1" aria-hidden="true">
+    <div className="flex h-14 w-full items-center justify-center gap-[3px]" aria-hidden="true">
       {bars.map((height, index) => (
         <span
           key={index}
-          className={`w-1 rounded-full transition-colors duration-300 motion-reduce:transition-none ${
+          className={`min-w-0 flex-1 max-w-1.5 rounded-full transition-colors duration-300 motion-reduce:transition-none ${
             active ? 'bg-primary-300' : 'bg-slate-600'
           }`}
           style={{ height: `${height}%` }}
@@ -312,8 +316,8 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-[1.35rem] border border-white/12 bg-[#0f1724] shadow-[0_22px_50px_rgba(0,0,0,0.24)]">
-      <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-[#111b2a] px-4 py-3">
+    <div className="overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0f1724] shadow-[0_18px_42px_rgba(0,0,0,0.22)]">
+      <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-[#111b2a] px-4 py-2.5">
         <div className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-primary-300" />
           <span className="text-xs font-semibold text-slate-200">Sentence practice</span>
@@ -321,26 +325,26 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
         <span className="text-[10px] text-slate-500">State {activeStep + 1} of 4</span>
       </div>
 
-      <div className="min-h-[25rem] p-4 sm:p-6">
+      <div className="p-4 sm:p-5">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xl font-semibold text-white">Minha mãe se chama Ana.</p>
-            <p className="mt-1 text-sm text-slate-400">My mother’s name is Ana.</p>
+            <p className="text-lg font-semibold text-white">Minha mãe se chama Ana.</p>
+            <p className="mt-1 text-xs text-slate-400">My mother’s name is Ana.</p>
           </div>
           <SampleLabel compact />
         </div>
 
-        <div key={activeStep} className="tour-state-enter mt-6 motion-reduce:animate-none">
+        <div key={activeStep} className="tour-state-enter mt-4 motion-reduce:animate-none">
           {activeStep === 0 && (
-            <div className="rounded-2xl border border-white/10 bg-black/15 p-5">
+            <div className="rounded-xl border border-white/10 bg-black/15 p-4">
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
                 Synthesized PT-BR reference
               </p>
-              <div className="mt-4 flex items-center gap-5">
+              <div className="mt-3 flex items-center gap-4">
                 <button
                   type="button"
                   onClick={toggleAudio}
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary-500 text-white transition-colors hover:bg-primary-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1724]"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-500 text-white transition-colors hover:bg-primary-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1724]"
                   aria-label={playing ? 'Pause synthesized reference audio' : 'Play synthesized reference audio'}
                 >
                   {playing ? <Pause size={22} /> : <Play size={22} className="ml-0.5" />}
@@ -353,7 +357,7 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
                   </div>
                 </div>
               </div>
-              <p className="mt-4 border-t border-white/10 pt-4 text-sm leading-6 text-slate-300">
+              <p className="mt-3 border-t border-white/10 pt-3 text-xs leading-5 text-slate-300">
                 Compare your attempt with an Azure neural PT-BR reference before you record.
               </p>
             </div>
