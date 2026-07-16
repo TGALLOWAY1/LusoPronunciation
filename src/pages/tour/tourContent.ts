@@ -1,148 +1,267 @@
-/**
- * Tour Page Content — grounded, recruiter-facing case-study copy.
- * ------------------------------------------------------------------
- * Every claim in this file is traceable to a source in the repository.
- * See the inline `// source:` notes. Numeric facts are derived from real
- * datasets / config; nothing here is invented marketing.
- *
- * Illustrative data (sample scores, phoneme breakdowns) is pulled from
- * `@/lib/demo/demoData` — the same hand-authored sample set the public
- * `/demo` uses — and is always labelled "Sample data" in the UI.
- */
 import {
-  Mic,
-  Waves,
-  Cloud,
-  BrainCircuit,
-  LayoutDashboard,
-  Database,
   AudioLines,
-  Route,
+  BadgeCheck,
+  Cloud,
+  Database,
+  FileAudio,
   Gauge,
+  Headphones,
   ListChecks,
+  Mic,
+  Route,
+  ShieldCheck,
+  SlidersHorizontal,
   type LucideIcon,
 } from 'lucide-react';
+import { TOUR_FACTS } from './tourFacts.generated';
 
-/** Compact metadata chips shown under the hero headline. Verified facts only. */
-export const HERO_META: { label: string; value: string }[] = [
-  { label: 'Role', value: 'Solo full-stack build' }, // single-author repo
-  { label: 'Stack', value: 'React · TS · Azure Speech · MongoDB' }, // source: package.json
-  { label: 'Focus', value: 'Speech AI + coaching UX' },
-  { label: 'Status', value: 'Deployed demo' }, // source: vercel.json / railway.json / Dockerfile
-];
+export const GITHUB_URL = 'https://github.com/TGALLOWAY1/LusoPronunciation';
+export const LIVE_DEMO_URL = 'https://luso-pronunciation.vercel.app/demo';
 
-/** "Product in 30 seconds" — the core interaction loop. */
-export const LOOP_STEPS: {
+export const IMPLEMENTATION_LABELS = [
+  'React 19 + TypeScript',
+  'Express + MongoDB',
+  'Azure Speech assessment',
+  'Deterministic PT-BR metadata',
+] as const;
+
+export type WalkthroughStep = {
   icon: LucideIcon;
+  kicker: string;
   title: string;
   body: string;
-}[] = [
+  evidence: string;
+};
+
+export const WALKTHROUGH_STEPS: WalkthroughStep[] = [
   {
-    icon: AudioLines,
-    title: 'Listen',
-    body: 'Hear native male or female reference audio for the phrase.',
-  }, // source: FEATURES.md "Native Audio Playback"
+    icon: Headphones,
+    kicker: 'Reference',
+    title: 'Choose a sentence and hear the target',
+    body: 'Practice items include pre-generated male and female Azure neural PT-BR reference audio.',
+    evidence: 'audio_index.json + Azure TTS voice configuration',
+  },
   {
     icon: Mic,
-    title: 'Record',
-    body: 'Speak in the browser — audio is captured and normalized for scoring.',
-  }, // source: useMicrophoneRecorder.ts
+    kicker: 'Capture',
+    title: 'Record, review, then submit',
+    body: 'The authenticated product records in the browser and blocks very short or effectively silent takes before a request is sent.',
+    evidence: 'useMicrophoneRecorder + audioQuality',
+  },
   {
     icon: Gauge,
-    title: 'Score',
-    body: 'Azure Speech returns word- and phoneme-level pronunciation scores.',
-  }, // source: pronunciationAssessment.ts
+    kicker: 'Assessment',
+    title: 'Read the returned score at the right level',
+    body: 'The current live Azure path returns overall, fluency, completeness, miscue, and word-level accuracy data.',
+    evidence: 'pronunciationAssessment + pronunciationUtils',
+  },
   {
     icon: ListChecks,
-    title: 'Improve',
-    body: 'Get targeted coaching on the exact sounds to fix, then retry.',
-  }, // source: coachingEngine.ts
+    kicker: 'Coaching',
+    title: 'Move from a weak word to a teachable sound',
+    body: 'A scored word is joined to canonical PT-BR phoneme metadata so the learner can inspect articulation notes and retry deliberately.',
+    evidence: 'adapters + masterWords + phoneme_metadata',
+  },
 ];
 
-/** "What I built" — ownership + engineering contribution. */
-export const BUILT_CARDS: {
+export type Challenge = {
   icon: LucideIcon;
   title: string;
-  body: string;
-}[] = [
+  summary: string;
+  detail: string;
+  source: string;
+};
+
+export const SUPPORTING_CHALLENGES: Challenge[] = [
+  {
+    icon: ShieldCheck,
+    title: 'Reject weak inputs before they spend an API call',
+    summary: 'Duration and RMS gates run in the browser before submission.',
+    detail:
+      'The current thresholds reject recordings shorter than 900 ms or below an RMS of 0.012. Decode failures also stop the request and ask the learner to record again.',
+    source: 'src/lib/audioQuality.ts · submitAttempt()',
+  },
+  {
+    icon: Route,
+    title: 'Keep incomplete provider output honest',
+    summary: 'Recognition status, completeness, and missing-word ratio control the level of detail shown.',
+    detail:
+      'The trust classifier marks attempts as trusted, degraded, or untrusted. Detailed phoneme help is withheld for untrusted responses rather than treating an incomplete assessment as precise.',
+    source: 'src/lib/assessmentTrust.ts · PhonemePanel',
+  },
+  {
+    icon: SlidersHorizontal,
+    title: 'Join scores to PT-BR teaching metadata',
+    summary: 'Word indices and normalized text provide controlled fallbacks into the canonical dataset.',
+    detail:
+      'The adapter first preserves provider phonemes when present. Otherwise it uses sentence word references, then normalized text, to attach the repository’s phoneme sequence without fabricating phoneme scores.',
+    source: 'enrichWordsWithCanonicalData()',
+  },
+];
+
+export type EvidenceFact = {
+  value: number;
+  label: string;
+  description: string;
+  source: string;
+  verification: string;
+};
+
+export const DATASET_FACTS: EvidenceFact[] = [
+  {
+    value: TOUR_FACTS.sentences,
+    label: 'Sentence records',
+    description: 'Current master sentence dataset used by the practice loader.',
+    source: 'data/masterSentences.json',
+    verification: 'Deterministic top-level array count.',
+  },
+  {
+    value: TOUR_FACTS.words,
+    label: 'Word records',
+    description: 'Current master word dataset with IDs, references, and enrichment fields.',
+    source: 'data/masterWords.json',
+    verification: 'Deterministic top-level array count.',
+  },
+  {
+    value: TOUR_FACTS.phonemeMetadataEntries,
+    label: 'Phoneme metadata entries',
+    description: 'PT-BR teaching records; this is not a claim of complete phoneme coverage.',
+    source: 'data/phoneme_metadata.json',
+    verification: 'Deterministic top-level array count.',
+  },
+  {
+    value: TOUR_FACTS.confusionPatternTags,
+    label: 'Confusion-pattern tags',
+    description: 'Tags used by deterministic spelling and weak-word heuristics.',
+    source: 'confusionDetection.ts',
+    verification: 'Unique tags referenced by the coaching pair dataset.',
+  },
+  {
+    value: TOUR_FACTS.minimalPairPrompts,
+    label: 'Tagged contrast prompts',
+    description: 'Repository coaching data with selector logic; not presented as a currently accessible drill.',
+    source: 'minimalPairs.ptbr.ts',
+    verification: 'Deterministic exported-array count.',
+  },
+  {
+    value: TOUR_FACTS.dualVoiceAudioIndexEntries,
+    label: 'Dual-voice audio index entries',
+    description: 'Practice audio records containing both configured Azure neural voice URL fields.',
+    source: 'data/audio_index.json',
+    verification: 'Deterministic count of records with non-empty male and female URL fields.',
+  },
+];
+
+export type Capability = {
+  title: string;
+  description: string;
+  status: 'Public sample' | 'Authenticated product' | 'Implementation';
+  source: string;
+};
+
+export const CAPABILITIES: Capability[] = [
+  {
+    title: 'Deterministic public demo',
+    description: 'Local sample states and static audio; no microphone, account, backend, or Azure key.',
+    status: 'Public sample',
+    source: '/demo · demoData.ts',
+  },
+  {
+    title: 'Browser recording with quality gates',
+    description: 'MediaRecorder capture plus pre-submit duration and loudness checks.',
+    status: 'Authenticated product',
+    source: 'useMicrophoneRecorder · audioQuality',
+  },
+  {
+    title: 'Word-level Azure assessment',
+    description: 'Overall, fluency, completeness, miscue, recognition, and per-word accuracy handling.',
+    status: 'Authenticated product',
+    source: 'pronunciationAssessment · normalizer',
+  },
+  {
+    title: 'Attempt history and progress analysis',
+    description: 'Client-hydrated history and analytics with authenticated server dual-write.',
+    status: 'Authenticated product',
+    source: 'practiceLogStore · ProgressPage',
+  },
+  {
+    title: 'Male and female synthesized references',
+    description: 'Azure neural PT-BR voice URLs indexed for the current practice corpus.',
+    status: 'Implementation',
+    source: 'generationPipeline.config · audio_index',
+  },
+  {
+    title: 'Static Vercel story deployment',
+    description: 'The public tour and demo were reachable on Vercel during this audit.',
+    status: 'Public sample',
+    source: 'vercel.json · verified 2026-07-16',
+  },
+];
+
+export type PipelineStage = {
+  icon: LucideIcon;
+  title: string;
+  location: 'Browser' | 'App server' | 'External provider' | 'Browser + server';
+  input: string;
+  responsibility: string;
+  output: string;
+};
+
+export const PIPELINE_STAGES: PipelineStage[] = [
+  {
+    icon: Mic,
+    title: 'Capture',
+    location: 'Browser',
+    input: 'Microphone stream',
+    responsibility: 'Prefer Ogg/Opus; fall back to supported MediaRecorder output.',
+    output: 'Encoded audio Blob',
+  },
+  {
+    icon: BadgeCheck,
+    title: 'Quality gate',
+    location: 'Browser',
+    input: 'Encoded audio Blob',
+    responsibility: 'Decode, measure duration and RMS, and stop invalid takes.',
+    output: 'Accepted multipart upload',
+  },
+  {
+    icon: FileAudio,
+    title: 'Normalize',
+    location: 'App server',
+    input: 'Browser audio',
+    responsibility: 'Attempt FFmpeg conversion with timeout and record fallback use.',
+    output: '16 kHz mono s16 WAV or original fallback',
+  },
   {
     icon: Cloud,
-    title: 'Speech assessment pipeline',
-    body: 'Browser recording → ffmpeg WAV normalization (16 kHz, mono) → Azure Speech pronunciation assessment, with async scoring and audio-quality gates.',
+    title: 'Assess',
+    location: 'External provider',
+    input: 'Audio + PT-BR reference text',
+    responsibility: 'Run Azure pronunciation assessment at word granularity.',
+    output: 'Overall, sub-score, miscue, and word data',
   },
   {
-    icon: BrainCircuit,
-    title: 'Phoneme feedback engine',
-    body: 'Maps Azure’s raw phoneme scores and error types onto a 36-phoneme Brazilian-Portuguese knowledge base, detects sound-confusion patterns, and surfaces minimal-pair drills.',
+    icon: Route,
+    title: 'Normalize response',
+    location: 'App server',
+    input: 'Azure detailed response',
+    responsibility: 'Map provider variants into the typed AttemptScore contract.',
+    output: 'Stable word-score model',
   },
   {
-    icon: LayoutDashboard,
-    title: 'Scoring & progress UI',
-    body: 'Word-by-word and phoneme-level score visualizations, score breakdowns, trend sparklines, and a coaching-first practice flow.',
+    icon: AudioLines,
+    title: 'Teach',
+    location: 'Browser',
+    input: 'AttemptScore + canonical word refs',
+    responsibility: 'Gate trust and attach PT-BR sound metadata without inventing scores.',
+    output: 'Progressive learner feedback',
   },
   {
     icon: Database,
-    title: 'History & practice tracking',
-    body: 'Express + MongoDB backend with JWT auth persists per-user attempts, sessions, and progress analytics over time.',
+    title: 'Persist',
+    location: 'Browser + server',
+    input: 'Completed attempt',
+    responsibility: 'Update the local practice log and dual-write authenticated attempts.',
+    output: 'History, analytics, MongoDB record',
   },
-];
-
-/** Engineering challenges / technical decisions — recruiter-relevant substance. */
-export const CHALLENGES: {
-  icon: LucideIcon;
-  title: string;
-  body: string;
-}[] = [
-  {
-    icon: Waves,
-    title: 'Browser audio → clean, consistent WAV',
-    body: 'Captured Opus audio reliably across browsers, then downmixed to 16 kHz mono 16-bit PCM server-side with ffmpeg so Azure always receives a consistent signal.',
-  }, // source: useMicrophoneRecorder.ts + audioConversion.ts
-  {
-    icon: Route,
-    title: 'Mapping raw Azure output to PT-BR coaching',
-    body: 'Built a phoneme mapping layer and rule set for Brazilian Portuguese — nasal vowels, the tapped “r”, “lh/nh”, vowel reduction — turning opaque scores into specific, teachable fixes.',
-  }, // source: coaching/ + phonemeMetadata
-  {
-    icon: Gauge,
-    title: 'Trustworthy feedback, not noise',
-    body: 'Client-side quality gates reject silent or too-short takes, and a confidence badge suppresses coaching when recognition is unreliable, so learners never act on bad tips.',
-  }, // source: audioQuality.ts + FEATURES.md "Confidence Trust Badge"
-  {
-    icon: LayoutDashboard,
-    title: 'Detail without overwhelm',
-    body: 'Designed progressive disclosure — overall score → sub-scores → word → phoneme — that auto-focuses the weakest sound instead of dumping every metric at once.',
-  }, // source: FEATURES.md sentence-practice flow
-];
-
-/** Verified numeric evidence. Each value is derived from a real source. */
-export const STAT_TILES: { value: string; label: string; note: string }[] = [
-  { value: '36', label: 'PT-BR phoneme map', note: 'data/phoneme_metadata.json' },
-  { value: '13', label: 'Sound-confusion sets', note: 'confusionDetection.ts' },
-  { value: '42', label: 'Minimal-pair drills', note: 'minimalPairs.ptbr.ts' },
-  { value: '593 · 974', label: 'Curated sentences · words', note: 'master datasets' },
-];
-
-/** Qualitative, verified capabilities (used where numbers would be invented). */
-export const EVIDENCE_CHIPS: string[] = [
-  'Interactive demo — no account, mic, or API keys',
-  'Word-, phoneme-, and score-level feedback',
-  'Attempt history & progress analytics',
-  'Native male & female reference audio',
-  'Responsive, dark-mode web UI',
-  'Deployed on Vercel + Railway',
-];
-
-/** Technical architecture pipeline stages. */
-export const ARCH_STAGES: {
-  icon: LucideIcon;
-  title: string;
-  sub: string;
-}[] = [
-  { icon: Mic, title: 'Browser audio', sub: 'MediaRecorder (Opus)' },
-  { icon: Waves, title: 'WAV processing', sub: 'ffmpeg · 16 kHz mono PCM' },
-  { icon: Cloud, title: 'Azure Speech', sub: 'Pronunciation assessment' },
-  { icon: BrainCircuit, title: 'Coaching engine', sub: 'PT-BR phoneme rules' },
-  { icon: LayoutDashboard, title: 'Feedback UI', sub: 'Scores · chips · trends' },
-  { icon: Database, title: 'Persistence', sub: 'MongoDB · users & history' },
 ];
