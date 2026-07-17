@@ -300,7 +300,7 @@ export default function InteractiveWordStrip({
             errorType?: string;
             phonemes?: Array<{
               symbol: string;
-              score?: number;
+              score: number;
               exampleWord?: string;
               tip?: string;
               isProblem?: boolean;
