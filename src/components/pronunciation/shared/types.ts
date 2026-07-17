@@ -23,8 +23,7 @@ export interface NormalizedWordFeedback {
   /** Phoneme-level feedback (preserve current shape, can refine later) */
   phonemes?: Array<{
     symbol: string;
-    /** Accuracy score from Azure (0-100). Undefined when Azure did not return per-phoneme scoring. */
-    score?: number;
+    score: number;
     exampleWord?: string;
     tip?: string;
     isProblem?: boolean;
@@ -37,12 +36,6 @@ export interface NormalizedWordFeedback {
   level?: 'excellent' | 'good' | 'ok' | 'practice';
   /** Optional overall score (for compatibility) */
   score?: number;
-  /** Canonical sound sequence used to build learner-friendly pronunciation guidance. */
-  guidePhonemes?: string[];
-  /** Human-authored pronunciation note from the canonical word record. */
-  pronunciationNote?: string;
-  /** Optional curated English eye-dialect respelling. */
-  respelling?: string;
 }
 
 /**
@@ -61,3 +54,4 @@ export interface NormalizedWordAudioVariant extends NormalizedAudioVariant {
   startTimeMs?: number;
   endTimeMs?: number;
 }
+

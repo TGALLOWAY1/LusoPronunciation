@@ -1,11 +1,7 @@
 import type { NormalizedWordFeedback } from './types';
+import { getPhonemeById } from '@/lib/phonemeMetadata';
 import { findHomograph } from '@/lib/homographs';
 import type { TrustLevel } from '@/lib/assessmentTrust';
-import {
-  buildPronunciationGuide,
-  getEyeDialectSound,
-  getReferenceWord,
-} from '@/lib/pronunciationGuide';
 
 interface PhonemePanelProps {
   word?: NormalizedWordFeedback | null;
@@ -14,63 +10,78 @@ interface PhonemePanelProps {
 }
 
 /**
- * Learner-facing pronunciation guide for the selected word.
- * Assessment phonemes remain available internally for scoring, but the UI uses
- * English respelling, familiar reference words, and Portuguese spelling rules.
+ * Ring color for per-phoneme score circles, matching the app's score bands.
  */
-export default function PhonemePanel({
-  word,
-  onClose,
-  trustLevel = 'trusted',
-}: PhonemePanelProps) {
+function getPhonemeRingColor(score: number): string {
+  if (score >= 80) return 'border-emerald-500 text-emerald-700 dark:border-emerald-400 dark:text-emerald-300';
+  if (score >= 60) return 'border-amber-500 text-amber-700 dark:border-amber-400 dark:text-amber-300';
+  return 'border-rose-500 text-rose-700 dark:border-rose-400 dark:text-rose-300';
+}
+
+/**
+ * Circular score indicator shown on the right of each phoneme card.
+ */
+function PhonemeScoreRing({ score }: { score: number }) {
+  const rounded = Math.round(score);
+  return (
+    <div
+      className={`shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-full border-2 bg-white dark:bg-gray-800 flex flex-col items-center justify-center ${getPhonemeRingColor(rounded)}`}
+      aria-label={`Score ${rounded} out of 100`}
+    >
+      <span className="text-sm sm:text-base font-bold leading-none">{rounded}</span>
+      <span className="hidden sm:block text-[9px] text-gray-400 dark:text-gray-500 mt-0.5">/100</span>
+    </div>
+  );
+}
+
+/**
+ * Panel displaying phoneme details and tips for a selected word.
+ */
+export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: PhonemePanelProps) {
+  // Empty state: no word selected
   if (!word) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-          Pronunciation guide
+          Sound Details (Phonemes & Tips)
         </h3>
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Click a word in the sentence to see how to say it.
+            Click a word in the sentence to see tips for its sounds.
           </p>
         </div>
       </div>
     );
   }
 
-  const guidePhonemes = word.guidePhonemes ?? word.phonemes?.map((phoneme) => phoneme.symbol) ?? [];
-  const guide = buildPronunciationGuide({
-    word: word.text,
-    phonemes: guidePhonemes,
-    pronunciationNote: word.pronunciationNote,
-    respelling: word.respelling,
-  });
-  const problemSounds = word.phonemes?.filter((phoneme) => phoneme.isProblem) ?? [];
+  const problemPhonemes = word.phonemes?.filter(p => p.isProblem) || [];
   const wordScore = word.score ?? word.accuracyScore;
   const wordLevel = word.level || (wordScore >= 90 ? 'excellent' : wordScore >= 80 ? 'good' : wordScore >= 70 ? 'ok' : 'practice');
   const homograph = findHomograph(word.text);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 space-y-5">
-      <div className="flex items-start justify-between gap-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 space-y-4">
+      {/* Header */}
+      <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            Pronunciation guide
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
+            Sound Details (Phonemes & Tips)
           </h3>
+          <p className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <span className="text-primary-600 dark:text-primary-400">{word.text}</span>
+          </p>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            <span className="font-semibold text-primary-600 dark:text-primary-400">{word.text}</span>
-            {' '}• Score {wordScore}/100 • {wordLevel}
+            Word score: {wordScore}/100 • {wordLevel}
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-            Tap any word in the sentence to inspect its pronunciation.
+            Tap any word in the sentence to inspect its sounds.
           </p>
         </div>
         {onClose && (
           <button
-            type="button"
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-            aria-label="Close pronunciation guide"
+            aria-label="Close"
           >
             ✕
           </button>
@@ -83,8 +94,8 @@ export default function PhonemePanel({
           className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
         >
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Personalized sound coaching is hidden because this recording could not be scored reliably.
-            The pronunciation and spelling guide below still comes from the reference word.
+            Phoneme tips are hidden for this attempt because the audio couldn't be scored reliably.
+            Re-record the full sentence in a quieter room to see detailed coaching.
           </p>
         </div>
       )}
@@ -95,124 +106,129 @@ export default function PhonemePanel({
           className="rounded-lg p-3 border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20"
         >
           <p className="text-xs text-amber-800 dark:text-amber-300">
-            Parts of this recording were hard to score, so personalized coaching may be less precise than usual.
+            Parts of this recording were hard to score — tips below may be less precise than usual.
           </p>
         </div>
       )}
 
-      {homograph && (
+      {homograph && trustLevel !== 'untrusted' && (
         <div
           data-testid="phoneme-panel-homograph"
           className="rounded-lg p-3 border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/20"
         >
           <p className="text-xs text-indigo-900 dark:text-indigo-200 mb-1">
-            <strong>{homograph.form}</strong> has more than one common pronunciation in Brazilian Portuguese.
-            The intended sound depends on its meaning:
+            <strong>{homograph.form}</strong> has more than one common pronunciation in Brazilian
+            Portuguese. Azure scored the reading that best matched your audio.
           </p>
-          <ul className="text-xs text-indigo-900 dark:text-indigo-200 list-disc pl-4 space-y-0.5">
-            {homograph.readings.map((reading) => (
-              <li key={reading.meaning}>{reading.meaning}</li>
+          <ul className="text-xs text-indigo-900 dark:text-indigo-200 space-y-0.5">
+            {homograph.readings.map((r, i) => (
+              <li key={i}>
+                <span className="font-mono">/{r.ipa}/</span> &mdash; {r.meaning}
+              </li>
             ))}
           </ul>
         </div>
       )}
 
-      <div className="rounded-xl border border-primary-200 bg-primary-50 px-5 py-4 dark:border-primary-800 dark:bg-primary-900/20">
-        <p className="text-xs font-semibold uppercase tracking-wide text-primary-700 dark:text-primary-300">
-          Say it like
-        </p>
-        <p className="mt-1 text-3xl font-bold tracking-wide text-gray-900 dark:text-white">
-          {guide.respelling}
-        </p>
-        <p className="mt-2 text-xs text-gray-600 dark:text-gray-400">
-          English phonetic respelling — no special symbols needed.
-        </p>
-      </div>
-
-      {guide.references.length > 0 && (
-        <section aria-labelledby={`reference-words-${word.id}`}>
-          <h4
-            id={`reference-words-${word.id}`}
-            className="text-sm font-semibold text-gray-800 dark:text-gray-200"
-          >
-            Reference words
-          </h4>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {guide.references.map((reference) => (
-              <span
-                key={`${reference.sound}-${reference.word}`}
-                className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-700 dark:border-gray-600 dark:bg-gray-700/50 dark:text-gray-200"
-              >
-                <strong>{reference.sound}</strong> like <strong>{reference.word}</strong>
-              </span>
-            ))}
-          </div>
-        </section>
+      {trustLevel !== 'untrusted' && (!word.phonemes || word.phonemes.length === 0) && (
+        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+            No phoneme data available for this word yet.
+          </p>
+        </div>
       )}
 
-      <section
-        className="border-t border-gray-200 pt-4 dark:border-gray-700"
-        aria-labelledby={`spelling-rules-${word.id}`}
-      >
-        <h4
-          id={`spelling-rules-${word.id}`}
-          className="text-sm font-semibold text-gray-800 dark:text-gray-200"
-        >
-          The spelling rule
-        </h4>
-        <div className="mt-2 space-y-2">
-          {guide.spellingRules.map((rule) => (
-            <p
-              key={rule.spelling}
-              className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-gray-800 dark:border-amber-800/70 dark:bg-amber-900/20 dark:text-gray-200"
-            >
-              <strong>{rule.spelling}</strong> = <strong>{rule.sound}</strong>
-              {rule.referenceWord && <> (like <strong>{rule.referenceWord}</strong>)</>}
-            </p>
-          ))}
-        </div>
-      </section>
-
-      {trustLevel !== 'untrusted' && problemSounds.length > 0 && (
-        <section
-          className="border-t border-gray-200 pt-4 dark:border-gray-700"
-          aria-labelledby={`focus-sounds-${word.id}`}
-        >
-          <h4
-            id={`focus-sounds-${word.id}`}
-            className="text-sm font-semibold text-gray-800 dark:text-gray-200"
-          >
-            Focus for your next try
+      {/* How to pronounce these sounds */}
+      {trustLevel !== 'untrusted' && word.phonemes && word.phonemes.length > 0 && (
+        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            🔊 How to pronounce these sounds:
           </h4>
-          <ul className="mt-2 space-y-2">
-            {problemSounds.map((phoneme, index) => {
-              const focusPhoneme = index === 0 && /^r/i.test(word.text) && /^(r|r_tap)$/i.test(phoneme.symbol)
-                ? 'HH'
-                : phoneme.symbol;
-              const sound = getEyeDialectSound(focusPhoneme);
-              const referenceWord = getReferenceWord(focusPhoneme);
-              return (
-                <li
-                  key={`${phoneme.symbol}-${index}`}
-                  className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300"
-                >
-                  <span className="mt-0.5 text-rose-500 dark:text-rose-400">•</span>
-                  <span>
-                    Make the <strong>“{sound}”</strong> sound slowly and clearly
-                    {referenceWord ? <>—use <strong>{referenceWord}</strong> as your model.</> : '.'}
-                  </span>
-                </li>
-              );
+          <div className="space-y-3">
+            {word.phonemes.map((phoneme, index) => {
+              const metadata = getPhonemeById(phoneme.symbol);
+              
+              if (metadata) {
+                const desc = metadata.englishApprox || metadata.articulation || '';
+                const tip = metadata.teachingTips?.[0] || '';
+                const ptEx = metadata.exampleWords?.map(w => w.pt).join(', ') || '';
+                const enEx = metadata.englishExamples?.join(', ') || '';
+
+                return (
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-3 sm:gap-4"
+                  >
+                    <div className="shrink-0 min-w-10 h-10 sm:min-w-12 sm:h-12 px-2 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                      <span className={`font-bold text-primary-700 dark:text-primary-300 font-mono whitespace-nowrap ${phoneme.symbol.length > 3 ? 'text-[11px] sm:text-xs' : 'text-lg'}`}>
+                        {phoneme.symbol}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-800 dark:text-gray-200">
+                        <strong className="font-semibold">How to say it:</strong> {desc}
+                      </p>
+                      {tip && (
+                        <p className="text-xs text-primary-700 dark:text-primary-300 mt-1">
+                          💡 {tip}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-gray-500 dark:text-gray-400 mt-1.5">
+                        {ptEx && (
+                          <span>
+                            <strong className="text-gray-600 dark:text-gray-300">PT:</strong> <em>{ptEx}</em>
+                          </span>
+                        )}
+                        {enEx && (
+                          <span>
+                            <strong className="text-gray-600 dark:text-gray-300">EN:</strong> <em>{enEx}</em>
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <PhonemeScoreRing score={phoneme.score} />
+                  </div>
+                );
+              } else {
+                return (
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-3 sm:gap-4"
+                  >
+                    <div className="shrink-0 min-w-10 h-10 sm:min-w-12 sm:h-12 px-2 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
+                      <span className={`font-bold text-primary-700 dark:text-primary-300 font-mono whitespace-nowrap ${phoneme.symbol.length > 3 ? 'text-[11px] sm:text-xs' : 'text-lg'}`}>
+                        {phoneme.symbol}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 italic">
+                        No extra info available for this sound yet.
+                      </p>
+                      {phoneme.tip && (
+                        <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                          {phoneme.tip}
+                        </p>
+                      )}
+                    </div>
+                    <PhonemeScoreRing score={phoneme.score} />
+                  </div>
+                );
+              }
             })}
-          </ul>
-        </section>
+          </div>
+        </div>
       )}
 
-      {trustLevel !== 'untrusted' && problemSounds.length === 0 && word.phonemes && word.phonemes.length > 0 && (
-        <p className="border-t border-gray-200 pt-4 text-sm text-emerald-600 dark:border-gray-700 dark:text-emerald-400">
-          ✓ Every sound scored well. Try the whole word once more at a natural pace.
-        </p>
-      )}
+      {trustLevel !== 'untrusted' &&
+        problemPhonemes.length === 0 &&
+        word.phonemes &&
+        word.phonemes.length > 0 && (
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm text-emerald-600 dark:text-emerald-400">
+              ✅ All phonemes are performing well!
+            </p>
+          </div>
+        )}
     </div>
   );
 }

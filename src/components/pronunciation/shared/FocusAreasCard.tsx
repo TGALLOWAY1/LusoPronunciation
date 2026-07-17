@@ -1,7 +1,6 @@
 import { Target } from 'lucide-react';
 import type { NormalizedWordFeedback } from './types';
 import { getPhonemeById } from '@/lib/phonemeMetadata';
-import { getEyeDialectSound, getReferenceWord } from '@/lib/pronunciationGuide';
 
 interface FocusAreasCardProps {
   words: NormalizedWordFeedback[];
@@ -9,8 +8,6 @@ interface FocusAreasCardProps {
 
 interface ProblemPhoneme {
   symbol: string;
-  sound: string;
-  referenceWord?: string;
   score: number;
   tip: string;
 }
@@ -24,12 +21,9 @@ function collectProblemPhonemes(words: NormalizedWordFeedback[]): ProblemPhoneme
 
   for (const word of words) {
     if (!word.phonemes) continue;
-    for (const [index, phoneme] of word.phonemes.entries()) {
-      if (!phoneme.isProblem || phoneme.score === undefined) continue;
-      const contextualSymbol = index === 0 && /^r/i.test(word.text) && /^(r|r_tap)$/i.test(phoneme.symbol)
-        ? 'HH'
-        : phoneme.symbol;
-      const existing = bySymbol.get(contextualSymbol);
+    for (const phoneme of word.phonemes) {
+      if (!phoneme.isProblem) continue;
+      const existing = bySymbol.get(phoneme.symbol);
       if (existing && existing.score <= phoneme.score) continue;
 
       const metadata = getPhonemeById(phoneme.symbol);
@@ -39,10 +33,8 @@ function collectProblemPhonemes(words: NormalizedWordFeedback[]): ProblemPhoneme
         metadata?.englishApprox ||
         metadata?.articulation ||
         `Needs more precision.`;
-      bySymbol.set(contextualSymbol, {
-        symbol: contextualSymbol,
-        sound: getEyeDialectSound(contextualSymbol),
-        referenceWord: getReferenceWord(contextualSymbol),
+      bySymbol.set(phoneme.symbol, {
+        symbol: phoneme.symbol,
         score: phoneme.score,
         tip,
       });
@@ -53,8 +45,8 @@ function collectProblemPhonemes(words: NormalizedWordFeedback[]): ProblemPhoneme
 }
 
 /**
- * Standalone Focus Areas card surfacing the lowest-scoring problem sounds
- * across the sentence using English-friendly labels instead of provider IDs.
+ * Standalone Focus Areas card surfacing the lowest-scoring problem phonemes
+ * across the entire sentence. Rendered below Sound Details on the practice page.
  */
 export default function FocusAreasCard({ words }: FocusAreasCardProps) {
   const problems = collectProblemPhonemes(words);
@@ -78,10 +70,10 @@ export default function FocusAreasCard({ words }: FocusAreasCardProps) {
           >
             <span className="text-primary-500 dark:text-primary-400 shrink-0">•</span>
             <span>
-              <strong className="font-semibold text-gray-900 dark:text-gray-100">
-                “{p.sound}” sound
-              </strong>
-              {p.referenceWord && <> (like <strong>{p.referenceWord}</strong>)</>}: {p.tip}
+              <strong className="font-mono font-semibold text-gray-900 dark:text-gray-100">
+                {p.symbol}:
+              </strong>{' '}
+              {p.tip}
             </span>
           </li>
         ))}

@@ -184,39 +184,5 @@
   .animate-pulse-ring {
     animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-
-  @keyframes tour-state-enter {
-    from {
-      opacity: 0.72;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes tour-flow-reveal {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
-  }
-
-  .tour-state-enter {
-    animation: tour-state-enter 320ms ease-out both;
-  }
-
-  .tour-flow-line {
-    animation: tour-flow-reveal 900ms ease-out both;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .tour-state-enter,
-    .tour-flow-line {
-      animation: none !important;
-    }
-  }
 }
+
