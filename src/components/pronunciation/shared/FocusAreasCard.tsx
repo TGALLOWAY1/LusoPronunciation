@@ -25,7 +25,7 @@ function collectProblemPhonemes(words: NormalizedWordFeedback[]): ProblemPhoneme
   for (const word of words) {
     if (!word.phonemes) continue;
     for (const [index, phoneme] of word.phonemes.entries()) {
-      if (!phoneme.isProblem) continue;
+      if (!phoneme.isProblem || phoneme.score === undefined) continue;
       const contextualSymbol = index === 0 && /^r/i.test(word.text) && /^(r|r_tap)$/i.test(phoneme.symbol)
         ? 'HH'
         : phoneme.symbol;

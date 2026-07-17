@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite",
     "dev:server": "tsx src/server/app.ts",
-    "prebuild": "mkdir -p public/data && cp data/masterSentences.json data/masterWords.json data/audio_index.json public/data/ && tsx scripts/verifyAudioConsistency.ts",
+    "prebuild": "npm run tour:facts:check && mkdir -p public/data && cp data/masterSentences.json data/masterWords.json data/audio_index.json public/data/ && tsx scripts/verifyAudioConsistency.ts",
     "verify:audio": "tsx scripts/verifyAudioConsistency.ts",
     "build": "npm run prebuild && tsc && vite build",
     "start": "tsx src/server/app.ts",
@@ -24,6 +24,8 @@
     "audio:words:female": "tsx scripts/generateWordAudio.ts --voice=female",
     "generation:pipeline": "tsx scripts/generationPipeline.ts",
     "audit:dataset": "tsx scripts/auditDatasetReadiness.ts",
+    "tour:facts": "tsx scripts/generateTourFacts.ts",
+    "tour:facts:check": "tsx scripts/generateTourFacts.ts --check",
     "generate:gemini:sentences": "python3 scripts/generateGeminiSentences.py --output data/raw/gemini_sentences.csv",
     "generate:normalize:sentences": "tsx scripts/normalizeGeminiSentences.ts",
     "generate:sentences:stage0": "npm run generate:gemini:sentences && npm run generate:normalize:sentences",
