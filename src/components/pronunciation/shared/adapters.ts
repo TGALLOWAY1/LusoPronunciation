@@ -272,8 +272,6 @@ export function enrichWordsWithCanonicalData(
       pronunciationNote: canonicalWord.pronunciationNotes,
       phonemes: canonicalPhonemes.map(symbol => ({
         symbol,
-        score: word.accuracyScore,
-        isProblem: word.accuracyScore < 80,
       })),
     };
   });

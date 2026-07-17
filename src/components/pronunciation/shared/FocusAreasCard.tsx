@@ -1,6 +1,6 @@
 import { Target } from 'lucide-react';
 import type { NormalizedWordFeedback } from './types';
-import { getPhonemeById } from '@/lib/phonemeMetadata';
+import { getPhonemeById, getPhonemeDisplayLabel } from '@/lib/phonemeMetadata';
 
 interface FocusAreasCardProps {
   words: NormalizedWordFeedback[];
@@ -22,7 +22,7 @@ function collectProblemPhonemes(words: NormalizedWordFeedback[]): ProblemPhoneme
   for (const word of words) {
     if (!word.phonemes) continue;
     for (const phoneme of word.phonemes) {
-      if (!phoneme.isProblem) continue;
+      if (!phoneme.isProblem || phoneme.score === undefined) continue;
       const existing = bySymbol.get(phoneme.symbol);
       if (existing && existing.score <= phoneme.score) continue;
 
@@ -71,7 +71,7 @@ export default function FocusAreasCard({ words }: FocusAreasCardProps) {
             <span className="text-primary-500 dark:text-primary-400 shrink-0">•</span>
             <span>
               <strong className="font-mono font-semibold text-gray-900 dark:text-gray-100">
-                {p.symbol}:
+                {getPhonemeDisplayLabel(p.symbol)}:
               </strong>{' '}
               {p.tip}
             </span>

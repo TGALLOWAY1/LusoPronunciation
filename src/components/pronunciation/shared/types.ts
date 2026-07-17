@@ -23,7 +23,8 @@ export interface NormalizedWordFeedback {
   /** Phoneme-level feedback (preserve current shape, can refine later) */
   phonemes?: Array<{
     symbol: string;
-    score: number;
+    /** Accuracy score from Azure (0-100). Undefined when Azure did not return per-phoneme scoring. */
+    score?: number;
     exampleWord?: string;
     tip?: string;
     isProblem?: boolean;
