@@ -3,6 +3,7 @@ import { Check, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
 import type { Sentence } from '@/lib/types';
 import type { AttemptScore } from '@/types/pronunciation';
 import { useLivePronunciationPractice } from '@/hooks/useLivePronunciationPractice';
+import NextStepCoachingCard from '@/components/practice/NextStepCoachingCard';
 import InteractiveSentenceDisplay from '@/components/practice/InteractiveSentenceDisplay';
 import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import {
@@ -18,6 +19,10 @@ import { useSettingsStore } from '@/state/settingsStore';
 import { useCanonicalWordMap } from '@/hooks/useCanonicalWordMap';
 import PremiumRecordButton from '@/components/common/PremiumRecordButton';
 import PremiumPlayButton from '@/components/common/PremiumPlayButton';
+import { buildCoachingSuggestion } from '@/lib/coaching/coachingEngine';
+import { detectConfusionTags } from '@/lib/coaching/confusionDetection';
+import { pickMinimalPairsByTags } from '@/lib/coaching/minimalPairs.ptbr';
+import { appendCoachingTelemetryEvent } from '@/lib/coaching/coachingTelemetry';
 
 export interface LivePracticeSectionProps {
   sentence: Sentence;
@@ -42,8 +47,10 @@ export default function LivePracticeSection({
 }: LivePracticeSectionProps) {
   const { selectedVoice } = useSettingsStore();
   const canonicalWordMap = useCanonicalWordMap();
+  const [isDrillOpen, setIsDrillOpen] = useState(false);
   const [showEnglish, setShowEnglish] = useState(false);
   const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback | null>(null);
+  const lastShownKeyRef = useRef<string | null>(null);
 
   const {
     isRecording,
@@ -54,6 +61,7 @@ export default function LivePracticeSection({
     submitting,
     error,
     attemptState,
+    attempts,
     currentAttempt,
     rawAzureResponse,
     submitAttempt,
@@ -223,6 +231,108 @@ export default function LivePracticeSection({
     [currentAttempt]
   );
   const trustMessage = getTrustMessage(trustLevel);
+
+  // ---------------------------------------------------------------------
+  // Coaching suggestion
+  // ---------------------------------------------------------------------
+  const coachingSuggestion = useMemo(() => {
+    if (!currentAttempt) {
+      return null;
+    }
+
+    const previousAttempt = attempts.length > 1 ? attempts[1] : undefined;
+    const baseSuggestion = buildCoachingSuggestion(currentAttempt, {
+      previousAttempt,
+      sentenceText: sentence.textPt,
+      nativeAudioAvailable,
+    });
+
+    if (baseSuggestion.kind !== 'clarity') {
+      return baseSuggestion;
+    }
+
+    const detectedTags = detectConfusionTags(currentAttempt, sentence.textPt).slice(0, 3);
+    if (detectedTags.length === 0) {
+      return baseSuggestion;
+    }
+
+    const pairs = pickMinimalPairsByTags(detectedTags, 3);
+    if (pairs.length < 2) {
+      return baseSuggestion;
+    }
+
+    return {
+      ...baseSuggestion,
+      kind: 'minimal_pairs' as const,
+      ctaLabel: 'Start drill',
+      drill: {
+        tags: detectedTags,
+        pairs,
+      },
+    };
+  }, [attempts, currentAttempt, nativeAudioAvailable, sentence.textPt]);
+
+  useEffect(() => {
+    setIsDrillOpen(false);
+  }, [sentence.id, currentAttempt?.attemptId]);
+
+  useEffect(() => {
+    if (!coachingSuggestion || !currentAttempt || attemptState !== 'scored') {
+      return;
+    }
+
+    const shownKey = `${currentAttempt.attemptId}:${coachingSuggestion.kind}`;
+    if (lastShownKeyRef.current === shownKey) {
+      return;
+    }
+
+    lastShownKeyRef.current = shownKey;
+    appendCoachingTelemetryEvent({
+      event: 'coaching_shown',
+      kind: coachingSuggestion.kind,
+      tags: coachingSuggestion.drill?.tags,
+    });
+  }, [attemptState, coachingSuggestion, currentAttempt]);
+
+  const handleCoachingPrimaryCta = useCallback(() => {
+    if (!coachingSuggestion) {
+      return;
+    }
+
+    appendCoachingTelemetryEvent({
+      event: 'coaching_cta_clicked',
+      kind: coachingSuggestion.kind,
+      tags: coachingSuggestion.drill?.tags,
+    });
+
+    if (coachingSuggestion.kind === 'minimal_pairs') {
+      if (!isDrillOpen) {
+        appendCoachingTelemetryEvent({
+          event: 'minimal_pairs_opened',
+          kind: coachingSuggestion.kind,
+          tags: coachingSuggestion.drill?.tags,
+        });
+      }
+      setIsDrillOpen(true);
+      return;
+    }
+
+    setIsDrillOpen(false);
+    resetRecording();
+  }, [coachingSuggestion, isDrillOpen, resetRecording]);
+
+  const handleRetrySentenceFromDrill = useCallback(() => {
+    if (coachingSuggestion) {
+      appendCoachingTelemetryEvent({
+        event: 'coaching_cta_clicked',
+        kind: coachingSuggestion.kind,
+        tags: coachingSuggestion.drill?.tags,
+      });
+    }
+
+    setIsDrillOpen(false);
+    resetRecording();
+  }, [coachingSuggestion, resetRecording]);
 
   const quotaExhausted = Boolean(dailyQuota) && dailyQuota!.remaining <= 0;
   const quotaLow =
@@ -476,6 +586,14 @@ export default function LivePracticeSection({
             />
           )}
 
+          {coachingSuggestion && (
+            <NextStepCoachingCard
+              suggestion={coachingSuggestion}
+              drillOpen={isDrillOpen}
+              onPrimaryCta={handleCoachingPrimaryCta}
+              onRetrySentence={handleRetrySentenceFromDrill}
+            />
+          )}
         </>
       )}
 
