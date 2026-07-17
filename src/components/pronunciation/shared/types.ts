@@ -40,6 +40,8 @@ export interface NormalizedWordFeedback {
   guidePhonemes?: string[];
   /** Human-authored pronunciation note from the canonical word record. */
   pronunciationNote?: string;
+  /** Optional curated English eye-dialect respelling. */
+  respelling?: string;
 }
 
 /**

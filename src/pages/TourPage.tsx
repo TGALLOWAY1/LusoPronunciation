@@ -98,7 +98,7 @@ export default function TourPage() {
             </h1>
             <p className="mt-5 max-w-xl text-base text-slate-300 sm:text-lg">
               An end-to-end app that evaluates Brazilian Portuguese pronunciation with Azure Speech and
-              translates the raw output into clear, phoneme-level coaching. Designed, built, and shipped
+              translates the raw output into clear word- and sound-level coaching. Designed, built, and shipped
               as a single full-stack project.
             </p>
 
@@ -200,7 +200,7 @@ export default function TourPage() {
         <Section
           eyebrow="The key differentiator"
           title="Raw pronunciation signals → coaching a learner can use"
-          intro="The value isn’t calling a speech API — it’s the mapping layer that turns opaque phoneme scores and error codes into a specific, teachable fix."
+          intro="The value isn’t calling a speech API — it’s the mapping layer that turns opaque sound scores and error codes into a specific, teachable fix."
         >
           <RawVsCoached />
         </Section>

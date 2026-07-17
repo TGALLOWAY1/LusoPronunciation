@@ -3,7 +3,7 @@
  * ------------------------------------------------------------------
  * Everything in this file is hand-authored sample data used to power
  * the public `/demo` experience and parts of `/tour`. It lets a
- * visitor explore LusoPronounce's scoring, phoneme feedback, and
+ * visitor explore LusoPronounce's scoring, pronunciation guidance, and
  * progress tracking WITHOUT an account, Azure Speech credentials, a
  * microphone, or a database.
  *
@@ -16,7 +16,7 @@
  * practice corpus. Keeping the demo's clips in their own folder means the
  * "Listen (native voice)" button works both locally and on the deploy.
  *
- * The SCORES, phoneme breakdowns, and attempt history are illustrative
+ * The SCORES, sound breakdowns, and attempt history are illustrative
  * and are NOT real Azure Speech pronunciation-assessment output. The UI
  * clearly labels this as demo data wherever it is shown.
  */
@@ -51,16 +51,18 @@ export function getDemoAttemptAudioUrl(id: string, kind: 'bad' | 'best'): string
   return `/demo-audio/attempts/${id}.${kind}.wav`;
 }
 
-/** A single phoneme within a demo word, with its illustrative score. */
+/** A single assessed sound within a demo word, with its illustrative score. */
 export interface DemoPhonemeScore {
   /** Phoneme id matching data/phoneme_metadata.json (e.g. "LH", "AN_NASAL"). */
   symbol: string;
   score: number;
 }
 
-/** Word-level demo feedback, including its phoneme breakdown. */
+/** Word-level demo feedback, including its assessed sound breakdown. */
 export interface DemoWordFeedback {
   text: string;
+  /** Curated English eye-dialect pronunciation shown to public-demo learners. */
+  respelling: string;
   score: number;
   errorType?: ErrorType;
   phonemes: DemoPhonemeScore[];
@@ -93,7 +95,7 @@ export interface DemoExample {
   audioBundled: boolean;
   /** Sample assessment for this example. */
   attempt: AttemptScore;
-  /** Word-by-word breakdown with phonemes for this example. */
+  /** Word-by-word breakdown with assessed sounds for this example. */
   words: DemoWordFeedback[];
   /** Coaching notes tailored to this example. */
   coaching: string[];
@@ -107,8 +109,6 @@ export interface DemoItem {
   text: string;
   /** English translation. */
   translation: string;
-  /** Rough IPA transcription for display. */
-  ipa: string;
   /** 1 (easiest) – 4 (hardest). */
   difficulty: number;
   /** CEFR level of the source sentence (e.g. "A1"). */
@@ -117,7 +117,7 @@ export interface DemoItem {
   focusSounds: string[];
   /** Sample assessment shown in the score card (the best-effort attempt). */
   attempt: AttemptScore;
-  /** Word-by-word breakdown with phonemes (the best-effort attempt). */
+  /** Word-by-word breakdown with assessed sounds (the best-effort attempt). */
   words: DemoWordFeedback[];
   /** Illustrative history of overall scores across prior attempts (oldest → newest). */
   history: number[];
@@ -193,6 +193,7 @@ function mapWordScores(
     const score = transform(w.score);
     return {
       text: w.text,
+      respelling: w.respelling,
       score,
       errorType: errorFloor !== null && score < errorFloor ? 'mispronounced' : undefined,
       phonemes: w.phonemes.map((p) => ({ symbol: p.symbol, score: transform(p.score) })),
@@ -272,6 +273,7 @@ const BASE_ITEMS: DemoItemBase[] = [
     const words: DemoWordFeedback[] = [
       {
         text: 'Oi,',
+        respelling: 'Oy',
         score: 95,
         phonemes: [
           { symbol: 'OW', score: 96 },
@@ -280,6 +282,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'tudo',
+        respelling: 'TOO-doo',
         score: 90,
         phonemes: [
           { symbol: 'T', score: 95 },
@@ -291,6 +294,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'bem?',
+        respelling: 'BAYNG',
         score: 80,
         errorType: 'mispronounced',
         phonemes: [
@@ -298,14 +302,13 @@ const BASE_ITEMS: DemoItemBase[] = [
           { symbol: 'EN_NASAL', score: 72 },
           { symbol: 'Y', score: 78 },
         ],
-        tip: 'The "em" is nasal and glides toward "y" — "bẽi", not a flat English "beng".',
+        tip: 'The "em" is nasal and glides toward "y" — start from "bay" and keep the sound in your nose; do not finish with a hard "ng".',
       },
     ];
     return {
       id: 'gemini_small_talk_001',
       text: 'Oi, tudo bem?',
       translation: 'Hi, how are you?',
-      ipa: 'oj ˈtudu ˈbẽj',
       difficulty: 1,
       cefr: 'A1',
       focusSounds: ['nasal em', 'vowel reduction'],
@@ -322,6 +325,7 @@ const BASE_ITEMS: DemoItemBase[] = [
     const words: DemoWordFeedback[] = [
       {
         text: 'Estou',
+        respelling: 'ees-TOH',
         score: 85,
         phonemes: [
           { symbol: 'IY', score: 82 },
@@ -333,6 +337,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'muito',
+        respelling: 'MWEEN-too',
         score: 82,
         phonemes: [
           { symbol: 'M', score: 94 },
@@ -345,6 +350,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'feliz',
+        respelling: 'feh-LEES',
         score: 84,
         phonemes: [
           { symbol: 'F', score: 96 },
@@ -357,6 +363,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'hoje.',
+        respelling: 'OH-zhee',
         score: 78,
         errorType: 'mispronounced',
         phonemes: [
@@ -371,7 +378,6 @@ const BASE_ITEMS: DemoItemBase[] = [
       id: 'gemini_feelings_001',
       text: 'Estou muito feliz hoje.',
       translation: "I'm very happy today.",
-      ipa: 'isˈto ˈmũjtu feˈlis ˈoʒi',
       difficulty: 2,
       cefr: 'A1',
       focusSounds: ['soft j (zh)', 'silent h'],
@@ -388,11 +394,13 @@ const BASE_ITEMS: DemoItemBase[] = [
     const words: DemoWordFeedback[] = [
       {
         text: 'A',
+        respelling: 'Ah',
         score: 92,
         phonemes: [{ symbol: 'AH', score: 92 }],
       },
       {
         text: 'conta,',
+        respelling: 'KOHN-tah',
         score: 78,
         errorType: 'mispronounced',
         phonemes: [
@@ -405,6 +413,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'por',
+        respelling: 'Pohr',
         score: 76,
         errorType: 'mispronounced',
         phonemes: [
@@ -416,6 +425,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'favor.',
+        respelling: 'fah-VOHR',
         score: 74,
         errorType: 'mispronounced',
         phonemes: [
@@ -432,7 +442,6 @@ const BASE_ITEMS: DemoItemBase[] = [
       id: 'gemini_food_003',
       text: 'A conta, por favor.',
       translation: 'The check, please.',
-      ipa: 'a ˈkõtɐ poɾ faˈvoɾ',
       difficulty: 3,
       cefr: 'A1',
       focusSounds: ['tapped r', 'nasal on'],
@@ -449,6 +458,7 @@ const BASE_ITEMS: DemoItemBase[] = [
     const words: DemoWordFeedback[] = [
       {
         text: 'Minha',
+        respelling: 'MEEN-yah',
         score: 82,
         phonemes: [
           { symbol: 'M', score: 96 },
@@ -460,6 +470,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'mãe',
+        respelling: 'MYE',
         score: 66,
         errorType: 'mispronounced',
         phonemes: [
@@ -467,10 +478,11 @@ const BASE_ITEMS: DemoItemBase[] = [
           { symbol: 'AN_NASAL', score: 55 },
           { symbol: 'Y', score: 62 },
         ],
-        tip: 'The "ãe" is a nasal diphthong — glide from a nasal "ã" toward "i" without stopping the airflow.',
+        tip: 'The "ãe" is a nasal "eye" glide — keep the airflow through your nose and do not finish with a hard "y".',
       },
       {
         text: 'se',
+        respelling: 'See',
         score: 88,
         phonemes: [
           { symbol: 'S', score: 92 },
@@ -480,6 +492,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'chama',
+        respelling: 'SHAH-mah',
         score: 85,
         phonemes: [
           { symbol: 'SH', score: 88 },
@@ -491,6 +504,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'Ana.',
+        respelling: 'AH-nah',
         score: 90,
         phonemes: [
           { symbol: 'AA', score: 92 },
@@ -503,7 +517,6 @@ const BASE_ITEMS: DemoItemBase[] = [
       id: 'gemini_family_friends_001',
       text: 'Minha mãe se chama Ana.',
       translation: "My mother's name is Ana.",
-      ipa: 'ˈmiɲɐ ˈmɐ̃j si ˈʃɐmɐ ˈɐnɐ',
       difficulty: 3,
       cefr: 'B2',
       focusSounds: ['nasal ãe', 'nh (palatal)'],
@@ -511,7 +524,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       words,
       history: [60, 65, 70, 74],
       coaching: [
-        'Both halves of the "ãe" in "mãe" need to stay nasal. Practice slowly: "mã—ẽ", never closing into a hard "y".',
+        'Keep the "eye" glide in "mãe" nasal from start to finish; never close into a hard "y".',
         'For "nh" in "Minha", press the middle of your tongue to the roof of your mouth — think "meen-ya" as one blended sound.',
       ],
     };
@@ -520,6 +533,7 @@ const BASE_ITEMS: DemoItemBase[] = [
     const words: DemoWordFeedback[] = [
       {
         text: 'Que',
+        respelling: 'Kee',
         score: 90,
         phonemes: [
           { symbol: 'K', score: 94 },
@@ -529,6 +543,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'horas',
+        respelling: 'OH-rahs',
         score: 80,
         errorType: 'mispronounced',
         phonemes: [
@@ -541,6 +556,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'são?',
+        respelling: 'SOWN',
         score: 64,
         errorType: 'mispronounced',
         phonemes: [
@@ -548,14 +564,13 @@ const BASE_ITEMS: DemoItemBase[] = [
           { symbol: 'AN_NASAL', score: 52 },
           { symbol: 'W', score: 68 },
         ],
-        tip: 'The "ão" is the same nasal diphthong as in "pão" — keep it resonating in the nose, then glide to "w".',
+        tip: 'The "ão" is a nasal "own" glide — keep it resonating in the nose and do not finish with a hard "n".',
       },
     ];
     return {
       id: 'gemini_questions_005',
       text: 'Que horas são?',
       translation: 'What time is it?',
-      ipa: 'ki ˈɔɾɐs ˈsɐ̃w',
       difficulty: 4,
       cefr: 'B2',
       focusSounds: ['nasal ão', 'tapped r'],
@@ -563,7 +578,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       words,
       history: [56, 62, 67, 71],
       coaching: [
-        'The nasal "ão" in "são" is dragging the score down. Hum "ãaão" with your mouth barely open, then add the final "w" glide.',
+        'The nasal "ão" in "são" is dragging the score down. Start from "own", keep the sound in your nose, and avoid a hard final "n".',
         'Remember the "h" in "horas" is silent, and the "r" is a single tap — not an English "r".',
       ],
     };

@@ -31,6 +31,21 @@ describe('buildPronunciationGuide', () => {
     expect(guide.respelling).toBe('FREE-o');
   });
 
+  it('uses an explicit curated respelling when public content provides one', () => {
+    const guide = buildPronunciationGuide({
+      word: 'mãe',
+      phonemes: ['M', 'AN_NASAL', 'Y'],
+      pronunciationNote: 'Nasal vowel guidance.',
+      respelling: 'MYE',
+    });
+
+    expect(guide.respelling).toBe('MYE');
+    expect(guide.spellingRules[0]).toEqual({
+      spelling: 'ÃE',
+      sound: 'nasal "EYE" sound',
+    });
+  });
+
   it('describes distinctive Portuguese letter patterns without IPA', () => {
     const guide = buildPronunciationGuide({
       word: 'caminho',

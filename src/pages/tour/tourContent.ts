@@ -5,7 +5,7 @@
  * See the inline `// source:` notes. Numeric facts are derived from real
  * datasets / config; nothing here is invented marketing.
  *
- * Illustrative data (sample scores, phoneme breakdowns) is pulled from
+ * Illustrative data (sample scores, sound breakdowns) is pulled from
  * `@/lib/demo/demoData` — the same hand-authored sample set the public
  * `/demo` uses — and is always labelled "Sample data" in the UI.
  */
@@ -50,7 +50,7 @@ export const LOOP_STEPS: {
   {
     icon: Gauge,
     title: 'Score',
-    body: 'Azure Speech returns word- and phoneme-level pronunciation scores.',
+    body: 'Azure Speech returns word- and sound-level pronunciation scores.',
   }, // source: pronunciationAssessment.ts
   {
     icon: ListChecks,
@@ -72,13 +72,13 @@ export const BUILT_CARDS: {
   },
   {
     icon: BrainCircuit,
-    title: 'Phoneme feedback engine',
-    body: 'Maps Azure’s raw phoneme scores and error types onto a 36-phoneme Brazilian-Portuguese knowledge base, detects sound-confusion patterns, and surfaces minimal-pair drills.',
+    title: 'Pronunciation guidance engine',
+    body: 'Maps Azure’s raw sound scores and error types onto a 36-sound Brazilian-Portuguese knowledge base, then turns them into eye-dialect respellings, spelling rules, and minimal-pair drills.',
   },
   {
     icon: LayoutDashboard,
     title: 'Scoring & progress UI',
-    body: 'Word-by-word and phoneme-level score visualizations, score breakdowns, trend sparklines, and a coaching-first practice flow.',
+    body: 'Word-by-word and sound-level score visualizations, score breakdowns, trend sparklines, and a coaching-first practice flow.',
   },
   {
     icon: Database,
@@ -101,7 +101,7 @@ export const CHALLENGES: {
   {
     icon: Route,
     title: 'Mapping raw Azure output to PT-BR coaching',
-    body: 'Built a phoneme mapping layer and rule set for Brazilian Portuguese — nasal vowels, the tapped “r”, “lh/nh”, vowel reduction — turning opaque scores into specific, teachable fixes.',
+    body: 'Built a sound-mapping layer and rule set for Brazilian Portuguese — nasal vowels, the tapped “r”, “lh/nh”, vowel reduction — turning opaque scores into specific, teachable fixes.',
   }, // source: coaching/ + phonemeMetadata
   {
     icon: Gauge,
@@ -111,13 +111,13 @@ export const CHALLENGES: {
   {
     icon: LayoutDashboard,
     title: 'Detail without overwhelm',
-    body: 'Designed progressive disclosure — overall score → sub-scores → word → phoneme — that auto-focuses the weakest sound instead of dumping every metric at once.',
+    body: 'Designed progressive disclosure — overall score → sub-scores → word → practical sound guidance — that auto-focuses the weakest sound instead of dumping every metric at once.',
   }, // source: FEATURES.md sentence-practice flow
 ];
 
 /** Verified numeric evidence. Each value is derived from a real source. */
 export const STAT_TILES: { value: string; label: string; note: string }[] = [
-  { value: '36', label: 'PT-BR phoneme map', note: 'data/phoneme_metadata.json' },
+  { value: '36', label: 'PT-BR sound guides', note: 'data/phoneme_metadata.json' },
   { value: '13', label: 'Sound-confusion sets', note: 'confusionDetection.ts' },
   { value: '42', label: 'Minimal-pair drills', note: 'minimalPairs.ptbr.ts' },
   { value: '593 · 974', label: 'Curated sentences · words', note: 'master datasets' },
@@ -126,7 +126,7 @@ export const STAT_TILES: { value: string; label: string; note: string }[] = [
 /** Qualitative, verified capabilities (used where numbers would be invented). */
 export const EVIDENCE_CHIPS: string[] = [
   'Interactive demo — no account, mic, or API keys',
-  'Word-, phoneme-, and score-level feedback',
+  'Word-, sound-, and score-level feedback',
   'Attempt history & progress analytics',
   'Native male & female reference audio',
   'Responsive, dark-mode web UI',
@@ -142,7 +142,7 @@ export const ARCH_STAGES: {
   { icon: Mic, title: 'Browser audio', sub: 'MediaRecorder (Opus)' },
   { icon: Waves, title: 'WAV processing', sub: 'ffmpeg · 16 kHz mono PCM' },
   { icon: Cloud, title: 'Azure Speech', sub: 'Pronunciation assessment' },
-  { icon: BrainCircuit, title: 'Coaching engine', sub: 'PT-BR phoneme rules' },
+  { icon: BrainCircuit, title: 'Coaching engine', sub: 'PT-BR sound rules' },
   { icon: LayoutDashboard, title: 'Feedback UI', sub: 'Scores · chips · trends' },
   { icon: Database, title: 'Persistence', sub: 'MongoDB · users & history' },
 ];

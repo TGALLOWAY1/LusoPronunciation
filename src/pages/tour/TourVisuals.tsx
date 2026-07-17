@@ -1,16 +1,24 @@
 /**
  * Tour visual primitives — always-dark presentational pieces for the
  * recruiter-facing Tour page. Data comes from the real hand-authored demo
- * set (`@/lib/demo/demoData`) and the phoneme metadata dataset, and every
+ * set (`@/lib/demo/demoData`) and the pronunciation guide, and every
  * sample surface is labelled "Sample data".
  */
 import { Info, ArrowRight } from 'lucide-react';
-import { getPhonemeById } from '@/lib/phonemeMetadata';
 import { getDemoItem, type DemoItem, type DemoWordFeedback } from '@/lib/demo/demoData';
+import {
+  buildPronunciationGuide,
+  getEyeDialectSound,
+  getReferenceWord,
+} from '@/lib/pronunciationGuide';
 
 /** The showcase sentence: "Minha mãe se chama Ana." — real demo item. */
 export const SHOWCASE: DemoItem =
   getDemoItem('gemini_family_friends_001') ?? getDemoItem('gemini_small_talk_001')!;
+
+function contextualSoundId(symbol: string, word: string, index: number): string {
+  return index === 0 && /^r/i.test(word) && /^(r|r_tap)$/i.test(symbol) ? 'HH' : symbol;
+}
 
 /** Score → dark-theme colour tokens. Bands mirror the app's score palette. */
 export function band(score: number): {
@@ -81,7 +89,7 @@ function ScoreBar({ label, value }: { label: string; value: number }) {
 /**
  * The hero "scored attempt" card — mirrors the real assessment view using the
  * showcase sample data. Word chips, problem sounds, score breakdown, and a
- * phoneme timeline, all clearly marked as sample data.
+ * learner-friendly sound timeline, all clearly marked as sample data.
  */
 export function ScoredAttemptCard() {
   const item = SHOWCASE;
@@ -89,13 +97,17 @@ export function ScoredAttemptCard() {
   const overall = Math.round(attempt.overallAccuracy);
   const o = band(overall);
 
-  // Two lowest-scoring phonemes across the sentence, with their word context.
-  const problems = item.words
-    .flatMap((w) => w.phonemes.map((p) => ({ word: w.text.replace(/[.,?]/g, ''), ...p })))
+  const assessedSounds = item.words.flatMap((word) => {
+    const wordText = word.text.replace(/[.,?]/g, '');
+    return word.phonemes.map((sound, index) => ({ word: wordText, index, ...sound }));
+  });
+
+  // Two lowest-scoring sounds across the sentence, with their word context.
+  const problems = [...assessedSounds]
     .sort((a, b) => a.score - b.score)
     .slice(0, 2);
 
-  const timeline = item.words.flatMap((w) => w.phonemes);
+  const timeline = assessedSounds;
 
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-2xl shadow-black/40 backdrop-blur sm:p-5">
@@ -139,21 +151,22 @@ export function ScoredAttemptCard() {
             Problem sounds
           </p>
           <ul className="space-y-2">
-            {problems.map((p, i) => {
-              const meta = getPhonemeById(p.symbol);
+            {problems.map((p) => {
+              const soundId = contextualSoundId(p.symbol, p.word, p.index);
+              const sound = getEyeDialectSound(soundId);
+              const referenceWord = getReferenceWord(soundId);
               const t = band(p.score);
               return (
-                <li key={i} className="flex items-center gap-2">
-                  <span className={`h-6 w-6 shrink-0 rounded-md text-center text-xs font-semibold leading-6 ${t.chip}`}>
-                    {meta?.ipa ?? '•'}
+                <li key={`${p.word}-${p.symbol}-${p.index}`} className="flex items-center gap-2">
+                  <span className={`min-w-8 shrink-0 rounded-md px-1.5 py-1 text-center text-[10px] font-semibold ${t.chip}`}>
+                    {sound}
                   </span>
                   <div className="min-w-0">
                     <p className="truncate text-xs text-slate-200">
-                      <span className="font-medium">{p.word}</span>{' '}
-                      <span className="text-slate-500">/{meta?.ipa}/</span>
+                      <span className="font-medium">{p.word}</span>
                     </p>
                     <p className="truncate text-[10px] text-slate-500">
-                      {meta?.englishApprox ?? 'PT-BR sound'}
+                      “{sound}”{referenceWord ? ` like ${referenceWord}` : ' sound'}
                     </p>
                   </div>
                   <span className={`ml-auto text-xs font-semibold ${t.text}`}>{p.score}</span>
@@ -178,22 +191,24 @@ export function ScoredAttemptCard() {
         </div>
       </div>
 
-      {/* Phoneme timeline */}
+      {/* Learner-friendly sound timeline */}
       <div className="mt-4 rounded-xl border border-white/10 bg-black/20 p-3">
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-          Phoneme timeline
+          Sound-by-sound score
         </p>
         <div className="flex flex-wrap gap-1">
-          {timeline.map((p, i) => {
-            const meta = getPhonemeById(p.symbol);
+          {timeline.map((p) => {
+            const soundId = contextualSoundId(p.symbol, p.word, p.index);
+            const sound = getEyeDialectSound(soundId);
+            const referenceWord = getReferenceWord(soundId);
             const t = band(p.score);
             return (
               <span
-                key={i}
-                title={`${meta?.ipa ?? p.symbol} · ${p.score}`}
-                className={`rounded px-1.5 py-0.5 font-mono text-[11px] ${t.chip}`}
+                key={`${p.word}-${p.symbol}-${p.index}`}
+                title={`${sound}${referenceWord ? ` like ${referenceWord}` : ''} · ${p.score}`}
+                className={`rounded px-1.5 py-0.5 text-[11px] ${t.chip}`}
               >
-                {meta?.ipa ?? p.symbol.toLowerCase()}
+                {sound}
               </span>
             );
           })}
@@ -215,7 +230,7 @@ export function ScoredAttemptCard() {
 }
 
 /**
- * The "key differentiator" — raw Azure-style phoneme output on the left,
+ * The "key differentiator" — raw Azure-style sound output on the left,
  * LusoPronounce's learner-friendly coaching on the right. Uses the real
  * "mãe" word from the showcase item.
  */
@@ -224,7 +239,13 @@ export function RawVsCoached() {
   const word: DemoWordFeedback =
     item.words.find((w) => w.text.replace(/[.,?]/g, '') === 'mãe') ?? item.words[0];
   const wordText = word.text.replace(/[.,?]/g, '');
-  const meta = getPhonemeById(word.phonemes[0].symbol);
+  const guide = buildPronunciationGuide({
+    word: wordText,
+    phonemes: word.phonemes.map((sound) => sound.symbol),
+    pronunciationNote: word.tip,
+    respelling: word.respelling,
+  });
+  const primaryRule = guide.spellingRules[0];
 
   return (
     <div className="grid items-center gap-4 lg:grid-cols-[1fr_auto_1fr]">
@@ -233,7 +254,7 @@ export function RawVsCoached() {
         <div className="mb-3 flex items-center justify-between">
           <div>
             <p className="text-sm font-semibold text-slate-200">Raw assessment output</p>
-            <p className="text-xs text-slate-500">Azure phoneme detail — hard to act on</p>
+            <p className="text-xs text-slate-500">Azure sound detail — hard to act on</p>
           </div>
           <SampleTag />
         </div>
@@ -241,21 +262,18 @@ export function RawVsCoached() {
           <table className="w-full min-w-[19rem] text-left text-xs">
             <thead className="bg-white/5 text-[10px] uppercase tracking-wide text-slate-400">
               <tr>
-                <th className="px-3 py-2 font-medium">Phoneme</th>
-                <th className="px-3 py-2 font-medium">IPA</th>
+                <th className="px-3 py-2 font-medium">Provider sound ID</th>
                 <th className="px-3 py-2 font-medium">Accuracy</th>
                 <th className="px-3 py-2 font-medium">Error</th>
               </tr>
             </thead>
             <tbody className="font-mono text-slate-300">
               {word.phonemes.map((p, i) => {
-                const pm = getPhonemeById(p.symbol);
                 const t = band(p.score);
                 const err = p.score < 60 ? 'Mispron.' : p.score < 75 ? 'Weak' : 'Good';
                 return (
-                  <tr key={i} className="border-t border-white/5">
+                  <tr key={`${p.symbol}-${i}`} className="border-t border-white/5">
                     <td className="px-3 py-1.5 text-slate-400">{p.symbol}</td>
-                    <td className="px-3 py-1.5">/{pm?.ipa}/</td>
                     <td className={`px-3 py-1.5 font-semibold ${t.text}`}>{(p.score / 100).toFixed(2)}</td>
                     <td className={`px-3 py-1.5 ${t.text}`}>{err}</td>
                   </tr>
@@ -284,31 +302,35 @@ export function RawVsCoached() {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-lg font-semibold text-slate-100">{wordText}</span>
-          <span className="text-sm text-slate-400">/{meta?.ipa}/</span>
           <span className={`ml-auto rounded-md px-2 py-0.5 text-xs font-semibold ${band(word.score).chip}`}>
             Needs improvement ({word.score}/100)
           </span>
         </div>
-        <p className="mt-3 text-sm text-slate-300">
-          The nasal sounds in <span className="font-medium text-slate-100">“{wordText}”</span> drift toward
-          an English vowel, which changes the word.
-        </p>
-        <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-3">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-primary-300">How to fix</p>
-          <p className="mt-1 text-sm text-slate-300">{word.tip ?? item.coaching[0]}</p>
+        <div className="mt-3 rounded-xl border border-primary-400/20 bg-primary-500/[0.06] p-3">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-primary-300">Say it like</p>
+          <p className="mt-1 text-2xl font-bold tracking-wide text-slate-100">{guide.respelling}</p>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {word.phonemes.map((p, i) => {
-            const pm = getPhonemeById(p.symbol);
-            const t = band(p.score);
-            return (
-              <span key={i} className={`rounded-md px-2 py-1 text-xs font-medium ${t.chip}`}>
-                {pm?.ipa ?? p.symbol}
-                <span className="ml-1 text-[10px] opacity-80">{p.score}</span>
-              </span>
-            );
-          })}
+          {guide.references.map((reference) => (
+            <span
+              key={`${reference.sound}-${reference.word}`}
+              className="rounded-md bg-white/5 px-2 py-1 text-xs text-slate-300 ring-1 ring-inset ring-white/10"
+            >
+              <strong className="text-slate-100">{reference.sound}</strong> like{' '}
+              <strong className="text-slate-100">{reference.word}</strong>
+            </span>
+          ))}
         </div>
+        {primaryRule && (
+          <div className="mt-3 rounded-xl border border-amber-400/20 bg-amber-500/[0.06] p-3 text-sm text-slate-300">
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-amber-300">The spelling rule</span>
+            <p className="mt-1">
+              <strong className="text-slate-100">{primaryRule.spelling}</strong> ={' '}
+              <strong className="text-slate-100">{primaryRule.sound}</strong>
+              {primaryRule.referenceWord && <> (like <strong className="text-slate-100">{primaryRule.referenceWord}</strong>)</>}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
