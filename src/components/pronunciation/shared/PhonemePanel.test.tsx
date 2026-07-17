@@ -29,4 +29,27 @@ describe('Pronunciation guide panel', () => {
     expect(screen.queryByText('R_TAP')).not.toBeInTheDocument();
     expect(screen.queryByText(/\/ɾ\//)).not.toBeInTheDocument();
   });
+
+  it('does not claim every sound scored well when phonemes are unscored guide-only reference data', () => {
+    render(
+      <PhonemePanel
+        word={{
+          id: 'obrigado',
+          text: 'obrigado',
+          accuracyScore: 42,
+          score: 42,
+          guidePhonemes: ['OW', 'B', 'R_TAP', 'IY', 'G', 'AA', 'D', 'OW'],
+          // Azure only returned a word-level score here (no per-phoneme
+          // scoring), so these are unscored canonical reference entries.
+          phonemes: [
+            { symbol: 'OW' },
+            { symbol: 'B' },
+            { symbol: 'R_TAP' },
+          ],
+        }}
+      />,
+    );
+
+    expect(screen.queryByText(/Every sound scored well/)).not.toBeInTheDocument();
+  });
 });
