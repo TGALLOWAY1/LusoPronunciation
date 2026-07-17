@@ -1,5 +1,16 @@
 # Vercel Config Review
 
+## Resolution (2026-07-17)
+
+A `vercel.json` doing a static rewrite was added at some point after this review,
+without the split-origin work (`VITE_API_BASE_URL` + expanded CORS) this doc
+calls for. That served the frontend from `luso-pronunciation.vercel.app` while
+`/api/*` requests had no backend behind them, causing login/register to fail
+with `405 Method Not Allowed`. `vercel.json` now only redirects every path to
+the Railway deployment (the single source of truth for this app per
+`CLAUDE.md`), so an accidental future Vercel deploy can't silently serve a
+broken build again.
+
 ## Current State
 
 - There is **no `vercel.json`** in the repo.
