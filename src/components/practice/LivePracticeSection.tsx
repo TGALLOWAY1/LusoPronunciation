@@ -9,7 +9,6 @@ import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import {
   adaptWordScoresToNormalized,
   enrichWordsWithCanonicalData,
-  FocusAreasCard,
   PhonemePanel,
   type NormalizedWordFeedback,
 } from '@/components/pronunciation/shared';
@@ -339,7 +338,7 @@ export default function LivePracticeSection({
     Boolean(dailyQuota) && dailyQuota!.remaining > 0 && dailyQuota!.remaining <= 5;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="practice-content">
       {/* Sentence — the thing being practiced, front and center */}
       <div className="flex flex-col items-center gap-y-2">
         <InteractiveSentenceDisplay
@@ -575,8 +574,6 @@ export default function LivePracticeSection({
               </p>
             </div>
           )}
-
-          {enrichedWords.length > 0 && <FocusAreasCard words={enrichedWords} />}
 
           {selectedWord && (
             <PhonemePanel

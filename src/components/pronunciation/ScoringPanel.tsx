@@ -370,7 +370,10 @@ export default function ScoringPanel({ currentAttempt, variant = 'card', heroExt
     ];
 
     return (
-      <div className="relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-4 sm:p-5">
+      <div
+        data-testid="score-strip"
+        className="relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200/70 dark:border-gray-700 p-4 sm:p-5"
+      >
         <div className="absolute top-3 right-3 z-10">
           <AllMetricsInfoIcon prosodyAvailable={prosody !== null} />
         </div>

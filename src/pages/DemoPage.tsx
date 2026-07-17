@@ -6,7 +6,6 @@ import PronunciationFeedbackPanel from '@/components/pronunciation/Pronunciation
 import ScoringPanel from '@/components/pronunciation/ScoringPanel';
 import PhraseTrendSparkline from '@/components/pronunciation/PhraseTrendSparkline';
 import {
-  FocusAreasCard,
   type NormalizedAudioVariant,
   type NormalizedWordFeedback,
 } from '@/components/pronunciation/shared';
@@ -138,9 +137,6 @@ function DemoPracticeCard({ item, example }: { item: DemoItem; example: DemoExam
         words={normalizedWords}
         showDifficultyBadge={false}
       />
-
-      {/* Focus Areas — problem phonemes across the sentence (empty for native) */}
-      <FocusAreasCard words={normalizedWords} />
 
       {/* Coaching — tailored to the selected example */}
       <div className="rounded-xl border border-gray-200/70 dark:border-gray-700 p-5">

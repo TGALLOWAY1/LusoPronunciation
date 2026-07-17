@@ -54,7 +54,30 @@ describe('adaptWordScoresToNormalized', () => {
     const normalized = adaptWordScoresToNormalized(wordScores, rawAzure);
 
     expect(normalized[0].phonemes?.[0].tip).toBe(
-      'Focus on the ʒ sound and slow down slightly for clarity.'
+      'Focus on the "ʒ" sound and slow down slightly for clarity.'
     );
+  });
+
+  it('uses learner-facing Portuguese spelling (not engine codes) in tips', () => {
+    const wordScores: WordScore[] = [{ word: 'tempo', accuracy: 60, azureWordIndex: 0 }];
+    const rawAzure = {
+      NBest: [
+        {
+          Words: [
+            {
+              Word: 'tempo',
+              Phonemes: [{ Phoneme: 'EN_NASAL', PronunciationAssessment: { AccuracyScore: 55 } }],
+            },
+          ],
+        },
+      ],
+    };
+
+    const normalized = adaptWordScoresToNormalized(wordScores, rawAzure);
+
+    expect(normalized[0].phonemes?.[0].tip).toBe(
+      'Focus on the "em" sound and slow down slightly for clarity.'
+    );
+    expect(normalized[0].phonemes?.[0].tip).not.toMatch(/NASAL/i);
   });
 });

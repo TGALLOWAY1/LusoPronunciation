@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { getPhonemeById, getAllPhonemes, getPhonemeMetadata } from '@/lib/phonemeMetadata';
+import {
+  getAllPhonemes,
+  getPhonemeById,
+  getPhonemeDisplayLabel,
+  getPhonemeMetadata,
+} from '@/lib/phonemeMetadata';
 
 describe('PhonemeMetadata', () => {
   describe('getPhonemeById', () => {
@@ -88,6 +93,40 @@ describe('PhonemeMetadata', () => {
       const byId = getPhonemeById('AA');
       const byMetadata = getPhonemeMetadata('AA');
       expect(byMetadata).toEqual(byId);
+    });
+  });
+
+  describe('getPhonemeDisplayLabel', () => {
+    it('replaces opaque engine codes with Portuguese spelling', () => {
+      expect(getPhonemeDisplayLabel('EN_NASAL')).toBe('em');
+      expect(getPhonemeDisplayLabel('AN_NASAL')).toBe('ã');
+      expect(getPhonemeDisplayLabel('SH')).toBe('ch');
+      expect(getPhonemeDisplayLabel('NH')).toBe('nh');
+    });
+
+    it('never exposes an *_NASAL engine code', () => {
+      for (const id of ['AN_NASAL', 'EN_NASAL', 'IN_NASAL', 'ON_NASAL', 'UN_NASAL']) {
+        expect(getPhonemeDisplayLabel(id)).not.toMatch(/NASAL/i);
+      }
+    });
+
+    it('keeps simple single-letter consonants as-is', () => {
+      expect(getPhonemeDisplayLabel('B')).toBe('B');
+      expect(getPhonemeDisplayLabel('M')).toBe('M');
+      expect(getPhonemeDisplayLabel('F')).toBe('F');
+    });
+
+    it('applies Azure aliases before labelling (e.g. tapped R)', () => {
+      expect(getPhonemeDisplayLabel('R')).toBe('r');
+    });
+
+    it('preserves an unknown provider symbol as a fallback', () => {
+      expect(getPhonemeDisplayLabel('UNKNOWN_SYMBOL')).toBe('UNKNOWN_SYMBOL');
+    });
+
+    it('returns an empty string for empty input', () => {
+      expect(getPhonemeDisplayLabel('')).toBe('');
+      expect(getPhonemeDisplayLabel('   ')).toBe('');
     });
   });
 

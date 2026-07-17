@@ -11,6 +11,7 @@ import type { WordScore } from '@/types/pronunciation';
 import type { Sentence, Word } from '@/lib/types';
 import type { NormalizedWordFeedback, NormalizedWordAudioVariant } from './types';
 import { getAudioUrlForWordSync } from '@/utils/audioRouting';
+import { getPhonemeDisplayLabel } from '@/lib/phonemeMetadata';
 
 /**
  * Normalizes word text for matching (removes punctuation, lowercase).
@@ -35,7 +36,7 @@ function mapAzurePhonemeToNormalized(
   
   let tip: string | undefined;
   if (isProblem) {
-    tip = `Focus on the ${symbol} sound and slow down slightly for clarity.`;
+    tip = `Focus on the "${getPhonemeDisplayLabel(symbol)}" sound and slow down slightly for clarity.`;
   }
   
   return {
