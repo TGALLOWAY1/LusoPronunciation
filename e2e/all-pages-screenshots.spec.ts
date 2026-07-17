@@ -555,7 +555,6 @@ test.describe('Full app screenshot tour', () => {
     // populated, authentic assessment result.
     await captureTourShot(page, 'score-strip', 'app-scored-result');
     await captureTourShot(page, 'sound-details-panel', 'app-sound-coaching');
-    await captureTourShot(page, 'focus-areas', 'app-focus-areas');
   });
 
   test('practice — words', async ({ page }) => {

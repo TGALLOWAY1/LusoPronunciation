@@ -50,8 +50,8 @@ function AppFrame({
 }
 
 /**
- * Hero visual — the real scored-attempt screen: the score strip and the
- * "Focus Areas" card, captured straight from the practice page.
+ * Hero visual — the real scored-attempt screen: overall score with the
+ * accuracy / fluency / completeness breakdown, captured from the practice page.
  */
 export function ScoredResultShot() {
   return (
@@ -63,12 +63,6 @@ export function ScoredResultShot() {
         <img
           src="/tour/app-scored-result.png"
           alt="Overall pronunciation score of 84 with an accuracy, fluency, and completeness breakdown"
-          className="block w-full rounded-lg"
-          loading="lazy"
-        />
-        <img
-          src="/tour/app-focus-areas.png"
-          alt="Focus Areas listing the specific Brazilian Portuguese sounds to work on next"
           className="block w-full rounded-lg"
           loading="lazy"
         />
