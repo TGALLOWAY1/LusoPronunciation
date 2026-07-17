@@ -227,19 +227,6 @@ export function enrichWordsWithCanonicalData(
   });
 
   return words.map(word => {
-    // If Azure already supplied phoneme data, keep it but ensure wordId is set when possible.
-    if (word.phonemes && word.phonemes.length > 0) {
-      if (word.wordId) {
-        return word;
-      }
-      const canonicalFromRefs =
-        (word.index !== undefined && wordRefsByIndex.get(word.index)) ||
-        canonicalByNormalizedText.get(normalizeWordToken(word.text));
-      return canonicalFromRefs
-        ? { ...word, wordId: canonicalFromRefs.id }
-        : word;
-    }
-
     let canonicalWord: Word | undefined;
 
     if (word.wordId) {
@@ -258,17 +245,31 @@ export function enrichWordsWithCanonicalData(
       return word;
     }
 
+    // Keep scored Azure sounds for performance feedback while attaching the
+    // canonical sequence and note for the learner-facing pronunciation guide.
+    if (word.phonemes && word.phonemes.length > 0) {
+      return {
+        ...word,
+        wordId: canonicalWord.id,
+        guidePhonemes: canonicalWord.phonemes,
+        pronunciationNote: canonicalWord.pronunciationNotes,
+      };
+    }
+
     const canonicalPhonemes = canonicalWord.phonemes;
     if (!canonicalPhonemes || canonicalPhonemes.length === 0) {
       return {
         ...word,
         wordId: canonicalWord.id,
+        pronunciationNote: canonicalWord.pronunciationNotes,
       };
     }
 
     return {
       ...word,
       wordId: canonicalWord.id,
+      guidePhonemes: canonicalPhonemes,
+      pronunciationNote: canonicalWord.pronunciationNotes,
       phonemes: canonicalPhonemes.map(symbol => ({
         symbol,
       })),

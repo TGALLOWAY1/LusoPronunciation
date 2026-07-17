@@ -15,15 +15,17 @@ describe('tour evidence visuals', () => {
     render(<InteractiveAttemptFrame />);
 
     expect(screen.getAllByText(/^illustrative$/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/word score: 66\/100/i)).toBeInTheDocument();
-    expect(screen.getByText(/touch your nose; you should feel vibration/i)).toBeInTheDocument();
-    expect(screen.getByText('/ɐ̃/')).toBeInTheDocument();
+    expect(screen.getByText(/score 66\/100/i)).toBeInTheDocument();
+    expect(screen.getByText(/say it like/i)).toBeInTheDocument();
+    expect(screen.getByText('Muhny')).toBeInTheDocument();
     expect(screen.queryByText('AN_NASAL')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Minha' }));
 
-    expect(screen.getByText(/word score: 82\/100/i)).toBeInTheDocument();
-    expect(screen.getByText(/press the flat middle part of your tongue/i)).toBeInTheDocument();
+    expect(screen.getByText(/score 82\/100/i)).toBeInTheDocument();
+    expect(screen.getByText('Mee-nyuh')).toBeInTheDocument();
+    expect(screen.getAllByText(/^NY$/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/canyon/i).length).toBeGreaterThan(0);
   });
 
   it('describes the current provider granularity without inventing phoneme scores', () => {

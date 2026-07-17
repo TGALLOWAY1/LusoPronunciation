@@ -132,7 +132,7 @@ export function InteractiveAttemptFrame() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-700">
                 Scored sentence
               </p>
-              <p className="mt-1 text-xs text-gray-600">Choose a word to inspect its sounds.</p>
+              <p className="mt-1 text-xs text-gray-600">Choose a word to open its pronunciation guide.</p>
             </div>
             <p className="text-[10px] text-gray-500">Illustrative word scores</p>
           </div>
