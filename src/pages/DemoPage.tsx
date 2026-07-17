@@ -49,7 +49,7 @@ function scoreChipClasses(score: number): string {
 /**
  * Adapt the demo's hand-authored word feedback to the normalized shape the
  * real practice components consume. The word-level tip is attached to the
- * word's lowest-scoring phoneme so it surfaces in Sound Details/Focus Areas.
+ * weakest sound and also supplies the curated eye-dialect pronunciation.
  */
 function toNormalizedWords(words: DemoWordFeedback[]): NormalizedWordFeedback[] {
   return words.map((w, index) => {
@@ -64,6 +64,9 @@ function toNormalizedWords(words: DemoWordFeedback[]): NormalizedWordFeedback[] 
       accuracyScore: w.score,
       score: w.score,
       errorType: w.errorType ?? null,
+      guidePhonemes: w.phonemes.map((p) => p.symbol),
+      pronunciationNote: w.tip,
+      respelling: w.respelling,
       phonemes: w.phonemes.map((p, i) => ({
         symbol: p.symbol,
         score: p.score,
@@ -124,7 +127,7 @@ function DemoPracticeCard({ item, example }: { item: DemoItem; example: DemoExam
         }
       />
 
-      {/* Full sentence, translation toggle, audio controls, and Sound Details.
+      {/* Full sentence, translation toggle, audio controls, and pronunciation guide.
           Keyed by example so word selection and scores reset when switching. */}
       <PronunciationFeedbackPanel
         key={`${item.id}:${example.kind}`}
@@ -139,7 +142,7 @@ function DemoPracticeCard({ item, example }: { item: DemoItem; example: DemoExam
         showDifficultyBadge={false}
       />
 
-      {/* Focus Areas — problem phonemes across the sentence (empty for native) */}
+      {/* Focus Areas — learner-friendly problem sounds across the sentence */}
       <FocusAreasCard words={normalizedWords} />
 
       {/* Coaching — tailored to the selected example */}
@@ -199,7 +202,7 @@ export default function DemoPage() {
                 recording yourself, compare three audio examples — the{' '}
                 <strong>native speaker</strong>, an intentionally <strong>bad attempt</strong>, and
                 a <strong>best-effort attempt</strong> — and see how each one scores. The scores and
-                phoneme feedback are realistic <strong>samples</strong>, not live Azure Speech
+                sound-by-sound feedback are realistic <strong>samples</strong>, not live Azure Speech
                 results. No microphone, account, or API keys are used.
               </p>
             </div>

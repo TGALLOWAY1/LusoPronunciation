@@ -113,6 +113,16 @@ export function getPhonemeById(id: string): PhonemeMeta | undefined {
 }
 
 /**
+ * Returns a learner-facing phoneme label without exposing internal dataset IDs.
+ * Known phonemes use slash-delimited IPA; unknown provider symbols remain visible
+ * as a safe fallback rather than disappearing from the feedback UI.
+ */
+export function getPhonemeDisplayLabel(id: string): string {
+  const metadata = getPhonemeById(id);
+  return metadata?.ipa ? `/${metadata.ipa}/` : id.trim();
+}
+
+/**
  * Gets all available phoneme metadata entries.
  * 
  * @returns Array of all phoneme metadata entries, sorted by ID

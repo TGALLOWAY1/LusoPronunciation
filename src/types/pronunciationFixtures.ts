@@ -33,7 +33,8 @@ export interface WordAudioVariant extends AudioVariant {
 
 export interface PhonemeFeedback {
   symbol: string;
-  score: number;
+  /** Accuracy score from Azure (0-100). Undefined when Azure did not return per-phoneme scoring. */
+  score?: number;
   exampleWord?: string;
   tip?: string;
   isProblem?: boolean;

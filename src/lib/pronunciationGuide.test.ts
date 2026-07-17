@@ -31,6 +31,21 @@ describe('buildPronunciationGuide', () => {
     expect(guide.respelling).toBe('FREE-o');
   });
 
+  it('uses an explicit curated respelling when public content provides one', () => {
+    const guide = buildPronunciationGuide({
+      word: 'mãe',
+      phonemes: ['M', 'AN_NASAL', 'Y'],
+      pronunciationNote: 'Nasal vowel guidance.',
+      respelling: 'My',
+    });
+
+    expect(guide.respelling).toBe('My');
+    expect(guide.spellingRules[0]).toEqual({
+      spelling: 'ÃE',
+      sound: 'nasal "EYE" sound',
+    });
+  });
+
   it('does not truncate a note respelling containing accented Portuguese letters', () => {
     const guide = buildPronunciationGuide({
       word: 'amanhã',
