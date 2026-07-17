@@ -19,6 +19,8 @@ import { expect, test, type Page, type Route } from '@playwright/test';
  */
 
 const OUTPUT_DIR = path.resolve(process.cwd(), 'docs/assets/pages');
+// Focused, tour-ready element screenshots (served by the frontend at /tour/*).
+const TOUR_DIR = path.resolve(process.cwd(), 'public/tour');
 
 // ---------------------------------------------------------------------------
 // Seed data (localStorage) — a plausible week of practice for a dummy account.
@@ -478,6 +480,18 @@ async function shoot(page: Page, name: string, fullPage = true) {
   await page.screenshot({ path: path.join(OUTPUT_DIR, `${name}.png`), fullPage });
 }
 
+/**
+ * Capture a single element (by data-testid) as a cropped, tour-ready PNG in
+ * public/tour/. Used to embed real, focused pieces of the assessment UI in the
+ * marketing Tour instead of a fabricated mockup.
+ */
+async function captureTourShot(page: Page, testId: string, name: string) {
+  const el = page.locator(`[data-testid="${testId}"]`).first();
+  await el.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(150);
+  await el.screenshot({ path: path.join(TOUR_DIR, `${name}.png`) });
+}
+
 test.use({
   viewport: { width: 1440, height: 1024 },
   launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
@@ -488,6 +502,7 @@ test.use({
 test.describe('Full app screenshot tour', () => {
   test.beforeAll(() => {
     mkdirSync(OUTPUT_DIR, { recursive: true });
+    mkdirSync(TOUR_DIR, { recursive: true });
   });
 
   test.beforeEach(async ({ page }) => {
@@ -533,6 +548,14 @@ test.describe('Full app screenshot tour', () => {
 
     await expect(page.locator('[aria-label="Next step coaching"]')).toBeVisible({ timeout: 20_000 });
     await shoot(page, '05-practice-sentences-result');
+
+    // Focused, tour-ready element captures of the *real* scored result, saved
+    // into public/tour/ so the marketing Tour can embed genuine app UI (not a
+    // hand-built mockup). Captured here because this flow already produces a
+    // populated, authentic assessment result.
+    await captureTourShot(page, 'score-strip', 'app-scored-result');
+    await captureTourShot(page, 'sound-details-panel', 'app-sound-coaching');
+    await captureTourShot(page, 'focus-areas', 'app-focus-areas');
   });
 
   test('practice — words', async ({ page }) => {

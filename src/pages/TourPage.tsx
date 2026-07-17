@@ -10,7 +10,7 @@ import {
   EVIDENCE_CHIPS,
   ARCH_STAGES,
 } from './tour/tourContent';
-import { ScoredAttemptCard, RawVsCoached, SampleProgress } from './tour/TourVisuals';
+import { ScoredResultShot, RawToCoached, SampleProgress } from './tour/TourVisuals';
 
 const GITHUB_URL = 'https://github.com/TGALLOWAY1/LusoPronunciation';
 
@@ -137,7 +137,7 @@ export default function TourPage() {
           </div>
 
           <div className="lg:pl-4">
-            <ScoredAttemptCard />
+            <ScoredResultShot />
           </div>
         </div>
       </div>
@@ -202,7 +202,7 @@ export default function TourPage() {
           title="Raw pronunciation signals → coaching a learner can use"
           intro="The value isn’t calling a speech API — it’s the mapping layer that turns opaque phoneme scores and error codes into a specific, teachable fix."
         >
-          <RawVsCoached />
+          <RawToCoached />
         </Section>
       </div>
 

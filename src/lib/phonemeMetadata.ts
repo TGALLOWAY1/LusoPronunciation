@@ -113,8 +113,59 @@ export function getPhonemeById(id: string): PhonemeMeta | undefined {
 }
 
 /**
+ * Learner-facing Portuguese-spelling labels for phonemes whose engine ID is an
+ * opaque code (Azure/ARPAbet-style names like `EN_NASAL`, `AH`, `SH`). The goal
+ * is to show a learner the letters that actually produce the sound instead of an
+ * internal identifier. Simple single-letter consonants (B, D, F, G, K, L, M, N,
+ * P, S, T, V, Z) are intentionally omitted — they already read as themselves.
+ */
+const PHONEME_GRAPHEME_LABEL: Record<string, string> = {
+  // Oral vowels
+  AA: 'a', // pato, sapo
+  AH: 'a', // casa, mesa
+  AO: 'ó', // avó, sol
+  EH: 'é', // pé, café
+  EY: 'ê', // você, bebê
+  IY: 'i', // ilha, aqui
+  OW: 'ô', // avô, todo
+  UW: 'u', // uva, lua
+  // Nasal vowels
+  AN_NASAL: 'ã', // irmã, cama
+  EN_NASAL: 'em', // tempo, dente
+  IN_NASAL: 'im', // sim, tinta
+  ON_NASAL: 'om', // bom, onde
+  UN_NASAL: 'um', // um, mundo
+  // Glides
+  Y: 'i', // pai, mais
+  W: 'u', // água, mau
+  // Consonant digraphs / non-obvious spellings
+  CH: 'ti', // tipo, noite ([tʃ])
+  JH: 'di', // dia, cidade ([dʒ])
+  SH: 'ch', // chave, lixo
+  ZH: 'j', // já, gente
+  LH: 'lh', // filho, mulher
+  NH: 'nh', // minha, vinho
+  HH: 'rr', // rato, carro (guttural R)
+  R_TAP: 'r', // caro, para (tapped R)
+};
+
+/**
+ * Returns a learner-facing phoneme label using Portuguese spelling rather than
+ * exposing internal dataset IDs (e.g. `EN_NASAL` → `em`, `SH` → `ch`). Simple
+ * consonants keep their letter, and an unknown provider symbol is preserved as a
+ * safe fallback rather than disappearing from the feedback UI.
+ */
+export function getPhonemeDisplayLabel(id: string): string {
+  if (!id || id.trim().length === 0) {
+    return '';
+  }
+  const normalized = normalizeId(id);
+  return PHONEME_GRAPHEME_LABEL[normalized] ?? id.trim();
+}
+
+/**
  * Gets all available phoneme metadata entries.
- * 
+ *
  * @returns Array of all phoneme metadata entries, sorted by ID
  */
 export function getAllPhonemes(): PhonemeMeta[] {

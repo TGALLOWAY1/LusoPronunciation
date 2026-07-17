@@ -1,6 +1,6 @@
 import { Target } from 'lucide-react';
 import type { NormalizedWordFeedback } from './types';
-import { getPhonemeById } from '@/lib/phonemeMetadata';
+import { getPhonemeById, getPhonemeDisplayLabel } from '@/lib/phonemeMetadata';
 
 interface FocusAreasCardProps {
   words: NormalizedWordFeedback[];
@@ -53,7 +53,10 @@ export default function FocusAreasCard({ words }: FocusAreasCardProps) {
   if (problems.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-primary-100 dark:border-primary-900/50 bg-primary-50/60 dark:bg-primary-900/20 p-4">
+    <div
+      data-testid="focus-areas"
+      className="rounded-xl border border-primary-100 dark:border-primary-900/50 bg-primary-50/60 dark:bg-primary-900/20 p-4"
+    >
       <div className="flex items-center gap-2 mb-2">
         <div className="shrink-0 w-7 h-7 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center border border-primary-200 dark:border-primary-800">
           <Target size={14} className="text-primary-600 dark:text-primary-400" />
@@ -71,7 +74,7 @@ export default function FocusAreasCard({ words }: FocusAreasCardProps) {
             <span className="text-primary-500 dark:text-primary-400 shrink-0">•</span>
             <span>
               <strong className="font-mono font-semibold text-gray-900 dark:text-gray-100">
-                {p.symbol}:
+                {getPhonemeDisplayLabel(p.symbol)}:
               </strong>{' '}
               {p.tip}
             </span>

@@ -1,5 +1,5 @@
 import type { NormalizedWordFeedback } from './types';
-import { getPhonemeById } from '@/lib/phonemeMetadata';
+import { getPhonemeById, getPhonemeDisplayLabel } from '@/lib/phonemeMetadata';
 import { findHomograph } from '@/lib/homographs';
 import type { TrustLevel } from '@/lib/assessmentTrust';
 
@@ -60,7 +60,10 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
   const homograph = findHomograph(word.text);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 space-y-4">
+    <div
+      data-testid="sound-details-panel"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 space-y-4"
+    >
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -147,7 +150,8 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
           <div className="space-y-3">
             {word.phonemes.map((phoneme, index) => {
               const metadata = getPhonemeById(phoneme.symbol);
-              
+              const displayLabel = getPhonemeDisplayLabel(phoneme.symbol);
+
               if (metadata) {
                 const desc = metadata.englishApprox || metadata.articulation || '';
                 const tip = metadata.teachingTips?.[0] || '';
@@ -160,8 +164,8 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                     className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-3 sm:gap-4"
                   >
                     <div className="shrink-0 min-w-10 h-10 sm:min-w-12 sm:h-12 px-2 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
-                      <span className={`font-bold text-primary-700 dark:text-primary-300 font-mono whitespace-nowrap ${phoneme.symbol.length > 3 ? 'text-[11px] sm:text-xs' : 'text-lg'}`}>
-                        {phoneme.symbol}
+                      <span className={`font-bold text-primary-700 dark:text-primary-300 font-mono whitespace-nowrap ${displayLabel.length > 3 ? 'text-[11px] sm:text-xs' : 'text-lg'}`}>
+                        {displayLabel}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
@@ -196,8 +200,8 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                     className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 border border-gray-200/70 dark:border-gray-700 flex items-center gap-3 sm:gap-4"
                   >
                     <div className="shrink-0 min-w-10 h-10 sm:min-w-12 sm:h-12 px-2 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center">
-                      <span className={`font-bold text-primary-700 dark:text-primary-300 font-mono whitespace-nowrap ${phoneme.symbol.length > 3 ? 'text-[11px] sm:text-xs' : 'text-lg'}`}>
-                        {phoneme.symbol}
+                      <span className={`font-bold text-primary-700 dark:text-primary-300 font-mono whitespace-nowrap ${displayLabel.length > 3 ? 'text-[11px] sm:text-xs' : 'text-lg'}`}>
+                        {displayLabel}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
