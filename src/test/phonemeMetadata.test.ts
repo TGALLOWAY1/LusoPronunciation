@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { getPhonemeById, getAllPhonemes, getPhonemeMetadata } from '@/lib/phonemeMetadata';
+import {
+  getAllPhonemes,
+  getPhonemeById,
+  getPhonemeDisplayLabel,
+  getPhonemeMetadata,
+} from '@/lib/phonemeMetadata';
 
 describe('PhonemeMetadata', () => {
   describe('getPhonemeById', () => {
@@ -88,6 +93,17 @@ describe('PhonemeMetadata', () => {
       const byId = getPhonemeById('AA');
       const byMetadata = getPhonemeMetadata('AA');
       expect(byMetadata).toEqual(byId);
+    });
+  });
+
+  describe('getPhonemeDisplayLabel', () => {
+    it('uses IPA instead of exposing internal phoneme IDs', () => {
+      expect(getPhonemeDisplayLabel('AN_NASAL')).toBe('/ɐ̃/');
+      expect(getPhonemeDisplayLabel('NH')).toBe('/ɲ/');
+    });
+
+    it('preserves an unknown provider symbol as a fallback', () => {
+      expect(getPhonemeDisplayLabel('UNKNOWN_SYMBOL')).toBe('UNKNOWN_SYMBOL');
     });
   });
 
