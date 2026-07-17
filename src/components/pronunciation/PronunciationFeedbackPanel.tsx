@@ -325,7 +325,7 @@ export default function PronunciationFeedbackPanel({
         </div>
       )}
 
-      {/* Sound Details / Phoneme panel - only meaningful once an attempt is scored */}
+      {/* Pronunciation guide - only meaningful once an attempt is scored */}
       {hasAttempts && (
         <PhonemePanel
           word={selectedWord}

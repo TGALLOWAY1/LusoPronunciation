@@ -19,10 +19,10 @@ const screenMatrix: Screen[] = [
     fileName: 'dashboard-sentences.png',
     readyText: 'Sentences',
     role: 'button',
-    // Expand the "Previous attempts" accordion so the phoneme-tip panel
+    // Expand the "Previous attempts" accordion so the pronunciation guide
     // renders populated from the seeded attempt instead of the "Click a
     // word..." empty state. Captured full-page so branding + sentence +
-    // phoneme tips all appear together.
+    // pronunciation tips all appear together.
     postNav: async (page) => {
       await page
         .getByRole('button', { name: /^Previous attempts/, exact: false })
@@ -34,7 +34,7 @@ const screenMatrix: Screen[] = [
         .first()
         .click();
       await expect(
-        page.getByRole('heading', { name: /How to pronounce these sounds/i }),
+        page.getByRole('heading', { name: /Pronunciation guide/i }),
       ).toBeVisible({ timeout: 10_000 });
       await page.evaluate(() => window.scrollTo(0, 0));
     },
@@ -84,7 +84,7 @@ function buildSeedPayload() {
     };
   });
 
-  // Word-level scores for the "Estou com fome." sentence so the phoneme panel
+  // Word-level scores for the "Estou com fome." sentence so the pronunciation guide
   // can auto-select the first word and enrich it with canonical phonemes.
   const estouComFomeWordScores = [
     { token: 'Estou', overallScore: 82, accuracyScore: 84, errorType: 'none' as const },
