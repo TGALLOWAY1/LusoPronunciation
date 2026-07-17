@@ -21,6 +21,7 @@ interface BuildPronunciationGuideOptions {
   word: string;
   phonemes?: string[];
   pronunciationNote?: string;
+  respelling?: string;
 }
 
 interface EyeDialectPhone {
@@ -86,6 +87,11 @@ const REFERENCE_WORDS: Record<string, PronunciationReference> = {
   OW: { sound: 'oh', word: 'go' },
   AO: { sound: 'aw', word: 'law' },
   UW: { sound: 'oo', word: 'food' },
+  AN_NASAL: { sound: 'nasal uh', word: 'huh' },
+  EN_NASAL: { sound: 'nasal ay', word: 'pain' },
+  IN_NASAL: { sound: 'nasal ee', word: 'seen' },
+  ON_NASAL: { sound: 'nasal oh', word: 'own' },
+  UN_NASAL: { sound: 'nasal oo', word: 'moon' },
   P: { sound: 'P', word: 'spin' },
   B: { sound: 'B', word: 'boy' },
   T: { sound: 'T', word: 'stop' },
@@ -283,6 +289,7 @@ function buildSpellingRules(word: string): PronunciationSpellingRule[] {
   if (/lh/.test(normalized)) add({ spelling: 'LH', sound: '"LY" sound', referenceWord: 'million' });
   if (/ch/.test(normalized)) add({ spelling: 'CH', sound: '"SH" sound', referenceWord: 'shoe' });
   if (/ão/.test(normalized)) add({ spelling: 'ÃO', sound: 'nasal "OWN" sound' });
+  if (/ãe/.test(normalized)) add({ spelling: 'ÃE', sound: 'nasal "EYE" sound' });
   if (/ç/.test(normalized)) add({ spelling: 'Ç', sound: '"S" sound', referenceWord: 'sun' });
   if (/c[eiéêí]/.test(normalized)) add({ spelling: 'C before E or I', sound: '"S" sound', referenceWord: 'sun' });
   if (/g[eiéêí]/.test(normalized)) add({ spelling: 'G before E or I', sound: '"ZH" sound', referenceWord: 'pleasure' });
@@ -306,9 +313,10 @@ export function buildPronunciationGuide({
   word,
   phonemes = [],
   pronunciationNote,
+  respelling: providedRespelling,
 }: BuildPronunciationGuideOptions): PronunciationGuide {
   const noteRespelling = extractRespellingFromNote(pronunciationNote);
-  const respelling = noteRespelling ?? (
+  const respelling = providedRespelling ?? noteRespelling ?? (
     phonemes.length > 0 ? respellFromPhonemes(word, phonemes) : word
   );
 

@@ -43,6 +43,7 @@ export default function PhonemePanel({
     word: word.text,
     phonemes: guidePhonemes,
     pronunciationNote: word.pronunciationNote,
+    respelling: word.respelling,
   });
   const problemSounds = word.phonemes?.filter((phoneme) => phoneme.isProblem) ?? [];
   const wordScore = word.score ?? word.accuracyScore;
