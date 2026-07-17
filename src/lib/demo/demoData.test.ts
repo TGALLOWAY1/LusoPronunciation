@@ -30,6 +30,16 @@ describe('demoData', () => {
     }
   });
 
+  it('does not carry learner-facing IPA transcriptions', () => {
+    for (const item of DEMO_ITEMS) {
+      expect(item).not.toHaveProperty('ipa');
+      for (const word of item.words) {
+        expect(word.respelling).toBeTruthy();
+        expect(word.respelling).not.toMatch(/[ɐɲʎʒẽĩõũ]/);
+      }
+    }
+  });
+
   it('scores the native example near-perfect (95–100)', () => {
     for (const item of DEMO_ITEMS) {
       const native = item.examples.find((e) => e.kind === 'native')!;
