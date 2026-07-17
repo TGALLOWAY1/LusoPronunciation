@@ -15,7 +15,7 @@ import {
   type NormalizedWordFeedback,
 } from '@/components/pronunciation/shared';
 import { getDemoItem, getDemoNativeAudioUrl } from '@/lib/demo/demoData';
-import { getPhonemeById } from '@/lib/phonemeMetadata';
+import { buildPronunciationGuide } from '@/lib/pronunciationGuide';
 import { PIPELINE_STAGES } from './tourContent';
 
 const SAMPLE = getDemoItem('gemini_family_friends_001') ?? getDemoItem('gemini_small_talk_001')!;
@@ -78,6 +78,14 @@ function cleanWord(value: string): string {
   return value.replace(/[.,!?]/g, '');
 }
 
+const MINHA_WORD = SAMPLE.words.find((word) => cleanWord(word.text) === 'minha') ?? SAMPLE.words[0];
+const MINHA_GUIDE = buildPronunciationGuide({
+  word: cleanWord(MINHA_WORD.text),
+  phonemes: MINHA_WORD.phonemes.map((sound) => sound.symbol),
+  pronunciationNote: MINHA_WORD.tip,
+  respelling: MINHA_WORD.respelling,
+});
+
 const HERO_WORDS: NormalizedWordFeedback[] = SAMPLE.words.map((word, index) => ({
   id: `tour-word-${index}`,
   index,
@@ -85,6 +93,9 @@ const HERO_WORDS: NormalizedWordFeedback[] = SAMPLE.words.map((word, index) => (
   accuracyScore: word.score,
   score: word.score,
   errorType: word.errorType ?? null,
+  guidePhonemes: word.phonemes.map((phoneme) => phoneme.symbol),
+  pronunciationNote: word.tip,
+  respelling: word.respelling,
   level:
     word.score >= 90
       ? 'excellent'
@@ -177,7 +188,6 @@ function Waveform({ active = false }: { active?: boolean }) {
 export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const metadata = getPhonemeById('NH');
 
   useEffect(() => {
     audioRef.current?.pause();
@@ -317,25 +327,28 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
                 <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-200">Weak word</p>
                 <p className="mt-2 text-2xl font-semibold text-white">minha</p>
                 <p className="mt-1 text-sm text-amber-200">Illustrative word score: 82</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {['M', 'IY', 'NH', 'AH'].map((symbol) => {
-                    const meta = getPhonemeById(symbol);
-                    return (
-                      <span key={symbol} className={`rounded-md border px-2 py-1 font-mono text-xs ${symbol === 'NH' ? 'border-amber-300 bg-amber-300/10 text-amber-100' : 'border-white/10 text-slate-400'}`}>
-                        /{meta?.ipa ?? symbol}/
-                      </span>
-                    );
-                  })}
+                <div className="mt-4 rounded-xl border border-white/10 bg-black/15 p-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">Say it like</p>
+                  <p className="mt-1 text-xl font-bold tracking-wide text-white">{MINHA_GUIDE.respelling}</p>
                 </div>
               </div>
               <div className="rounded-xl border border-primary-300/25 bg-primary-300/[0.06] p-4">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">PT-BR coaching guidance</p>
-                <p className="mt-2 text-base font-semibold text-white">NH · /{metadata?.ipa}/</p>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{metadata?.teachingTips?.[0]}</p>
-                <p className="mt-3 text-xs text-slate-400">
-                  Example: <span className="text-slate-200">{metadata?.exampleWords?.[0]?.pt}</span>{' '}
-                  <span className="font-mono">/{metadata?.exampleWords?.[0]?.ipa}/</span>
-                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {MINHA_GUIDE.references.map((reference) => (
+                    <span key={`${reference.sound}-${reference.word}`} className="rounded-lg border border-white/10 bg-black/15 px-2.5 py-1.5 text-xs text-slate-300">
+                      <strong className="text-white">{reference.sound}</strong> like <strong className="text-white">{reference.word}</strong>
+                    </span>
+                  ))}
+                </div>
+                {MINHA_GUIDE.spellingRules[0] && (
+                  <div className="mt-4 border-l-2 border-primary-300 pl-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">The spelling rule</p>
+                    <p className="mt-1 text-sm text-slate-200">
+                      <strong>{MINHA_GUIDE.spellingRules[0].spelling}</strong> = {MINHA_GUIDE.spellingRules[0].sound}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -354,7 +367,6 @@ export function WalkthroughFrame({ activeStep }: { activeStep: number }) {
 }
 
 export function AssessmentTransformation() {
-  const metadata = getPhonemeById('NH');
   return (
     <div>
       <div className="grid gap-4 xl:grid-cols-[1fr_auto_1fr_auto_1fr] xl:items-stretch">
@@ -414,18 +426,29 @@ export function AssessmentTransformation() {
         <div className="rounded-2xl border border-primary-300/25 bg-primary-300/[0.06] p-5">
           <p className="text-xs font-semibold text-primary-200">3 · Actionable learner feedback</p>
           <div className="mt-5 flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-primary-300/30 bg-primary-300/10 font-mono text-lg font-bold text-primary-100">
-              /{metadata?.ipa}/
+            <span className="flex min-h-12 min-w-12 items-center justify-center rounded-xl border border-primary-300/30 bg-primary-300/10 px-3 text-lg font-bold text-primary-100">
+              {MINHA_GUIDE.respelling}
             </span>
             <div>
-              <p className="font-semibold text-white">NH in “minha”</p>
-              <p className="text-xs text-slate-400">Target sound and articulation guidance</p>
+              <p className="font-semibold text-white">Say “minha” like {MINHA_GUIDE.respelling}</p>
+              <p className="text-xs text-slate-400">English-friendly respelling and reference words</p>
             </div>
           </div>
-          <div className="mt-5 border-l-2 border-primary-300 pl-4">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">How to try it</p>
-            <p className="mt-2 text-sm leading-6 text-slate-200">{metadata?.teachingTips?.[0]}</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {MINHA_GUIDE.references.map((reference) => (
+              <span key={`${reference.sound}-${reference.word}`} className="rounded-lg border border-white/10 bg-black/15 px-2.5 py-1.5 text-xs text-slate-300">
+                <strong className="text-white">{reference.sound}</strong> like <strong className="text-white">{reference.word}</strong>
+              </span>
+            ))}
           </div>
+          {MINHA_GUIDE.spellingRules[0] && (
+            <div className="mt-5 border-l-2 border-primary-300 pl-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-300">The spelling rule</p>
+              <p className="mt-2 text-sm leading-6 text-slate-200">
+                <strong>{MINHA_GUIDE.spellingRules[0].spelling}</strong> = {MINHA_GUIDE.spellingRules[0].sound}
+              </p>
+            </div>
+          )}
           <p className="mt-4 text-xs leading-5 text-slate-400">
             Azure identifies the weak word; LusoPronounce explains the sound worth practicing. Per-sound values in this tour remain illustrative.
           </p>
