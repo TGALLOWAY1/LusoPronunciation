@@ -229,12 +229,12 @@ function extractRespellingFromNote(note?: string): string | undefined {
 
   const parenthetical = [...note.matchAll(/\(([^()]*)\)/g)]
     .map((match) => match[1].trim())
-    .filter((candidate) => /^[A-Za-z]+(?:-[A-Za-z]+)+$/.test(candidate));
+    .filter((candidate) => /^\p{L}+(?:-\p{L}+)+$/u.test(candidate));
   if (parenthetical.length > 0) {
     return parenthetical[parenthetical.length - 1];
   }
 
-  const hyphenated = note.match(/\b[A-Za-z]+(?:-[A-Za-z]+)+\b/g) ?? [];
+  const hyphenated = note.match(/(?<!\p{L})\p{L}+(?:-\p{L}+)+(?!\p{L})/gu) ?? [];
   const eyeDialectCandidate = hyphenated
     .filter((candidate) => /[A-Z]{2}|ee|oo|ah|eh|ay|oy|sh|zh|ny|ly/i.test(candidate))
     .sort((a, b) => b.length - a.length)[0];
@@ -243,7 +243,7 @@ function extractRespellingFromNote(note?: string): string | undefined {
   }
 
   const soundsLike = note.match(/^Sounds like ['‘]([^'’]+)['’]/i);
-  if (soundsLike && /^[A-Za-z]+$/.test(soundsLike[1])) {
+  if (soundsLike && /^\p{L}+$/u.test(soundsLike[1])) {
     const candidate = soundsLike[1];
     return candidate.charAt(0).toUpperCase() + candidate.slice(1);
   }
@@ -315,7 +315,15 @@ export function buildPronunciationGuide({
   pronunciationNote,
   respelling: providedRespelling,
 }: BuildPronunciationGuideOptions): PronunciationGuide {
-  const noteRespelling = extractRespellingFromNote(pronunciationNote);
+  const rawNoteRespelling = extractRespellingFromNote(pronunciationNote);
+  // Older notes spell a word-initial R literally (e.g. "RU-a") instead of
+  // the "H" sound the spelling rules teach; only trust the note once it
+  // already follows that convention, otherwise fall back to the phoneme-
+  // derived respelling so the two don't contradict each other.
+  const initialSoundIsH = phonemes.length > 0 && pronunciationPhonemes(word, phonemes)[0] === 'HH';
+  const noteRespelling = rawNoteRespelling && (!initialSoundIsH || /^h/i.test(rawNoteRespelling.trim()))
+    ? rawNoteRespelling
+    : undefined;
   const respelling = providedRespelling ?? noteRespelling ?? (
     phonemes.length > 0 ? respellFromPhonemes(word, phonemes) : word
   );

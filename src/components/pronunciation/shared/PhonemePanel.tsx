@@ -46,6 +46,7 @@ export default function PhonemePanel({
     respelling: word.respelling,
   });
   const problemSounds = word.phonemes?.filter((phoneme) => phoneme.isProblem) ?? [];
+  const scoredSounds = word.phonemes?.filter((phoneme) => typeof phoneme.score === 'number') ?? [];
   const wordScore = word.score ?? word.accuracyScore;
   const wordLevel = word.level || (wordScore >= 90 ? 'excellent' : wordScore >= 80 ? 'good' : wordScore >= 70 ? 'ok' : 'practice');
   const homograph = findHomograph(word.text);
@@ -208,7 +209,7 @@ export default function PhonemePanel({
         </section>
       )}
 
-      {trustLevel !== 'untrusted' && problemSounds.length === 0 && word.phonemes && word.phonemes.length > 0 && (
+      {trustLevel !== 'untrusted' && problemSounds.length === 0 && scoredSounds.length > 0 && (
         <p className="border-t border-gray-200 pt-4 text-sm text-emerald-600 dark:border-gray-700 dark:text-emerald-400">
           ✓ Every sound scored well. Try the whole word once more at a natural pace.
         </p>
