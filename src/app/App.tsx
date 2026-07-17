@@ -31,25 +31,23 @@ function AppShell() {
     <AppLayout>
       <Routes>
         <Route path="/" element={<RequireAuth><PracticePage /></RequireAuth>} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/auth/callback" element={<OAuthCallbackPage />} />
-          <Route path="/practice/sentence" element={<Navigate to="/" replace />} />
-          <Route path="/practice/word" element={<Navigate to="/?tab=words" replace />} />
-          <Route path="/review" element={<RequireAuth><Review /></RequireAuth>} />
-          <Route path="/sessions" element={<Navigate to="/review" replace />} />
-          <Route path="/builder" element={<RequireAuth><SentenceBuilderPage /></RequireAuth>} />
-          <Route path="/sentences/custom" element={<RequireAuth><CustomSentenceListPage /></RequireAuth>} />
-          <Route path="/practice/custom/:id" element={<RequireAuth><CustomSentencePracticePage /></RequireAuth>} />
-          <Route path="/admin/lexicon" element={<RequireAuth><AdminLexiconPage /></RequireAuth>} />
-          <Route path="/progress" element={<RequireAuth><ProgressPage /></RequireAuth>} />
-          <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
-          {import.meta.env.DEV && (
-            <>
-              <Route path="/dev/pronunciation-fixtures" element={<Suspense fallback={null}><PronunciationFixtures /></Suspense>} />
-              <Route path="/dev/analytics" element={<Suspense fallback={null}><DevAnalyticsPage /></Suspense>} />
-              <Route path="/dev/metrics" element={<Suspense fallback={null}><DevMetricsPage /></Suspense>} />
-            </>
-          )}
+        <Route path="/practice/sentence" element={<Navigate to="/" replace />} />
+        <Route path="/practice/word" element={<Navigate to="/?tab=words" replace />} />
+        <Route path="/review" element={<RequireAuth><Review /></RequireAuth>} />
+        <Route path="/sessions" element={<Navigate to="/review" replace />} />
+        <Route path="/builder" element={<RequireAuth><SentenceBuilderPage /></RequireAuth>} />
+        <Route path="/sentences/custom" element={<RequireAuth><CustomSentenceListPage /></RequireAuth>} />
+        <Route path="/practice/custom/:id" element={<RequireAuth><CustomSentencePracticePage /></RequireAuth>} />
+        <Route path="/admin/lexicon" element={<RequireAuth><AdminLexiconPage /></RequireAuth>} />
+        <Route path="/progress" element={<RequireAuth><ProgressPage /></RequireAuth>} />
+        <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
+        {import.meta.env.DEV && (
+          <>
+            <Route path="/dev/pronunciation-fixtures" element={<Suspense fallback={null}><PronunciationFixtures /></Suspense>} />
+            <Route path="/dev/analytics" element={<Suspense fallback={null}><DevAnalyticsPage /></Suspense>} />
+            <Route path="/dev/metrics" element={<Suspense fallback={null}><DevMetricsPage /></Suspense>} />
+          </>
+        )}
       </Routes>
     </AppLayout>
   );
@@ -62,6 +60,8 @@ function AppRoutes() {
         {/* Public, unauthenticated marketing surfaces (own standalone layout) */}
         <Route path="/tour" element={<TourPage />} />
         <Route path="/demo" element={<DemoPage />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/auth/callback" element={<OAuthCallbackPage />} />
         {/* Everything else runs inside the authenticated app shell */}
         <Route path="/*" element={<AppShell />} />
       </Routes>
