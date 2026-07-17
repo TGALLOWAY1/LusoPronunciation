@@ -31,6 +31,26 @@ describe('buildPronunciationGuide', () => {
     expect(guide.respelling).toBe('FREE-o');
   });
 
+  it('does not truncate a note respelling containing accented Portuguese letters', () => {
+    const guide = buildPronunciationGuide({
+      word: 'amanhã',
+      phonemes: ['AA', 'M', 'AA', 'NH', 'AN_NASAL'],
+      pronunciationNote: 'a-ma-NHÃ (nasal end).',
+    });
+
+    expect(guide.respelling).toBe('a-ma-NHÃ');
+  });
+
+  it('falls back to the phoneme respelling when a note still spells an initial R literally', () => {
+    const guide = buildPronunciationGuide({
+      word: 'rua',
+      phonemes: ['R_TAP', 'UW', 'AH'],
+      pronunciationNote: "RU-a; start with a Portuguese 'r', then open 'a'.",
+    });
+
+    expect(guide.respelling).toBe('Hoo-uh');
+  });
+
   it('describes distinctive Portuguese letter patterns without IPA', () => {
     const guide = buildPronunciationGuide({
       word: 'caminho',
