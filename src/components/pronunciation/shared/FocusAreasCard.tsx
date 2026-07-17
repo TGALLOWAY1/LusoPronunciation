@@ -32,7 +32,7 @@ function collectProblemPhonemes(words: NormalizedWordFeedback[]): ProblemPhoneme
       const existing = bySymbol.get(contextualSymbol);
       if (existing && existing.score <= phoneme.score) continue;
 
-      const metadata = getPhonemeById(phoneme.symbol);
+      const metadata = getPhonemeById(contextualSymbol);
       const tip =
         phoneme.tip ||
         metadata?.teachingTips?.[0] ||
