@@ -19,7 +19,7 @@ describe('tour evidence visuals', () => {
     expect(screen.getAllByText(/^illustrative$/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/score 66\/100/i)).toBeInTheDocument();
     expect(screen.getByText(/say it like/i)).toBeInTheDocument();
-    expect(screen.getByText('MYE')).toBeInTheDocument();
+    expect(screen.getByText('My')).toBeInTheDocument();
     expect(screen.queryByText('AN_NASAL')).not.toBeInTheDocument();
     expect(screen.queryByText('IPA')).not.toBeInTheDocument();
     expect(container.textContent).not.toMatch(IPA_GLYPHS);

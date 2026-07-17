@@ -470,7 +470,7 @@ const BASE_ITEMS: DemoItemBase[] = [
       },
       {
         text: 'mãe',
-        respelling: 'MYE',
+        respelling: 'My',
         score: 66,
         errorType: 'mispronounced',
         phonemes: [

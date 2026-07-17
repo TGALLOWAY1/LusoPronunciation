@@ -36,10 +36,10 @@ describe('buildPronunciationGuide', () => {
       word: 'mãe',
       phonemes: ['M', 'AN_NASAL', 'Y'],
       pronunciationNote: 'Nasal vowel guidance.',
-      respelling: 'MYE',
+      respelling: 'My',
     });
 
-    expect(guide.respelling).toBe('MYE');
+    expect(guide.respelling).toBe('My');
     expect(guide.spellingRules[0]).toEqual({
       spelling: 'ÃE',
       sound: 'nasal "EYE" sound',
