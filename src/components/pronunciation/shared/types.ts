@@ -36,6 +36,10 @@ export interface NormalizedWordFeedback {
   level?: 'excellent' | 'good' | 'ok' | 'practice';
   /** Optional overall score (for compatibility) */
   score?: number;
+  /** Canonical sound sequence used to build learner-friendly pronunciation guidance. */
+  guidePhonemes?: string[];
+  /** Human-authored pronunciation note from the canonical word record. */
+  pronunciationNote?: string;
 }
 
 /**
@@ -54,4 +58,3 @@ export interface NormalizedWordAudioVariant extends NormalizedAudioVariant {
   startTimeMs?: number;
   endTimeMs?: number;
 }
-
