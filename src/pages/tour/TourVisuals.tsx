@@ -50,8 +50,8 @@ function AppFrame({
 }
 
 /**
- * Hero visual — the real scored-attempt screen: overall score with the
- * accuracy / fluency / completeness breakdown, captured from the practice page.
+ * Hero visual — the real practice screen: the sentence being practiced, the
+ * Listen / Record controls, and the resulting score, captured from the app.
  */
 export function ScoredResultShot() {
   return (
@@ -59,10 +59,10 @@ export function ScoredResultShot() {
       <div className="absolute -top-3 right-3 z-10">
         <SampleTag />
       </div>
-      <AppFrame caption="Practice · scored attempt">
+      <AppFrame caption="Practice · record &amp; score">
         <img
-          src="/tour/app-scored-result.png"
-          alt="Overall pronunciation score of 84 with an accuracy, fluency, and completeness breakdown"
+          src="/tour/app-practice.png"
+          alt="The practice screen: a Brazilian Portuguese sentence with Listen and Record controls and an overall pronunciation score of 84"
           className="block w-full rounded-lg"
           loading="lazy"
         />

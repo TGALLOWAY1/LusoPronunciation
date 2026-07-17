@@ -18,7 +18,6 @@ vi.mock('@/components/pronunciation/shared', () => ({
   adaptWordScoresToNormalized: () => [],
   buildWordAudioVariantsForSentence: () => [],
   enrichWordsWithCanonicalData: (_sentence: unknown, words: unknown[]) => words,
-  FocusAreasCard: () => <div data-testid="focus-areas-card" />,
   PhonemePanel: () => <div data-testid="phoneme-panel" />,
 }));
 

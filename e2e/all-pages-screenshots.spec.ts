@@ -492,6 +492,29 @@ async function captureTourShot(page: Page, testId: string, name: string) {
   await el.screenshot({ path: path.join(TOUR_DIR, `${name}.png`) });
 }
 
+/**
+ * Capture a vertical slice of the page spanning from the top of one element to
+ * the bottom of another (both by data-testid), sidebar excluded. Used for a
+ * context-rich tour shot showing the sentence, the Listen/Record controls, and
+ * the score together — not a disembodied fragment.
+ */
+async function captureTourClip(page: Page, name: string, topTestId: string, bottomTestId: string) {
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(100);
+  const top = await page.locator(`[data-testid="${topTestId}"]`).first().boundingBox();
+  const bottom = await page.locator(`[data-testid="${bottomTestId}"]`).first().boundingBox();
+  if (!top || !bottom) {
+    throw new Error(`captureTourClip: missing bounding box for ${topTestId} or ${bottomTestId}`);
+  }
+  const clip = {
+    x: Math.max(0, Math.floor(top.x)),
+    y: Math.max(0, Math.floor(top.y)),
+    width: Math.ceil(top.width),
+    height: Math.ceil(bottom.y + bottom.height - top.y),
+  };
+  await page.screenshot({ path: path.join(TOUR_DIR, `${name}.png`), clip, fullPage: true });
+}
+
 test.use({
   viewport: { width: 1440, height: 1024 },
   launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
@@ -553,7 +576,7 @@ test.describe('Full app screenshot tour', () => {
     // into public/tour/ so the marketing Tour can embed genuine app UI (not a
     // hand-built mockup). Captured here because this flow already produces a
     // populated, authentic assessment result.
-    await captureTourShot(page, 'score-strip', 'app-scored-result');
+    await captureTourClip(page, 'app-practice', 'practice-content', 'score-strip');
     await captureTourShot(page, 'sound-details-panel', 'app-sound-coaching');
   });
 

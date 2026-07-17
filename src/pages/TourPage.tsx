@@ -93,13 +93,13 @@ export default function TourPage() {
               Full-stack speech AI · portfolio project
             </span>
             <h1 className="mt-5 text-4xl font-extrabold leading-[1.1] tracking-tight text-slate-50 sm:text-5xl">
-              Brazilian Portuguese pronunciation coaching —{' '}
-              <span className="text-primary-400">turning raw speech scores into feedback you can act on</span>
+              Speak Brazilian Portuguese —{' '}
+              <span className="text-primary-400">and pronounce it right from the very first word</span>
             </h1>
             <p className="mt-5 max-w-xl text-base text-slate-300 sm:text-lg">
-              An end-to-end app that evaluates Brazilian Portuguese pronunciation with Azure Speech and
-              translates the raw output into clear, phoneme-level coaching. Designed, built, and shipped
-              as a single full-stack project.
+              Learn to sound like a native one sound at a time. Record a phrase, get scored on
+              every syllable, and drill the exact sounds you miss — so good pronunciation becomes a
+              habit from day one, not a fix later.
             </p>
 
             {/* Meta chips */}

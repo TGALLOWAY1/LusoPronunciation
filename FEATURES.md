@@ -23,7 +23,7 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Listen & Record Panel** — The practice card pairs a "Listen" native-audio control with a state-labeled record control (Tap to record → Recording… → Check my pronunciation → Try again), including playback of your own take before and after submitting.
 - **Native Audio Playback** — Listen to pre-generated male or female Brazilian Portuguese audio for each sentence, with a slowed playback option.
 - **Coached Score Summary** — After each attempt, an overall score with a plain-language interpretation plus compact accuracy/fluency/completeness bars; the Sound Details panel auto-opens on the weakest word, and any word in the sentence can be tapped to inspect its sounds.
-- **Learner-Facing Sound Labels** — The Sound Details and Focus Areas surfaces label each sound with its Brazilian Portuguese spelling (e.g. *em*, *ô*, *nh*) and a plain-English "how to say it" description instead of raw engine codes like `EN_NASAL`.
+- **Learner-Facing Sound Labels** — The Sound Details panel labels each sound with its Brazilian Portuguese spelling (e.g. *em*, *ô*, *nh*) and a plain-English "how to say it" description instead of raw engine codes like `EN_NASAL`.
 - **Attempt History & Trends** — View all past attempts for a sentence with score trend sparklines, recording playback, and detailed word-by-word breakdowns; the practice card shows your best score for the current sentence.
 
 ## Word Practice
