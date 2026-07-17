@@ -127,7 +127,7 @@ export function InteractiveAttemptFrame() {
   const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback>(DEFAULT_HERO_WORD);
 
   return (
-    <div className="dark overflow-hidden rounded-[1.4rem] border border-white/12 bg-[#0f1724] shadow-[0_24px_60px_rgba(0,0,0,0.28)]">
+    <div className="overflow-hidden rounded-[1.4rem] border border-white/12 bg-[#0f1724] shadow-[0_24px_60px_rgba(0,0,0,0.28)]">
       <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-[#111b2a] px-4 py-3 sm:px-5">
         <div>
           <p className="text-xs font-semibold text-slate-200">Coaching for “{selectedWord.text}”</p>
@@ -156,7 +156,7 @@ export function InteractiveAttemptFrame() {
           />
         </div>
 
-        <div aria-live="polite">
+        <div className="dark" aria-live="polite">
           <PhonemePanel word={selectedWord} trustLevel="trusted" />
         </div>
       </div>
