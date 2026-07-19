@@ -54,6 +54,18 @@ const mockAzureResponse = {
             AccuracyScore: 88,
             ErrorType: 'None',
           },
+          // Nested-shape phoneme (score under PronunciationAssessment) + a
+          // flattened-shape phoneme (score directly on the entry) to exercise
+          // both parse paths in the normalizer.
+          Phonemes: [
+            {
+              Phoneme: 'o',
+              PronunciationAssessment: { AccuracyScore: 91 },
+              Offset: 1000,
+              Duration: 500,
+            },
+            { Phoneme: 'l', AccuracyScore: 55 },
+          ],
         },
       ],
     },
@@ -258,6 +270,36 @@ describe('pronunciation assessment endpoint contract', () => {
     );
     expect(cleanupSpies).toHaveLength(1);
     expect(cleanupSpies[0]).toHaveBeenCalledTimes(1);
+  });
+
+  it('normalizes both nested and flattened Azure phoneme shapes onto wordScores', async () => {
+    const req = createRequest({
+      audioBuffer: AUDIO_FIXTURES.valid,
+      audioMimeType: 'audio/wav',
+    });
+    const res = createResponse();
+
+    await handlePronunciationAssessmentExpress(req, res);
+
+    expect(res.statusCode).toBe(200);
+    const body = res.body as {
+      attemptScore: {
+        wordScores: Array<{
+          phonemeScores?: Array<{
+            label: string | null;
+            accuracyScore: number;
+            offset?: number;
+            duration?: number;
+          }>;
+        }>;
+      };
+    };
+
+    const phonemeScores = body.attemptScore.wordScores[0].phonemeScores;
+    expect(phonemeScores).toEqual([
+      { label: 'o', accuracyScore: 91, offset: 1000, duration: 500 },
+      { label: 'l', accuracyScore: 55 },
+    ]);
   });
 
   it('returns 413 with server_payload_too_large when upload exceeds the max size', () => {

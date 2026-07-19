@@ -84,6 +84,11 @@ export function mapAzurePronunciationResultToAttemptScore(
       errorType: errorType !== 'none' ? errorType : undefined,
       azureWordIndex: wordIndex,
       referenceTokenIndex,
+      // Preserve Azure's per-phoneme scores verbatim when present. Never
+      // fabricated: absent when Azure returned no Phonemes array for this word.
+      ...(wordItem.phonemes && wordItem.phonemes.length > 0
+        ? { phonemeScores: wordItem.phonemes }
+        : {}),
     };
   });
 

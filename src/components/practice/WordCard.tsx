@@ -5,6 +5,7 @@ import WordAudioButton from './WordAudioButton';
 import WordStatusBar from './WordStatusBar';
 import { useMicrophoneRecorder } from '@/hooks/useMicrophoneRecorder';
 import { scoreWordPronunciation } from '@/lib/wordPronunciation';
+import { mapAzurePhonemeToInternalId } from '@/lib/azurePhonemeMap';
 import { addWordAttempt, getLatestWordAttempt } from '@/lib/practiceStore';
 import SentenceFeedback from './SentenceFeedback';
 import { useSettingsStore } from '@/state/settingsStore';
@@ -115,9 +116,26 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
           // Determine if attempt passed (using 70 as threshold - TODO: make configurable)
           const passed = attemptScore.overallAccuracy >= 70;
 
-          // Map phoneme scores if available (TODO: extract from Azure response if available)
-          // For now, leave undefined as phoneme-level detail may not be in the response
-          const phonemeScores = undefined; // TODO: Extract phoneme scores from Azure response if available
+          // Map Azure's real per-phoneme scores into the analytics shape
+          // ({ phonemeId, overallScore }), bucketed by internal phoneme
+          // identity. A single-word attempt normally has one wordScore, but we
+          // aggregate across all of them defensively. Phonemes Azure left
+          // unlabeled — or labels with no internal mapping — are skipped (they
+          // cannot be aggregated by identity), matching the sentence flow.
+          const mappedPhonemeScores = attemptScore.wordScores
+            .flatMap((ws) => ws.phonemeScores ?? [])
+            .map((ps) => {
+              const phonemeId = mapAzurePhonemeToInternalId(ps.label);
+              return phonemeId
+                ? { phonemeId, overallScore: Math.round(ps.accuracyScore) }
+                : null;
+            })
+            .filter(
+              (entry): entry is { phonemeId: string; overallScore: number } =>
+                entry !== null
+            );
+          const phonemeScores =
+            mappedPhonemeScores.length > 0 ? mappedPhonemeScores : undefined;
 
           // Pronunciation practice mode:
           // - practiceMode: 'pronunciation' (explicitly set for pronunciation attempts)

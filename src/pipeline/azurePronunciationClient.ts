@@ -43,7 +43,9 @@ function buildPronunciationAssessmentHeader(referenceText: string): string {
   const paConfig = {
     ReferenceText: referenceText,
     GradingSystem: 'HundredMark',
-    Granularity: 'Word',
+    // Phoneme granularity so generated fixtures capture per-phoneme scores.
+    // phonemeAlphabet is intentionally unset (en-US-only feature).
+    Granularity: 'Phoneme',
     Dimension: 'Comprehensive',
     EnableMiscue: 'True',
   };

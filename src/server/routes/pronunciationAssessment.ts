@@ -21,10 +21,23 @@
  * {
  *   "ReferenceText": "the text to compare against",
  *   "GradingSystem": "HundredMark",
- *   "Granularity": "Word",
+ *   "Granularity": "Phoneme",
  *   "Dimension": "Comprehensive",
  *   "EnableMiscue": "True"
  * }
+ *
+ * PHONEME GRANULARITY & RESPONSE SHAPE:
+ *
+ * With Granularity: 'Phoneme', each word in NBest[0].Words may carry a
+ * `Phonemes` array. Azure emits it in one of two shapes, both handled by
+ * azurePronunciationNormalizer.normalizePhonemes():
+ *   - flattened: { Phoneme?, AccuracyScore?, Offset?, Duration? }
+ *   - nested:    { Phoneme?, PronunciationAssessment?: { AccuracyScore }, ... }
+ *
+ * Microsoft documents that phoneme NAMES are only guaranteed for en-US / zh-CN.
+ * For pt-BR, Azure may return per-phoneme SCORES with no `Phoneme` name. Scores
+ * are always kept; a missing name normalizes to label=null. We intentionally do
+ * NOT set phonemeAlphabet (IPA/SAPI selection is an en-US-only feature).
  * 
  * AUDIO FORMAT REQUIREMENT:
  * 
@@ -383,7 +396,10 @@ function buildPronunciationAssessmentHeader(referenceText: string): string {
   const paConfig = {
     ReferenceText: referenceText,
     GradingSystem: 'HundredMark',
-    Granularity: 'Word',
+    // Phoneme granularity so Azure returns per-phoneme accuracy scores. We do
+    // NOT set phonemeAlphabet — it is an en-US-only feature; pt-BR returns
+    // scores that may lack phoneme names, which the normalizer handles.
+    Granularity: 'Phoneme',
     Dimension: 'Comprehensive',
     EnableMiscue: 'True',
     // Note: ProsodyScore is only available for en-US locale.
