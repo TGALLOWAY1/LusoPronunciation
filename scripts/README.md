@@ -1,96 +1,32 @@
-# Audio Generation Scripts
+# Scripts
 
-This directory contains scripts for generating audio files using Azure Text-to-Speech.
-
-## Prerequisites
-
-1. **Azure Speech Service**: You need an Azure Speech resource with a subscription key and region.
-
-2. **Environment Variables**: Set the following before running the script:
-   ```bash
-   export AZURE_SPEECH_KEY="your-azure-speech-key"
-   export AZURE_SPEECH_REGION="your-azure-region"  # e.g., "eastus", "westus2"
-   ```
-
-3. **Dependencies**: Install Node.js dependencies:
-   ```bash
-   npm install
-   ```
-
-## Usage
-
-Generate audio files for all sentences and words:
+Data-generation and maintenance scripts for LusoPronounce. All Azure-dependent
+scripts require:
 
 ```bash
-npm run generate-audio
+export AZURE_SPEECH_KEY="your-azure-speech-key"
+export AZURE_SPEECH_REGION="your-azure-region"  # e.g. "eastus", "brazilsouth"
 ```
 
-Or run directly:
+## Audio generation
 
-```bash
-node scripts/generate_audio.js
-```
+Canonical audio lives in `public/audio/{words,sentences}/{ptbr_male,ptbr_female}/{id}.wav`
+(voices: pt-BR-AntonioNeural / pt-BR-FranciscaNeural) and is indexed by
+`data/audio_index.json` (`voices` field keyed by voice id).
 
-## What It Does
+- `npm run audio:words` — generate word audio (`generateWordAudio.ts`; `--force`, `--voice=male|female` variants available)
+- `npm run generation:pipeline` — full master pipeline (`generationPipeline.ts`), including TTS and audio-index stages
+- `npm run verify:audio` — consistency check between datasets and the audio index (`verifyAudioConsistency.ts`)
 
-1. **Reads Data**: Loads `data/static/sentences.json` and `data/static/words.json`
+## Content generation
 
-2. **Generates Audio**: For each sentence and word:
-   - Creates male voice audio (pt-BR-AntonioNeural)
-   - Creates female voice audio (pt-BR-FranciscaNeural)
-   - Saves as WAV files in `audio/ptbr/male/` and `audio/ptbr/female/`
+- `npm run generate:sentences:stage0` — Gemini sentence corpus + normalization (`generateGeminiSentences.py`, `normalizeGeminiSentences.ts`)
+- `npm run audit:dataset` — dataset readiness audit (`auditDatasetReadiness.ts`)
+- `npm run analyze:words` — word/sentence analysis (`analyzeWordsAndSentences.ts`)
+- `tsx scripts/remapWordPhonemes.ts` — recompute `phonemes` arrays in `data/masterWords.json` from the G2P mapper (no external APIs)
+- `tsx scripts/realignDifficulty.ts` — derive the coarse `difficulty` bucket from `difficultyScore`
 
-3. **Creates Index**: Generates/updates `data/audio_index.json` mapping audioIds to file paths
+## Other
 
-4. **Skips Existing**: If an audio file already exists, it skips generation (safe to re-run)
-
-## Output Structure
-
-```
-audio/
-  ptbr/
-    male/
-      sentence_001.wav
-      sentence_002.wav
-      word_001.wav
-      ...
-    female/
-      sentence_001.wav
-      sentence_002.wav
-      word_001.wav
-      ...
-
-data/
-  audio_index.json  # Maps audioIds to file paths
-```
-
-## Audio Index Format
-
-The `audio_index.json` file has this structure:
-
-```json
-{
-  "sentence_001": {
-    "audioId": "sentence_001",
-    "ptbr": {
-      "male": "audio/ptbr/male/sentence_001.wav",
-      "female": "audio/ptbr/female/sentence_001.wav"
-    }
-  },
-  "word_001": {
-    "audioId": "word_001",
-    "ptbr": {
-      "male": "audio/ptbr/male/word_001.wav",
-      "female": "audio/ptbr/female/word_001.wav"
-    }
-  }
-}
-```
-
-## Notes
-
-- Audio files are generated at 44.1kHz WAV format
-- The script is idempotent: safe to run multiple times
-- Only PT-BR (Brazilian Portuguese) audio is generated
-- Audio IDs are normalized to `sentence_XXX` or `word_XXX` format
-
+- `npm run invite:seed -- --code=... --maxUses=N` — seed invite codes (`seedInviteCodes.ts`)
+- `npm run lexicon:aggregate` — aggregate unknown-word observations (`aggregateUnknownWords.ts`)

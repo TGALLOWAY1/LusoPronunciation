@@ -13,7 +13,6 @@
  * 7. Validate and report
  * 
  * Note: This pipeline is intended to eventually replace the legacy scripts:
- * - scripts/generate_audio.js
  * - scripts/generateWordAudio.ts
  * 
  * These legacy scripts remain intact and can continue to be used independently.

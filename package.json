@@ -15,7 +15,6 @@
     "preview": "vite preview",
     "lint": "echo \"lint not configured\"",
     "invite:seed": "tsx scripts/seedInviteCodes.ts",
-    "generate:audio": "node scripts/generate_audio.js",
     "generate:word-practice": "tsx scripts/buildSyntheticWordPracticeData.ts",
     "analyze:words": "tsx scripts/analyzeWordsAndSentences.ts",
     "audio:words": "tsx scripts/generateWordAudio.ts",
