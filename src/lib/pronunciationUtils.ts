@@ -65,6 +65,7 @@ export function mapAzurePronunciationResultToAttemptScore(
 
   // Map overall scores from normalized structure
   const overallAccuracy = pronunciationAssessment.accuracyScore ?? 0;
+  const pronScore = pronunciationAssessment.pronScore;
   const fluency = pronunciationAssessment.fluencyScore;
   const completeness = pronunciationAssessment.completenessScore;
   const prosody = pronunciationAssessment.prosodyScore;
@@ -84,6 +85,11 @@ export function mapAzurePronunciationResultToAttemptScore(
       errorType: errorType !== 'none' ? errorType : undefined,
       azureWordIndex: wordIndex,
       referenceTokenIndex,
+      // Preserve Azure's per-phoneme scores verbatim when present. Never
+      // fabricated: absent when Azure returned no Phonemes array for this word.
+      ...(wordItem.phonemes && wordItem.phonemes.length > 0
+        ? { phonemeScores: wordItem.phonemes }
+        : {}),
     };
   });
 
@@ -91,6 +97,7 @@ export function mapAzurePronunciationResultToAttemptScore(
     attemptId,
     sentenceId,
     overallAccuracy,
+    ...(pronScore !== undefined ? { pronScore } : {}),
     fluency,
     completeness,
     prosody,

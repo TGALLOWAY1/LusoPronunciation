@@ -5,16 +5,16 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 ## Pronunciation Assessment
 
 - **Live Recording & Scoring** — Record audio in-browser via MediaRecorder; the server converts webm/opus to WAV (16kHz, 16-bit, mono) with ffmpeg and sends it to Azure Speech Service for pronunciation assessment.
-- **Word-by-Word Scores** — Each word in a sentence receives individual accuracy scores. Click any word to expand phoneme-level detail including IPA transcription and error type tags (insertion, omission, mispronunciation).
-- **Sentence-Level Metrics** — Overall accuracy, fluency, completeness, and prosody scores returned for every attempt.
+- **Word-by-Word Scores** — Each word in a sentence receives an individual accuracy score. Click any word to expand per-phoneme accuracy scores from Azure (Granularity `Phoneme`), labeled with a curated pt-BR phoneme guide and error type tags (insertion, omission, mispronunciation). Phoneme names are locale-dependent, so the panel falls back to positional sounds when Azure omits a name; the score is always shown.
+- **Sentence-Level Metrics** — Overall (Azure's composite pronunciation score), accuracy, fluency, and completeness returned for every attempt. Prosody is shown only where the Azure locale supports it (not pt-BR), and is otherwise annotated as unavailable rather than faked.
 - **Audio Quality Gates** — Client-side validation rejects recordings that are too short or silent (minimum duration + RMS energy checks) before sending to the server.
-- **Confidence Trust Badge** — When Azure recognition fails or completeness is very low, the feedback panel shows a status message and suppresses phoneme coaching so users don't act on unreliable tips; softer caveat shown for partially-scored attempts.
+- **Assessment Trust Badge** — An in-house trust signal (derived from Azure's recognition status, completeness, and omission/insertion ratio — not an Azure confidence score) shows a status message and suppresses phoneme coaching when a recording can't be scored reliably; a softer caveat is shown for partially-scored attempts.
 - **Homograph Awareness** — When a selected word is a known Brazilian Portuguese homograph (e.g. *sede*, *gosto*, *para*), the phoneme panel lists the alternate IPA readings and clarifies that the score reflects whichever reading matched the recording.
 
 ## Coaching & Feedback
 
 - **Coaching Engine** — Analyzes scores after each attempt and generates actionable suggestions: retry weak words, improve rhythm, increase coverage, or sharpen clarity.
-- **Confusion Detection** — Identifies Brazilian Portuguese sound confusions the learner struggles with (e.g., nasalization, r/rr, open/close vowels, tch/ti) and prioritizes targeted feedback.
+- **Confusion Detection** — A spelling heuristic over the words a learner scored low on flags Brazilian Portuguese sound contrasts those words commonly involve (e.g., nasalization, r/rr, open/close vowels, tch/ti) and prioritizes targeted feedback — framed as sounds that are often tricky in the words missed, not a per-learner diagnosis.
 - **Minimal Pair Drills** — Pre-built Brazilian Portuguese minimal pairs for common sound confusions, surfaced as coaching suggestions when relevant confusion patterns are detected.
 
 ## Sentence Practice
@@ -53,23 +53,24 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 
 ## Spaced Repetition (SRS)
 
-- **SM-2 Flashcard Scheduling** — Server-side flashcard system using the SM-2 algorithm with interval, ease factor, reps, and lapse tracking.
-- **Pronunciation Score Linking** — Flashcard review outcomes are tied to pronunciation assessment scores for data-driven scheduling.
-- **Due Queue** — API endpoint returns flashcards due for review, ordered by due date.
+- **SM-2-inspired Flashcard Scheduling** — Server-side flashcard system using an SM-2-inspired algorithm with interval, ease factor, reps, and lapse tracking. Intervals grow with each success (1 day → 6 days → ease-scaled), and a lapse resets the card to the start of the relearning ladder.
+- **Unified Review Queue** — The Review page's queue is driven by this server engine: due cards are fetched from the API, practiced in place, and graded back to the engine (which schedules the next interval). The account's flashcards sync across devices. A local, fixed-delay queue remains only as an offline fallback when the server is unreachable.
+- **Pronunciation Score Linking** — Every practice attempt auto-updates the matching flashcard from its pronunciation score, and explicit review ratings (Easy/Good/Hard, Know It/Review Later) are mapped to SM-2 outcomes.
+- **Due Queue** — API endpoint returns flashcards due for review, ordered by due date; its count powers the Practice-page review nudge and Momentum strip badge.
 
 ## Progress & Review
 
 - **Progress Analytics Dashboard** — A sectioned Progress page (Overview, Progress, Strengths, Focus Areas, Recommendations, Learning Resources) answering "Am I improving?" and "What should I practice next?" with a sticky in-page nav.
 - **Score Trends** — Multi-metric trend chart (pronunciation, accuracy, fluency, completeness) with selectable 7-day / 30-day / 90-day / all-time windows.
 - **Improvement Tracking** — "Most Improved" and "Needs More Practice" lists for words, phrases, and phonemes, comparing earlier attempts to recent ones (e.g. `pão 72 → 91`), with a noise guard that requires several attempts.
-- **Weakness Detection** — Hardest sounds, frequently mispronounced words, and most-retried phrases surfaced from stored assessment data.
-- **Personalized Insights** — Deterministic, data-grounded insights (e.g. nasal vowels below your average, better on short than long phrases, scores improving with repetition).
+- **Weakness Detection** — Hardest sounds, frequently mispronounced words, and most-retried phrases surfaced from stored assessment data, including real per-phoneme accuracy scores aggregated by sound.
+- **Personalized Insights** — Deterministic, data-grounded insights drawn from real per-phoneme scores and attempt history (e.g. nasal vowels below your average, better on short than long phrases, scores improving with repetition).
 - **Practice Recommendations** — Recommended sounds, words, and phrases grounded in real content and your own weaknesses, each linking to the relevant practice surface.
 - **Learning Resources** — Click any difficult sound or word to open pronunciation tutorials; resource links are generated dynamically (YouTube search + Forvo) with no manual video curation or API key required.
-- **Review Page** — Tabbed interface with a Review Queue (SRS-driven items) and Recent Attempts summary. Queue shows progress bar and item-by-item navigation with difficulty rating. Recent Attempts consolidates repeated attempts into one card per item — showing latest score with trend delta, best/average scores, attempt count, a score-history sparkline, and a mastery status — plus a summary strip, type filter (words/sentences), and sort (most recent, needs work, most practiced).
-- **Review Queue Algorithm** — Score-weighted review queue (`buildReviewQueue`) ranks items by `(1 - bestScore/100) * recencyWeight`, filtering items below a configurable threshold (default 80).
+- **Review Page** — Tabbed interface with a Review Queue (server SM-2 due cards) and Recent Attempts summary. The queue fetches due flashcards from the server, shows a progress bar and item-by-item navigation, and grades each item back to the SM-2 engine so its next interval is scheduled; the copy notes that intervals grow with success. If the server queue can't be reached, it falls back to the local offline queue with a non-alarming notice. Recent Attempts consolidates repeated attempts into one card per item — showing latest score with trend delta, best/average scores, attempt count, a score-history sparkline, and a mastery status — plus a summary strip, type filter (words/sentences), and sort (most recent, needs work, most practiced).
+- **Review Nudge** — A subtle, dismissible prompt on the Practice page ("You have N items due for review") linking to the review queue when items are due.
 - **Completion Moments** — Animated confirmation when the review queue is cleared, linking back to practice.
-- **Momentum Strip** — Compact header strip on the Practice page showing current streak, today's attempt count vs daily target, and review-due badge.
+- **Momentum Strip** — Compact header strip on the Practice page showing current streak, today's attempt count vs daily target, and a review-due badge sourced from the server due count.
 
 ## Session Tracking
 
@@ -78,10 +79,12 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 
 ## Authentication & Security
 
-- **Email + OAuth Login** — Email/password registration and login, plus GitHub OAuth and LinkedIn OAuth. Dev-only quick-login for local development.
+- **Self-Serve Signup** — Registration is open by default (email/password, plus GitHub and LinkedIn OAuth); no invite code is required to create an account. Dev-only quick-login for local development.
 - **JWT Authentication** — 7-day token expiry with `requireAuth` middleware protecting all practice and data endpoints.
-- **Invite Code Gating** — Optional invite-code requirement for registration with configurable usage limits and expiration.
-- **Security Middleware** — CORS with configurable origin allowlist, per-user rate limiting on pronunciation endpoints, and Helmet CSP headers.
+- **Assessment Quotas (cost protection)** — Because each pronunciation assessment is a paid Azure call, this personal project caps usage transparently: a per-user daily limit (default 10/day) and lifetime limit (default 40), plus a global daily breaker (default 300/day) across all users. Counts are server-authoritative (a dedicated usage collection is incremented before each Azure call) and the remaining quota is returned in assessment responses and via `GET /api/assessment-quota`. Owner/exempt emails and invite-code accounts skip the per-user caps.
+- **Invite Codes as Trusted Bypass** — Invite codes are optional. When `REQUIRE_INVITE_CODE=true` they gate registration; regardless, registering with a valid code marks the account exempt from the per-user assessment caps. Codes support configurable usage limits and expiration.
+- **Registration Anti-Bot** — A honeypot field, best-effort disposable-email-domain rejection, and a tightened per-IP registration limit (default 5/hour) defend open signups.
+- **Security Middleware** — CORS with configurable origin allowlist, per-user burst rate limiting plus persistent assessment quotas on pronunciation endpoints, and Helmet CSP headers.
 
 ## Content & Data Pipeline
 
@@ -115,7 +118,8 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Testing** — Vitest for unit and contract tests, Playwright for end-to-end browser tests, organized by project phase.
 - **CI/CD** — GitHub Actions pipeline runs on push/PR to `main` and `develop`: install, build, unit tests, and Playwright e2e.
 - **Deployment** — Railway-targeted with static SPA serving and aggressive caching.
-- **Database** — MongoDB via Mongoose with singleton connection, retry logic, and connection health reporting.
+- **Database** — MongoDB via Mongoose with singleton connection, retry logic, loud connection-state logging (disconnect/reconnect/error), and connection health reporting.
 - **Fail-fast Startup** — Production boots refuse to bind the port when required environment variables or the MongoDB connection are missing, so the app never appears "up" with broken core flows.
-- **Readiness Probe** — `/api/health` reports MongoDB and Azure Speech configuration state alongside liveness, making deploy issues observable without calling Azure.
+- **Readiness Probe** — `/api/health` reports MongoDB and Azure Speech configuration state alongside liveness (always 200, for Railway's liveness check), making deploy issues observable without calling Azure. `/api/health/ready` is a separate strict readiness probe that returns 503 whenever MongoDB isn't connected.
+- **Crash Recovery** — An uncaught exception logs the error and exits the process (1) in production so the platform restarts a clean instance instead of continuing in a corrupted state; unhandled promise rejections remain log-only.
 - **Configurable API Origin** — `VITE_API_BASE_URL` and `CSP_CONNECT_SRC` let the SPA target a separate backend origin when needed; default same-origin deploys remain zero-config.

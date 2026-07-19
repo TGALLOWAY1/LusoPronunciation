@@ -48,6 +48,34 @@ import { logStage, timeStage } from '../lib/pipelineLogger';
 const PIPELINE = 'custom-sentence';
 const MAX_ENGLISH_LENGTH = 500;
 
+const DEFAULT_TRANSLATION_TIMEOUT_MS = 15_000;
+
+function getTranslationTimeoutMs(): number {
+  const rawValue = process.env.TRANSLATION_TIMEOUT_MS;
+  if (!rawValue) {
+    return DEFAULT_TRANSLATION_TIMEOUT_MS;
+  }
+  const parsed = Number.parseInt(rawValue, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_TRANSLATION_TIMEOUT_MS;
+}
+
+/**
+ * Wraps translateEnglishToPortuguese with an AbortController-backed timeout.
+ * Extracted as its own function (rather than an inline closure) so it can be
+ * unit tested without exercising the rest of the custom-sentence pipeline
+ * (tokenizer, TTS, Mongo persistence, etc).
+ */
+export function translateWithTimeout(
+  englishText: string,
+  timeoutMs: number = getTranslationTimeoutMs()
+): ReturnType<typeof translateEnglishToPortuguese> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return translateEnglishToPortuguese(englishText, { signal: controller.signal }).finally(() =>
+    clearTimeout(timer)
+  );
+}
+
 export class CustomSentenceError extends Error {
   readonly code:
     | 'INVALID_INPUT'
@@ -119,7 +147,7 @@ export async function createCustomSentence(
   try {
     translation = await timeStage(
       { pipeline: PIPELINE, stage: 'translate', userId, sentenceId },
-      () => translateEnglishToPortuguese(englishText)
+      () => translateWithTimeout(englishText)
     );
   } catch (err) {
     throw new CustomSentenceError(

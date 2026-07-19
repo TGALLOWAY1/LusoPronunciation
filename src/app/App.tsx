@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
 import { ProgressStoreProvider } from '../state/progressStore';
 import { SettingsStoreProvider } from '../state/settingsStore';
@@ -53,9 +53,30 @@ function AppShell() {
   );
 }
 
+/**
+ * On every route change: scroll the window to the top (so navigating never
+ * leaves the viewport mid-scroll on the previous page) and move focus to the
+ * main content landmark (the `#main-content` element AppLayout renders),
+ * matching the "route change = new page" mental model for screen reader and
+ * keyboard users. A no-op on routes that don't render AppLayout (e.g. /tour,
+ * /auth) since there's no `#main-content` there.
+ */
+function ScrollAndFocusOnRouteChange() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const main = document.getElementById('main-content');
+    main?.focus();
+  }, [location.pathname]);
+
+  return null;
+}
+
 function AppRoutes() {
   return (
     <BrowserRouter>
+      <ScrollAndFocusOnRouteChange />
       <Routes>
         {/* Public, unauthenticated marketing surfaces (own standalone layout) */}
         <Route path="/tour" element={<TourPage />} />

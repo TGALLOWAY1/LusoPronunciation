@@ -13,7 +13,6 @@
  * 7. Validate and report
  * 
  * Note: This pipeline is intended to eventually replace the legacy scripts:
- * - scripts/generate_audio.js
  * - scripts/generateWordAudio.ts
  * 
  * These legacy scripts remain intact and can continue to be used independently.
@@ -229,9 +228,8 @@ async function main() {
             sourceId: entry.sourceId,
             textPt: entry.textPt,
             textEn: entry.textEn,
-            ptbr: entry.ptbr,
             voice: 'ptbr', // Default voice identifier
-            path: entry.ptbr?.male || entry.ptbr?.female || '',
+            path: Object.values(entry.voices ?? {})[0] ?? '',
             text: entry.textPt, // Use textPt as text
           })) as AudioIndexEntryExtended[];
           

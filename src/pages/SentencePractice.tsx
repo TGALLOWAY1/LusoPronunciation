@@ -76,6 +76,7 @@ export default function SentencePractice({ headerElement }: { headerElement?: Re
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -124,15 +125,19 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
       try {
         // Feat 15: Preload audio index for word-by-word audio playback
         await preloadAudioIndex();
-        
+
         const [sentencesData, categoriesData] = await Promise.all([
           loadAllSentences(),
           loadAllCategories(),
         ]);
         setSentences(sentencesData);
         setCategories(categoriesData);
+        setLoadError(null);
       } catch (error) {
         console.error('Error loading sentence practice data:', error);
+        setLoadError(
+          'We couldn’t load the practice sentences. Please refresh the page to try again.'
+        );
       } finally {
         setLoading(false);
       }
@@ -348,6 +353,23 @@ const difficultyBadgeClasses: Record<Difficulty, string> = {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <LoadingSpinner message="Loading sentences..." />
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Sentence Practice</h2>
+        <div className="card text-center border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20">
+          <p className="text-red-700 dark:text-red-300 text-lg font-medium">
+            Couldn’t load practice content
+          </p>
+          <p className="text-red-600 dark:text-red-400 text-sm mt-2">{loadError}</p>
+          <button onClick={() => window.location.reload()} className="btn btn-primary btn-sm mt-4">
+            Reload
+          </button>
+        </div>
       </div>
     );
   }

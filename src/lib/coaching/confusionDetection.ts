@@ -1,6 +1,20 @@
 import type { AttemptScore } from '@/types/pronunciation';
 import type { ConfusionTag } from './minimalPairs.ptbr';
 
+/**
+ * Confusion detection is a SPELLING heuristic over the learner's low-scoring
+ * words: it inspects the letters of the words they missed and flags PT-BR sound
+ * contrasts those spellings commonly involve. It is NOT a per-learner diagnosis
+ * of which sounds they personally struggle with — hence the UI frames these as
+ * "sounds that are often tricky in the words you missed" rather than "sounds you
+ * struggle with".
+ *
+ * Follow-up: real per-phoneme accuracy scores from Azure (Granularity 'Phoneme')
+ * now flow through `AttemptScore.wordScores[].phonemeScores`. Confusion detection
+ * could be upgraded to key off those measured phoneme scores instead of word
+ * spellings, turning this into a genuine per-learner signal.
+ */
+
 const WEAK_WORD_THRESHOLD = 85;
 const MAX_WEAK_WORDS = 5;
 

@@ -227,7 +227,7 @@ async function analyzeAudioCoverage(
         `${item.id}.wav`
       );
 
-      const hasIndexedVoice = Boolean(audioEntry?.voices?.[voice.id] || audioEntry?.ptbr?.[voice.gender]);
+      const hasIndexedVoice = Boolean(audioEntry?.voices?.[voice.id]);
       const hasPhysicalFile = await fileExists(filePath);
 
       if (!hasIndexedVoice || !hasPhysicalFile) {

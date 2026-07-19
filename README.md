@@ -61,16 +61,16 @@ A recruiter-skimmable tour of the engineering. Every row maps a user-facing capa
 | Capability | Why It Matters | Technologies |
 |------------|----------------|--------------|
 | **Azure Pronunciation Assessment** | Integrates a production cloud AI service with comprehensive scoring (accuracy, fluency, completeness, miscue) — not a toy ML demo | Azure Speech SDK, `PronunciationAssessmentConfig` |
-| **Phoneme-level scoring** | Parses and normalizes Azure's nested word→phoneme response into a typed UI model with IPA + error tags | TypeScript, custom result normalizer |
+| **Phoneme-level scoring** | Parses and normalizes Azure's nested word→phoneme response (Granularity `Phoneme`) into a typed UI model — per-phoneme accuracy scores plus per-word error tags; phoneme names come from a curated pt-BR guide and degrade to positional sounds when Azure omits them | TypeScript, custom result normalizer |
 | **Server-side audio preprocessing** | Browser audio (webm/opus) is transcoded to the exact format Azure requires (WAV 16 kHz, 16-bit, mono) before assessment | ffmpeg-static, Express upload pipeline |
 | **Real-time browser recording** | Captures microphone audio with quality gates (min duration + RMS silence detection) before spending an API call | MediaRecorder API, Web Audio analysis |
 | **AI-powered coaching engine** | Deterministic, testable rules turn raw scores into prioritized next steps + minimal-pair drills | Pure TS domain logic, fully unit-tested |
 | **Pronunciation analytics** | Aggregates historical attempts into trends, weak-sound detection, and improvement tracking | Custom analytics layer + chart components |
 | **Custom sentence builder** | English → PT-BR translation + on-demand TTS + per-word pronunciation coverage scoring | Azure AI Translator, Azure TTS |
-| **Spaced repetition (SRS)** | Server-side SM-2 scheduler links flashcard outcomes to real pronunciation scores | Custom SM-2 implementation, Mongoose |
+| **Spaced repetition (SRS)** | Server-side SM-2-inspired scheduler links flashcard outcomes to real pronunciation scores | Custom SM-2-inspired implementation, Mongoose |
 | **Type-safe full-stack** | Shared types across client/server; strict TS (`noUnusedLocals`/`noUnusedParameters`) | TypeScript 5.9 strict mode, shared types module |
 | **Fail-fast, observable backend** | Refuses to bind the port with missing config; `/api/health` reports Mongo + Azure state | Express middleware, startup checks |
-| **Security hardening** | JWT auth, per-user rate limiting on AI endpoints, Helmet CSP, CORS allowlist, invite gating | jsonwebtoken, helmet, bcrypt |
+| **Security & cost control** | JWT auth, open self-serve signup with server-authoritative per-user + global assessment quotas (Azure billing protection), burst rate limiting on AI endpoints, registration anti-bot (honeypot + disposable-domain + per-IP cap), Helmet CSP, CORS allowlist, optional invite codes | jsonwebtoken, helmet, bcrypt |
 | **Modern React 19 architecture** | Hook-encapsulated business logic, Context stores, lazy-loaded dev routes, responsive shell | React 19, React Router 7, Vite 7 |
 
 <br/>
@@ -93,7 +93,7 @@ Knowing a word was "wrong" doesn't help. Knowing *which sound* failed — and th
 <td width="50%" valign="top">
 
 ### How Azure evaluates pronunciation
-Azure's Pronunciation Assessment compares your speech to expected phonemes and returns **accuracy**, **fluency**, **completeness**, and **miscue** signals down to the phoneme, with IPA alignment.
+Azure's Pronunciation Assessment compares your speech to expected phonemes and returns **accuracy**, **fluency**, **completeness**, and **miscue** signals — including a per-phoneme accuracy score for each sound. Phoneme *names* are locale-dependent (Azure doesn't guarantee them for pt-BR), so the UI degrades to positional sounds when a name is absent.
 
 ### How analytics + AI drive deliberate practice
 Single scores are noise. Aggregating attempts over time surfaces *real* weaknesses (hardest sounds, most-retried phrases) and measurable improvement (`pão 72 → 91`), so practice stays focused on what moves the needle.
@@ -114,7 +114,7 @@ Single scores are noise. Aggregating attempts over time surfaces *real* weakness
 <td width="33%" valign="top">
 
 ### 🎙️ Live Recording & Scoring
-**What:** Record a sentence or word in-browser; get accuracy, fluency, completeness & prosody back in seconds.
+**What:** Record a sentence or word in-browser; get accuracy, fluency & completeness back in seconds (prosody only where the Azure locale supports it — not pt-BR).
 **Why:** Instant feedback closes the practice loop.
 **How:** MediaRecorder (webm/opus) → ffmpeg WAV transcode → Azure Speech SDK.
 
@@ -173,10 +173,10 @@ Single scores are noise. Aggregating attempts over time surfaces *real* weakness
 </td>
 <td valign="top">
 
-### 🔁 Spaced Repetition (SM-2)
+### 🔁 Spaced Repetition (SM-2-inspired)
 **What:** Server-side flashcard scheduling tied to pronunciation outcomes.
 **Why:** Reviews the right item at the right time.
-**How:** Custom SM-2 (interval / ease / reps / lapses) in `flashcardService`.
+**How:** Custom SM-2-inspired scheduler (interval / ease / reps / lapses) in `flashcardService`.
 
 </td>
 <td valign="top">
@@ -218,8 +218,9 @@ What happens internally after a user presses **Record**:
 |---------------|---------|-------------------|------------------|
 | **Pronunciation Assessment** | Azure AI Speech | Objective, repeatable scoring of spoken audio | Removes guesswork from "did I say it right?" |
 | **Speech Recognition** | Azure AI Speech | Maps audio to recognized PT-BR text | Detects omissions, insertions, miscues |
-| **Phoneme Alignment** | Azure AI Speech | Decomposes words into scored phonemes (IPA) | Pinpoints the exact failing sound |
-| **Confidence Scoring** | Azure AI Speech | Accuracy / fluency / completeness signals | Suppresses unreliable tips via a trust badge |
+| **Per-phoneme scoring** | Azure AI Speech (Granularity `Phoneme`) | Returns an accuracy score for each phoneme in a word | Pinpoints the exact failing sound |
+| **pt-BR phoneme guide** | In-house (`azurePhonemeMap` + curated `phoneme_metadata.json`) | Labels Azure's phonemes with pt-BR names + articulation tips; degrades to positional sounds when Azure omits the name (locale-dependent) | Turns raw scores into teachable feedback |
+| **Assessment trust badge** | In-house (`assessmentTrust.ts`) | Derived from Azure's `recognitionStatus`, completeness, and omission/insertion ratio — not an Azure confidence score | Suppresses unreliable phoneme tips |
 | **Text-to-Speech** | Azure AI Speech (TTS) | Generates native male/female reference audio | Hear the target before attempting |
 | **Machine Translation** | Azure AI Translator | English → Brazilian Portuguese for custom sentences | Practice your own sentences instantly |
 | **Error Analysis (coaching)** | In-house deterministic engine | Converts scores into prioritized, testable advice | Targeted, hallucination-free guidance |
@@ -273,11 +274,11 @@ The Progress page is organized into **Overview · Progress · Strengths · Focus
 
 **Production-ready backend**
 - Fail-fast startup on missing config / DB
-- Per-user rate limiting on AI endpoints
-- Helmet CSP, CORS allowlist, JWT (7-day), bcrypt
+- Open signups with server-authoritative assessment quotas (per-user + global) guarding Azure spend
+- Burst rate limiting + anti-bot on auth; Helmet CSP, CORS allowlist, JWT (7-day), bcrypt
 
 **Quality & observability**
-- 48 Vitest unit/contract files + Playwright e2e in CI
+- 56 Vitest unit/contract files + Playwright e2e in CI
 - Centralized `ERROR_CLASS` taxonomy
 - Latency + reliability telemetry (`p50`/`p95`)
 

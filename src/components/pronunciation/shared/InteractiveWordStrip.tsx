@@ -312,7 +312,11 @@ export default function InteractiveWordStrip({
             score: word.accuracyScore,
             level: (word.level || (word.accuracyScore >= 90 ? 'excellent' : word.accuracyScore >= 80 ? 'good' : word.accuracyScore >= 70 ? 'ok' : 'practice')) as 'excellent' | 'good' | 'ok' | 'practice',
             errorType: word.errorType || undefined,
-            phonemes: word.phonemes,
+            // The chip pill itself does not render phoneme scores; coerce the
+            // now-optional score to a number only to satisfy the chip's legacy
+            // WordFeedback shape. Real per-phoneme scores are rendered by
+            // PhonemePanel from the source data, not from here.
+            phonemes: word.phonemes?.map(p => ({ ...p, score: p.score ?? 0 })),
             wordId: word.wordId,
           };
           

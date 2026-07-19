@@ -1,30 +1,38 @@
 import type { AttemptScore } from '@/types/pronunciation';
+import { getScoreFeedbackMessage } from '@/lib/scoreFeedback';
+import { isSingleTokenReference } from '@/lib/referenceTokens';
 
 interface AttemptScoreSummaryProps {
   attemptScore: AttemptScore;
-}
-
-/**
- * Generates a feedback message based on overall score and sub-scores.
- */
-function getFeedbackMessage(overall: number): string {
-  if (overall >= 90) return "Excellent pronunciation. You're sounding very natural.";
-  if (overall >= 80) return "Strong overall. Focus on smoothing out your fluency.";
-  if (overall >= 70) return "Good start. A bit more practice will clean up some sounds.";
-  return "Keep going! Focus on listening closely to the reference audio and repeating slowly.";
+  /**
+   * Reference text (word or sentence) being scored. When it is a single token,
+   * fluency/completeness/prosody are degenerate and are suppressed.
+   */
+  referenceText?: string;
 }
 
 /**
  * Component that summarizes the phrase-level attempt scores.
  */
-export default function AttemptScoreSummary({ attemptScore }: AttemptScoreSummaryProps) {
-  const overall = Math.round(attemptScore.overallAccuracy);
+export default function AttemptScoreSummary({ attemptScore, referenceText }: AttemptScoreSummaryProps) {
+  // "Overall" is Azure's composite pronunciation score (PronScore) when present;
+  // older logged attempts fall back to accuracy.
+  const overall = Math.round(attemptScore.pronScore ?? attemptScore.overallAccuracy);
   const accuracy = Math.round(attemptScore.overallAccuracy);
-  const fluency = attemptScore.fluency ? Math.round(attemptScore.fluency) : null;
-  const completeness = attemptScore.completeness ? Math.round(attemptScore.completeness) : null;
-  const prosody = attemptScore.prosody ? Math.round(attemptScore.prosody) : null;
 
-  const feedbackMessage = getFeedbackMessage(attemptScore.overallAccuracy);
+  // Single-token references (individual words) make fluency/completeness/prosody
+  // degenerate, so suppress them entirely.
+  const singleToken = isSingleTokenReference(referenceText);
+  const fluency = !singleToken && attemptScore.fluency ? Math.round(attemptScore.fluency) : null;
+  const completeness =
+    !singleToken && attemptScore.completeness ? Math.round(attemptScore.completeness) : null;
+  const prosody = !singleToken && attemptScore.prosody ? Math.round(attemptScore.prosody) : null;
+
+  const feedbackMessage = getScoreFeedbackMessage({
+    overall,
+    accuracy: attemptScore.overallAccuracy,
+    fluency: singleToken ? undefined : attemptScore.fluency,
+  });
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 space-y-4">
@@ -71,4 +79,3 @@ export default function AttemptScoreSummary({ attemptScore }: AttemptScoreSummar
     </div>
   );
 }
-

@@ -219,5 +219,6 @@ export interface ValidationReport {
   missingAudioIds: string[];     // IDs of items missing audio files
   missingPhonemeIds: string[];    // Phoneme IDs not found in phoneme_metadata
   invalidWordRefs: string[];      // Sentence IDs with invalid word references
+  phonemePatternViolations?: string[]; // Words whose phonemes contradict a required orthographic pattern (e.g. nasal coda, ch→SH)
   otherErrors?: string[];         // Other validation errors
 }

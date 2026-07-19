@@ -86,6 +86,10 @@ describe('LivePracticeSection coaching card', () => {
     vi.clearAllMocks();
   });
 
+  // This test is synchronous (no awaits/timers) and runs in ~200-400ms in
+  // isolation; the raised timeout only accommodates CPU contention when the
+  // full suite runs in parallel, where the render + coaching engine
+  // computation can occasionally exceed the default 5000ms budget.
   it('shows coaching card after a scored attempt and retry CTA triggers retry handler', () => {
     setHookState(
       createAttempt({
@@ -104,7 +108,7 @@ describe('LivePracticeSection coaching card', () => {
     fireEvent.click(retryButton);
 
     expect(mockResetRecording).toHaveBeenCalledTimes(1);
-  });
+  }, 15000);
 
   it('opens minimal pair drill from CTA on scored attempts that match confusion tags', () => {
     setHookState(

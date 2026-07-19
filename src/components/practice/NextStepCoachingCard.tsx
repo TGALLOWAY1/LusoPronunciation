@@ -55,9 +55,14 @@ export default function NextStepCoachingCard({
 
       {suggestion.drill && drillOpen && (
         <div className="mt-4 rounded-md border border-emerald-200 dark:border-emerald-800 bg-white/80 dark:bg-gray-900/50 p-3 space-y-3">
-          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-            Minimal pair drill
-          </p>
+          <div>
+            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              Minimal pair drill
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+              Sounds that are often tricky in the words you missed — practice these pairs.
+            </p>
+          </div>
           <ul className="space-y-2">
             {suggestion.drill.pairs.slice(0, 3).map((pair, index) => (
               <li

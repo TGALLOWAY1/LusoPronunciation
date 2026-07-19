@@ -1,9 +1,13 @@
+import { useRef } from 'react';
 import { useSettingsStore } from '@/state/settingsStore';
+import { useDialogA11y } from '@/hooks/useDialogA11y';
 
 interface VoiceSettingsProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const HEADING_ID = 'voice-settings-heading';
 
 /**
  * Voice settings modal/dropdown for selecting preferred word voice.
@@ -11,6 +15,8 @@ interface VoiceSettingsProps {
  */
 export default function VoiceSettings({ isOpen, onClose }: VoiceSettingsProps) {
   const { selectedVoice, setSelectedVoice } = useSettingsStore();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useDialogA11y<HTMLDivElement>(isOpen, onClose, closeButtonRef);
 
   const handleVoiceChange = (voice: typeof selectedVoice) => {
     setSelectedVoice(voice);
@@ -20,15 +26,20 @@ export default function VoiceSettings({ isOpen, onClose }: VoiceSettingsProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
-      <div 
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={HEADING_ID}
         className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-sm w-full mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 id={HEADING_ID} className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Voice Settings
           </h3>
           <button
+            ref={closeButtonRef}
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
             aria-label="Close settings"

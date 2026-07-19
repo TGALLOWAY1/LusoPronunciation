@@ -62,4 +62,20 @@ describe('buildCoachingSuggestion', () => {
     expect(suggestion.targets?.length).toBeGreaterThan(0);
     expect(suggestion.targets?.[0]?.word).toBe('carro');
   });
+
+  it('suppresses coverage/rhythm coaching for single-word references', () => {
+    const suggestion = buildCoachingSuggestion(
+      createAttempt({
+        completeness: 40,
+        fluency: 40,
+        overallAccuracy: 92,
+        wordScores: [{ word: 'obrigado', accuracy: 92 }],
+      }),
+      { sentenceText: 'obrigado' }
+    );
+
+    // Completeness/fluency are degenerate for one token — no coverage/rhythm tips.
+    expect(suggestion.kind).not.toBe('coverage');
+    expect(suggestion.kind).not.toBe('rhythm');
+  });
 });

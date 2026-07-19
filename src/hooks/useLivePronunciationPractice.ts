@@ -15,6 +15,7 @@ import { ERROR_CLASS, isErrorClass } from '@/lib/errorTaxonomy';
 import { writeSpeechServiceHealthRecord } from '@/lib/speechServiceHealth';
 import { getAuthHeader } from '@/api/auth';
 import { buildApiUrl } from '@/api/apiUrl';
+import { mapAzurePhonemeToInternalId } from '@/lib/azurePhonemeMap';
 
 /**
  * Response type from the pronunciation assessment API
@@ -505,14 +506,35 @@ export function useLivePronunciationPractice(): UseLivePronunciationPracticeResu
           // Determine if attempt passed (using 70 as threshold - TODO: make configurable)
           const passed = attemptScore.overallAccuracy >= 70;
 
-          // Map word scores to the format expected by SentencePracticeAttempt
-          const wordScores = attemptScore.wordScores.map((ws: WordScore) => ({
-            token: ws.word,
-            overallScore: ws.accuracy,
-            accuracyScore: ws.accuracy,
-            // TODO: Map wordId if we have word references
-            // TODO: Map phonemeScores if available from Azure response
-          }));
+          // Map word scores to the format expected by SentencePracticeAttempt.
+          // Azure's real per-phoneme scores are mapped to internal phoneme IDs
+          // (via azurePhonemeMap) for analytics aggregation, which buckets by
+          // phoneme identity. Phonemes Azure left unlabeled — or labels with no
+          // internal mapping — are skipped here (they still display in the UI
+          // via WordScore.phonemeScores, but cannot be aggregated by identity).
+          const wordScores = attemptScore.wordScores.map((ws: WordScore) => {
+            const mappedPhonemeScores = (ws.phonemeScores ?? [])
+              .map((ps) => {
+                const phonemeId = mapAzurePhonemeToInternalId(ps.label);
+                return phonemeId
+                  ? { phonemeId, overallScore: Math.round(ps.accuracyScore) }
+                  : null;
+              })
+              .filter(
+                (entry): entry is { phonemeId: string; overallScore: number } =>
+                  entry !== null
+              );
+
+            return {
+              token: ws.word,
+              overallScore: ws.accuracy,
+              accuracyScore: ws.accuracy,
+              // TODO: Map wordId if we have word references
+              ...(mappedPhonemeScores.length > 0
+                ? { phonemeScores: mappedPhonemeScores }
+                : {}),
+            };
+          });
 
           // Calculate recording duration if we have start time
           const recordingDurationSeconds = recordingStartTimeRef.current

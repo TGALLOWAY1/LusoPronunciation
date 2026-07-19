@@ -3,8 +3,10 @@ import { useSearchParams } from 'react-router-dom';
 import { AlignLeft, CaseSensitive } from 'lucide-react';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useProgressStore } from '@/state/progressStore';
+import { useDueReviews } from '@/hooks/useDueReviews';
 import { computeUserGlobalStats } from '@/lib/practiceAnalytics';
 import MomentumStrip from '@/components/common/MomentumStrip';
+import ReviewNudge from '@/components/common/ReviewNudge';
 import SentencePractice from './SentencePractice';
 import WordPractice from './WordPractice';
 
@@ -18,7 +20,10 @@ export default function PracticePage() {
 
   const { sessions, sentenceAttempts, wordAttempts } = usePracticeLogStore();
   const { getDueCount } = useProgressStore();
-  const dueCount = getDueCount();
+  const { dueCount: serverDueCount, error: dueError, authenticated } = useDueReviews();
+  // The server SM-2 queue is the source of truth for "what's due"; the local
+  // progressStore count is only a fallback when the server is unreachable.
+  const dueCount = authenticated && !dueError ? serverDueCount : getDueCount();
 
   const streak = useMemo(() => {
     if (sessions.length === 0) return 0;
@@ -72,8 +77,15 @@ export default function PracticePage() {
 
   return (
     <div>
-      {/* Mobile only momentum strip - desktop is in sidebar */}
-      <div className="mb-4 lg:hidden">
+      {/* Dismissible nudge toward the review queue when items are due */}
+      {dueCount > 0 && (
+        <div className="mb-3">
+          <ReviewNudge dueCount={dueCount} />
+        </div>
+      )}
+
+      {/* Momentum strip — shown on every breakpoint (streak / today / due) */}
+      <div className="mb-4">
         <MomentumStrip
           streak={streak}
           todayAttempts={todayAttempts}

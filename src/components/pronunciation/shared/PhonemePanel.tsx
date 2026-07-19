@@ -55,6 +55,10 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
   }
 
   const problemPhonemes = word.phonemes?.filter(p => p.isProblem) || [];
+  // Reference-only mode: phonemes came from the curated canonical list with no
+  // Azure scores. In that mode we render the reference sounds WITHOUT any score
+  // ring or "performing well" verdict.
+  const hasPhonemeScores = word.phonemes?.some(p => typeof p.score === 'number') ?? false;
   const wordScore = word.score ?? word.accuracyScore;
   const wordLevel = word.level || (wordScore >= 90 ? 'excellent' : wordScore >= 80 ? 'good' : wordScore >= 70 ? 'ok' : 'practice');
   const homograph = findHomograph(word.text);
@@ -190,7 +194,9 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                         )}
                       </div>
                     </div>
-                    <PhonemeScoreRing score={phoneme.score} />
+                    {typeof phoneme.score === 'number' && (
+                      <PhonemeScoreRing score={phoneme.score} />
+                    )}
                   </div>
                 );
               } else {
@@ -214,7 +220,9 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
                         </p>
                       )}
                     </div>
-                    <PhonemeScoreRing score={phoneme.score} />
+                    {typeof phoneme.score === 'number' && (
+                      <PhonemeScoreRing score={phoneme.score} />
+                    )}
                   </div>
                 );
               }
@@ -224,6 +232,7 @@ export default function PhonemePanel({ word, onClose, trustLevel = 'trusted' }: 
       )}
 
       {trustLevel !== 'untrusted' &&
+        hasPhonemeScores &&
         problemPhonemes.length === 0 &&
         word.phonemes &&
         word.phonemes.length > 0 && (

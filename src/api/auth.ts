@@ -33,19 +33,38 @@ export interface AuthResponse {
 }
 
 /**
+ * Options for {@link register}.
+ * - `inviteCode`: optional trusted-bypass code. When provided it is validated
+ *   server-side; an invalid code fails the registration.
+ * - `botField`: honeypot value. Real users leave this empty; a non-empty value
+ *   causes the server to reject the request as automated.
+ */
+export interface RegisterOptions {
+  inviteCode?: string;
+  botField?: string;
+}
+
+/**
  * Register a new user
  */
 export async function register(
   email: string,
   password: string,
   displayName?: string,
+  options?: RegisterOptions,
 ): Promise<AuthResponse> {
   const response = await fetch(buildApiUrl('/api/auth/register'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password, displayName }),
+    body: JSON.stringify({
+      email,
+      password,
+      displayName,
+      inviteCode: options?.inviteCode,
+      botField: options?.botField,
+    }),
   });
 
   if (!response.ok) {

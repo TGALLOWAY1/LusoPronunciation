@@ -20,13 +20,29 @@ export interface NormalizedWordFeedback {
   accuracyScore: number;
   /** Error type if applicable */
   errorType?: string | null;
-  /** Phoneme-level feedback (preserve current shape, can refine later) */
+  /**
+   * Phoneme-level feedback.
+   *
+   * When Azure returned real per-phoneme scores, each entry carries the Azure
+   * `score` (and `isProblem` when below the mispronunciation threshold). When
+   * no scores are available (reference-only mode: old attempts or Azure omitted
+   * Phonemes), entries come from the curated canonical phoneme list with
+   * `score`/`isProblem` LEFT UNDEFINED — nothing should render a score in that
+   * mode.
+   */
   phonemes?: Array<{
     symbol: string;
-    score: number;
+    /** Azure accuracy score. Undefined in reference-only mode (no scoring). */
+    score?: number;
     exampleWord?: string;
     tip?: string;
     isProblem?: boolean;
+    /**
+     * Raw Azure phoneme label (IPA) or null when Azure omitted the name.
+     * Used by positional canonical alignment to borrow display labels only for
+     * unlabeled entries. Absent for reference-only entries.
+     */
+    azureLabel?: string | null;
   }>;
   /** Optional word ID for TTS audio lookup */
   wordId?: string;

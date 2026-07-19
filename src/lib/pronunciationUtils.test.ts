@@ -62,4 +62,65 @@ describe('mapAzurePronunciationResultToAttemptScore', () => {
 
     expect(attempt.recognitionStatus).toBe('NoMatch');
   });
+
+  it('maps both nested and flattened Azure phoneme shapes onto WordScore.phonemeScores', () => {
+    const rawAzure = {
+      RecognitionStatus: 'Success',
+      NBest: [
+        {
+          PronunciationAssessment: { AccuracyScore: 84 },
+          Words: [
+            {
+              Word: 'ola',
+              PronunciationAssessment: { AccuracyScore: 84 },
+              Phonemes: [
+                // nested shape
+                { Phoneme: 'o', PronunciationAssessment: { AccuracyScore: 91 }, Offset: 10, Duration: 5 },
+                // flattened shape
+                { Phoneme: 'l', AccuracyScore: 55 },
+                // unnamed (pt-BR may omit names) — score still kept, label null
+                { AccuracyScore: 70 },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    const attempt = mapAzurePronunciationResultToAttemptScore(
+      rawAzure,
+      'sentence-ph',
+      'attempt-ph',
+      undefined,
+      'ola'
+    );
+
+    expect(attempt.wordScores[0].phonemeScores).toEqual([
+      { label: 'o', accuracyScore: 91, offset: 10, duration: 5 },
+      { label: 'l', accuracyScore: 55 },
+      { label: null, accuracyScore: 70 },
+    ]);
+  });
+
+  it('omits phonemeScores when Azure returned no Phonemes array', () => {
+    const rawAzure = {
+      RecognitionStatus: 'Success',
+      NBest: [
+        {
+          PronunciationAssessment: { AccuracyScore: 90 },
+          Words: [{ Word: 'oi', PronunciationAssessment: { AccuracyScore: 90 } }],
+        },
+      ],
+    };
+
+    const attempt = mapAzurePronunciationResultToAttemptScore(
+      rawAzure,
+      'sentence-noph',
+      'attempt-noph',
+      undefined,
+      'oi'
+    );
+
+    expect(attempt.wordScores[0].phonemeScores).toBeUndefined();
+  });
 });

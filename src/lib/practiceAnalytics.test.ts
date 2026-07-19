@@ -12,6 +12,7 @@ import {
   generateInsights,
   buildRecommendations,
   buildAttemptSummaries,
+  buildWordProgress,
 } from './practiceAnalytics';
 
 const NOW = new Date('2026-06-17T12:00:00.000Z');
@@ -223,6 +224,28 @@ describe('buildRecommendations', () => {
     }
     expect(recs.some((r) => r.kind === 'phoneme' && r.id === 'AN_NASAL')).toBe(true);
     expect(recs.some((r) => r.kind === 'word' && r.id === 'w1')).toBe(true);
+  });
+});
+
+describe('buildWordProgress status honesty', () => {
+  it('does not mark a word "known" from a single high-scoring attempt', () => {
+    const { perWord } = buildWordProgress(
+      [word({ wordId: 'w1', overallScore: 92, accuracyScore: 92, passed: true })],
+      10,
+    );
+    // A single strong attempt is promising, not proof of mastery.
+    expect(perWord['w1'].status).toBe('learning');
+  });
+
+  it('marks a word "known" once two attempts clear the bar', () => {
+    const { perWord } = buildWordProgress(
+      [
+        word({ wordId: 'w1', overallScore: 90, accuracyScore: 90, passed: true, createdAt: daysAgo(2) }),
+        word({ wordId: 'w1', overallScore: 88, accuracyScore: 88, passed: true, createdAt: daysAgo(1) }),
+      ],
+      10,
+    );
+    expect(perWord['w1'].status).toBe('known');
   });
 });
 

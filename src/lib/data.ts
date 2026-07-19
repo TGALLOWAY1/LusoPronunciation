@@ -9,11 +9,7 @@
  */
 
 import type {
-  RawSentence,
-  RawWord,
-  RawCategory,
   SentencesData,
-  WordsData,
   Sentence,
   Word,
   Category,
@@ -22,9 +18,6 @@ import type {
 import { getSentenceAudioUrl, getWordAudioUrl, loadAudioIndex } from './audio';
 import type { AudioIndex } from './types';
 import type { EnrichedWord, EnrichedSentence } from '../types/contentGeneration';
-import { sampleData } from './sampleData';
-import { buildWordRefs } from '../pipeline/sentenceWordRefs';
-import { CONTENT_SOURCE } from '../config/appConfig';
 
 // Cache for loaded data
 let cachedSentences: Sentence[] | null = null;
@@ -91,31 +84,6 @@ function transformEnrichedSentence(
 }
 
 /**
- * Transform raw sentence data to app-friendly format.
- */
-function transformSentence(
-  raw: RawSentence,
-  category: RawCategory,
-  audioIndex?: AudioIndex
-): Sentence {
-  const audioId = raw.id; // Sentence IDs match audio IDs in index
-  
-  return {
-    id: raw.id,
-    textPt: raw.pt,
-    translationEn: raw.en,
-    difficulty: raw.difficulty,
-    categoryId: category.id,
-    categoryLabelEn: category.label_en,
-    categoryLabelPt: category.label_pt,
-    pronunciationNotes: raw.pronunciation_notes,
-    audioId,
-    audioMaleUrl: getSentenceAudioUrl(raw.id, 'male', audioIndex),
-    audioFemaleUrl: getSentenceAudioUrl(raw.id, 'female', audioIndex),
-  };
-}
-
-/**
  * Transform enriched word data to app-friendly format.
  */
 function transformEnrichedWord(
@@ -156,34 +124,6 @@ function transformEnrichedWord(
     tags: enriched.tags,
     difficultyScore: enriched.difficultyScore,
     cefr: enriched.cefr,
-  };
-}
-
-/**
- * Transform raw word data to app-friendly format.
- */
-function transformWord(
-  raw: RawWord,
-  category: RawCategory,
-  audioIndex?: AudioIndex
-): Word {
-  const audioId = raw.id; // Word IDs match audio IDs in index
-  
-  return {
-    id: raw.id,
-    textPt: raw.pt,
-    forms: raw.forms,
-    translationEn: raw.en,
-    partOfSpeech: raw.pos,
-    difficulty: raw.difficulty,
-    difficultForEnglish: raw.difficult_for_english,
-    categoryId: category.id,
-    categoryLabelEn: category.label_en,
-    categoryLabelPt: category.label_pt,
-    pronunciationNotes: raw.pronunciation_notes,
-    audioId,
-    audioMaleUrl: getWordAudioUrl(raw.id, 'male', audioIndex),
-    audioFemaleUrl: getWordAudioUrl(raw.id, 'female', audioIndex),
   };
 }
 
@@ -231,11 +171,12 @@ async function loadCategoryLabels(): Promise<Map<string, { labelEn: string; labe
 }
 
 /**
- * Load all sentences based on CONTENT_SOURCE configuration.
- * 
- * - If CONTENT_SOURCE === 'pipeline': Loads from masterSentences.json, throws error if missing
- * - If CONTENT_SOURCE === 'legacy': Loads from legacy files with fallback chain
- * 
+ * Load all sentences from the pipeline-generated master dataset.
+ *
+ * Loads from `masterSentences.json` only. If the dataset is missing or empty the
+ * error is thrown so callers can surface a visible error state \u2014 no legacy files
+ * and no hardcoded sample data are ever substituted for real content.
+ *
  * Results are cached after first load.
  */
 export async function loadAllSentences(): Promise<Sentence[]> {
@@ -244,177 +185,48 @@ export async function loadAllSentences(): Promise<Sentence[]> {
   }
 
   const audioIndex = await ensureAudioIndex();
-  
-  // Pipeline mode: Load from master dataset only, no fallback
-  if (CONTENT_SOURCE === 'pipeline') {
-    try {
-      const masterResponse = await fetch('/data/masterSentences.json');
-      if (!masterResponse.ok) {
-        const errorMsg = `[CONTENT_SOURCE=pipeline] Failed to load masterSentences.json: ${masterResponse.status} ${masterResponse.statusText}. Master dataset is required when CONTENT_SOURCE=pipeline.`;
-        console.error(errorMsg);
-        throw new Error(errorMsg);
-      }
-      
-      const enrichedSentences: EnrichedSentence[] = await masterResponse.json();
-      
-      // Check if we actually got data (not just empty array)
-      if (enrichedSentences.length === 0) {
-        const errorMsg = `[CONTENT_SOURCE=pipeline] masterSentences.json is empty. Master dataset must contain data when CONTENT_SOURCE=pipeline.`;
-        console.error(errorMsg);
-        throw new Error(errorMsg);
-      }
-      
-      const categoryLabels = await loadCategoryLabels();
-      
-      const sentences: Sentence[] = enrichedSentences.map(enriched => {
-        const categoryInfo = categoryLabels.get(enriched.category) || {
-          labelEn: enriched.category,
-          labelPt: enriched.category,
-        };
-        return transformEnrichedSentence(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
-      });
-      
-      cachedSentences = sentences;
-      console.log(`[CONTENT_SOURCE=pipeline] Loaded ${sentences.length} sentences from master dataset`);
-      return sentences;
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-      console.error(`[CONTENT_SOURCE=pipeline] Error loading master sentences:`, errorMsg);
-      throw new Error(`Failed to load pipeline data: ${errorMsg}`);
-    }
-  }
-  
-  // Legacy mode: Try master dataset first, then fallback to legacy files
+
   try {
     const masterResponse = await fetch('/data/masterSentences.json');
-    if (masterResponse.ok) {
-      const enrichedSentences: EnrichedSentence[] = await masterResponse.json();
-      // Check if we actually got data (not just empty array)
-      if (enrichedSentences.length > 0) {
-        const categoryLabels = await loadCategoryLabels();
-        
-        const sentences: Sentence[] = enrichedSentences.map(enriched => {
-          const categoryInfo = categoryLabels.get(enriched.category) || {
-            labelEn: enriched.category,
-            labelPt: enriched.category,
-          };
-          return transformEnrichedSentence(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
-        });
-        
-        cachedSentences = sentences;
-        console.log(`Loaded ${sentences.length} sentences from master dataset`);
-        return sentences;
-      }
+    if (!masterResponse.ok) {
+      throw new Error(
+        `Failed to load masterSentences.json: ${masterResponse.status} ${masterResponse.statusText}.`
+      );
     }
-  } catch (error) {
-    console.warn('Failed to load master sentences, falling back to legacy files:', error);
-  }
 
-  // Fallback to legacy files
-  try {
-    // Try data/sentences.json first
-    let response = await fetch('/data/sentences.json');
-    if (!response.ok) {
-      // Fallback to static data
-      response = await fetch('/data/static/sentences.json');
-      if (!response.ok) {
-        throw new Error(`Failed to load sentences.json: ${response.statusText}`);
-      }
+    const enrichedSentences: EnrichedSentence[] = await masterResponse.json();
+
+    if (enrichedSentences.length === 0) {
+      throw new Error('masterSentences.json is empty. The master dataset must contain data.');
     }
-    
-    const data: SentencesData = await response.json();
-    
-    // Feat 15: Load words to compute wordRefs for legacy sentences
-    // Use the same normalization function as buildWordRefs
-    const normalizeToken = (token: string): string => {
-      return token
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-        .replace(/[^\w\s]/g, ''); // Remove punctuation
-    };
-    
-    let wordsForWordRefs: Array<Pick<EnrichedWord, 'id' | 'text' | 'normalizedText'> & { forms?: string[] }> = [];
-    try {
-      const wordsData = await loadAllWords();
-      // Convert Word[] to EnrichedWord[] format for buildWordRefs
-      wordsForWordRefs = wordsData.map(word => ({
-        id: word.id,
-        text: word.textPt,
-        normalizedText: normalizeToken(word.textPt),
-        forms: word.forms,
-        category: word.categoryId,
-      }));
-    } catch (wordError) {
-      console.warn('Failed to load words for wordRefs computation:', wordError);
-    }
-    
-    const sentences: Sentence[] = [];
-    
-    for (const category of data.categories) {
-      if (category.sentences) {
-        for (const rawSentence of category.sentences) {
-          const sentence = transformSentence(rawSentence, category, audioIndex);
-          
-          // Feat 15: Compute wordRefs for legacy sentences if words are available
-          if (wordsForWordRefs.length > 0) {
-            const wordRefs = buildWordRefs(sentence.textPt, wordsForWordRefs);
-            // Convert to the format expected by Sentence interface (without startChar/endChar)
-            sentence.wordRefs = wordRefs.map(ref => ({
-              wordId: ref.wordId,
-              tokenIndex: ref.tokenIndex,
-            }));
-          }
-          
-          sentences.push(sentence);
-        }
-      }
-    }
-    
+
+    const categoryLabels = await loadCategoryLabels();
+
+    const sentences: Sentence[] = enrichedSentences.map(enriched => {
+      const categoryInfo = categoryLabels.get(enriched.category) || {
+        labelEn: enriched.category,
+        labelPt: enriched.category,
+      };
+      return transformEnrichedSentence(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
+    });
+
     cachedSentences = sentences;
-    console.log(`Loaded ${sentences.length} sentences from legacy files`);
+    console.log(`Loaded ${sentences.length} sentences from master dataset`);
     return sentences;
   } catch (error) {
-    console.error('Error loading sentences:', error);
-    // Temporary fallback to sample data if all else fails
-    console.warn('Falling back to sample data for sentences');
-    const sampleSentences: Sentence[] = sampleData.sentences.map(sample => {
-      // Map sample data format to Sentence format
-      const categoryId = sample.categories[0] || 'foods';
-      const category = sampleData.categories.find(c => c.id === categoryId) || {
-        id: categoryId,
-        name: categoryId,
-        description: '',
-      };
-      
-      return {
-        id: sample.id,
-        textPt: sample.textPt,
-        translationEn: sample.translationEn || '',
-        difficulty: sample.difficulty,
-        categoryId: category.id,
-        categoryLabelEn: category.name,
-        categoryLabelPt: category.name,
-        pronunciationNotes: undefined,
-        audioId: sample.id,
-        audioMaleUrl: getSentenceAudioUrl(sample.id, 'male', audioIndex),
-        audioFemaleUrl: getSentenceAudioUrl(sample.id, 'female', audioIndex),
-        tags: sample.tags,
-      };
-    });
-    
-    cachedSentences = sampleSentences;
-    console.log(`Loaded ${sampleSentences.length} sentences from sample data`);
-    return sampleSentences;
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error loading master sentences:', errorMsg);
+    throw new Error(`Unable to load sentences: ${errorMsg}`);
   }
 }
 
 /**
- * Load all words based on CONTENT_SOURCE configuration.
- * 
- * - If CONTENT_SOURCE === 'pipeline': Loads from masterWords.json, throws error if missing
- * - If CONTENT_SOURCE === 'legacy': Loads from legacy files with fallback chain
- * 
+ * Load all words from the pipeline-generated master dataset.
+ *
+ * Loads from `masterWords.json` only. If the dataset is missing or empty the
+ * error is thrown so callers can surface a visible error state — no legacy files
+ * and no hardcoded sample data are ever substituted for real content.
+ *
  * Results are cached after first load.
  */
 export async function loadAllWords(): Promise<Word[]> {
@@ -423,103 +235,38 @@ export async function loadAllWords(): Promise<Word[]> {
   }
 
   const audioIndex = await ensureAudioIndex();
-  
-  // Pipeline mode: Load from master dataset only, no fallback
-  if (CONTENT_SOURCE === 'pipeline') {
-    try {
-      const masterResponse = await fetch('/data/masterWords.json');
-      if (!masterResponse.ok) {
-        const errorMsg = `[CONTENT_SOURCE=pipeline] Failed to load masterWords.json: ${masterResponse.status} ${masterResponse.statusText}. Master dataset is required when CONTENT_SOURCE=pipeline.`;
-        console.error(errorMsg);
-        throw new Error(errorMsg);
-      }
-      
-      const enrichedWords: EnrichedWord[] = await masterResponse.json();
-      
-      // Check if we actually got data (not just empty array)
-      if (enrichedWords.length === 0) {
-        const errorMsg = `[CONTENT_SOURCE=pipeline] masterWords.json is empty. Master dataset must contain data when CONTENT_SOURCE=pipeline.`;
-        console.error(errorMsg);
-        throw new Error(errorMsg);
-      }
-      
-      const categoryLabels = await loadCategoryLabels();
-      
-      const words: Word[] = enrichedWords.map(enriched => {
-        const categoryInfo = categoryLabels.get(enriched.category) || {
-          labelEn: enriched.category,
-          labelPt: enriched.category,
-        };
-        return transformEnrichedWord(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
-      });
-      
-      cachedWords = words;
-      console.log(`[CONTENT_SOURCE=pipeline] Loaded ${words.length} words from master dataset`);
-      return words;
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-      console.error(`[CONTENT_SOURCE=pipeline] Error loading master words:`, errorMsg);
-      throw new Error(`Failed to load pipeline data: ${errorMsg}`);
-    }
-  }
-  
-  // Legacy mode: Try master dataset first, then fallback to legacy files
+
   try {
     const masterResponse = await fetch('/data/masterWords.json');
-    if (masterResponse.ok) {
-      const enrichedWords: EnrichedWord[] = await masterResponse.json();
-      // Check if we actually got data (not just empty array)
-      if (enrichedWords.length > 0) {
-        const categoryLabels = await loadCategoryLabels();
-        
-        const words: Word[] = enrichedWords.map(enriched => {
-          const categoryInfo = categoryLabels.get(enriched.category) || {
-            labelEn: enriched.category,
-            labelPt: enriched.category,
-          };
-          return transformEnrichedWord(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
-        });
-        
-        cachedWords = words;
-        console.log(`Loaded ${words.length} words from master dataset`);
-        return words;
-      } else {
-        // Empty array - fall through to legacy files
-        console.log('Master words file is empty, falling back to legacy files');
-      }
+    if (!masterResponse.ok) {
+      throw new Error(
+        `Failed to load masterWords.json: ${masterResponse.status} ${masterResponse.statusText}.`
+      );
     }
-  } catch (error) {
-    console.warn('Failed to load master words, falling back to legacy files:', error);
-  }
 
-  // Fallback to legacy files
-  try {
-    const response = await fetch('/data/static/words.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load words.json: ${response.statusText}`);
+    const enrichedWords: EnrichedWord[] = await masterResponse.json();
+
+    if (enrichedWords.length === 0) {
+      throw new Error('masterWords.json is empty. The master dataset must contain data.');
     }
-    
-    const data: WordsData = await response.json();
-    
-    const words: Word[] = [];
-    
-    for (const category of data.categories) {
-      if (category.words) {
-        for (const rawWord of category.words) {
-          words.push(transformWord(rawWord, category, audioIndex));
-        }
-      }
-    }
-    
+
+    const categoryLabels = await loadCategoryLabels();
+
+    const words: Word[] = enrichedWords.map(enriched => {
+      const categoryInfo = categoryLabels.get(enriched.category) || {
+        labelEn: enriched.category,
+        labelPt: enriched.category,
+      };
+      return transformEnrichedWord(enriched, categoryInfo.labelEn, categoryInfo.labelPt, audioIndex);
+    });
+
     cachedWords = words;
-    console.log(`Loaded ${words.length} words from legacy files`);
+    console.log(`Loaded ${words.length} words from master dataset`);
     return words;
   } catch (error) {
-    console.error('Error loading words:', error);
-    const message = error instanceof Error 
-      ? error.message 
-      : 'Failed to load words data';
-    throw new Error(`Unable to load words: ${message}`);
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error loading master words:', errorMsg);
+    throw new Error(`Unable to load words: ${errorMsg}`);
   }
 }
 

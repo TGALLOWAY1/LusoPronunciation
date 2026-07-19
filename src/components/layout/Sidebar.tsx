@@ -1,49 +1,22 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
-  BookOpen,
-  Library,
-  PenSquare,
-  RotateCcw,
-  BarChart3,
-  Settings,
-  Compass,
-} from 'lucide-react';
-import type { ComponentType } from 'react';
-
-interface NavItem {
-  path: string;
-  label: string;
-  icon: ComponentType<{ size?: number; className?: string }>;
-}
-
-const navItems: NavItem[] = [
-  { path: '/', label: 'Practice', icon: BookOpen },
-  { path: '/builder', label: 'Sentence Builder', icon: PenSquare },
-  { path: '/sentences/custom', label: 'My Sentences', icon: Library },
-  { path: '/review', label: 'Review', icon: RotateCcw },
-  { path: '/progress', label: 'Progress', icon: BarChart3 },
-  { path: '/settings', label: 'Settings', icon: Settings },
-];
-
-// Dev-only navigation items
-const devNavItems: NavItem[] = [
-  { path: '/dev/analytics', label: 'Dev Analytics', icon: BarChart3 },
-  { path: '/dev/metrics', label: 'Dev Metrics', icon: BarChart3 },
-];
-
-// Check if dev features should be enabled
-const isDevMode = import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_ANALYTICS === 'true';
+  navItems,
+  tourNavItem,
+  devNavItems,
+  isDevMode,
+  isNavItemActive,
+} from './navItems';
 
 export default function Sidebar() {
   const location = useLocation();
+
+  const TourIcon = tourNavItem.icon;
 
   return (
     <aside className="bg-gray-900 dark:bg-gray-950 text-white w-64 min-h-screen p-4 sm:p-6 shadow-lg flex flex-col">
       <nav className="space-y-2 flex-grow pt-2">
         {navItems.map((item) => {
-          const isActive = item.path === '/'
-            ? location.pathname === '/' || location.pathname.startsWith('/practice')
-            : location.pathname === item.path;
+          const isActive = isNavItemActive(item.path, location.pathname);
           const Icon = item.icon;
           return (
             <Link
@@ -62,41 +35,39 @@ export default function Sidebar() {
         {/* Public tour — always available, useful for sharing/portfolio */}
         <div className="pt-4 mt-4 border-t border-gray-700">
           <Link
-            to="/tour"
+            to={tourNavItem.path}
             className={`nav-link ${
-              location.pathname === '/tour' ? 'nav-link-active' : 'nav-link-inactive text-gray-300'
+              location.pathname === tourNavItem.path ? 'nav-link-active' : 'nav-link-inactive text-gray-300'
             }`}
           >
-            <Compass size={20} className="mr-2" />
-            <span className="text-sm sm:text-base">Take a Tour</span>
+            <TourIcon size={20} className="mr-2" />
+            <span className="text-sm sm:text-base">{tourNavItem.label}</span>
           </Link>
         </div>
 
         {/* Dev-only navigation items */}
         {isDevMode && (
-          <>
-            <div className="pt-4 mt-4 border-t border-gray-700">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 px-2 uppercase tracking-wider">
-                Dev Tools
-              </p>
-              {devNavItems.map((item) => {
-                const isActive = location.pathname === item.path;
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`nav-link ${
-                      isActive ? 'nav-link-active' : 'nav-link-inactive text-gray-300'
-                    }`}
-                  >
-                    <Icon size={20} className="mr-2" />
-                    <span className="text-sm sm:text-base">{item.label}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </>
+          <div className="pt-4 mt-4 border-t border-gray-700">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 px-2 uppercase tracking-wider">
+              Dev Tools
+            </p>
+            {devNavItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`nav-link ${
+                    isActive ? 'nav-link-active' : 'nav-link-inactive text-gray-300'
+                  }`}
+                >
+                  <Icon size={20} className="mr-2" />
+                  <span className="text-sm sm:text-base">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
         )}
       </nav>
     </aside>

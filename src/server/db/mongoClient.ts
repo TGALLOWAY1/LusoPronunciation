@@ -10,6 +10,35 @@ export interface MongoStatus {
   name?: string;
 }
 
+const LOG_PREFIX = '[MongoDB]';
+
+// Register connection-state visibility once per process, independent of how
+// many times `connect()` is called. `mongoose.connection` is a process-wide
+// singleton, so these listeners cover every connection attempt (including
+// ones made outside this wrapper, e.g. in tests).
+let connectionEventListenersRegistered = false;
+
+function registerConnectionEventListeners(): void {
+  if (connectionEventListenersRegistered) {
+    return;
+  }
+  connectionEventListenersRegistered = true;
+
+  mongoose.connection.on('disconnected', () => {
+    console.error(`${LOG_PREFIX} Connection lost (disconnected). Dependent features (auth, progress, invite gating) will fail until it recovers.`);
+  });
+
+  mongoose.connection.on('reconnected', () => {
+    console.log(`${LOG_PREFIX} Connection restored (reconnected).`);
+  });
+
+  mongoose.connection.on('error', (err: unknown) => {
+    console.error(`${LOG_PREFIX} Connection error:`, err instanceof Error ? err.message : err);
+  });
+}
+
+registerConnectionEventListeners();
+
 /**
  * Singleton MongoDB connection manager
  * 

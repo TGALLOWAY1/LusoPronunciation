@@ -33,7 +33,9 @@ export function validateRequiredLaunchEnvVars(env: NodeJS.ProcessEnv = process.e
 }
 
 export function isInviteCodeRequired(env: NodeJS.ProcessEnv = process.env): boolean {
-  return env.REQUIRE_INVITE_CODE !== 'false';
+  // Signups are open by default. Invite gating is only enforced when
+  // REQUIRE_INVITE_CODE is explicitly 'true'.
+  return env.REQUIRE_INVITE_CODE === 'true';
 }
 
 export async function logInviteCodeReadiness(env: NodeJS.ProcessEnv = process.env): Promise<void> {

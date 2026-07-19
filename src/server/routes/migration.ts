@@ -32,54 +32,111 @@ interface MigrationResult {
   errors: string[];
 }
 
-/**
- * Check if a session already exists (idempotency check)
- */
-async function sessionExists(
-  userId: mongoose.Types.ObjectId,
-  startedAt: Date,
-  mode: string
-): Promise<boolean> {
-  // Check if a session exists with the same userId, startedAt (within 1 second), and mode
-  const startWindow = new Date(startedAt.getTime() - 1000);
-  const endWindow = new Date(startedAt.getTime() + 1000);
+// Idempotency match windows — kept identical to the original per-record
+// findOne() semantics (session: +/-1s on startedAt+mode; attempt: +/-5s on
+// createdAt+contentId+contentType), just evaluated in-memory against a single
+// batched fetch instead of one round-trip per record.
+const SESSION_MATCH_WINDOW_MS = 1000;
+const ATTEMPT_MATCH_WINDOW_MS = 5000;
 
-  const existing = await PracticeSessionModel.findOne({
-    userId,
-    mode,
-    startedAt: {
-      $gte: startWindow,
-      $lte: endWindow,
-    },
-  });
+interface ExistingSessionSummary {
+  mode: string;
+  startedAt: Date;
+}
 
-  return !!existing;
+interface ExistingAttemptSummary {
+  contentId: string;
+  createdAt: Date;
 }
 
 /**
- * Check if an attempt already exists (idempotency check)
+ * Pure, DB-free idempotency check for sessions. Extracted so it can be unit
+ * tested without a Mongo connection — mirrors the original findOne() window
+ * query exactly (same userId is assumed to already be baked into `existing`
+ * via the caller's query filter).
  */
-async function attemptExists(
-  userId: mongoose.Types.ObjectId,
+export function sessionAlreadyExists(
+  existing: ExistingSessionSummary[],
+  mode: string,
+  startedAt: Date
+): boolean {
+  const target = startedAt.getTime();
+  if (!Number.isFinite(target)) {
+    return false;
+  }
+  return existing.some(
+    (e) => e.mode === mode && Math.abs(e.startedAt.getTime() - target) <= SESSION_MATCH_WINDOW_MS
+  );
+}
+
+/**
+ * Pure, DB-free idempotency check for attempts (sentence or word — the
+ * caller pre-filters `existing` by contentType via the batched query).
+ */
+export function attemptAlreadyExists(
+  existing: ExistingAttemptSummary[],
   contentId: string,
-  contentType: 'sentence' | 'word',
   createdAt: Date
-): Promise<boolean> {
-  // Check if an attempt exists with the same userId, contentId, contentType, and createdAt (within 5 seconds)
-  const startWindow = new Date(createdAt.getTime() - 5000);
-  const endWindow = new Date(createdAt.getTime() + 5000);
+): boolean {
+  const target = createdAt.getTime();
+  if (!Number.isFinite(target)) {
+    return false;
+  }
+  return existing.some(
+    (e) => e.contentId === contentId && Math.abs(e.createdAt.getTime() - target) <= ATTEMPT_MATCH_WINDOW_MS
+  );
+}
 
-  const existing = await PronunciationAttemptModel.findOne({
-    userId,
-    contentId,
-    contentType,
-    createdAt: {
-      $gte: startWindow,
-      $lte: endWindow,
-    },
-  });
+interface InsertManyOutcome<TDoc extends { _id: mongoose.Types.ObjectId }> {
+  insertedIds: Set<string>;
+  failures: Array<{ doc: TDoc; error: unknown }>;
+}
 
-  return !!existing;
+/**
+ * insertMany wrapper that tolerates partial failure. With `ordered: false`,
+ * MongoDB attempts every document regardless of earlier failures; the error
+ * thrown on partial failure carries the documents that *did* land
+ * (`insertedDocs`) so we can tell which of our pre-assigned `_id`s succeeded
+ * and treat the rest as per-record failures (duplicate-key races, schema
+ * validation) rather than failing the whole batch.
+ */
+async function insertManyTolerant<TDoc extends { _id: mongoose.Types.ObjectId }>(
+  model: mongoose.Model<any>,
+  docs: TDoc[]
+): Promise<InsertManyOutcome<TDoc>> {
+  if (docs.length === 0) {
+    return { insertedIds: new Set(), failures: [] };
+  }
+
+  try {
+    const inserted = (await model.insertMany(docs, { ordered: false })) as unknown as TDoc[];
+    return {
+      insertedIds: new Set(inserted.map((d) => String(d._id))),
+      failures: [],
+    };
+  } catch (error: any) {
+    const insertedDocs: TDoc[] = Array.isArray(error?.insertedDocs) ? error.insertedDocs : [];
+    const insertedIds = new Set(insertedDocs.map((d) => String((d as any)._id)));
+
+    const looksLikePartialBulkFailure =
+      insertedIds.size > 0 ||
+      Array.isArray(error?.writeErrors) ||
+      error?.name === 'MongoBulkWriteError' ||
+      error?.name === 'MongoServerError' ||
+      error?.name === 'ValidationError';
+
+    if (!looksLikePartialBulkFailure) {
+      // Not a recognizable per-document failure shape (e.g. connection
+      // dropped) — don't silently swallow it as "every record failed".
+      throw error;
+    }
+
+    const failures = docs
+      .filter((doc) => !insertedIds.has(String(doc._id)))
+      .map((doc) => ({ doc, error }));
+
+    return { insertedIds, failures };
+  }
 }
 
 /**
@@ -291,30 +348,63 @@ router.post('/local-storage', requireAuth, async (req: AuthenticatedRequest, res
     console.log(`[Migration] Starting migration for user ${userId}: ${payload.sessions.length} sessions, ${payload.sentenceAttempts.length} sentence attempts, ${payload.wordAttempts.length} word attempts`);
 
     // Step 1: Import sessions and build sessionId mapping
+    //
+    // Batched: one existence-check query covering every session in the
+    // payload (instead of one findOne() per record), then one insertMany()
+    // for whatever doesn't already exist.
     const sessionIdMap = new Map<string, mongoose.Types.ObjectId>();
 
-    for (const legacySession of payload.sessions) {
+    const sessionStartedAts = payload.sessions.map((s) => new Date(s.startedAt));
+    const sessionModes = Array.from(new Set(payload.sessions.map((s) => s.mode)));
+    const finiteSessionStarts = sessionStartedAts
+      .map((d) => d.getTime())
+      .filter((t) => Number.isFinite(t));
+
+    let existingSessions: ExistingSessionSummary[] = [];
+    if (payload.sessions.length > 0) {
+      const sessionQuery: Record<string, unknown> = { userId: userIdObject };
+      if (sessionModes.length > 0) {
+        sessionQuery.mode = { $in: sessionModes };
+      }
+      if (finiteSessionStarts.length > 0) {
+        sessionQuery.startedAt = {
+          $gte: new Date(Math.min(...finiteSessionStarts) - SESSION_MATCH_WINDOW_MS),
+          $lte: new Date(Math.max(...finiteSessionStarts) + SESSION_MATCH_WINDOW_MS),
+        };
+      }
+      existingSessions = (await PracticeSessionModel.find(sessionQuery, {
+        mode: 1,
+        startedAt: 1,
+      }).lean()) as unknown as ExistingSessionSummary[];
+    }
+
+    const newSessionRecords: Array<{
+      _id: mongoose.Types.ObjectId;
+      legacySession: LegacyPracticeSession;
+    }> = [];
+    const sessionDataById = new Map<string, ReturnType<typeof convertLegacySession>>();
+
+    for (let i = 0; i < payload.sessions.length; i++) {
+      const legacySession = payload.sessions[i];
+      const startedAt = sessionStartedAts[i];
+
+      if (sessionAlreadyExists(existingSessions, legacySession.mode, startedAt)) {
+        result.skippedSessions++;
+        console.log(`[Migration] Skipping duplicate session: ${legacySession.sessionId}`);
+        continue;
+      }
+
       try {
-        const startedAt = new Date(legacySession.startedAt);
-
-        // Check if session already exists (idempotency)
-        const exists = await sessionExists(userIdObject, startedAt, legacySession.mode);
-        if (exists) {
-          result.skippedSessions++;
-          console.log(`[Migration] Skipping duplicate session: ${legacySession.sessionId}`);
-          continue;
-        }
-
-        // Convert and create session
+        // Convert (validation happens here, per-record, same as before)
         const sessionData = convertLegacySession(legacySession, userIdObject);
-        const sessionDoc = new PracticeSessionModel(sessionData);
-        await sessionDoc.save();
-
-        // Map legacy sessionId to new Mongo _id
-        sessionIdMap.set(legacySession.sessionId, sessionDoc._id);
-        result.importedSessions++;
-
-        console.log(`[Migration] Imported session: ${legacySession.sessionId} -> ${sessionDoc._id}`);
+        newSessionRecords.push({
+          _id: new mongoose.Types.ObjectId(),
+          legacySession,
+        });
+        // Stash the converted data alongside the record via a side map keyed
+        // by _id so we can build the insertMany payload below without a
+        // second conversion pass.
+        sessionDataById.set(String(newSessionRecords[newSessionRecords.length - 1]._id), sessionData);
       } catch (error) {
         const errorMsg = `Failed to import session ${legacySession.sessionId}: ${error instanceof Error ? error.message : 'Unknown error'}`;
         result.errors.push(errorMsg);
@@ -322,33 +412,69 @@ router.post('/local-storage', requireAuth, async (req: AuthenticatedRequest, res
       }
     }
 
-    // Step 2: Import sentence attempts
-    for (const legacyAttempt of payload.sentenceAttempts) {
-      try {
-        const createdAt = new Date(legacyAttempt.createdAt);
+    if (newSessionRecords.length > 0) {
+      const docsToInsert = newSessionRecords.map((record) => ({
+        _id: record._id,
+        ...sessionDataById.get(String(record._id)),
+      }));
 
-        // Check if attempt already exists (idempotency)
-        const exists = await attemptExists(
-          userIdObject,
-          legacyAttempt.sentenceId,
-          'sentence',
-          createdAt
-        );
-        if (exists) {
-          result.skippedAttempts++;
-          continue;
+      const { insertedIds, failures } = await insertManyTolerant(
+        PracticeSessionModel,
+        docsToInsert as Array<{ _id: mongoose.Types.ObjectId }>
+      );
+
+      for (const record of newSessionRecords) {
+        const idStr = String(record._id);
+        if (insertedIds.has(idStr)) {
+          sessionIdMap.set(record.legacySession.sessionId, record._id);
+          result.importedSessions++;
+          console.log(`[Migration] Imported session: ${record.legacySession.sessionId} -> ${record._id}`);
         }
+      }
 
-        // Convert and create attempt
-        const attemptData = convertLegacySentenceAttempt(
-          legacyAttempt,
-          userIdObject,
-          sessionIdMap
-        );
-        const attemptDoc = new PronunciationAttemptModel(attemptData);
-        await attemptDoc.save();
+      for (const failure of failures) {
+        const failedId = String((failure.doc as { _id: mongoose.Types.ObjectId })._id);
+        const record = newSessionRecords.find((r) => String(r._id) === failedId);
+        const errorMsg = `Failed to import session ${record?.legacySession.sessionId ?? 'unknown'}: ${
+          failure.error instanceof Error ? failure.error.message : 'Unknown error'
+        }`;
+        result.errors.push(errorMsg);
+        console.error(`[Migration] ${errorMsg}`, failure.error);
+      }
+    }
+    sessionDataById.clear();
 
-        result.importedAttempts++;
+    // Step 2: Import sentence attempts (same batched pattern)
+    const sentenceContentIds = Array.from(
+      new Set(payload.sentenceAttempts.map((a) => a.sentenceId))
+    );
+    const existingSentenceAttempts: ExistingAttemptSummary[] =
+      sentenceContentIds.length > 0
+        ? ((await PronunciationAttemptModel.find(
+            { userId: userIdObject, contentType: 'sentence', contentId: { $in: sentenceContentIds } },
+            { contentId: 1, createdAt: 1 }
+          ).lean()) as unknown as ExistingAttemptSummary[])
+        : [];
+
+    const newSentenceAttemptRecords: Array<{
+      _id: mongoose.Types.ObjectId;
+      legacyAttempt: SentencePracticeAttempt;
+    }> = [];
+    const sentenceAttemptDataById = new Map<string, ReturnType<typeof convertLegacySentenceAttempt>>();
+
+    for (const legacyAttempt of payload.sentenceAttempts) {
+      const createdAt = new Date(legacyAttempt.createdAt);
+
+      if (attemptAlreadyExists(existingSentenceAttempts, legacyAttempt.sentenceId, createdAt)) {
+        result.skippedAttempts++;
+        continue;
+      }
+
+      try {
+        const attemptData = convertLegacySentenceAttempt(legacyAttempt, userIdObject, sessionIdMap);
+        const _id = new mongoose.Types.ObjectId();
+        newSentenceAttemptRecords.push({ _id, legacyAttempt });
+        sentenceAttemptDataById.set(String(_id), attemptData);
       } catch (error) {
         const errorMsg = `Failed to import sentence attempt ${legacyAttempt.attemptId}: ${error instanceof Error ? error.message : 'Unknown error'}`;
         result.errors.push(errorMsg);
@@ -356,37 +482,95 @@ router.post('/local-storage', requireAuth, async (req: AuthenticatedRequest, res
       }
     }
 
-    // Step 3: Import word attempts
-    for (const legacyAttempt of payload.wordAttempts) {
-      try {
-        const createdAt = new Date(legacyAttempt.createdAt);
+    if (newSentenceAttemptRecords.length > 0) {
+      const docsToInsert = newSentenceAttemptRecords.map((record) => ({
+        _id: record._id,
+        ...sentenceAttemptDataById.get(String(record._id)),
+      }));
 
-        // Check if attempt already exists (idempotency)
-        const exists = await attemptExists(
-          userIdObject,
-          legacyAttempt.wordId,
-          'word',
-          createdAt
-        );
-        if (exists) {
-          result.skippedAttempts++;
-          continue;
+      const { insertedIds, failures } = await insertManyTolerant(
+        PronunciationAttemptModel,
+        docsToInsert as Array<{ _id: mongoose.Types.ObjectId }>
+      );
+
+      for (const record of newSentenceAttemptRecords) {
+        if (insertedIds.has(String(record._id))) {
+          result.importedAttempts++;
         }
+      }
 
-        // Convert and create attempt
-        const attemptData = convertLegacyWordAttempt(
-          legacyAttempt,
-          userIdObject,
-          sessionIdMap
-        );
-        const attemptDoc = new PronunciationAttemptModel(attemptData);
-        await attemptDoc.save();
+      for (const failure of failures) {
+        const failedId = String((failure.doc as { _id: mongoose.Types.ObjectId })._id);
+        const record = newSentenceAttemptRecords.find((r) => String(r._id) === failedId);
+        const errorMsg = `Failed to import sentence attempt ${record?.legacyAttempt.attemptId ?? 'unknown'}: ${
+          failure.error instanceof Error ? failure.error.message : 'Unknown error'
+        }`;
+        result.errors.push(errorMsg);
+        console.error(`[Migration] ${errorMsg}`, failure.error);
+      }
+    }
 
-        result.importedAttempts++;
+    // Step 3: Import word attempts (same batched pattern)
+    const wordContentIds = Array.from(new Set(payload.wordAttempts.map((a) => a.wordId)));
+    const existingWordAttempts: ExistingAttemptSummary[] =
+      wordContentIds.length > 0
+        ? ((await PronunciationAttemptModel.find(
+            { userId: userIdObject, contentType: 'word', contentId: { $in: wordContentIds } },
+            { contentId: 1, createdAt: 1 }
+          ).lean()) as unknown as ExistingAttemptSummary[])
+        : [];
+
+    const newWordAttemptRecords: Array<{
+      _id: mongoose.Types.ObjectId;
+      legacyAttempt: WordPracticeAttempt;
+    }> = [];
+    const wordAttemptDataById = new Map<string, ReturnType<typeof convertLegacyWordAttempt>>();
+
+    for (const legacyAttempt of payload.wordAttempts) {
+      const createdAt = new Date(legacyAttempt.createdAt);
+
+      if (attemptAlreadyExists(existingWordAttempts, legacyAttempt.wordId, createdAt)) {
+        result.skippedAttempts++;
+        continue;
+      }
+
+      try {
+        const attemptData = convertLegacyWordAttempt(legacyAttempt, userIdObject, sessionIdMap);
+        const _id = new mongoose.Types.ObjectId();
+        newWordAttemptRecords.push({ _id, legacyAttempt });
+        wordAttemptDataById.set(String(_id), attemptData);
       } catch (error) {
         const errorMsg = `Failed to import word attempt ${legacyAttempt.attemptId}: ${error instanceof Error ? error.message : 'Unknown error'}`;
         result.errors.push(errorMsg);
         console.error(`[Migration] ${errorMsg}`, error);
+      }
+    }
+
+    if (newWordAttemptRecords.length > 0) {
+      const docsToInsert = newWordAttemptRecords.map((record) => ({
+        _id: record._id,
+        ...wordAttemptDataById.get(String(record._id)),
+      }));
+
+      const { insertedIds, failures } = await insertManyTolerant(
+        PronunciationAttemptModel,
+        docsToInsert as Array<{ _id: mongoose.Types.ObjectId }>
+      );
+
+      for (const record of newWordAttemptRecords) {
+        if (insertedIds.has(String(record._id))) {
+          result.importedAttempts++;
+        }
+      }
+
+      for (const failure of failures) {
+        const failedId = String((failure.doc as { _id: mongoose.Types.ObjectId })._id);
+        const record = newWordAttemptRecords.find((r) => String(r._id) === failedId);
+        const errorMsg = `Failed to import word attempt ${record?.legacyAttempt.attemptId ?? 'unknown'}: ${
+          failure.error instanceof Error ? failure.error.message : 'Unknown error'
+        }`;
+        result.errors.push(errorMsg);
+        console.error(`[Migration] ${errorMsg}`, failure.error);
       }
     }
 
