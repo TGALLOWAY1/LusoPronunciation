@@ -56,6 +56,9 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [inviteCode, setInviteCode] = useState('');
+  // Honeypot: bound to a visually-hidden input real users never fill.
+  const [botField, setBotField] = useState('');
   const [error, setError] = useState<string | null>(oauthError || null);
   const [loading, setLoading] = useState(false);
   const [providers, setProviders] = useState<string[]>(['email']);
@@ -73,7 +76,10 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
       let response: AuthResponse;
 
       if (mode === 'register') {
-        response = await register(email, password, displayName || undefined);
+        response = await register(email, password, displayName || undefined, {
+          inviteCode: inviteCode.trim() || undefined,
+          botField,
+        });
       } else {
         response = await login(email, password);
       }
@@ -87,13 +93,13 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">
+    <div className="max-w-md w-full mx-auto mt-8 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">
         {mode === 'login' ? 'Welcome Back' : 'Create Account'}
       </h2>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
+        <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 rounded text-sm">
           {error}
         </div>
       )}
@@ -132,7 +138,7 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
           {providers.includes('google') && (
             <a
               href="/api/auth/oauth/google"
-              className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-white text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
             >
               <GoogleIcon />
               Continue with Google
@@ -164,17 +170,39 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
       {/* Divider */}
       <div className="relative mb-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-300" />
+          <div className="w-full border-t border-gray-300 dark:border-gray-600" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">or continue with email</span>
+          <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+            or continue with email
+          </span>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/*
+          Honeypot: visually hidden and pulled from the tab order + a11y tree.
+          Real users never see or fill it; bots that auto-fill every field will,
+          and the server rejects any registration where it is non-empty.
+        */}
+        <div aria-hidden="true" className="hidden">
+          <label htmlFor="botField">Leave this field empty</label>
+          <input
+            id="botField"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={botField}
+            onChange={(e) => setBotField(e.target.value)}
+          />
+        </div>
+
         {mode === 'register' && (
           <div>
-            <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="displayName"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
               Display Name (optional)
             </label>
             <input
@@ -182,14 +210,17 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 placeholder-gray-400 dark:placeholder-gray-500"
               placeholder="Your name"
             />
           </div>
         )}
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
             Email
           </label>
           <input
@@ -198,13 +229,16 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 placeholder-gray-400 dark:placeholder-gray-500"
             placeholder="your@email.com"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
             Password
           </label>
           <input
@@ -214,15 +248,38 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={mode === 'register' ? 6 : undefined}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 placeholder-gray-400 dark:placeholder-gray-500"
             placeholder={mode === 'register' ? 'At least 6 characters' : 'Your password'}
           />
         </div>
 
+        {mode === 'register' && (
+          <div>
+            <label
+              htmlFor="inviteCode"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
+              Invite code (optional)
+            </label>
+            <input
+              id="inviteCode"
+              type="text"
+              value={inviteCode}
+              onChange={(e) => setInviteCode(e.target.value)}
+              autoComplete="off"
+              className="w-full px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 placeholder-gray-400 dark:placeholder-gray-500"
+              placeholder="Have a code? Enter it for extra access"
+            />
+            <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+              Not required to sign up. A code lifts the daily assessment limit.
+            </p>
+          </div>
+        )}
+
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-2 px-4 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? 'Please wait...' : mode === 'login' ? 'Login' : 'Register'}
         </button>
@@ -235,7 +292,7 @@ export default function AuthForm({ onSuccess, initialMode = 'login', oauthError 
             setMode(mode === 'login' ? 'register' : 'login');
             setError(null);
           }}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300"
         >
           {mode === 'login'
             ? "Don't have an account? Register"

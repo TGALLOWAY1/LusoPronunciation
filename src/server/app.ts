@@ -12,6 +12,7 @@ import oauthRouter from './routes/oauth';
 import practiceRouter from './routes/practice';
 import migrationRouter from './routes/migration';
 import flashcardsRouter from './routes/flashcards';
+import assessmentQuotaRouter from './routes/assessmentQuota';
 import customSentencesRouter from './routes/customSentences';
 import lexiconReviewRouter from './routes/lexiconReview';
 import { getCustomAudioBaseDir } from './services/customAudioStorage';
@@ -121,6 +122,7 @@ app.use(
   migrationRouter
 );
 app.use('/api/flashcards', flashcardsRouter);
+app.use('/api/assessment-quota', assessmentQuotaRouter);
 app.use('/api/sentences', customSentencesRouter);
 app.use('/api/admin/lexicon', lexiconReviewRouter);
 

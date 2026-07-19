@@ -39,9 +39,9 @@ describe('startupChecks', () => {
     ).toThrow(/AZURE_SPEECH_KEY/);
   });
 
-  it('treats invite gating as enabled unless REQUIRE_INVITE_CODE=false', () => {
-    expect(isInviteCodeRequired({})).toBe(true);
-    expect(isInviteCodeRequired({ REQUIRE_INVITE_CODE: 'true' })).toBe(true);
+  it('treats invite gating as disabled (open signups) unless REQUIRE_INVITE_CODE=true', () => {
+    expect(isInviteCodeRequired({})).toBe(false);
     expect(isInviteCodeRequired({ REQUIRE_INVITE_CODE: 'false' })).toBe(false);
+    expect(isInviteCodeRequired({ REQUIRE_INVITE_CODE: 'true' })).toBe(true);
   });
 });

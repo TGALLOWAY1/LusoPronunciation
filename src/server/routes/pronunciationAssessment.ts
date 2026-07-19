@@ -124,6 +124,7 @@ import {
 } from '../lib/audioConversion';
 import { createWorkspace, type TempWorkspace } from '../lib/tempWorkspace';
 import { measureAsync } from '../lib/timing';
+import { assessmentQuotaMiddleware } from '../middleware/assessmentQuota';
 
 // Web API Request/Response types (available in Node.js 18+)
 // Using global types - no import needed
@@ -1199,7 +1200,16 @@ router.get('/speech-health', async (req: ExpressRequest, res: ExpressResponse) =
     });
   }
 });
-router.post('/assessment', pronunciationUploadMiddleware, handlePronunciationAssessmentExpress);
+// assessmentQuotaMiddleware runs BEFORE multer buffers the upload and before
+// any audio conversion / Azure call, so a quota-exceeded request is rejected
+// without spending upload bandwidth or Azure cost. It reserves a persistent
+// (DB-backed) usage slot and injects quota state into the response.
+router.post(
+  '/assessment',
+  assessmentQuotaMiddleware,
+  pronunciationUploadMiddleware,
+  handlePronunciationAssessmentExpress
+);
 router.use(pronunciationUploadErrorHandler);
 
 /**
@@ -1207,7 +1217,12 @@ router.use(pronunciationUploadErrorHandler);
  * POST /api/pronunciation-assessment
  */
 export const legacyPronunciationAssessmentRouter = Router();
-legacyPronunciationAssessmentRouter.post('/', pronunciationUploadMiddleware, handlePronunciationAssessmentExpress);
+legacyPronunciationAssessmentRouter.post(
+  '/',
+  assessmentQuotaMiddleware,
+  pronunciationUploadMiddleware,
+  handlePronunciationAssessmentExpress
+);
 legacyPronunciationAssessmentRouter.use(pronunciationUploadErrorHandler);
 
 export default router;

@@ -11,6 +11,13 @@ export interface IUserDocument extends Document {
   oauthProvider?: 'github' | 'linkedin' | 'google';
   oauthId?: string;
   avatarUrl?: string;
+  /**
+   * When true, this account is exempt from the per-user daily/lifetime
+   * assessment caps enforced by the assessmentQuota middleware. Set true for
+   * accounts created with a valid invite code (a trusted bypass). The GLOBAL
+   * circuit breaker still applies to everyone.
+   */
+  assessmentExempt?: boolean;
   settings?: {
     language?: string;
     theme?: 'light' | 'dark' | 'auto';
@@ -49,6 +56,10 @@ const UserSchema = new Schema<IUserDocument>(
     },
     avatarUrl: {
       type: String,
+    },
+    assessmentExempt: {
+      type: Boolean,
+      default: false,
     },
     settings: {
       language: String,

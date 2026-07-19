@@ -16,6 +16,7 @@ import { alignUiTokensToAzureWords } from '@/pipeline/sentenceWordRefs';
 import { computeTrustLevel, getTrustMessage } from '@/lib/assessmentTrust';
 import { useSettingsStore } from '@/state/settingsStore';
 import { useCanonicalWordMap } from '@/hooks/useCanonicalWordMap';
+import { useAssessmentQuota } from '@/hooks/useAssessmentQuota';
 import PremiumRecordButton from '@/components/common/PremiumRecordButton';
 import PremiumPlayButton from '@/components/common/PremiumPlayButton';
 import { buildCoachingSuggestion } from '@/lib/coaching/coachingEngine';
@@ -333,9 +334,46 @@ export default function LivePracticeSection({
     resetRecording();
   }, [coachingSuggestion, resetRecording]);
 
-  const quotaExhausted = Boolean(dailyQuota) && dailyQuota!.remaining <= 0;
+  // Assessment allowance. `dailyQuota` (from X-Quota-* response headers) updates
+  // immediately after each attempt; the useAssessmentQuota hook provides the
+  // initial snapshot plus lifetime + exempt state, and is re-read after each
+  // scored attempt via the attempts-count refresh token.
+  const { quota: assessmentQuota } = useAssessmentQuota(attempts.length);
+  const isExempt = assessmentQuota?.exempt ?? false;
+
+  const dailyLimitNum = dailyQuota?.limit ?? assessmentQuota?.dailyLimit ?? null;
+  const dailyRemainingNum = dailyQuota
+    ? dailyQuota.remaining
+    : assessmentQuota
+      ? Math.max(0, assessmentQuota.dailyLimit - assessmentQuota.dailyUsed)
+      : null;
+  const dailyUsedNum =
+    dailyLimitNum !== null && dailyRemainingNum !== null
+      ? Math.max(0, dailyLimitNum - dailyRemainingNum)
+      : assessmentQuota?.dailyUsed ?? null;
+
+  const lifetimeRemaining = assessmentQuota
+    ? Math.max(0, assessmentQuota.lifetimeLimit - assessmentQuota.lifetimeUsed)
+    : null;
+
+  const dailyExhausted = !isExempt && dailyRemainingNum !== null && dailyRemainingNum <= 0;
+  const lifetimeExhausted =
+    !isExempt &&
+    assessmentQuota != null &&
+    assessmentQuota.lifetimeUsed >= assessmentQuota.lifetimeLimit;
+
+  // Blocks new recordings (record buttons disabled) when either cap is hit.
+  const quotaExhausted = dailyExhausted || lifetimeExhausted;
   const quotaLow =
-    Boolean(dailyQuota) && dailyQuota!.remaining > 0 && dailyQuota!.remaining <= 5;
+    !isExempt &&
+    !quotaExhausted &&
+    dailyRemainingNum !== null &&
+    dailyRemainingNum > 0 &&
+    dailyRemainingNum <= 5;
+  // Show a subtle "N of 10 today" indicator whenever we have numbers for a
+  // non-exempt user and neither cap is currently blocking.
+  const showDailyCounter =
+    !isExempt && !quotaExhausted && dailyLimitNum !== null && dailyUsedNum !== null;
 
   return (
     <div className="space-y-6" data-testid="practice-content">
@@ -518,25 +556,54 @@ export default function LivePracticeSection({
         )}
       </div>
 
+      {/* Lifetime cap reached — honest explanation of why the cap exists */}
+      {lifetimeExhausted && (
+        <div
+          role="status"
+          className="rounded-lg p-4 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-sm text-red-800 dark:text-red-200 space-y-1.5"
+        >
+          <p className="font-semibold">You've reached the lifetime assessment limit for this free account.</p>
+          <p>
+            Every pronunciation check runs through Azure Speech, which costs money on this personal
+            project — so free accounts get{' '}
+            {assessmentQuota ? assessmentQuota.lifetimeLimit : ''} lifetime assessments. You can keep
+            using the rest of the app, and your history stays available.
+          </p>
+          <p>
+            Have an invite code? Registering with one lifts the cap. Otherwise, reach out to the app
+            owner for access.
+          </p>
+        </div>
+      )}
+
       {/* Daily quota — subtle status under the controls */}
-      {dailyQuota && (quotaExhausted || quotaLow) && (
-        <div className="flex justify-center">
+      {!lifetimeExhausted && (dailyExhausted || quotaLow || showDailyCounter) && (
+        <div className="flex flex-col items-center gap-1">
           <span
             className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${
-              quotaExhausted
+              dailyExhausted
                 ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
-                : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200'
+                : quotaLow
+                  ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200'
+                  : 'bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300'
             }`}
-            title={`Daily limit resets at 00:00 UTC. Limit: ${dailyQuota.limit}.`}
+            title={`Daily assessments reset at 00:00 UTC.${dailyLimitNum !== null ? ` Daily limit: ${dailyLimitNum}.` : ''}`}
           >
             <span
-              className={`w-1.5 h-1.5 rounded-full ${quotaExhausted ? 'bg-red-500' : 'bg-amber-500'}`}
+              className={`w-1.5 h-1.5 rounded-full ${
+                dailyExhausted ? 'bg-red-500' : quotaLow ? 'bg-amber-500' : 'bg-primary-500'
+              }`}
               aria-hidden="true"
             />
-            {quotaExhausted
+            {dailyExhausted
               ? 'Daily limit reached — resets at 00:00 UTC'
-              : `${dailyQuota.remaining} of ${dailyQuota.limit} attempts left today`}
+              : `${dailyUsedNum ?? 0} of ${dailyLimitNum} assessments used today`}
           </span>
+          {lifetimeRemaining !== null && (
+            <span className="text-[11px] text-gray-400 dark:text-gray-500">
+              {lifetimeRemaining} of {assessmentQuota?.lifetimeLimit} lifetime assessments left
+            </span>
+          )}
         </div>
       )}
 

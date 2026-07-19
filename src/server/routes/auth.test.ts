@@ -244,3 +244,104 @@ describe('POST /api/auth/register — atomic invite-code consumption', () => {
     expect(inviteFindOneAndUpdateMock).not.toHaveBeenCalled();
   });
 });
+
+describe('POST /api/auth/register — open signups (default) + anti-bot', () => {
+  beforeEach(() => {
+    process.env.JWT_SECRET = 'a'.repeat(32);
+    // Default (unset) means OPEN signups now.
+    delete process.env.REQUIRE_INVITE_CODE;
+    resetInvite();
+
+    inviteFindOneAndUpdateMock.mockReset();
+    inviteFindOneAndUpdateMock.mockImplementation(async (filter: any) => {
+      const now = new Date();
+      const codeMatches = filter.code === invite.code;
+      const activeMatches = !filter.isActive || invite.isActive === filter.isActive;
+      const notExpired = !invite.expiresAt || invite.expiresAt > now;
+      const underCap = invite.usedCount < invite.maxUses;
+      if (!codeMatches || !activeMatches || !notExpired || !underCap) {
+        return null;
+      }
+      invite.usedCount += 1;
+      return { ...invite };
+    });
+
+    inviteUpdateOneMock.mockReset();
+    inviteUpdateOneMock.mockImplementation(async (_filter: any, update: any) => {
+      if (update?.$inc?.usedCount) invite.usedCount += update.$inc.usedCount;
+      if (update?.$push?.usedBy) invite.usedBy.push(update.$push.usedBy);
+      return { acknowledged: true };
+    });
+
+    userFindOneMock.mockReset();
+    userFindOneMock.mockResolvedValue(null);
+    userSaveMock.mockReset();
+    userSaveMock.mockResolvedValue(undefined);
+  });
+
+  it('registers without any invite code and does NOT consume a code (standard account)', async () => {
+    const handler = getRegisterHandler();
+    const req = createReq(validRegistrationBody({ inviteCode: undefined }));
+    const res = createRes();
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(201);
+    expect(inviteFindOneAndUpdateMock).not.toHaveBeenCalled();
+    // Standard accounts are not marked exempt.
+    expect(userSaveMock.mock.calls[0][0].assessmentExempt).toBe(false);
+  });
+
+  it('registering with a VALID optional code consumes it and marks the account exempt', async () => {
+    const handler = getRegisterHandler();
+    const req = createReq(validRegistrationBody({ inviteCode: 'launch-access' }));
+    const res = createRes();
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(201);
+    expect(invite.usedCount).toBe(1);
+    expect(userSaveMock.mock.calls[0][0].assessmentExempt).toBe(true);
+  });
+
+  it('registering with an INVALID optional code still fails (never silently ignored)', async () => {
+    const handler = getRegisterHandler();
+    const req = createReq(validRegistrationBody({ inviteCode: 'WRONG-CODE' }));
+    const res = createRes();
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual({
+      error: 'Invalid invite code',
+      message: 'This invite code is not valid or has expired.',
+    });
+    expect(userSaveMock).not.toHaveBeenCalled();
+  });
+
+  it('rejects registration when the honeypot field is filled', async () => {
+    const handler = getRegisterHandler();
+    const req = createReq(validRegistrationBody({ inviteCode: undefined, botField: 'i-am-a-bot' }));
+    const res = createRes();
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(400);
+    expect(userSaveMock).not.toHaveBeenCalled();
+    expect(inviteFindOneAndUpdateMock).not.toHaveBeenCalled();
+  });
+
+  it('rejects registration from a disposable email domain', async () => {
+    const handler = getRegisterHandler();
+    const req = createReq(
+      validRegistrationBody({ inviteCode: undefined, email: 'throwaway@mailinator.com' })
+    );
+    const res = createRes();
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe('Invalid email');
+    expect(userSaveMock).not.toHaveBeenCalled();
+  });
+});

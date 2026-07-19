@@ -5,6 +5,7 @@ import { UserModel } from '../models/UserModel';
 import { InviteCodeModel } from '../models/InviteCodeModel';
 import { mapUserDocToDto } from '../mappers/userMapper';
 import { createRateLimit, parsePositiveIntEnv } from '../middleware/rateLimit';
+import { isDisposableEmailDomain } from '../lib/disposableEmailDomains';
 
 const router = Router();
 
@@ -92,10 +93,13 @@ const loginIpLimit = createRateLimit({
   message: 'Too many login attempts from this network. Try again later.',
 });
 
+// Registration is a bot magnet now that signups are open. Keep this tight —
+// 5 attempts/hour/IP by default (down from 10). A legitimate human creating an
+// account never needs more than a couple of tries.
 const registerIpLimit = createRateLimit({
   name: 'auth:register:ip',
   windowMs: parsePositiveIntEnv(process.env.AUTH_REGISTER_IP_WINDOW_MS, 60 * 60 * 1000),
-  max: parsePositiveIntEnv(process.env.AUTH_REGISTER_IP_MAX, 10),
+  max: parsePositiveIntEnv(process.env.AUTH_REGISTER_IP_MAX, 5),
   message: 'Too many sign-up attempts from this network. Try again later.',
 });
 
@@ -118,6 +122,19 @@ router.post('/register', registerIpLimit, async (req: Request, res: Response) =>
   try {
     const { email, password, displayName, inviteCode } = req.body ?? {};
 
+    // ──────────────── Honeypot (anti-bot) ────────────────
+    // AuthForm renders a visually-hidden `botField` input that real users never
+    // see or fill. Any non-empty value means an automated form-filler. Reject
+    // with a deliberately generic error so scrapers can't learn the trap.
+    const honeypot = req.body?.botField;
+    if (typeof honeypot === 'string' && honeypot.trim() !== '') {
+      console.warn(`[Auth] registration rejected by honeypot ip=${req.ip}`);
+      return res.status(400).json({
+        error: 'Invalid registration',
+        message: 'Unable to complete registration. Please try again.',
+      });
+    }
+
     if (
       !email ||
       typeof email !== 'string' ||
@@ -127,6 +144,17 @@ router.post('/register', registerIpLimit, async (req: Request, res: Response) =>
       return res.status(400).json({
         error: 'Invalid email',
         message: 'Please provide a valid email address',
+      });
+    }
+
+    // Best-effort disposable/throwaway-inbox rejection. Combined with the
+    // honeypot and per-IP rate limit, this raises the cost of low-effort bot
+    // signups. It is NOT a security boundary — see disposableEmailDomains.ts.
+    if (isDisposableEmailDomain(email)) {
+      console.warn(`[Auth] registration rejected: disposable email domain ip=${req.ip}`);
+      return res.status(400).json({
+        error: 'Invalid email',
+        message: 'Please register with a non-disposable email address.',
       });
     }
 
@@ -153,7 +181,16 @@ router.post('/register', registerIpLimit, async (req: Request, res: Response) =>
     }
 
     // ──────────────── Invite code validation ────────────────
-    const requireInvite = process.env.REQUIRE_INVITE_CODE !== 'false';
+    //
+    // Signups are OPEN by default now: registration is only gated on an invite
+    // code when REQUIRE_INVITE_CODE is explicitly set to 'true'. Regardless of
+    // gating, an invite code remains a TRUSTED BYPASS — if a code is provided it
+    // is validated and consumed, and the resulting account is marked
+    // `assessmentExempt` (no per-user assessment caps). A code that is provided
+    // but invalid always fails (we never silently ignore a typed code).
+    const requireInvite = process.env.REQUIRE_INVITE_CODE === 'true';
+    const codeProvided =
+      typeof inviteCode === 'string' && inviteCode.trim() !== '';
     let normalizedCode: string | undefined;
     let consumedInviteCode = false;
 
@@ -170,17 +207,18 @@ router.post('/register', registerIpLimit, async (req: Request, res: Response) =>
       });
     };
 
-    if (requireInvite) {
-      if (
-        !inviteCode ||
-        typeof inviteCode !== 'string' ||
-        inviteCode.trim() === '' ||
-        inviteCode.length > MAX_INVITE_CODE_LENGTH
-      ) {
+    if (requireInvite || codeProvided) {
+      // When gating is on but no code was supplied, this is the "you must have
+      // an invite" path. When a code was supplied (gated or not), validate it.
+      if (!codeProvided) {
         return res.status(403).json({
           error: 'Invite code required',
           message: 'An invite code is required to register. Contact the app owner for access.',
         });
+      }
+
+      if (typeof inviteCode !== 'string' || inviteCode.length > MAX_INVITE_CODE_LENGTH) {
+        return inviteFailure();
       }
 
       normalizedCode = inviteCode.trim().toUpperCase();
@@ -240,11 +278,13 @@ router.post('/register', registerIpLimit, async (req: Request, res: Response) =>
       // Hash password
       const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
 
-      // Create user
+      // Create user. Accounts created with a valid invite code are trusted and
+      // exempt from the per-user daily/lifetime assessment caps.
       const userDoc = new UserModel({
         email: email.toLowerCase(),
         passwordHash,
         displayName: typeof displayName === 'string' ? displayName.trim() || undefined : undefined,
+        assessmentExempt: consumedInviteCode,
       });
 
       await userDoc.save();
