@@ -84,8 +84,15 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </div>
         </nav>
 
-        {/* Single content mount — rendered exactly once across breakpoints */}
-        <main className="flex-1 p-4 lg:p-6 overflow-auto">{children}</main>
+        {/* Single content mount — rendered exactly once across breakpoints.
+            id + tabIndex let route changes move focus here (see App.tsx). */}
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="flex-1 p-4 lg:p-6 overflow-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500"
+        >
+          {children}
+        </main>
       </div>
     </div>
   );

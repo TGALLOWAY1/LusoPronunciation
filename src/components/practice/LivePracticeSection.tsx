@@ -51,6 +51,11 @@ export default function LivePracticeSection({
   const [showEnglish, setShowEnglish] = useState(false);
   const [selectedWord, setSelectedWord] = useState<NormalizedWordFeedback | null>(null);
   const lastShownKeyRef = useRef<string | null>(null);
+  // "Try again" resets the current attempt and then immediately starts a new
+  // recording. resetRecording() drives attemptState back to 'idle' via state
+  // updates rather than synchronously, so we defer the startRecording() call
+  // to an effect keyed on that transition instead of racing it with a timer.
+  const retryRecordingPendingRef = useRef(false);
 
   const {
     isRecording,
@@ -91,6 +96,16 @@ export default function LivePracticeSection({
     setShowEnglish(false);
     setSelectedWord(null);
   }, [sentence.id, resetRecording, clearAssessmentState]);
+
+  // Deterministically start a new recording once a pending "Try again" reset
+  // has actually completed (attemptState reaches 'idle'), instead of guessing
+  // with a timer.
+  useEffect(() => {
+    if (retryRecordingPendingRef.current && attemptState === 'idle') {
+      retryRecordingPendingRef.current = false;
+      void startRecording();
+    }
+  }, [attemptState, startRecording]);
 
   // Handle submit button click
   const handleSubmit = useCallback(async () => {
@@ -521,9 +536,8 @@ export default function LivePracticeSection({
                 <PremiumRecordButton
                   isRecording={false}
                   onClick={() => {
+                    retryRecordingPendingRef.current = true;
                     resetRecording();
-                    // Small delay to ensure state resets before starting
-                    setTimeout(() => startRecording(), 0);
                   }}
                   disabled={quotaExhausted}
                   size="md"
