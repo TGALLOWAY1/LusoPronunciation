@@ -33,10 +33,18 @@ import type {
 } from './types';
 import { getPhonemeById } from './phonemeMetadata';
 
+/** Minimum number of attempts before an item can be labeled "known" (mastered). */
+const MIN_ATTEMPTS_FOR_KNOWN = 2;
+
 /**
  * Determines the status of a sentence/word based on practice history.
- * Simple heuristic: known if best score >= 85, learning if >= 60, review if < 60, new if no attempts.
- * 
+ * Heuristic: known if best score >= 85, learning if >= 60, review if < 60, new if no attempts.
+ *
+ * "known" (surfaced as "Mastered") additionally requires at least
+ * MIN_ATTEMPTS_FOR_KNOWN attempts — a single high-scoring attempt is not enough
+ * evidence of mastery, so it is reported as "learning" (in progress) instead of
+ * overclaiming that the learner knows the item.
+ *
  * Can optionally consider weaknessScore to adjust status:
  * - Very low weaknessScore + strong scores → more often "known"
  * - High weaknessScore → more often "learning" or "review"
@@ -48,25 +56,29 @@ function determineStatus(
 ): 'new' | 'learning' | 'review' | 'known' {
   if (attempts === 0) return 'new';
   if (bestScore === undefined) return 'new';
-  
+
+  // A single strong attempt is promising but not yet mastery; keep it in
+  // "learning" until there is corroborating evidence from a second attempt.
+  const canBeKnown = attempts >= MIN_ATTEMPTS_FOR_KNOWN;
+
   // Adjust thresholds based on weaknessScore if provided
   if (weaknessScore !== undefined) {
     // High weakness (>= 50) makes it harder to reach "known" status
     if (weaknessScore >= 50) {
-      if (bestScore >= 90) return 'known'; // Higher bar for "known"
+      if (bestScore >= 90) return canBeKnown ? 'known' : 'learning'; // Higher bar for "known"
       if (bestScore >= 65) return 'learning';
       return 'review';
     }
     // Low weakness (< 30) makes it easier to reach "known" status
     if (weaknessScore < 30) {
-      if (bestScore >= 80) return 'known'; // Lower bar for "known"
+      if (bestScore >= 80) return canBeKnown ? 'known' : 'learning'; // Lower bar for "known"
       if (bestScore >= 55) return 'learning';
       return 'review';
     }
   }
-  
-  // Default logic (unchanged for backward compatibility)
-  if (bestScore >= 85) return 'known';
+
+  // Default logic
+  if (bestScore >= 85) return canBeKnown ? 'known' : 'learning';
   if (bestScore >= 60) return 'learning';
   return 'review';
 }

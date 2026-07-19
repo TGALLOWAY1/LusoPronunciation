@@ -73,7 +73,7 @@ export const BUILT_CARDS: {
   {
     icon: BrainCircuit,
     title: 'Phoneme feedback engine',
-    body: 'Maps Azure’s raw phoneme scores and error types onto a 36-phoneme Brazilian-Portuguese knowledge base, detects sound-confusion patterns, and surfaces minimal-pair drills.',
+    body: 'Maps Azure’s per-phoneme accuracy scores and per-word error types onto a 36-phoneme Brazilian-Portuguese guide (falling back to positional sounds when Azure omits a phoneme name), detects sound-confusion patterns, and surfaces minimal-pair drills.',
   },
   {
     icon: LayoutDashboard,
@@ -119,7 +119,7 @@ export const CHALLENGES: {
 export const STAT_TILES: { value: string; label: string; note: string }[] = [
   { value: '36', label: 'PT-BR phoneme map', note: 'data/phoneme_metadata.json' },
   { value: '13', label: 'Sound-confusion sets', note: 'confusionDetection.ts' },
-  { value: '42', label: 'Minimal-pair drills', note: 'minimalPairs.ptbr.ts' },
+  { value: '41', label: 'Minimal-pair drills', note: 'minimalPairs.ptbr.ts' },
   { value: '593 · 974', label: 'Curated sentences · words', note: 'master datasets' },
 ];
 

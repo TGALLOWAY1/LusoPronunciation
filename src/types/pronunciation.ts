@@ -53,6 +53,13 @@ export type AttemptScore = {
   attemptId: string;
   sentenceId: string;
   overallAccuracy: number;
+  /**
+   * Azure's composite pronunciation score (PronScore) — Azure's own weighted
+   * blend of accuracy/fluency/completeness/prosody. Present when Azure returned
+   * it; absent for older logged attempts. The UI shows this as the "Overall"
+   * score when present and falls back to accuracy when it isn't.
+   */
+  pronScore?: number;
   fluency?: number;
   completeness?: number;
   prosody?: number;

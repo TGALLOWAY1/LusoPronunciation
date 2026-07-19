@@ -35,6 +35,7 @@ export default function WordPractice({ headerElement }: { headerElement?: React.
   const [words, setWords] = useState<Word[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
   const [displayedCount, setDisplayedCount] = useState(WORDS_PER_PAGE);
@@ -137,8 +138,12 @@ export default function WordPractice({ headerElement }: { headerElement?: React.
         ]);
         setWords(wordsData);
         setCategories(categoriesData);
+        setLoadError(null);
       } catch (error) {
         console.error('Error loading word practice data:', error);
+        setLoadError(
+          'We couldn’t load the practice words. Please refresh the page to try again.'
+        );
       } finally {
         setLoading(false);
       }
@@ -388,6 +393,22 @@ export default function WordPractice({ headerElement }: { headerElement?: React.
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <LoadingSpinner message="Loading words..." />
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="card text-center border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20">
+          <p className="text-red-700 dark:text-red-300 text-lg font-medium">
+            Couldn’t load practice content
+          </p>
+          <p className="text-red-600 dark:text-red-400 text-sm mt-2">{loadError}</p>
+          <button onClick={() => window.location.reload()} className="btn btn-primary btn-sm mt-4">
+            Reload
+          </button>
+        </div>
       </div>
     );
   }

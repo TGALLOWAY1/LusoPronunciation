@@ -1,13 +1,24 @@
 import type { AttemptScore } from '@/types/pronunciation';
 import type { NormalizedWordFeedback } from './types';
 import PhraseTrendSparkline from './PhraseTrendSparkline';
+import { getScoreFeedbackMessage } from '@/lib/scoreFeedback';
+import { isSingleTokenReference } from '@/lib/referenceTokens';
 
 interface PhraseScoreOverviewProps {
   attemptScore: AttemptScore;
   words?: NormalizedWordFeedback[];
   onWordSelected?: (word: NormalizedWordFeedback) => void;
-  /** Optional trend scores array. If provided and non-empty, uses this for sparkline. Otherwise generates synthetic data. */
+  /**
+   * Real per-attempt overall scores (oldest → newest) for the trend sparkline.
+   * The sparkline is only rendered when at least two real scores are provided;
+   * no synthetic history is ever invented.
+   */
   trendScores?: number[];
+  /**
+   * Reference text (word or sentence) being scored. When it is a single token,
+   * fluency/completeness/prosody are degenerate and are suppressed.
+   */
+  referenceText?: string;
   // onPracticeWord removed - practice functionality will be on dedicated Practice Words page
 }
 
@@ -29,41 +40,6 @@ function getMetricDescription(metric: string): string {
 }
 
 /**
- * Generates a feedback message based on overall score.
- */
-function getFeedbackMessage(overall: number): string {
-  if (overall >= 90) return "Excellent pronunciation. You're sounding very natural.";
-  if (overall >= 80) return "Strong overall. Focus on smoothing out your fluency.";
-  if (overall >= 70) return "Good start. A bit more practice will clean up some sounds.";
-  return "Keep going! Focus on listening closely to the reference audio and repeating slowly.";
-}
-
-/**
- * Generates synthetic trend data for pronunciation attempts.
- * 
- * TODO: Replace with real multi-attempt data when available.
- * This function creates 4-5 simulated attempts showing gradual improvement
- * for UX demonstration purposes only.
- * 
- * @param currentScore - The current attempt's overall score
- * @returns Array of scores representing attempt history
- */
-function generateTrendData(currentScore: number): number[] {
-  const numAttempts = 5;
-  const scores: number[] = [currentScore];
-  
-  // Generate synthetic future attempts with gradual improvement
-  // Each attempt improves by 2-3 points, capped at 100
-  for (let i = 1; i < numAttempts; i++) {
-    const improvement = 2 + Math.random(); // 2-3 points improvement
-    const nextScore = Math.min(100, scores[i - 1] + improvement);
-    scores.push(Math.round(nextScore * 10) / 10); // Round to 1 decimal
-  }
-  
-  return scores;
-}
-
-/**
  * Graphical score representation with progress bars for pronunciation assessment.
  * Note: Practice-specific features (e.g., "Focus on these words") are handled
  * on a dedicated Practice Words page, not in the assessment view.
@@ -73,28 +49,29 @@ export default function PhraseScoreOverview({
   words: _words,
   onWordSelected: _onWordSelected,
   trendScores,
+  referenceText,
 }: PhraseScoreOverviewProps) {
-  const overall = Math.round(attemptScore.overallAccuracy);
+  // "Overall" is Azure's composite pronunciation score (PronScore) when present;
+  // older logged attempts fall back to accuracy.
+  const overall = Math.round(attemptScore.pronScore ?? attemptScore.overallAccuracy);
   const accuracy = Math.round(attemptScore.overallAccuracy);
-  const fluency = attemptScore.fluency ? Math.round(attemptScore.fluency) : null;
-  const completeness = attemptScore.completeness ? Math.round(attemptScore.completeness) : null;
-  const prosody = attemptScore.prosody ? Math.round(attemptScore.prosody) : null;
 
-  const feedbackMessage = getFeedbackMessage(attemptScore.overallAccuracy);
+  // Single-token references (individual words) make fluency/completeness/prosody
+  // degenerate, so suppress them entirely.
+  const singleToken = isSingleTokenReference(referenceText);
+  const fluency = !singleToken && attemptScore.fluency ? Math.round(attemptScore.fluency) : null;
+  const completeness =
+    !singleToken && attemptScore.completeness ? Math.round(attemptScore.completeness) : null;
+  const prosody = !singleToken && attemptScore.prosody ? Math.round(attemptScore.prosody) : null;
 
-  // Use provided trend scores if available, otherwise generate synthetic data
-  const displayTrendScores = trendScores && trendScores.length > 0
-    ? trendScores
-    : generateTrendData(attemptScore.overallAccuracy);
+  const feedbackMessage = getScoreFeedbackMessage({
+    overall,
+    accuracy: attemptScore.overallAccuracy,
+    fluency: singleToken ? undefined : attemptScore.fluency,
+  });
 
-  // Note: Top words calculation logic kept for potential reuse, but not rendered
-  // in assessment view. Practice functionality will be on dedicated Practice Words page.
-  // const topWordsToPractice = words
-  //   ? [...words]
-  //       .filter((word) => typeof word.accuracyScore === 'number' && !isNaN(word.accuracyScore))
-  //       .sort((a, b) => a.accuracyScore - b.accuracyScore)
-  //       .slice(0, 3)
-  //   : [];
+  // Only render the trend when at least two real attempt scores are available.
+  const showTrend = Boolean(trendScores && trendScores.length >= 2);
 
   const getScoreColor = (score: number) => {
     if (score >= 90) return 'bg-emerald-500';
@@ -123,15 +100,15 @@ export default function PhraseScoreOverview({
         </div>
       </div>
 
-      {/* Pronunciation trend sparkline */}
-      <div className="pt-2 pb-2 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-gray-600 dark:text-gray-400">
-            {trendScores && trendScores.length > 0 ? 'Progress over time' : 'Progress over time (simulated)'}
-          </span>
+      {/* Pronunciation trend sparkline — only shown with real multi-attempt history */}
+      {showTrend && (
+        <div className="pt-2 pb-2 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-gray-600 dark:text-gray-400">Progress over time</span>
+          </div>
+          <PhraseTrendSparkline scores={trendScores!} />
         </div>
-        <PhraseTrendSparkline scores={displayTrendScores} />
-      </div>
+      )}
 
       {/* Sub-score bars */}
       <div className="space-y-3">
@@ -221,4 +198,3 @@ export default function PhraseScoreOverview({
     </div>
   );
 }
-

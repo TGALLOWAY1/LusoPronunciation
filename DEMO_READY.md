@@ -66,7 +66,9 @@ score flow and for accounts:
 
 | Variable | Purpose |
 |----------|---------|
-| `REQUIRE_INVITE_CODE` | Gate registration behind an invite code (default off) |
+| `REQUIRE_INVITE_CODE` | Gate registration behind an invite code (default off — signups are open) |
+| `ASSESSMENT_DAILY_LIMIT` / `ASSESSMENT_LIFETIME_LIMIT` | Per-user Azure assessment caps (defaults 10/day, 40 lifetime) |
+| `GLOBAL_DAILY_ASSESSMENT_LIMIT` / `EXEMPT_USER_EMAILS` | Global daily assessment breaker (default 300) and always-exempt emails |
 | `ENABLE_DEV_LOGIN` | Enables a one-click dev login (non-production) |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth |
 | `LINKEDIN_CLIENT_ID` / `LINKEDIN_CLIENT_SECRET` | LinkedIn OAuth |
@@ -102,11 +104,14 @@ Azure + MongoDB.
 
 - The demo's "Listen (native voice)" button is illustrative on `/demo`; real
   TTS playback lives in the authenticated practice flow.
-- `PhraseScoreOverview` renders a small "Progress over time (simulated)"
-  sparkline of its own (existing app behavior); the `/demo` progress panel adds
-  a separate, explicitly-labeled sample history.
+- Progress sparklines only render with real multi-attempt history (≥2 real
+  attempt scores). The former simulated `Math.random()` sparkline in
+  `PhraseScoreOverview` has been removed — no synthetic trend is ever invented.
+  The `/demo` progress panel shows a separate, explicitly-labeled sample history.
 - CEFR-level estimation is not yet wired up.
 - Pass threshold is hardcoded at 70 in the card components.
+- Prosody is not returned by Azure for pt-BR; the UI marks it unavailable
+  rather than showing a fabricated value.
 - No true offline mode — real assessment requires connectivity to Azure.
 
 ## 8. Deployment
@@ -146,7 +151,7 @@ same Railway deployment as the rest of the app.
 
 ```bash
 npm run build          # typecheck + production build  ✅
-npm run test:phase04   # deploy-critical unit suite     ✅ (42 tests)
+npm run test:phase04   # deploy-critical unit suite     ✅ (49 tests)
 ```
 
 Both pass as of this document. The `/tour` and `/demo` routes were verified to

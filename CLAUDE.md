@@ -72,15 +72,16 @@ npm run start            # Start production Express server (serves built fronten
 ### Backend Architecture
 
 - Entry point: `src/server/app.ts`
-- API routes under `/api`: health, pronunciationAssessment, auth, oauth, practice, flashcards, migration
-- Auth: JWT-based (7-day expiry) with `requireAuth` middleware; optional invite-code gating
-- Security middleware: CORS, per-user rate limiting on pronunciation endpoints, Helmet CSP headers
+- API routes under `/api`: health, pronunciationAssessment, assessmentQuota, auth, oauth, practice, flashcards, migration
+- Auth: JWT-based (7-day expiry) with `requireAuth` middleware. Signups are open by default; invite codes gate registration only when `REQUIRE_INVITE_CODE=true` and otherwise act as a trusted bypass that exempts the account from assessment caps
+- Security middleware: CORS, per-user burst rate limiting + persistent per-user/global assessment quotas on pronunciation endpoints (`assessmentQuota`, `rateLimit`, `dailyQuota`), registration anti-bot (honeypot + disposable-domain rejection + tight per-IP register limit), Helmet CSP headers
 - Database models (`src/server/models/`):
-  - `UserModel` — accounts (email, passwordHash, OAuth provider)
+  - `UserModel` — accounts (email, passwordHash, OAuth provider, assessment-exempt flag)
   - `PronunciationAttemptModel` — assessment results with scoring
   - `PracticeSessionModel` — practice session containers
-  - `FlashcardModel` — SM-2 spaced repetition data
+  - `FlashcardModel` — SM-2-inspired spaced repetition data
   - `InviteCodeModel` — invite code access control
+  - `AssessmentUsageModel` — server-authoritative per-user/global assessment usage counters (Azure billing protection)
 
 ### Data Pipeline
 
@@ -100,7 +101,6 @@ npm run start            # Start production Express server (serves built fronten
 - `features/` — feature modules (migration/LocalStorageMigrator)
 - `hooks/` — business logic hooks (recording, assessment, audio playback)
 - `lib/` — core utilities & logic (coaching engine, audio quality, error taxonomy, metrics)
-- `models/` — frontend data models (appData, audio, content, practice, progress, vocab)
 - `pages/` — page-level components (UserDashboardPage, SentencePractice, WordPractice, etc.)
 - `pipeline/` — content generation pipeline logic (enrichItems, phonemeMapper, TTS, validation)
 - `shared/` — shared types between client/server
@@ -111,9 +111,9 @@ npm run start            # Start production Express server (serves built fronten
 
 ### Backend (`src/server/`)
 
-- `routes/` — API route handlers (health, pronunciationAssessment, auth, oauth, practice, flashcards, migration)
-- `models/` — Mongoose schemas (User, PronunciationAttempt, PracticeSession, Flashcard, InviteCode)
-- `middleware/` — auth (JWT), pronunciationSecurity (CORS + rate limiting)
+- `routes/` — API route handlers (health, pronunciationAssessment, assessmentQuota, auth, oauth, practice, flashcards, migration)
+- `models/` — Mongoose schemas (User, PronunciationAttempt, PracticeSession, Flashcard, InviteCode, AssessmentUsage)
+- `middleware/` — auth (JWT), pronunciationSecurity (CORS + rate limiting), assessmentQuota (persistent per-user/global assessment caps), rateLimit, dailyQuota
 - `services/` — business logic (flashcardService with SM-2 algorithm)
 - `db/` — MongoDB singleton connection (mongoClient.ts)
 - `lib/` — audio conversion (ffmpeg), temp workspace, timing utilities
@@ -157,6 +157,14 @@ npm run start            # Start production Express server (serves built fronten
 - Centralized error taxonomy via `ERROR_CLASS` enum
 - Telemetry recording for failures via `attemptMetrics.ts`
 
+### Truthfulness of user-facing claims
+
+This project holds a hard line on honesty in everything a user or reader sees:
+
+- **No fabricated data in real flows.** Never present computed, estimated, or sample values as measured results. Synthetic/placeholder data (e.g. `Math.random()` trends, hardcoded sample content) is prohibited in real user flows. Demo/sample surfaces (`/demo`, `/tour`) are allowed only when explicitly labeled as sample data in the UI.
+- **Claims must be traceable to the implementation.** Any capability claim in `README.md`, `FEATURES.md`, the tour (`src/pages/tour/`), or `docs/` must be backed by code that actually does it. A PR that changes scoring or feedback behavior must update those surfaces in the same change so docs never drift from reality.
+- **Degrade visibly, never invent.** When a data source can't deliver a field (e.g. Azure omits prosody for pt-BR, or omits a phoneme name), the UI must hide or annotate that field — never substitute an invented value to fill the gap.
+
 ### Keeping FEATURES.md in Sync
 
 When adding, modifying, or removing user-facing functionality, update `FEATURES.md` at the project root to reflect the change. This includes new features, renamed or restructured features, and removed features. Keep descriptions concise (one to two sentences). Do not document internal refactors or implementation details that have no user-visible effect.
@@ -186,7 +194,13 @@ Copy `.env.example` to `.env` and set required vars:
 - `MONGODB_URI` — MongoDB connection string
 - `JWT_SECRET` — secret for signing JWT tokens
 
-Optional: `REQUIRE_INVITE_CODE` (default false), `ENABLE_DEV_LOGIN` (dev-only quick-login), OAuth provider keys (GitHub, LinkedIn), CORS/rate-limit tuning, audio conversion settings. See `.env.example` for full list.
+Optional:
+- `REQUIRE_INVITE_CODE` (default false — **signups are open by default**; set to `true` to gate registration behind an invite code). Registering with a valid invite code marks the account assessment-exempt regardless of this setting.
+- Assessment quotas (Azure billing protection, server-authoritative via `AssessmentUsageModel`): `ASSESSMENT_DAILY_LIMIT` (per user/day, default 10), `ASSESSMENT_LIFETIME_LIMIT` (per user, default 40), `GLOBAL_DAILY_ASSESSMENT_LIMIT` (all users/day, default 300), `EXEMPT_USER_EMAILS` (comma-separated always-exempt emails). Quota state is returned in assessment responses and via `GET /api/assessment-quota`.
+- Registration anti-bot: `AUTH_REGISTER_IP_MAX` (default 5/hour per IP) plus a honeypot field and best-effort disposable-email-domain rejection.
+- `ENABLE_DEV_LOGIN` (dev-only quick-login), OAuth provider keys (GitHub, LinkedIn), CORS/rate-limit tuning, audio conversion settings.
+
+See `.env.example` for the full list.
 
 ## Port Configuration
 

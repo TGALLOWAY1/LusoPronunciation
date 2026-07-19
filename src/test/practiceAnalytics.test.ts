@@ -115,11 +115,26 @@ describe('practiceAnalytics', () => {
           sentenceId: 'sent1',
           difficulty: 2,
           category: 'food',
-          createdAt: createDate(1),
+          createdAt: createDate(2),
           overallScore: 90,
           accuracyScore: 95,
           fluencyScore: 85,
           completenessScore: 90,
+        },
+        {
+          // "known" (mastered) requires >= 2 attempts clearing the bar, not a
+          // single high score, so sent1 has a second strong attempt.
+          attemptId: 'attempt1b',
+          userId: 'test-user',
+          sessionId: 'session1',
+          sentenceId: 'sent1',
+          difficulty: 2,
+          category: 'food',
+          createdAt: createDate(1),
+          overallScore: 88,
+          accuracyScore: 90,
+          fluencyScore: 86,
+          completenessScore: 88,
         },
         {
           attemptId: 'attempt2',

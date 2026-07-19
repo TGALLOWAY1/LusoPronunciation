@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { AttemptScore } from '@/types/pronunciation';
+import { isSingleTokenReference } from '@/lib/referenceTokens';
 
 interface ScoringPanelProps {
   currentAttempt: AttemptScore | null;
@@ -10,6 +11,11 @@ interface ScoringPanelProps {
    * present, the sub-metrics spread vertically to keep the two columns balanced.
    */
   heroExtra?: React.ReactNode;
+  /**
+   * Reference text (word or sentence) being scored. When it is a single token,
+   * fluency/completeness/prosody are degenerate and are suppressed.
+   */
+  referenceText?: string;
 }
 
 /**
@@ -45,6 +51,7 @@ export interface ScoreTheme {
  * Metric descriptions for tooltips.
  */
 const METRIC_DESCRIPTIONS: Record<string, string> = {
+  overall: 'Azure\'s composite pronunciation score (PronScore) — its own weighted blend of accuracy, fluency, completeness, and (where available) prosody. Shown as the headline "Overall" score; older attempts recorded before this was captured fall back to the accuracy score.',
   accuracy: 'This score indicates how closely the speaker\'s pronunciation of words matches that of a native speaker, evaluating the correctness of individual sounds and words. It helps detect mispronunciations, insertions, and omissions.',
   fluency: 'This metric assesses how smoothly and continuously the speech is delivered, specifically by measuring how closely the use of silent breaks between words matches a native speaker\'s patterns.',
   completeness: 'This score indicates how many words from the provided reference text were correctly pronounced in the user\'s speech. Omissions are factored into this metric.',
@@ -225,6 +232,12 @@ function AllMetricsInfoIcon({ prosodyAvailable = false }: { prosodyAvailable?: b
         >
           <div className="space-y-4 overflow-y-auto" style={{ maxHeight: tooltipStyle.maxHeight }}>
             <div>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Overall</h4>
+              <p className="leading-relaxed text-gray-700 dark:text-gray-300 break-words">
+                {getMetricDescription('overall')}
+              </p>
+            </div>
+            <div>
               <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Accuracy</h4>
               <p className="leading-relaxed text-gray-700 dark:text-gray-300 break-words">
                 {getMetricDescription('accuracy')}
@@ -316,7 +329,7 @@ export function getScoreColor(score: number): ScoreTheme {
  * 
  * @param variant - 'card' for vertical card layout (default), 'banner' for horizontal banner layout
  */
-export default function ScoringPanel({ currentAttempt, variant = 'card', heroExtra }: ScoringPanelProps) {
+export default function ScoringPanel({ currentAttempt, variant = 'card', heroExtra, referenceText }: ScoringPanelProps) {
   if (!currentAttempt) {
     if (variant === 'banner') {
       return null; // Don't render banner if no attempt
@@ -330,11 +343,17 @@ export default function ScoringPanel({ currentAttempt, variant = 'card', heroExt
     );
   }
 
-  const overall = Math.round(currentAttempt.overallAccuracy);
+  // "Overall" is Azure's composite pronunciation score (PronScore) when present;
+  // older logged attempts fall back to accuracy.
+  const overall = Math.round(currentAttempt.pronScore ?? currentAttempt.overallAccuracy);
   const accuracy = Math.round(currentAttempt.overallAccuracy);
-  const fluency = currentAttempt.fluency !== undefined && currentAttempt.fluency !== null ? Math.round(currentAttempt.fluency) : null;
-  const completeness = currentAttempt.completeness !== undefined && currentAttempt.completeness !== null ? Math.round(currentAttempt.completeness) : null;
-  const prosody = currentAttempt.prosody !== undefined && currentAttempt.prosody !== null ? Math.round(currentAttempt.prosody) : null;
+
+  // Single-token references (individual words) make fluency/completeness/prosody
+  // degenerate, so suppress them entirely.
+  const singleToken = isSingleTokenReference(referenceText);
+  const fluency = !singleToken && currentAttempt.fluency !== undefined && currentAttempt.fluency !== null ? Math.round(currentAttempt.fluency) : null;
+  const completeness = !singleToken && currentAttempt.completeness !== undefined && currentAttempt.completeness !== null ? Math.round(currentAttempt.completeness) : null;
+  const prosody = !singleToken && currentAttempt.prosody !== undefined && currentAttempt.prosody !== null ? Math.round(currentAttempt.prosody) : null;
 
   const overallTheme = getScoreColor(overall);
   const accuracyTheme = getScoreColor(accuracy);

@@ -148,9 +148,9 @@ function WordCard({ word, sessionId, status, showTranslation = false, onToggleTr
             category: word.categoryId,
             overallScore: attemptScore.overallAccuracy,
             accuracyScore: attemptScore.overallAccuracy, // Azure returns overallAccuracy as the main score
-            fluencyScore: attemptScore.fluency,
-            completenessScore: attemptScore.completeness,
-            prosodyScore: attemptScore.prosody,
+            // Fluency/completeness/prosody are degenerate for a single-word
+            // reference (completeness is ~0/100, fluency meaningless), so they
+            // are intentionally not logged for word practice.
             passed,
             // TODO: Add targetOverallThreshold if it exists
             recordingDurationSeconds,

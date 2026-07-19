@@ -65,6 +65,7 @@ export function mapAzurePronunciationResultToAttemptScore(
 
   // Map overall scores from normalized structure
   const overallAccuracy = pronunciationAssessment.accuracyScore ?? 0;
+  const pronScore = pronunciationAssessment.pronScore;
   const fluency = pronunciationAssessment.fluencyScore;
   const completeness = pronunciationAssessment.completenessScore;
   const prosody = pronunciationAssessment.prosodyScore;
@@ -96,6 +97,7 @@ export function mapAzurePronunciationResultToAttemptScore(
     attemptId,
     sentenceId,
     overallAccuracy,
+    ...(pronScore !== undefined ? { pronScore } : {}),
     fluency,
     completeness,
     prosody,

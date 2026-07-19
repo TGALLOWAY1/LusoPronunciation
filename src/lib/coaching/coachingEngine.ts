@@ -1,5 +1,6 @@
 import type { AttemptScore } from '@/types/pronunciation';
 import type { MinimalPairDrill } from './minimalPairs.ptbr';
+import { isSingleTokenReference } from '@/lib/referenceTokens';
 
 export type CoachingSuggestion = {
   kind: 'retry' | 'minimal_pairs' | 'rhythm' | 'clarity' | 'coverage';
@@ -88,8 +89,13 @@ export function buildCoachingSuggestion(
 ): CoachingSuggestion {
   const improvedCount = countImprovedWords(attempt, context.previousAttempt);
   const weakTargets = getWeakWordTargets(attempt);
-  const completeness = attempt.completeness ?? null;
-  const fluency = attempt.fluency ?? null;
+
+  // For single-word references, completeness/fluency (and therefore rhythm and
+  // coverage coaching) are degenerate — there is no rhythm or coverage to
+  // assess in one token — so skip those suggestion branches entirely.
+  const singleToken = isSingleTokenReference(context.sentenceText);
+  const completeness = singleToken ? null : attempt.completeness ?? null;
+  const fluency = singleToken ? null : attempt.fluency ?? null;
 
   if (completeness !== null && completeness < LOW_COMPLETENESS_THRESHOLD) {
     return {
