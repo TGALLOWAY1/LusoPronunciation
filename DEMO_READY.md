@@ -113,8 +113,8 @@ Azure + MongoDB.
 
 ### Current target: Railway
 
-The repo already ships a production setup (`Dockerfile`, `railway.json`,
-`nixpacks.toml`) that serves the built frontend from the Express server:
+The repo already ships a production setup (`Dockerfile`, `railway.json`) that
+serves the built frontend from the Express server:
 
 ```bash
 npm run build
@@ -122,35 +122,23 @@ npm start
 ```
 
 This is the right target for the **full app** because it needs a Node server
-(for the Azure proxy + auth + MongoDB).
+(for the Azure proxy + auth + MongoDB), and it's the only deploy target —
+Railway's healthcheck and restart policy are already wired up via
+`railway.json`.
 
-### Easiest public demo (frontend-only)
-
-Because `/tour` and `/demo` are pure client-side routes with no backend
-dependency, the lowest-effort *public demo* is a **static deploy of the built
-frontend** to Vercel / Netlify / Cloudflare Pages / GitHub Pages:
-
-```bash
-npm run build        # outputs to dist/
-# deploy the dist/ folder as a static SPA (enable SPA fallback to index.html)
-```
-
-Then share **`/tour`** as the landing link. Visitors can explore the tour and
-demo; the protected app routes will simply redirect to `/auth`.
-
-> ⚠️ A static-only deploy means the real record→score flow won't work (no
-> backend). If you want the live Azure flow public, deploy the full server to
-> Railway instead and set the required env vars there. **Never commit secrets**
-> — set them in the host's environment configuration.
+The `vercel.json` at the repo root is **not** a static deploy — it's a pure
+redirect shell that forwards the Vercel domain to the Railway production URL.
+There is no static-only demo deploy; `/tour` and `/demo` are served by the
+same Railway deployment as the rest of the app.
 
 ## 9. Easiest next steps to deploy
 
-1. **Static tour/demo (5 min, recommended first):** `npm run build`, then
-   deploy `dist/` to Vercel/Netlify with SPA fallback. Share `/tour`.
-2. **Full live app (Railway):** set `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`,
+1. **Full live app (Railway):** set `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`,
    `MONGODB_URI`, `JWT_SECRET` in Railway; `npm run build && npm start` is
    already wired via the Dockerfile.
-3. If gating signups: `npm run invite:seed -- --code=LAUNCH-ACCESS --maxUses=25`.
+2. If gating signups: `npm run invite:seed -- --code=LAUNCH-ACCESS --maxUses=25`.
+3. Share the Vercel domain (or the Railway URL directly) — either lands on
+   the same live app; the Vercel domain just redirects.
 
 ---
 

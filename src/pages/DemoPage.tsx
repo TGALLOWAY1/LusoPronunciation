@@ -4,8 +4,8 @@ import { Volume2, Mic, Info, ArrowRight, Headphones } from 'lucide-react';
 import PublicPageShell from '@/components/demo/PublicPageShell';
 import PronunciationFeedbackPanel from '@/components/pronunciation/PronunciationFeedbackPanel';
 import ScoringPanel from '@/components/pronunciation/ScoringPanel';
-import PhraseTrendSparkline from '@/components/pronunciation/PhraseTrendSparkline';
 import {
+  PhraseTrendSparkline,
   type NormalizedAudioVariant,
   type NormalizedWordFeedback,
 } from '@/components/pronunciation/shared';

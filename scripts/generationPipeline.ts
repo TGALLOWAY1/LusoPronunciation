@@ -229,9 +229,8 @@ async function main() {
             sourceId: entry.sourceId,
             textPt: entry.textPt,
             textEn: entry.textEn,
-            ptbr: entry.ptbr,
             voice: 'ptbr', // Default voice identifier
-            path: entry.ptbr?.male || entry.ptbr?.female || '',
+            path: Object.values(entry.voices ?? {})[0] ?? '',
             text: entry.textPt, // Use textPt as text
           })) as AudioIndexEntryExtended[];
           

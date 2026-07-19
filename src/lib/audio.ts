@@ -19,12 +19,10 @@ function genderToVoiceId(gender: Gender): string {
 
 /**
  * Get audio URL from audio index if available, otherwise infer from naming convention.
- * 
+ *
  * Priority:
  * 1. Check canonical `voices` field in audio index (new format)
- * 2. Check legacy `ptbr` field in audio index (backward compatibility)
- * 3. Fall back to inferred canonical path
- * 4. Fall back to legacy inferred path
+ * 2. Fall back to inferred canonical path
  */
 export function getSentenceAudioUrl(
   sentenceId: string,
@@ -35,33 +33,25 @@ export function getSentenceAudioUrl(
   if (audioIndex && audioIndex[sentenceId]) {
     const entry = audioIndex[sentenceId];
     const voiceId = genderToVoiceId(gender);
-    
+
     // Priority 1: Check canonical voices field (new format)
     if (entry.voices && entry.voices[voiceId]) {
       const url = entry.voices[voiceId];
       return url.startsWith('/') ? url : `/${url}`;
     }
-    
-    // Priority 2: Check legacy ptbr field (backward compatibility)
-    const legacyUrl = entry.ptbr[gender];
-    if (legacyUrl) {
-      return legacyUrl.startsWith('/') ? legacyUrl : `/${legacyUrl}`;
-    }
   }
 
-  // Priority 3: Fall back to inferred canonical path
+  // Priority 2: Fall back to inferred canonical path
   const voiceId = genderToVoiceId(gender);
   return `/audio/sentences/${voiceId}/${sentenceId}.wav`;
 }
 
 /**
  * Get audio URL for a word.
- * 
+ *
  * Priority:
  * 1. Check canonical `voices` field in audio index (new format)
- * 2. Check legacy `ptbr` field in audio index (backward compatibility)
- * 3. Fall back to inferred canonical path
- * 4. Fall back to legacy inferred path (old naming: <wordId>_<gender>.wav)
+ * 2. Fall back to inferred canonical path (old naming: <wordId>_<gender>.wav)
  */
 export function getWordAudioUrl(
   wordId: string,
@@ -72,21 +62,15 @@ export function getWordAudioUrl(
   if (audioIndex && audioIndex[wordId]) {
     const entry = audioIndex[wordId];
     const voiceId = genderToVoiceId(gender);
-    
+
     // Priority 1: Check canonical voices field (new format)
     if (entry.voices && entry.voices[voiceId]) {
       const url = entry.voices[voiceId];
       return url.startsWith('/') ? url : `/${url}`;
     }
-    
-    // Priority 2: Check legacy ptbr field (backward compatibility)
-    const legacyUrl = entry.ptbr[gender];
-    if (legacyUrl) {
-      return legacyUrl.startsWith('/') ? legacyUrl : `/${legacyUrl}`;
-    }
   }
 
-  // Priority 3: Fall back to inferred canonical path
+  // Priority 2: Fall back to inferred canonical path
   const voiceId = genderToVoiceId(gender);
   return `/audio/words/${voiceId}/${wordId}.wav`;
 }

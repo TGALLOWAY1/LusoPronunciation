@@ -176,7 +176,7 @@ docs: description
 GitHub Actions (`.github/workflows/ci.yml`) runs on push/PR to `main` and `develop`:
 1. `npm ci` → `npm run build` → `npm test -- --run` → Playwright e2e (phase04)
 
-**Note**: CI currently uses Node 20 while the project specifies Node 22.x in `package.json` engines and `.nvmrc`.
+**Note**: CI uses Node 22 to match the project's `package.json` engines and `.nvmrc`.
 
 ## Environment Setup
 
@@ -203,7 +203,6 @@ The Vite dev server proxies `/api` requests to the backend on port 4000. Playwri
 Target platform: **Railway** via multi-stage Dockerfile (node:22-slim).
 
 - `railway.json` — healthcheck at `/api/health`, restart on failure
-- `nixpacks.toml` — Node 22 fallback config
 - Dockerfile installs CA certificates for MongoDB Atlas TLS
 - Production: `npm run build && npm start`
 - Invite seed: `npm run invite:seed -- --code=LAUNCH-ACCESS --maxUses=25`

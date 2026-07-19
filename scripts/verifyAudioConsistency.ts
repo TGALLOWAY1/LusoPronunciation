@@ -19,7 +19,6 @@ type AudioIndexEntry = {
   type?: string;
   sourceId?: string;
   textPt?: string;
-  ptbr?: Partial<Record<VoiceFamily, string>>;
   voices?: Record<string, string>;
 };
 
@@ -61,7 +60,6 @@ function collectMismatches(index: Record<string, AudioIndexEntry>): Mismatch[] {
 
   for (const [id, entry] of Object.entries(index)) {
     const groups: Array<[string, Record<string, string> | undefined]> = [
-      ['ptbr', entry.ptbr as Record<string, string> | undefined],
       ['voices', entry.voices],
     ];
 

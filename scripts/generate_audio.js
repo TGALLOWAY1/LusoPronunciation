@@ -164,10 +164,6 @@ function saveAudioIndex(index) {
           sourceId: sentence.id || null,
           textPt: textPt,
           textEn: sentence.en || sentence.en_us || sentence.english || null,
-          ptbr: {
-            male: null,
-            female: null,
-          },
         };
       } else {
         // Update text if missing
@@ -189,7 +185,6 @@ function saveAudioIndex(index) {
         // Check if file already exists
         if (fs.existsSync(absolutePath)) {
           console.log(`  ⊘ Skipped ${gender} (file exists)`);
-          audioIndex[audioId].ptbr[gender] = relativePath;
           skippedCount++;
         } else {
           try {
@@ -199,7 +194,6 @@ function saveAudioIndex(index) {
               voiceName: voiceName,
               outputPath: absolutePath,
             });
-            audioIndex[audioId].ptbr[gender] = relativePath;
             processedCount++;
           } catch (error) {
             console.error(`  ✗ Error generating ${gender} audio: ${error.message}`);
