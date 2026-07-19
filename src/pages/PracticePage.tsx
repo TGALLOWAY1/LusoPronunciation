@@ -72,8 +72,8 @@ export default function PracticePage() {
 
   return (
     <div>
-      {/* Mobile only momentum strip - desktop is in sidebar */}
-      <div className="mb-4 lg:hidden">
+      {/* Momentum strip — shown on every breakpoint (streak / today / due) */}
+      <div className="mb-4">
         <MomentumStrip
           streak={streak}
           todayAttempts={todayAttempts}
