@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
 import { useProgressStore } from '@/state/progressStore';
+import { useDueReviews } from '@/hooks/useDueReviews';
 import { loadAllSentences, loadAllWords } from '@/lib/data';
 import type { AnalyticsWindow, Sentence, Word } from '@/lib/types';
 import {
@@ -38,6 +39,7 @@ const SECTION_IDS = [
 export default function ProgressPage() {
   const { sessions, sentenceAttempts, wordAttempts, storageError } = usePracticeLogStore();
   const { getDueCount } = useProgressStore();
+  const { dueCount: serverDueCount, error: dueError, authenticated } = useDueReviews();
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
@@ -195,7 +197,9 @@ export default function ProgressPage() {
     [weakPhonemes],
   );
 
-  const dueCount = getDueCount();
+  // Prefer the authoritative server SM-2 due count; fall back to the local
+  // (offline) count only when the server queue is unavailable.
+  const dueCount = authenticated && !dueError ? serverDueCount : getDueCount();
   const totalAttempts = sentenceAttempts.length + wordAttempts.length;
   const hasData = sessions.length > 0 || totalAttempts > 0;
 

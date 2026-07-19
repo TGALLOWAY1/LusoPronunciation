@@ -2,6 +2,8 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useProgressStore } from '@/state/progressStore';
 import { usePracticeLogStore } from '@/state/practiceLogStore';
+import { useDueReviews } from '@/hooks/useDueReviews';
+import { reviewFlashcard, type ReviewOutcome } from '@/api/flashcards';
 import { loadAllSentences, loadAllWords } from '@/lib/data';
 import type { Sentence, Word } from '@/lib/types';
 import SentenceCard from '@/components/practice/SentenceCard';
@@ -111,9 +113,29 @@ function MiniSparkline({
   );
 }
 
+/**
+ * A single item in the review working queue. `cardId` is the server flashcard
+ * id when the queue is sourced from the authoritative server SM-2 queue, or
+ * null when we've fallen back to the local (offline) progressStore queue.
+ */
+interface QueueItem {
+  key: string;
+  cardId: string | null;
+  type: 'sentence' | 'word';
+  item: Sentence | Word;
+}
+
 export default function Review() {
   const { getDueItems, getDueCount, rateSentence, rateWord, entries } = useProgressStore();
   const { sentenceAttempts, wordAttempts } = usePracticeLogStore();
+  const {
+    dueCards,
+    dueCount: serverDueCount,
+    error: dueError,
+    initialized: dueInitialized,
+    authenticated,
+    refresh: refreshDue,
+  } = useDueReviews();
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
@@ -140,35 +162,71 @@ export default function Review() {
     loadData();
   }, []);
 
-  // ----- Queue tab data -----
-  const dueSentences = useMemo(() => {
-    const dueEntries = getDueItems('sentence');
-    const sentenceIds = new Set(dueEntries.map(e => e.itemId));
-    return sentences.filter(s => sentenceIds.has(s.id));
-  }, [getDueItems, sentences, entries]);
+  // The server SM-2 queue is authoritative whenever we're authenticated and the
+  // fetch succeeded. Only when it errors do we fall back to the local queue.
+  const useServerQueue = authenticated && !dueError;
+  const showLocalFallbackNotice = authenticated && dueError;
 
-  const dueWords = useMemo(() => {
-    const dueEntries = getDueItems('word');
-    const wordIds = new Set(dueEntries.map(e => e.itemId));
-    return words.filter(w => wordIds.has(w.id));
-  }, [getDueItems, words, entries]);
+  const sentenceById = useMemo(
+    () => new Map(sentences.map(s => [s.id, s])),
+    [sentences],
+  );
+  const wordById = useMemo(() => new Map(words.map(w => [w.id, w])), [words]);
 
-  const allDueItems = useMemo(() => {
-    const items: Array<{ type: 'sentence' | 'word'; item: Sentence | Word }> = [];
-    dueSentences.forEach(s => items.push({ type: 'sentence', item: s }));
-    dueWords.forEach(w => items.push({ type: 'word', item: w }));
+  // ----- Server queue (authoritative) -----
+  const serverQueue = useMemo<QueueItem[]>(() => {
+    if (!useServerQueue) return [];
+    const items: QueueItem[] = [];
+    for (const card of dueCards) {
+      if (card.contentType === 'sentence') {
+        const s = sentenceById.get(card.contentId);
+        if (s) items.push({ key: card.id, cardId: card.id, type: 'sentence', item: s });
+      } else {
+        const w = wordById.get(card.contentId);
+        if (w) items.push({ key: card.id, cardId: card.id, type: 'word', item: w });
+      }
+    }
+    return items;
+  }, [useServerQueue, dueCards, sentenceById, wordById]);
+
+  // ----- Local fallback queue (offline artifact; used only if the server is unreachable) -----
+  const localQueue = useMemo<QueueItem[]>(() => {
+    const sentenceIds = new Set(getDueItems('sentence').map(e => e.itemId));
+    const wordIds = new Set(getDueItems('word').map(e => e.itemId));
+    const items: QueueItem[] = [];
+    sentences
+      .filter(s => sentenceIds.has(s.id))
+      .forEach(s => items.push({ key: `sentence:${s.id}`, cardId: null, type: 'sentence', item: s }));
+    words
+      .filter(w => wordIds.has(w.id))
+      .forEach(w => items.push({ key: `word:${w.id}`, cardId: null, type: 'word', item: w }));
     return items.sort(() => Math.random() - 0.5);
-  }, [dueSentences, dueWords]);
+    // `entries` is included so the memo recomputes when local ratings change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getDueItems, sentences, words, entries]);
+
+  const sourceQueue = useServerQueue ? serverQueue : localQueue;
+
+  // Capture a stable working queue for the session once the source is ready, so
+  // grading a card (which removes it from the live due list) doesn't reshuffle
+  // the queue under the user's feet. Progress runs cleanly from 0 → N.
+  const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [captured, setCaptured] = useState(false);
 
   useEffect(() => {
-    if (currentIndex >= allDueItems.length && allDueItems.length > 0) {
-      setCurrentIndex(0);
-    }
-  }, [currentIndex, allDueItems.length]);
+    if (captured || loading) return;
+    // For the server queue, wait until the first fetch has resolved so we don't
+    // momentarily capture an empty list and flash "all caught up".
+    if (useServerQueue && !dueInitialized) return;
+    setQueue(sourceQueue);
+    setCaptured(true);
+  }, [captured, loading, useServerQueue, dueInitialized, sourceQueue]);
 
-  const currentItem = allDueItems[currentIndex];
-  const totalDue = allDueItems.length;
-  const reviewedCount = currentIndex;
+  const queueLoading = loading || (useServerQueue && !dueInitialized);
+
+  const currentItem = queue[currentIndex];
+  const totalDue = queue.length;
+  const reviewedCount = Math.min(currentIndex, totalDue);
 
   // ----- Recent attempts tab data -----
   // Consolidate the flat attempt log into one summary per unique item, with a
@@ -208,7 +266,37 @@ export default function Review() {
     return sorted;
   }, [attemptSummaries, recentFilter, recentSort]);
 
+  // ----- Grading -----
+  // The server SM-2 engine is the scheduling authority. When grading a card
+  // from the server queue we call reviewFlashcard (which grows/shrinks the
+  // interval per SM-2) and refresh the shared due count so badges stay in sync.
+  // In local fallback we grade against the offline progressStore scheduler.
+  //
+  // Grade mapping (Review action → SM-2 ReviewOutcome):
+  //   sentence Easy → 'easy', Good → 'good', Hard → 'hard' (1:1 on shared labels)
+  //   word "Know it" → 'easy'   (confident: let the interval grow)
+  //   word "Review later" → 'again' (unsure: reset to the relearning ladder)
+  const gradeServerCard = useCallback(
+    async (cardId: string, grade: ReviewOutcome) => {
+      try {
+        await reviewFlashcard({ cardId, grade });
+      } catch (err) {
+        console.warn('[Review] Failed to grade flashcard:', err);
+      }
+      // Keep the shared due count current for the Momentum strip / nudge.
+      await refreshDue();
+    },
+    [refreshDue],
+  );
+
   // ----- Queue navigation handlers -----
+  const advance = useCallback(() => {
+    setTimeout(() => {
+      stopAllAudio();
+      setCurrentIndex(prev => prev + 1);
+    }, 300);
+  }, []);
+
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
       stopAllAudio();
@@ -217,43 +305,40 @@ export default function Review() {
   }, [currentIndex]);
 
   const handleNext = useCallback(() => {
-    if (currentIndex < allDueItems.length - 1) {
+    if (currentIndex < totalDue - 1) {
       stopAllAudio();
       setCurrentIndex(prev => prev + 1);
     }
-  }, [currentIndex, allDueItems.length]);
+  }, [currentIndex, totalDue]);
 
   const handleSentenceRating = useCallback((rating: DifficultyRating) => {
-    if (currentItem?.type === 'sentence') {
+    if (currentItem?.type !== 'sentence') return;
+    if (currentItem.cardId) {
+      // DifficultyRating ('easy'|'good'|'hard') maps 1:1 onto ReviewOutcome.
+      void gradeServerCard(currentItem.cardId, rating);
+    } else {
       rateSentence(currentItem.item.id, rating);
-      if (currentIndex < allDueItems.length - 1) {
-        setTimeout(() => {
-          stopAllAudio();
-          setCurrentIndex(prev => prev + 1);
-        }, 300);
-      }
     }
-  }, [currentItem, currentIndex, allDueItems, rateSentence]);
+    advance();
+  }, [currentItem, gradeServerCard, rateSentence, advance]);
 
   const handleWordKnowIt = useCallback((wordId: string) => {
-    rateWord(wordId, 'know');
-    if (currentIndex < allDueItems.length - 1) {
-      setTimeout(() => {
-        stopAllAudio();
-        setCurrentIndex(prev => prev + 1);
-      }, 300);
+    if (currentItem?.cardId) {
+      void gradeServerCard(currentItem.cardId, 'easy');
+    } else {
+      rateWord(wordId, 'know');
     }
-  }, [currentIndex, allDueItems.length, rateWord]);
+    advance();
+  }, [currentItem, gradeServerCard, rateWord, advance]);
 
   const handleWordReviewLater = useCallback((wordId: string) => {
-    rateWord(wordId, 'review');
-    if (currentIndex < allDueItems.length - 1) {
-      setTimeout(() => {
-        stopAllAudio();
-        setCurrentIndex(prev => prev + 1);
-      }, 300);
+    if (currentItem?.cardId) {
+      void gradeServerCard(currentItem.cardId, 'again');
+    } else {
+      rateWord(wordId, 'review');
     }
-  }, [currentIndex, allDueItems.length, rateWord]);
+    advance();
+  }, [currentItem, gradeServerCard, rateWord, advance]);
 
   // Keyboard navigation (queue tab only)
   useEffect(() => {
@@ -261,17 +346,18 @@ export default function Review() {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft' && currentIndex > 0) {
         handlePrevious();
-      } else if (e.key === 'ArrowRight' && currentIndex < allDueItems.length - 1) {
+      } else if (e.key === 'ArrowRight' && currentIndex < totalDue - 1) {
         handleNext();
       }
     };
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [activeTab, currentIndex, allDueItems.length, handlePrevious, handleNext]);
+  }, [activeTab, currentIndex, totalDue, handlePrevious, handleNext]);
 
-  const dueCount = getDueCount();
+  // Header count: prefer the authoritative server count; fall back to local.
+  const dueCount = useServerQueue ? serverDueCount : getDueCount();
 
-  const subtitle = loading
+  const subtitle = queueLoading
     ? 'Loading...'
     : dueCount > 0
       ? `${dueCount} item${dueCount === 1 ? '' : 's'} need${dueCount === 1 ? 's' : ''} review today`
@@ -321,7 +407,9 @@ export default function Review() {
         {/* Queue tab */}
         {activeTab === 'queue' && (
           <>
-            {totalDue === 0 ? (
+            {queueLoading ? (
+              <LoadingSpinner message="Loading your review queue..." />
+            ) : totalDue === 0 || currentIndex >= totalDue ? (
               <CompletionMoment
                 message="All caught up!"
                 metric="No items due for review right now."
@@ -329,6 +417,21 @@ export default function Review() {
               />
             ) : (
               <>
+                {/* Fallback notice — only when the server queue couldn't be reached */}
+                {showLocalFallbackNotice && (
+                  <div className="rounded-lg border border-yellow-200 dark:border-yellow-900/50 bg-yellow-50 dark:bg-yellow-900/20 px-3 py-2 text-sm text-yellow-800 dark:text-yellow-200">
+                    Showing your local review queue — we couldn't reach the review
+                    server just now. Your progress still saves and syncs later.
+                  </div>
+                )}
+
+                {/* Honest scheduling note — true only for the server SM-2 queue */}
+                {useServerQueue && (
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Scheduled with SM-2-inspired intervals that grow with each success.
+                  </p>
+                )}
+
                 {/* Progress bar */}
                 <div className="card">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2">
@@ -362,7 +465,7 @@ export default function Review() {
                           onPrevious={handlePrevious}
                           onNext={handleNext}
                           canGoPrevious={currentIndex > 0}
-                          canGoNext={currentIndex < allDueItems.length - 1}
+                          canGoNext={currentIndex < totalDue - 1}
                         />
                         <DifficultyButtons onSelect={handleSentenceRating} />
                       </>
@@ -378,7 +481,7 @@ export default function Review() {
                           onPrevious={handlePrevious}
                           onNext={handleNext}
                           canGoPrevious={currentIndex > 0}
-                          canGoNext={currentIndex < allDueItems.length - 1}
+                          canGoNext={currentIndex < totalDue - 1}
                         />
                       </>
                     )}

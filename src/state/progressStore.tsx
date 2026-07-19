@@ -1,3 +1,18 @@
+/**
+ * progressStore — LOCAL, OFFLINE review scheduler.
+ *
+ * NOTE ON AUTHORITY: The server-side SM-2 flashcard engine
+ * (src/server/services/flashcardService.ts + FlashcardModel, surfaced via
+ * GET /api/flashcards/due and the useDueReviews hook) is the authoritative
+ * source of truth for "what's due" and for interval scheduling. Its intervals
+ * grow with repeated success and reset properly on lapse.
+ *
+ * This store's fixed-hour delays (see calculateNextReview) do NOT grow with
+ * success and are per-device / lost on cache clear. It is retained only as an
+ * OFFLINE FALLBACK: when a user is unauthenticated or the server queue can't be
+ * reached, Review.tsx falls back to this local queue so review still works. It
+ * is no longer the scheduling authority for authenticated users.
+ */
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import type { DifficultyRating } from '@/components/practice/DifficultyButtons';
 
@@ -27,7 +42,10 @@ const ProgressStoreContext = createContext<ProgressStore | null>(null);
 
 const STORAGE_KEY = 'lusopronounce_progress';
 
-// Calculate next review time based on rating
+// Calculate next review time based on rating.
+// OFFLINE FALLBACK ONLY: these are fixed hour delays that never grow with
+// repeated success. The authoritative scheduler is the server SM-2 engine;
+// this is used only when the server queue is unavailable (see file header).
 function calculateNextReview(rating: DifficultyRating | WordAction): Date {
   const now = new Date();
   const hours = {

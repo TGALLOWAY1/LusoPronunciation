@@ -81,9 +81,14 @@ export async function updateFlashcardAfterReview(
   // Update interval based on outcome
   let newIntervalDays: number;
   if (outcome === 'again') {
-    // Failed - reset interval
+    // Failed (lapse) - reset interval AND repetition count.
+    // Canonical SM-2 drops reps back to 0 so the card re-enters the
+    // 1-day / 6-day relearning ladder instead of skipping straight back to
+    // long grown intervals. Without this reset a lapsed card would jump past
+    // relearning on its very next successful review.
     newIntervalDays = 1;
     card.lapses += 1;
+    card.reps = 0;
   } else if (outcome === 'hard') {
     // Hard - reduce interval
     newIntervalDays = Math.max(1, Math.floor(card.intervalDays * params.intervalMultiplier));

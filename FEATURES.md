@@ -53,9 +53,10 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 
 ## Spaced Repetition (SRS)
 
-- **SM-2-inspired Flashcard Scheduling** — Server-side flashcard system using an SM-2-inspired algorithm with interval, ease factor, reps, and lapse tracking.
-- **Pronunciation Score Linking** — Flashcard review outcomes are tied to pronunciation assessment scores for data-driven scheduling.
-- **Due Queue** — API endpoint returns flashcards due for review, ordered by due date.
+- **SM-2-inspired Flashcard Scheduling** — Server-side flashcard system using an SM-2-inspired algorithm with interval, ease factor, reps, and lapse tracking. Intervals grow with each success (1 day → 6 days → ease-scaled), and a lapse resets the card to the start of the relearning ladder.
+- **Unified Review Queue** — The Review page's queue is driven by this server engine: due cards are fetched from the API, practiced in place, and graded back to the engine (which schedules the next interval). The account's flashcards sync across devices. A local, fixed-delay queue remains only as an offline fallback when the server is unreachable.
+- **Pronunciation Score Linking** — Every practice attempt auto-updates the matching flashcard from its pronunciation score, and explicit review ratings (Easy/Good/Hard, Know It/Review Later) are mapped to SM-2 outcomes.
+- **Due Queue** — API endpoint returns flashcards due for review, ordered by due date; its count powers the Practice-page review nudge and Momentum strip badge.
 
 ## Progress & Review
 
@@ -66,10 +67,10 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Personalized Insights** — Deterministic, data-grounded insights drawn from real per-phoneme scores and attempt history (e.g. nasal vowels below your average, better on short than long phrases, scores improving with repetition).
 - **Practice Recommendations** — Recommended sounds, words, and phrases grounded in real content and your own weaknesses, each linking to the relevant practice surface.
 - **Learning Resources** — Click any difficult sound or word to open pronunciation tutorials; resource links are generated dynamically (YouTube search + Forvo) with no manual video curation or API key required.
-- **Review Page** — Tabbed interface with a Review Queue (SRS-driven items) and Recent Attempts summary. Queue shows progress bar and item-by-item navigation with difficulty rating. Recent Attempts consolidates repeated attempts into one card per item — showing latest score with trend delta, best/average scores, attempt count, a score-history sparkline, and a mastery status — plus a summary strip, type filter (words/sentences), and sort (most recent, needs work, most practiced).
-- **Review Queue Algorithm** — Score-weighted review queue (`buildReviewQueue`) ranks items by `(1 - bestScore/100) * recencyWeight`, filtering items below a configurable threshold (default 80).
+- **Review Page** — Tabbed interface with a Review Queue (server SM-2 due cards) and Recent Attempts summary. The queue fetches due flashcards from the server, shows a progress bar and item-by-item navigation, and grades each item back to the SM-2 engine so its next interval is scheduled; the copy notes that intervals grow with success. If the server queue can't be reached, it falls back to the local offline queue with a non-alarming notice. Recent Attempts consolidates repeated attempts into one card per item — showing latest score with trend delta, best/average scores, attempt count, a score-history sparkline, and a mastery status — plus a summary strip, type filter (words/sentences), and sort (most recent, needs work, most practiced).
+- **Review Nudge** — A subtle, dismissible prompt on the Practice page ("You have N items due for review") linking to the review queue when items are due.
 - **Completion Moments** — Animated confirmation when the review queue is cleared, linking back to practice.
-- **Momentum Strip** — Compact header strip on the Practice page showing current streak, today's attempt count vs daily target, and review-due badge.
+- **Momentum Strip** — Compact header strip on the Practice page showing current streak, today's attempt count vs daily target, and a review-due badge sourced from the server due count.
 
 ## Session Tracking
 
