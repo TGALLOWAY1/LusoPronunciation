@@ -56,7 +56,6 @@ export const PTBR_MINIMAL_PAIRS: MinimalPair[] = [
   { a: 'adiante', b: 'adjiante', note: 'Maintain DI without extra glide.', tags: ['dji_di'] },
 
   { a: 'casa', b: 'caça', note: 'Voice the S in casa; keep Ç voiceless in caça.', tags: ['s_z'] },
-  { a: 'coser', b: 'cozer', note: 'Contrast voiceless S and voiced Z.', tags: ['s_z'] },
   { a: 'preso', b: 'preço', note: 'S in preso can voice between vowels.', tags: ['s_z'] },
 
   { a: 'mal', b: 'mau', note: 'Final L in PT-BR often sounds like a soft U glide.', tags: ['final_l_u'] },

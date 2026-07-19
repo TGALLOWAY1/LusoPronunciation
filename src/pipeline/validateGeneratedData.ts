@@ -18,6 +18,119 @@ import type { EnrichedWord, EnrichedSentence, AudioIndexEntryExtended, Validatio
 import type { GenerationPipelineConfig } from '../../config/generationPipeline.config';
 import { getPhonemeById } from '../lib/phonemeMetadata';
 
+const NASAL_VOWEL_IDS = new Set(['AN_NASAL', 'EN_NASAL', 'IN_NASAL', 'ON_NASAL', 'UN_NASAL']);
+const PATTERN_VOWELS = new Set([
+  'a', 'á', 'à', 'â', 'ã',
+  'e', 'é', 'ê',
+  'i', 'í',
+  'o', 'ó', 'ô', 'õ',
+  'u', 'ú',
+]);
+const SOFT_C_TRIGGERS = new Set(['e', 'é', 'ê', 'i', 'í']);
+
+/**
+ * Detects whether the orthography contains a vowel + coda m/n (word-final or
+ * pre-consonant), which pt-BR always realises as a nasal vowel. Mirrors the coda
+ * logic in phonemeMapper (intervocalic m/n and the "nh" digraph are excluded).
+ */
+function hasNasalCodaPattern(text: string): boolean {
+  for (let i = 0; i < text.length - 1; i++) {
+    if (!PATTERN_VOWELS.has(text[i])) continue;
+    const next = text[i + 1];
+    if (next !== 'm' && next !== 'n') continue;
+    const after = i + 2 < text.length ? text[i + 2] : '';
+    const isNhDigraph = next === 'n' && after === 'h';
+    const isCoda = !isNhDigraph && (after === '' || after === ' ' || !PATTERN_VOWELS.has(after));
+    if (isCoda) return true;
+  }
+  return false;
+}
+
+/** True if the word contains a soft-c (ce/ci) or a cedilla, both of which yield /s/. */
+function hasSoftCOrCedilla(text: string): boolean {
+  if (text.includes('ç')) return true;
+  for (let i = 0; i < text.length - 1; i++) {
+    if (text[i] === 'c' && SOFT_C_TRIGGERS.has(text[i + 1])) return true;
+  }
+  return false;
+}
+
+/** True if the word contains "qu" before e/i, where the u is silent but /k/ remains. */
+function hasQuBeforeFrontVowel(text: string): boolean {
+  for (let i = 0; i < text.length - 2; i++) {
+    if (text[i] === 'q' && text[i + 1] === 'u' && SOFT_C_TRIGGERS.has(text[i + 2])) return true;
+  }
+  return false;
+}
+
+/** True if `letter` (t or d) is directly followed by an orthographic i/í somewhere. */
+function hasConsonantBeforeI(text: string, letter: string): boolean {
+  for (let i = 0; i < text.length - 1; i++) {
+    if (text[i] === letter && (text[i + 1] === 'i' || text[i + 1] === 'í')) return true;
+  }
+  return false;
+}
+
+/**
+ * Pattern-level phoneme validation: asserts that a word's generated phonemes are
+ * consistent with unambiguous pt-BR orthographic rules. Catches G2P regressions
+ * such as a nasal coda that failed to nasalise or "ch" that failed to map to SH.
+ *
+ * @param words - Words to check (needs id, normalizedText/text, and phonemes)
+ * @returns Array of human-readable violation messages (empty when all pass)
+ */
+export function validatePhonemePatterns(
+  words: Array<{ id: string; normalizedText?: string; text?: string; phonemes?: string[] }>
+): string[] {
+  const violations: string[] = [];
+
+  for (const word of words) {
+    const text = (word.normalizedText ?? word.text ?? '').toLowerCase();
+    const phonemes = word.phonemes ?? [];
+    if (!text) continue;
+
+    // (a) vowel + coda m/n must produce a nasal vowel
+    if (hasNasalCodaPattern(text) && !phonemes.some((p) => NASAL_VOWEL_IDS.has(p))) {
+      violations.push(`${word.id} ("${text}"): nasal coda present but no *_NASAL phoneme in [${phonemes.join(', ')}]`);
+    }
+
+    // (b) "ch" must produce SH
+    if (text.includes('ch') && !phonemes.includes('SH')) {
+      violations.push(`${word.id} ("${text}"): contains "ch" but no SH phoneme in [${phonemes.join(', ')}]`);
+    }
+
+    // (c) soft c (ce/ci) or ç must produce S
+    if (hasSoftCOrCedilla(text) && !phonemes.includes('S')) {
+      violations.push(`${word.id} ("${text}"): soft c / ç present but no S phoneme in [${phonemes.join(', ')}]`);
+    }
+
+    // (d) "qu" before e/i must keep K
+    if (hasQuBeforeFrontVowel(text) && !phonemes.includes('K')) {
+      violations.push(`${word.id} ("${text}"): "qu"+e/i present but no K phoneme in [${phonemes.join(', ')}]`);
+    }
+
+    // (e) "rr" digraph must produce HH (strong guttural rhotic)
+    if (text.includes('rr') && !phonemes.includes('HH')) {
+      violations.push(`${word.id} ("${text}"): contains "rr" but no HH phoneme in [${phonemes.join(', ')}]`);
+    }
+
+    // (f) word-initial "r" must render as HH (first phoneme)
+    if (text.startsWith('r') && phonemes[0] !== 'HH') {
+      violations.push(`${word.id} ("${text}"): word-initial "r" but first phoneme is not HH in [${phonemes.join(', ')}]`);
+    }
+
+    // (g) orthographic "ti"/"di" must affricate to CH/JH respectively
+    if (hasConsonantBeforeI(text, 't') && !phonemes.includes('CH')) {
+      violations.push(`${word.id} ("${text}"): "ti" present but no CH phoneme in [${phonemes.join(', ')}]`);
+    }
+    if (hasConsonantBeforeI(text, 'd') && !phonemes.includes('JH')) {
+      violations.push(`${word.id} ("${text}"): "di" present but no JH phoneme in [${phonemes.join(', ')}]`);
+    }
+  }
+
+  return violations;
+}
+
 /**
  * Validates generated data against expectations and consistency checks.
  * 
@@ -51,6 +164,7 @@ export function validateGeneratedData(params: {
     missingAudioIds: [],
     missingPhonemeIds: [],
     invalidWordRefs: [],
+    phonemePatternViolations: [],
     otherErrors: [],
   };
   
@@ -116,6 +230,10 @@ export function validateGeneratedData(params: {
     // But we could track it in otherErrors if needed
   }
   
+  // Pattern-level phoneme validation (nasal codas, ch→SH, soft c/ç→S, qu→K).
+  // Guards against G2P regressions in the generated phoneme arrays.
+  report.phonemePatternViolations = validatePhonemePatterns(words);
+
   // Validate sentences
   for (const sentence of sentences) {
     // Check for audio index entry
@@ -160,7 +278,8 @@ function hasCriticalErrors(report: ValidationReport): boolean {
   return (
     report.missingAudioIds.length > 0 ||
     report.missingPhonemeIds.length > 0 ||
-    report.invalidWordRefs.length > 0
+    report.invalidWordRefs.length > 0 ||
+    (report.phonemePatternViolations?.length ?? 0) > 0
   );
 }
 
@@ -235,6 +354,19 @@ export function logValidationReport(report: ValidationReport): void {
     console.log('');
   }
   
+  // Phoneme pattern violations (CRITICAL)
+  if (report.phonemePatternViolations && report.phonemePatternViolations.length > 0) {
+    console.log(`❌ Phoneme Pattern Violations: ${report.phonemePatternViolations.length} words`);
+    const shown = report.phonemePatternViolations.slice(0, 10);
+    for (const v of shown) {
+      console.log(`   - ${v}`);
+    }
+    if (report.phonemePatternViolations.length > 10) {
+      console.log(`   ... and ${report.phonemePatternViolations.length - 10} more`);
+    }
+    console.log('');
+  }
+
   // Other errors (warnings/non-critical)
   if (report.otherErrors && report.otherErrors.length > 0) {
     console.log('⚠️  Warnings/Non-Critical Issues:');
@@ -278,7 +410,11 @@ export function assertValidOrThrow(report: ValidationReport): void {
     if (report.invalidWordRefs.length > 0) {
       errors.push(`${report.invalidWordRefs.length} sentences with invalid word references`);
     }
-    
+
+    if ((report.phonemePatternViolations?.length ?? 0) > 0) {
+      errors.push(`${report.phonemePatternViolations!.length} words with phoneme pattern violations`);
+    }
+
     throw new Error(
       `Validation failed with critical errors: ${errors.join('; ')}. ` +
       `Run logValidationReport() for details.`
