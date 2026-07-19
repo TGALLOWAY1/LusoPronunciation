@@ -19,6 +19,47 @@ const LOG_TAG = '[TTS]';
 
 export const DEFAULT_PT_BR_VOICE = 'pt-BR-FranciscaNeural';
 
+const DEFAULT_TTS_TIMEOUT_MS = 30_000;
+
+function getTtsTimeoutMs(): number {
+  const rawValue = process.env.CUSTOM_SENTENCE_TTS_TIMEOUT_MS;
+  if (!rawValue) {
+    return DEFAULT_TTS_TIMEOUT_MS;
+  }
+  const parsed = Number.parseInt(rawValue, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_TTS_TIMEOUT_MS;
+}
+
+/**
+ * Azure's Speech SDK (`speakTextAsync`, used under the hood by
+ * `textToSpeechToFile`) has no built-in request timeout, and offers no
+ * signal/cancellation hook we can pass in from the call site. We can't cancel
+ * the underlying synthesis call, but we can stop waiting on it so a stalled
+ * Azure TTS connection can't hang the whole custom-sentence pipeline forever.
+ */
+export class TtsTimeoutError extends Error {
+  constructor(timeoutMs: number) {
+    super(`Azure TTS synthesis timed out after ${timeoutMs}ms`);
+    this.name = 'TtsTimeoutError';
+  }
+}
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new TtsTimeoutError(timeoutMs)), timeoutMs);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      }
+    );
+  });
+}
+
 export interface PortugueseTTSParams {
   text: string;
   userId: string;
@@ -45,11 +86,14 @@ export async function generatePortugueseTTS(
     `${LOG_TAG} synthesizing ${params.text.length} chars → ${path.basename(location.absolutePath)} (voice=${voiceName})`
   );
 
-  const { skipped } = await textToSpeechToFile({
-    text: params.text,
-    voiceName,
-    outputPath: location.absolutePath,
-  });
+  const { skipped } = await withTimeout(
+    textToSpeechToFile({
+      text: params.text,
+      voiceName,
+      outputPath: location.absolutePath,
+    }),
+    getTtsTimeoutMs()
+  );
 
   return {
     audioUrl: location.publicUrl,

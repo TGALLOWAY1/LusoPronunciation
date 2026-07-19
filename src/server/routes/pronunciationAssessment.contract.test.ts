@@ -223,6 +223,7 @@ describe('pronunciation assessment endpoint contract', () => {
   afterEach(() => {
     delete process.env.SPEECH_RATE_LIMIT_WINDOW_MS;
     delete process.env.SPEECH_RATE_LIMIT_MAX_REQUESTS;
+    delete process.env.AZURE_ASSESSMENT_TIMEOUT_MS;
     vi.restoreAllMocks();
   });
 
@@ -416,6 +417,62 @@ describe('pronunciation assessment endpoint contract', () => {
 
     expect(conversionKillInvoked).toBe(true);
     expect(globalThis.fetch).not.toHaveBeenCalled();
+    expect(res.body).toBeNull();
+    expect(cleanupSpies).toHaveLength(1);
+    expect(cleanupSpies[0]).toHaveBeenCalledTimes(1);
+  });
+
+  it('Azure request timeout maps to azure_service_unavailable (503) instead of hanging', async () => {
+    process.env.AZURE_ASSESSMENT_TIMEOUT_MS = '50';
+    vi.spyOn(globalThis, 'fetch').mockImplementationOnce((_url: unknown, init?: RequestInit) => {
+      return new Promise((_resolve, reject) => {
+        init?.signal?.addEventListener('abort', () => {
+          reject(new DOMException('This operation was aborted', 'AbortError'));
+        });
+      });
+    });
+
+    const req = createRequest({
+      audioBuffer: AUDIO_FIXTURES.valid,
+      audioMimeType: 'audio/wav',
+    });
+    const res = createResponse();
+
+    await handlePronunciationAssessmentExpress(req, res);
+
+    expect(res.statusCode).toBe(503);
+    assertSafeErrorResponse(res.body, ERROR_CLASS.azureServiceUnavailable);
+
+    delete process.env.AZURE_ASSESSMENT_TIMEOUT_MS;
+  });
+
+  it('client abort during an in-flight Azure request aborts the fetch and skips writing a response', async () => {
+    let fetchStarted = false;
+    let capturedSignal: AbortSignal | undefined;
+    vi.spyOn(globalThis, 'fetch').mockImplementationOnce((_url: unknown, init?: RequestInit) => {
+      fetchStarted = true;
+      capturedSignal = init?.signal ?? undefined;
+      return new Promise((_resolve, reject) => {
+        capturedSignal?.addEventListener('abort', () => {
+          reject(new DOMException('This operation was aborted', 'AbortError'));
+        });
+      });
+    });
+
+    const req = createRequest({
+      audioBuffer: AUDIO_FIXTURES.valid,
+      audioMimeType: 'audio/wav',
+    });
+    const res = createResponse();
+    const handlerPromise = handlePronunciationAssessmentExpress(req, res);
+
+    await vi.waitFor(() => {
+      expect(fetchStarted).toBe(true);
+    });
+    req.emit('aborted');
+    await handlerPromise;
+
+    expect(capturedSignal?.aborted).toBe(true);
     expect(res.body).toBeNull();
     expect(cleanupSpies).toHaveLength(1);
     expect(cleanupSpies[0]).toHaveBeenCalledTimes(1);

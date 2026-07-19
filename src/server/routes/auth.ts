@@ -154,6 +154,21 @@ router.post('/register', registerIpLimit, async (req: Request, res: Response) =>
 
     // ──────────────── Invite code validation ────────────────
     const requireInvite = process.env.REQUIRE_INVITE_CODE !== 'false';
+    let normalizedCode: string | undefined;
+    let consumedInviteCode = false;
+
+    // Unified failure message to reduce invite-code enumeration — an
+    // attacker can no longer distinguish between "does not exist",
+    // "expired", and "used" from the error text.
+    const inviteFailure = () => {
+      console.warn(
+        `[Auth] invite code rejected ip=${req.ip} codeLen=${normalizedCode?.length ?? 0}`
+      );
+      return res.status(403).json({
+        error: 'Invalid invite code',
+        message: 'This invite code is not valid or has expired.',
+      });
+    };
 
     if (requireInvite) {
       if (
@@ -168,74 +183,102 @@ router.post('/register', registerIpLimit, async (req: Request, res: Response) =>
         });
       }
 
-      const normalizedCode = inviteCode.trim().toUpperCase();
-      const invite = await InviteCodeModel.findOne({ code: normalizedCode });
+      normalizedCode = inviteCode.trim().toUpperCase();
 
-      // Unified failure message to reduce invite-code enumeration — an
-      // attacker can no longer distinguish between "does not exist",
-      // "expired", and "used" from the error text.
-      const inviteFailure = () => {
-        console.warn(
-          `[Auth] invite code rejected ip=${req.ip} codeLen=${normalizedCode.length}`
-        );
-        return res.status(403).json({
-          error: 'Invalid invite code',
-          message: 'This invite code is not valid or has expired.',
-        });
-      };
-
-      if (!invite || !invite.isActive) {
-        return inviteFailure();
-      }
-      // Constant-time compare to make timing enumeration harder.
-      if (!constantTimeEquals(invite.code, normalizedCode)) {
-        return inviteFailure();
-      }
-      if (invite.expiresAt && invite.expiresAt < new Date()) {
-        return inviteFailure();
-      }
-      if (invite.usedCount >= invite.maxUses) {
-        return inviteFailure();
-      }
-    }
-
-    // Check if user already exists
-    const existingUser = await UserModel.findOne({ email: email.toLowerCase() });
-    if (existingUser) {
-      return res.status(409).json({
-        error: 'User already exists',
-        message: 'An account with this email already exists',
-      });
-    }
-
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
-
-    // Create user
-    const userDoc = new UserModel({
-      email: email.toLowerCase(),
-      passwordHash,
-      displayName: typeof displayName === 'string' ? displayName.trim() || undefined : undefined,
-    });
-
-    await userDoc.save();
-
-    // Record invite usage (atomic update)
-    if (requireInvite && inviteCode) {
-      const normalizedCode = inviteCode.trim().toUpperCase();
-      await InviteCodeModel.updateOne(
-        { code: normalizedCode },
+      // Atomically validate + consume the invite code in one round-trip so
+      // two concurrent registrations can't both read usedCount < maxUses and
+      // both succeed (the read-then-$inc race the previous implementation
+      // had). `maxUses` is a required field on the schema (default: 1), so
+      // there's no "unlimited" sentinel to special-case — every code has a
+      // concrete numeric cap, matching the same $expr convention already
+      // used by logInviteCodeReadiness() in config/startupChecks.ts.
+      const now = new Date();
+      const invite = await InviteCodeModel.findOneAndUpdate(
         {
-          $inc: { usedCount: 1 },
-          $push: { usedBy: userDoc._id },
-        }
+          code: normalizedCode,
+          isActive: true,
+          $or: [
+            { expiresAt: { $exists: false } },
+            { expiresAt: null },
+            { expiresAt: { $gt: now } },
+          ],
+          $expr: { $lt: ['$usedCount', '$maxUses'] },
+        },
+        { $inc: { usedCount: 1 } },
+        { new: true }
       );
+
+      if (!invite) {
+        return inviteFailure();
+      }
+
+      // Constant-time compare to make timing enumeration harder. This can
+      // only fail on a hash collision against a differently-cased/whitespace
+      // variant that Mongo's exact-match query still matched, which isn't
+      // expected in practice — release the slot we just consumed either way.
+      if (!constantTimeEquals(invite.code, normalizedCode)) {
+        await InviteCodeModel.updateOne({ _id: invite._id }, { $inc: { usedCount: -1 } });
+        return inviteFailure();
+      }
+
+      consumedInviteCode = true;
     }
 
-    const token = generateToken(userDoc._id.toString(), userDoc.email);
-    const user = mapUserDocToDto(userDoc);
+    try {
+      // Check if user already exists
+      const existingUser = await UserModel.findOne({ email: email.toLowerCase() });
+      if (existingUser) {
+        if (consumedInviteCode && normalizedCode) {
+          await InviteCodeModel.updateOne({ code: normalizedCode }, { $inc: { usedCount: -1 } });
+        }
+        return res.status(409).json({
+          error: 'User already exists',
+          message: 'An account with this email already exists',
+        });
+      }
 
-    res.status(201).json({ token, user });
+      // Hash password
+      const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+
+      // Create user
+      const userDoc = new UserModel({
+        email: email.toLowerCase(),
+        passwordHash,
+        displayName: typeof displayName === 'string' ? displayName.trim() || undefined : undefined,
+      });
+
+      await userDoc.save();
+
+      // Record invite usage (usedCount already incremented atomically above;
+      // just attach the user reference).
+      if (consumedInviteCode && normalizedCode) {
+        await InviteCodeModel.updateOne(
+          { code: normalizedCode },
+          { $push: { usedBy: userDoc._id } }
+        );
+      }
+
+      const token = generateToken(userDoc._id.toString(), userDoc.email);
+      const user = mapUserDocToDto(userDoc);
+
+      res.status(201).json({ token, user });
+    } catch (error) {
+      // Registration failed after we'd already consumed the invite slot —
+      // give it back (best-effort compensation) so the user isn't charged
+      // an invite use for a failed signup.
+      if (consumedInviteCode && normalizedCode) {
+        await InviteCodeModel.updateOne(
+          { code: normalizedCode },
+          { $inc: { usedCount: -1 } }
+        ).catch((compensationError) => {
+          console.error(
+            '[Auth] Failed to release invite code after registration error:',
+            compensationError instanceof Error ? compensationError.message : compensationError
+          );
+        });
+      }
+      throw error;
+    }
   } catch (error) {
     console.error('[Auth] Registration error:', error instanceof Error ? error.message : error);
     res.status(500).json({

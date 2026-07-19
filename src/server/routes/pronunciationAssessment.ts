@@ -284,6 +284,7 @@ function getAzureSpeechConfig() {
 
 const DEFAULT_AUDIO_CONVERT_TIMEOUT_MS = 10_000;
 const DEFAULT_SPEECH_HEALTH_TIMEOUT_MS = 3_000;
+const DEFAULT_AZURE_ASSESSMENT_TIMEOUT_MS = 30_000;
 
 function getAudioConvertTimeoutMs(): number {
   const rawValue = process.env.AUDIO_CONVERT_TIMEOUT_MS;
@@ -294,6 +295,20 @@ function getAudioConvertTimeoutMs(): number {
   const parsed = Number.parseInt(rawValue, 10);
   if (!Number.isFinite(parsed) || parsed <= 0) {
     return DEFAULT_AUDIO_CONVERT_TIMEOUT_MS;
+  }
+
+  return parsed;
+}
+
+function getAzureAssessmentTimeoutMs(): number {
+  const rawValue = process.env.AZURE_ASSESSMENT_TIMEOUT_MS;
+  if (!rawValue) {
+    return DEFAULT_AZURE_ASSESSMENT_TIMEOUT_MS;
+  }
+
+  const parsed = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_AZURE_ASSESSMENT_TIMEOUT_MS;
   }
 
   return parsed;
@@ -393,7 +408,9 @@ interface AssessmentParams {
   audioMimeType?: string;
   workspace: TempWorkspace;
   convertTimeoutMs: number;
+  azureTimeoutMs: number;
   registerConversionKill?: (kill: (() => void) | null) => void;
+  registerAzureAbort?: (abort: (() => void) | null) => void;
   shouldAbort?: () => boolean;
 }
 
@@ -424,7 +441,9 @@ async function processPronunciationAssessment(
     audioMimeType,
     workspace,
     convertTimeoutMs,
+    azureTimeoutMs,
     registerConversionKill,
+    registerAzureAbort,
     shouldAbort,
   } = params;
 
@@ -520,15 +539,60 @@ async function processPronunciationAssessment(
   // Convert Buffer to Uint8Array for fetch compatibility
   const audioBody = new Uint8Array(wavBuffer);
   const azureStage = await measureAsync('azure', async () => {
-    const azureResponse = await fetch(azureEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': contentType,
-        'Ocp-Apim-Subscription-Key': key,
-        'Pronunciation-Assessment': paHeader,
-      },
-      body: audioBody,
-    });
+    const azureController = new AbortController();
+    let azureTimedOut = false;
+    const azureTimer = setTimeout(() => {
+      azureTimedOut = true;
+      azureController.abort();
+    }, azureTimeoutMs);
+    registerAzureAbort?.(() => azureController.abort());
+
+    let azureResponse: Response;
+    try {
+      azureResponse = await fetch(azureEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': contentType,
+          'Ocp-Apim-Subscription-Key': key,
+          'Pronunciation-Assessment': paHeader,
+        },
+        body: audioBody,
+        signal: azureController.signal,
+      });
+    } catch (fetchError) {
+      if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+        if (shouldAbort?.()) {
+          throw new PronunciationRouteError(
+            499,
+            ERROR_CLASS.clientAbort,
+            'Client disconnected before pronunciation assessment completed.'
+          );
+        }
+
+        speechLog('error', 'Azure Speech API request timed out', {
+          requestId,
+          statusClass: '5xx',
+        });
+        throw new PronunciationRouteError(
+          503,
+          ERROR_CLASS.azureServiceUnavailable,
+          `Azure Speech API request timed out after ${azureTimeoutMs}ms.`
+        );
+      }
+      // azureTimedOut without an AbortError shouldn't happen, but guard anyway
+      // so a slow-to-reject fetch doesn't silently bypass the timeout class.
+      if (azureTimedOut) {
+        throw new PronunciationRouteError(
+          503,
+          ERROR_CLASS.azureServiceUnavailable,
+          `Azure Speech API request timed out after ${azureTimeoutMs}ms.`
+        );
+      }
+      throw fetchError;
+    } finally {
+      clearTimeout(azureTimer);
+      registerAzureAbort?.(null);
+    }
 
     if (!azureResponse.ok) {
       const errorText = await azureResponse.text();
@@ -640,6 +704,7 @@ export async function handlePronunciationAssessment(
   const startedAt = Date.now();
   const workspace = await createWorkspace('pronunciation', requestId);
   const convertTimeoutMs = getAudioConvertTimeoutMs();
+  const azureTimeoutMs = getAzureAssessmentTimeoutMs();
 
   try {
     // Parse multipart form data
@@ -754,6 +819,7 @@ export async function handlePronunciationAssessment(
       audioMimeType,
       workspace,
       convertTimeoutMs,
+      azureTimeoutMs,
     });
 
     speechLog('info', 'Pronunciation request completed', {
@@ -859,8 +925,10 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
   const startedAt = Date.now();
   const workspace = await createWorkspace('pronunciation', requestId);
   const convertTimeoutMs = getAudioConvertTimeoutMs();
+  const azureTimeoutMs = getAzureAssessmentTimeoutMs();
   let clientDisconnected = false;
   let killActiveConversion: (() => void) | null = null;
+  let killActiveAzureRequest: (() => void) | null = null;
 
   // Pre-gate on content-length: reject obviously-oversized uploads before
   // multer buffers the whole thing into memory.
@@ -886,6 +954,7 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
     }
     clientDisconnected = true;
     killActiveConversion?.();
+    killActiveAzureRequest?.();
   };
 
   req.on('aborted', markClientDisconnected);
@@ -1002,10 +1071,17 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
       audioMimeType: req.file.mimetype,
       workspace,
       convertTimeoutMs,
+      azureTimeoutMs,
       registerConversionKill: (kill) => {
         killActiveConversion = kill;
         if (kill && clientDisconnected) {
           kill();
+        }
+      },
+      registerAzureAbort: (abort) => {
+        killActiveAzureRequest = abort;
+        if (abort && clientDisconnected) {
+          abort();
         }
       },
       shouldAbort: () => clientDisconnected,
@@ -1049,6 +1125,7 @@ export async function handlePronunciationAssessmentExpress(req: ExpressRequest, 
     req.off('aborted', markClientDisconnected);
     req.off('close', markClientDisconnected);
     killActiveConversion = null;
+    killActiveAzureRequest = null;
     await workspace.cleanup();
   }
 }

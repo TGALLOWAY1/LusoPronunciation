@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildHealthResponse } from './health';
+import { buildHealthResponse, buildReadinessResponse } from './health';
 import type { MongoStatus } from '../db/mongoClient';
 
 const speechOk = () => ({ configured: true });
@@ -77,5 +77,46 @@ describe('buildHealthResponse', () => {
       },
       speech: { configured: true },
     });
+  });
+});
+
+describe('buildReadinessResponse', () => {
+  it('returns 200 with ok:true when MongoDB is connected', async () => {
+    const mongoStatus: MongoStatus = {
+      connected: true,
+      readyState: 1,
+      host: 'localhost',
+      name: 'lusopronounce',
+    };
+
+    const response = await buildReadinessResponse(async () => mongoStatus);
+
+    expect(response).toEqual({
+      statusCode: 200,
+      body: { ok: true, mongo: mongoStatus },
+    });
+  });
+
+  it('returns 503 with ok:false when MongoDB is disconnected', async () => {
+    const mongoStatus: MongoStatus = {
+      connected: false,
+      readyState: 0,
+    };
+
+    const response = await buildReadinessResponse(async () => mongoStatus);
+
+    expect(response).toEqual({
+      statusCode: 503,
+      body: { ok: false, mongo: mongoStatus },
+    });
+  });
+
+  it('does not affect buildHealthResponse (liveness stays 200 unconditionally)', async () => {
+    const mongoStatus: MongoStatus = { connected: false, readyState: 0 };
+    const liveness = await buildHealthResponse(async () => mongoStatus, () => ({ configured: true }));
+    const readiness = await buildReadinessResponse(async () => mongoStatus);
+
+    expect(liveness.statusCode).toBe(200);
+    expect(readiness.statusCode).toBe(503);
   });
 });

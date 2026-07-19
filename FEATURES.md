@@ -115,7 +115,8 @@ A comprehensive list of what LusoPronounce can do, organized by feature area.
 - **Testing** — Vitest for unit and contract tests, Playwright for end-to-end browser tests, organized by project phase.
 - **CI/CD** — GitHub Actions pipeline runs on push/PR to `main` and `develop`: install, build, unit tests, and Playwright e2e.
 - **Deployment** — Railway-targeted with static SPA serving and aggressive caching.
-- **Database** — MongoDB via Mongoose with singleton connection, retry logic, and connection health reporting.
+- **Database** — MongoDB via Mongoose with singleton connection, retry logic, loud connection-state logging (disconnect/reconnect/error), and connection health reporting.
 - **Fail-fast Startup** — Production boots refuse to bind the port when required environment variables or the MongoDB connection are missing, so the app never appears "up" with broken core flows.
-- **Readiness Probe** — `/api/health` reports MongoDB and Azure Speech configuration state alongside liveness, making deploy issues observable without calling Azure.
+- **Readiness Probe** — `/api/health` reports MongoDB and Azure Speech configuration state alongside liveness (always 200, for Railway's liveness check), making deploy issues observable without calling Azure. `/api/health/ready` is a separate strict readiness probe that returns 503 whenever MongoDB isn't connected.
+- **Crash Recovery** — An uncaught exception logs the error and exits the process (1) in production so the platform restarts a clean instance instead of continuing in a corrupted state; unhandled promise rejections remain log-only.
 - **Configurable API Origin** — `VITE_API_BASE_URL` and `CSP_CONNECT_SRC` let the SPA target a separate backend origin when needed; default same-origin deploys remain zero-config.

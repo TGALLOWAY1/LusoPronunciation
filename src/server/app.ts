@@ -275,14 +275,36 @@ async function startServer(): Promise<void> {
   }
 }
 
-// Catch unhandled errors to prevent silent crashes
-process.on('uncaughtException', (err) => {
-  console.error('[Server] Uncaught exception:', err);
-});
+// Start the server when run directly (not imported for testing).
+// tsx doesn't reliably set require.main === module, so we detect test
+// environments instead — Vitest sets VITEST=true automatically.
+const isTestImport =
+  process.env.VITEST === 'true' || process.env.NODE_ENV === 'test';
 
+// Catch unhandled errors to prevent silent crashes.
+//
+// unhandledRejection stays log-only (crashing on every unhandled rejection
+// is too aggressive — plenty of existing code paths swallow rejections
+// intentionally as best-effort work).
+//
+// uncaughtException is different: by definition the process is now in an
+// undefined state (Node's own docs: "the safest way to respond ... is to
+// shut down the process"). We log then exit(1) so the platform (Railway)
+// restarts a clean instance instead of limping along corrupted. This is only
+// installed outside test runs — Vitest imports this module in-process, and
+// installing a process-wide uncaughtException handler there would swallow
+// exceptions the test runner needs to see (and a stray exit(1) would kill
+// the whole test process).
 process.on('unhandledRejection', (reason) => {
   console.error('[Server] Unhandled rejection:', reason);
 });
+
+if (!isTestImport) {
+  process.on('uncaughtException', (err) => {
+    console.error('[Server] Uncaught exception:', err);
+    process.exit(1);
+  });
+}
 
 // Handle graceful shutdown
 process.on('SIGTERM', async () => {
@@ -294,12 +316,6 @@ process.on('SIGINT', async () => {
   console.log('[Server] SIGINT received, shutting down gracefully...');
   process.exit(0);
 });
-
-// Start the server when run directly (not imported for testing).
-// tsx doesn't reliably set require.main === module, so we detect test
-// environments instead — Vitest sets VITEST=true automatically.
-const isTestImport =
-  process.env.VITEST === 'true' || process.env.NODE_ENV === 'test';
 
 if (!isTestImport) {
   startServer().catch((error) => {
